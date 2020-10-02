@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="ControlP5">
+    <CLASSES />
+    <JAVADOC>
+      <root url="file://$PROJECT_DIR$/../ControlP5/controlP5/reference" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../ControlP5/controlP5/examples/experimental/MidiMapper" />
+      <root url="file://$PROJECT_DIR$/../ControlP5/controlP5/src" />
+    </SOURCES>
+  </library>
+</component>

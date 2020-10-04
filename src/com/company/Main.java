@@ -200,7 +200,7 @@ public class Main extends PApplet {
         mainSketch.gridPowerSources = new ArrayList<>();
 
         try {
-            readComponentFile(mainSketch, "MtJediGalaxyGrid.TXT"); // Was "ModelAll_TEST_THIS_FILE.TXT"
+            readComponentFile(mainSketch, "lib/MtJediGalaxyGrid.TXT"); // Was "ModelAll_TEST_THIS_FILE.TXT"
         } catch (IOException e) {
             e.printStackTrace();
         }

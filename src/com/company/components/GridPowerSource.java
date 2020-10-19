@@ -1,4 +1,6 @@
-package com.company;
+package com.company.components;
+
+import com.company.main.Main;
 
 public class GridPowerSource {
 

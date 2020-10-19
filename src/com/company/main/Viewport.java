@@ -1,4 +1,6 @@
-package com.company;
+package com.company.main;
+
+import com.company.main.Main;
 
 public class Viewport {
 

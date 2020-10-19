@@ -1,6 +1,6 @@
-package com.company;
+package com.company.components;
 
-import processing.core.PConstants;
+import com.company.main.Main;
 
 public class Breaker12kVTandem {
 

@@ -1,35 +1,19 @@
-package com.company;
+package com.company.components;
 
+import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-// TODO:  renderLines() needs a routine to determine if it's crossing another line and draw an underpass
+public class UGPass extends Component {
 
-public class Bus extends Component {
-    public Bus(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
-        super(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-        calcDrawingCoords();
-        setNormalState(0);  // ensures "closed"
-        setCurrentState(0); // ensures "closed"
-        setCanOpen(false);  // ensures logic will not allow this component to operate
-    } // END Constructor #0
-
-    public Bus(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public UGPass(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedTo, inout, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
         setNormalState(0);  // ensures "closed"
         setCurrentState(0); // ensures "closed"
         setCanOpen(false);  // ensures logic will not allow this component to operate
     } // END Constructor #1
-
-    public Bus(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedToIn, String inoutIn, Component connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
-        super(mainSketch, id, name, type, orientation, normalState, connectedToIn, inoutIn, connectedToOut, inoutOut, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-        calcDrawingCoords();
-        setNormalState(0);  // ensures "closed"
-        setCurrentState(0); // ensures "closed"
-        setCanOpen(false);  // ensures logic will not allow this component to operate
-    } // END Constructor #2
 
     public void renderEnergy(float scale, float panX, float panY) {
 
@@ -60,8 +44,12 @@ public class Bus extends Component {
         mainSketch.strokeWeight(strokeWt);
         mainSketch.strokeCap(PConstants.SQUARE);
 
-        // Draw line regardless
-        drawLine(0, 1);
+        // Draw dashed line regardless
+//        for(int i = 6; i < this.getDs().size() - 1; i += 2) {
+//            System.out.println("Drawing line from " + i + " to " + (i+1));
+//            drawLine(i, (i+1));
+//        }
+        drawDashedLine(0, 1);
 
         // Draw underpass if this line crosses another line already existing in the sketch
         for (Component c : mainSketch.components) {
@@ -73,6 +61,17 @@ public class Bus extends Component {
                 drawBusUnderpass(findCrossingPoint(c), c.getOrientation(), c.getInNode().isEnergized());
             } // END if component is a bus that crosses THIS
         } // END for each component
+
+        // Place text/label at dS(4) if Right, otherwise ds(5) if left placement
+        mainSketch.fill(0, 0, 255); // blue
+
+        if(getLabelPlacement() == 'R') {
+            drawText(4, getLabel(), getTextAnchor(), getLabelOrientation());
+        } else {
+            drawText(5, getLabel(), getTextAnchor(), getLabelOrientation());
+        }
+        mainSketch.fill(0); // switch back to black
+
 
     } // END renderLines()
 
@@ -163,6 +162,20 @@ public class Bus extends Component {
         coord = new Coord(x + 0.25f, y + this.getLength()); // Element #3 - bottom right clickable area
         coords.add(coord);
 
+        // This adds two text anchors
+        coord = new Coord(x + 0.25f, y + this.getLength() * 0.5f); // Element #4 - right text anchor (or top for 'H')
+        coords.add(coord);
+        coord = new Coord(x - 0.25f, y + this.getLength() * 0.5f);  // ELement #5 - left text anchor (or bottom for 'H')
+        coords.add(coord);
+
+        // These steps put coordinates into the array for the dashed lines
+        for(int i = 0; i < this.getLength(); i++) {
+            for(int j = 1; j <= 4; j++) {
+                coord = new Coord(x, y + i+j*0.25f);
+                coords.add(coord);
+            } // END for 7 intervals
+        } // END for length of this bus
+
         // This next step determines if the coordinates have to be rotated, rotates them, and
         // then executes the setDs() method for this component.
         switch (this.getOrientation()) {
@@ -183,6 +196,9 @@ public class Bus extends Component {
         // Establish the click coordinates
         this.setClickCoords(2, 3);
 
+        System.out.println("This ugPass has " + this.getDs().size() + " length " + this.getLength());
+        for(Coord coord1 : this.getDs()) System.out.println(coord1.toString());
+
     } // END calcDrawingCoords
 
-} // END public class Bus
+} // END public class UGPass

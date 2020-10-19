@@ -1,10 +1,8 @@
-package com.company;
+package com.company.components;
 
-import processing.core.PApplet;
+import com.company.main.Main;
 import processing.core.PConstants;
-import processing.core.PFont;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Association {
@@ -83,7 +81,7 @@ public class Association {
                     this.boxWidth * scale * Main.UNIT, this.boxHeight * scale * Main.UNIT);
         }
 
-        if(mainSketch.viewport.getScale() > 0.33f) {
+        if(mainSketch.getViewport().getScale() > 0.33f) {
             // Place Label 1
             float xLabel1Anchor = calcPos(label1Anchor.getxPos(), scale, panX); // Dwg coords
             float yLabel1Anchor = calcPos(label1Anchor.getyPos(), scale, panY); // Dwg coords

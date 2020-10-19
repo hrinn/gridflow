@@ -1,24 +1,25 @@
-package com.company;
+package com.company.components;
 
+import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-public class Breaker70kV extends Component {
+public class Jumper extends Component {
 
-    // TODO:  Link the solar plant to SS70-1 and SS70-2
+    // TODO:  create upfeed option
 
-    public Breaker70kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Jumper(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-    calcDrawingCoords();
+        calcDrawingCoords();
     } // END Constructor #0
 
-    public Breaker70kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Jumper(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedTo, inout, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     } // END Constructor #1
 
-    public Breaker70kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedToIn, String inoutIn, Component connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Jumper(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedToIn, String inoutIn, Component connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedToIn, inoutIn, connectedToOut, inoutOut, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     } // END Constructor #2
@@ -30,7 +31,7 @@ public class Breaker70kV extends Component {
         // Set drawing parameters
         mainSketch.stroke(252, 252, 3);  // yellow
         mainSketch.strokeWeight(strokeWt);
-        mainSketch.strokeCap(PConstants.SQUARE);
+        mainSketch.strokeCap(PConstants.ROUND);
 
         // Draw top energy line if present
         if (getInNode().isEnergized()) {
@@ -42,11 +43,14 @@ public class Breaker70kV extends Component {
             drawLine(1, 3);
         }
 
-        // Draw energy box if present
-        if ((getInNode().isEnergized() && getCurrentState() == 0) ||
-                getOutNode().isEnergized() && getCurrentState() == 0) {
-            drawBox( 4, 5, 6, 7, 1);
-        }
+        // Draw energy arc if present, depending on whether the jumper is closed or open
+        if (getCurrentState() == 0 && (getInNode().isEnergized() || getOutNode().isEnergized())) {
+            drawBezier(3, 4, 2);
+        } // END if energized and closed
+        // Else if jumper is open, but outNode is energized, render open
+        else if(getCurrentState() == 1 && getOutNode().isEnergized()){
+            drawBezier(3, 5, 6);
+        } // END if cutout open with outNode energized
 
     } // END renderEnergy()
 
@@ -62,7 +66,7 @@ public class Breaker70kV extends Component {
         // Set drawing parameters
         mainSketch.stroke(0);  // black
         mainSketch.strokeWeight(strokeWt);
-        mainSketch.strokeCap(PConstants.SQUARE);
+        mainSketch.strokeCap(PConstants.ROUND);
 
         // Draw top black line regardless
         drawLine(0, 2);
@@ -70,39 +74,36 @@ public class Breaker70kV extends Component {
         // Draw bottom black line regardless
         drawLine(1, 3);
 
-        // Draw box but fill with green or red depending on state open/closed
-        if (getCurrentState() == 0) mainSketch.fill(255, 0, 0); // red
-        else if(getCurrentState() == 2) mainSketch.fill(252, 252, 3);  // yellow
-        else mainSketch.fill(0, 255, 0); // green
-        drawBox(4, 5, 6, 7, 1);
+        // Draw arc regardless, depending on whether the jumper is closed or open
+        mainSketch.noFill();
+        if (getCurrentState() == 0) drawBezier(3, 4, 2);
+        else drawBezier(3, 5, 6);
 
-        // Inscribe "LOCK" when locked open
+        // Place yellow dot if locked out
+        float xCir = getDs().get(7).getxPos();
+        float yCir = getDs().get(7).getyPos();
+        xCir = calcPos(xCir, scale, panX);
+        yCir = calcPos(yCir, scale, panY);
         if(getCurrentState() == 2) {
+            mainSketch.strokeWeight(mainSketch.STROKE_FAT);
+            mainSketch.stroke(252, 252, 3);
+            mainSketch.fill(252,252,3); // yellow
+            mainSketch.ellipse( xCir, yCir,unit/2, unit/2);
             mainSketch.fill(0); // black
-            drawText(8, "LOCK", "CC", 'H');
+            drawText(7, "LOCK", "CC", 'H');
         }
-        // Otherwise inscribe "N/C" when open and "N/O" when closed
-        else if (!(getNormalState() == getCurrentState())) {
-            mainSketch.fill(0);
-            if (getNormalState() == 0) {
-                drawText(8, "N/C", "CC", 'H');
-            } else {
-                drawText(8, "N/O", "CC", 'H');
-            }
-        }
+        // Draw green dot if present
+        if(getNormalState() == 0 && getCurrentState() == 1) {
+            mainSketch.stroke(0, 255, 0); // green line
+            mainSketch.fill(0, 255, 0); // green fill
 
-        // Place text/label at dS(9)
-        mainSketch.fill(0); // black
-        if(getLabelPlacement() == 'R') {
-            drawText(9, getLabel(), getTextAnchor(), getLabelOrientation());
-        } else {
-            drawText(10, getLabel(), getTextAnchor(), getLabelOrientation());
+            mainSketch.ellipse(xCir, yCir, unit/2, unit/2);
         }
-
 
     } // END renderLines()
 
     private void calcDrawingCoords() {
+
         ArrayList<Coord> coords = new ArrayList<>();
         float x = this.getInNode().getCoord().getxPos();
         float y = this.getInNode().getCoord().getyPos();
@@ -115,23 +116,21 @@ public class Breaker70kV extends Component {
 
         // These next steps define specific points
         Coord coord;
-        coord = new Coord(x, y + 1f); // Element #2 - bottom of top line
+        coord = new Coord(x, y + 1f); // Element #2 - bottom of top vertical line
         coords.add(coord);
-        coord = new Coord(x, y + 2f); // Element #3 - Top of bottom line
+        coord = new Coord(x, y + 2f); // Element #3 - top of bottom vertical line
         coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 1f); // Element #4 - top left corner of box
+        coord = new Coord(x + 0.5f, y + 1.5f); // Element #4 - control point for arc, closed
         coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 2f); // Element #5 - bottom left corner of box
+        coord = new Coord(x + 0.707f, y + 2f); // Element #5 - control point for arc, open
         coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 1f); // Element #6 - top right corner of box
+        coord = new Coord(x + 0.707f, y + 1.293f); // Element #6 - end point for arc, open
         coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 2f); // Element #7 - bottom right corner of box
+        coord = new Coord(x, y + 1.5f); // Element #7 - anchor point for text/label
         coords.add(coord);
-        coord = new Coord(x , y + 1.5f); // Element #8 - anchor for N/C, N/O indicator
+        coord = new Coord(x - 0.5f, y + 1f); // Element #8 - top left mouse click area
         coords.add(coord);
-        coord = new Coord(x + 0.75f, y + 1.5f); // Element #9 - Right anchor for text/label
-        coords.add(coord);
-        coord = new Coord(x - 0.75f, y + 1.5f); // Element #10 - Left anchor for text/label
+        coord = new Coord(x + 0.5f, y + 2f); // Element #9 - bot right mouse click area
         coords.add(coord);
 
         // This next step determines if the coordinates have to be rotated, rotates them, and
@@ -151,9 +150,13 @@ public class Breaker70kV extends Component {
                 break;
         } // END switch (orientation)
 
+        // Update the location of the outNode
+        this.getOutNode().setCoord(getDs().get(1));
+
         // Establish the click coordinates
-        this.setClickCoords(4, 7);
+        this.setClickCoords(8, 9);
+
 
     } // END calcDrawingCoords
 
-} // END public class Breaker70kV
+} // END public class Jumper

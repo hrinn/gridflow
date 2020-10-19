@@ -1,7 +1,7 @@
-package com.company;
+package com.company.main;
 
+import com.company.main.Main;
 import controlP5.ControlP5;
-import processing.core.PConstants;
 
 public class UserInterface {
 

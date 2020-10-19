@@ -1,5 +1,6 @@
-package com.company;
+package com.company.components;
 
+import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;

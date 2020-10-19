@@ -1,16 +1,13 @@
-package com.company;
+package com.company.main;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.company.components.*;
 import processing.core.PApplet;
-import processing.core.PConstants;
-import processing.core.PFont;
 import processing.event.*;
 import controlP5.*;
-
-import javax.swing.*;
 
 public class Main extends PApplet {
 
@@ -24,7 +21,12 @@ public class Main extends PApplet {
     // TODO:  Design upfeed modifier for jumper
     // TODO:  Fix auto-zoom function
 
-    Viewport viewport = new Viewport();
+    private Viewport viewport = new Viewport();
+
+    public Viewport getViewport() {
+        return viewport;
+    }
+
     Click click = new Click();
     UserInterface ui = new UserInterface();
     ControlP5 cp5;

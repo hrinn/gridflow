@@ -1,11 +1,9 @@
-package com.company;
+package com.company.main;
 
+import com.company.components.*;
 import processing.core.PConstants;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 

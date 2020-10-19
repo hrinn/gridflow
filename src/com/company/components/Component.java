@@ -1,5 +1,6 @@
-package com.company;
+package com.company.components;
 
+import com.company.main.Main;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -455,9 +456,9 @@ public class Component {
 
     public void drawLine(int from, int to) {
 
-        float scale = mainSketch.viewport.scale;
-        float panX = mainSketch.viewport.getX();
-        float panY = mainSketch.viewport.getY();
+        float scale = mainSketch.getViewport().getScale();
+        float panX = mainSketch.getViewport().getX();
+        float panY = mainSketch.getViewport().getY();
 
         float fromX = calcPos(getDs().get(from).getxPos(), scale, panX);
         float fromY = calcPos(getDs().get(from).getyPos(), scale, panY);
@@ -469,9 +470,9 @@ public class Component {
 
     public void drawDashedLine(int from, int to) {
 
-        float scale = mainSketch.viewport.scale;
-        float panX = mainSketch.viewport.getX();
-        float panY = mainSketch.viewport.getY();
+        float scale = mainSketch.getViewport().getScale();
+        float panX = mainSketch.getViewport().getX();
+        float panY = mainSketch.getViewport().getY();
         float unit = mainSketch.UNIT;
 
         ArrayList<Coord> dashDs = new ArrayList<>();
@@ -522,9 +523,9 @@ public class Component {
 
     public void drawBox(int vertex1, int vertex2, int vertex3, int vertex4, int size) {
 
-        float scale = mainSketch.viewport.scale;
-        float panX = mainSketch.viewport.getX();
-        float panY = mainSketch.viewport.getY();
+        float scale = mainSketch.getViewport().getScale();
+        float panX = mainSketch.getViewport().getX();
+        float panY = mainSketch.getViewport().getY();
         float unit = mainSketch.UNIT * scale;
 
         // Find the x-coordinate of the top left vertex of the box, as the minimum of all four vertices
@@ -549,7 +550,7 @@ public class Component {
 
         float xPos = getDs().get(anchorPt).getxPos();
         float yPos = getDs().get(anchorPt).getyPos();
-        float unit = mainSketch.UNIT * mainSketch.viewport.getScale();
+        float unit = mainSketch.UNIT * mainSketch.getViewport().getScale();
 
 // TODO: draw lock
 
@@ -559,9 +560,9 @@ public class Component {
 
     public void drawText(int anchorPt, String text, String textAnchor, char labelOrientation) {
 
-        float scale = mainSketch.viewport.scale;
-        float panX = mainSketch.viewport.getX();
-        float panY = mainSketch.viewport.getY();
+        float scale = mainSketch.getViewport().getScale();
+        float panX = mainSketch.getViewport().getX();
+        float panY = mainSketch.getViewport().getY();
         float unit = mainSketch.UNIT * scale;
 
         // Set the text size
@@ -633,9 +634,9 @@ public class Component {
 
     public void drawArc(int centerpoint, float startArcAngle, float size) {
 
-        float scale = mainSketch.viewport.scale;
-        float panX = mainSketch.viewport.getX();
-        float panY = mainSketch.viewport.getY();
+        float scale = mainSketch.getViewport().getScale();
+        float panX = mainSketch.getViewport().getX();
+        float panY = mainSketch.getViewport().getY();
         float unit = mainSketch.UNIT * scale;
 
         // Find the grid coordinates of the arc centerpoint
@@ -658,9 +659,9 @@ public class Component {
 
     public void drawTeardropDot(int centerpoint, float size) {
 
-        float scale = mainSketch.viewport.scale;
-        float panX = mainSketch.viewport.getX();
-        float panY = mainSketch.viewport.getY();
+        float scale = mainSketch.getViewport().getScale();
+        float panX = mainSketch.getViewport().getX();
+        float panY = mainSketch.getViewport().getY();
         float unit = mainSketch.UNIT * scale;
 
         // Find the grid coordinates of the dot centerpoint
@@ -678,9 +679,9 @@ public class Component {
 
     public void drawBezier(int start, int control, int end) {
 
-        float scale = mainSketch.viewport.scale;
-        float panX = mainSketch.viewport.getX();
-        float panY = mainSketch.viewport.getY();
+        float scale = mainSketch.getViewport().getScale();
+        float panX = mainSketch.getViewport().getX();
+        float panY = mainSketch.getViewport().getY();
         float unit = mainSketch.UNIT * scale;
 
         // Find the grid coordinates of the dot start, control and end
@@ -706,9 +707,9 @@ public class Component {
 
     public void drawBusUnderpass(Coord c, char orientation, boolean energized) {
 
-        float scale = mainSketch.viewport.scale;
-        float panX = mainSketch.viewport.getX();
-        float panY = mainSketch.viewport.getY();
+        float scale = mainSketch.getViewport().getScale();
+        float panX = mainSketch.getViewport().getX();
+        float panY = mainSketch.getViewport().getY();
         float unit = mainSketch.UNIT * scale;
 
         // Calculate the x,y coords of upper left corner of erasure box

@@ -1,5 +1,6 @@
-package com.company;
+package com.company.components;
 
+import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
@@ -33,9 +34,9 @@ public class Substation {
 
     public void renderSubstation() {
 
-        float xPos = mainSketch.viewport.getX();
-        float yPos = mainSketch.viewport.getY();
-        float scale = mainSketch.viewport.getScale();
+        float xPos = mainSketch.getViewport().getX();
+        float yPos = mainSketch.getViewport().getY();
+        float scale = mainSketch.getViewport().getScale();
         float unit = mainSketch.UNIT;
 
         int drawX = calcPos(xCoord, scale, xPos);

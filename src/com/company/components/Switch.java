@@ -1,8 +1,8 @@
-package com.company;
+package com.company.components;
 
+import com.company.main.Main;
 import processing.core.PConstants;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 
 public class Switch extends Component {

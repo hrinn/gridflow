@@ -61,11 +61,8 @@ public class Main extends PApplet {
     public ArrayList<CloneBreaker12kV> clones;
     public ArrayList<Breaker12kVTandem> tandems;
     public ArrayList<Node> nodes;
-    public ArrayList<ConnectedLoad> connectedLoads;
     public ArrayList<Association> associations;
     public ArrayList<Substation> substations;
-    public ArrayList<GridComponent> gridComponents;
-    public ArrayList<GridPowerSource> gridPowerSources;
 
     boolean energized = true;
     public boolean canPan = true;
@@ -139,8 +136,7 @@ public class Main extends PApplet {
         // Draw grey hints for Components with no static labels drawn
         for (Component c : this.components) {
 
-            if (c instanceof Bus || c instanceof Cutout || c instanceof Jumper || c instanceof Meter
-            || c instanceof GridComponent) {
+            if (c instanceof Bus || c instanceof Cutout || c instanceof Jumper || c instanceof Meter) {
                 if (c.isOnComponent(viewport.scale, viewport.getX(), viewport.getY(), mouseX, mouseY)) {
                     c.renderHint(mouseX, mouseY);
                 }
@@ -195,11 +191,8 @@ public class Main extends PApplet {
         mainSketch.clones = new ArrayList<>();
         mainSketch.tandems = new ArrayList<>();
         mainSketch.nodes = new ArrayList<>();
-        mainSketch.connectedLoads = new ArrayList<>();
         mainSketch.associations = new ArrayList<>();
         mainSketch.substations = new ArrayList<>();
-        mainSketch.gridComponents = new ArrayList<>();
-        mainSketch.gridPowerSources = new ArrayList<>();
 
         try {
             readComponentFile(mainSketch, "lib/MtJediGalaxyGrid.TXT"); // Was "ModelAll_TEST_THIS_FILE.TXT"
@@ -302,50 +295,44 @@ public class Main extends PApplet {
             }
         }
 
-        // Build the GridPowerSource only if the breaker is found
-        if(breakerFound) {
-            GridPowerSource gps = new GridPowerSource(id, breaker, color, voltage);
-            mainSketch.gridPowerSources.add(gps);
-        }
-
     } // END buildGridPowerSource()
 
-    public static void buildGridLine(Main mainSketch, String[] values) {
-
-
-        // I want:  1-NODE, 11456, GRIDLINE_A3-2, GRIDLINE,  GRIDLINE_A3-1, OUT, R, 3, 12KV_DIAGRAM
-        //            0       1          2            3           4          5   6  7      8
-
-        int id = Integer.parseInt(values[1]);
-        String name = values[2].toUpperCase();
-        String inNodeConnectedToComponent = values[4].toUpperCase();
-        String inNodeConnectedToNode = values[5].toUpperCase();
-        char orientation = values[6].charAt(0);
-        int length = Integer.parseInt(values[7]);
-        String assoc = values[8];
-
-        // Find the component this component is connected to
-        Component connectedComp = new Component();
-        boolean found = false;
-        for (Component c : mainSketch.components) {
-            if (c.getName().equals(inNodeConnectedToComponent)) {
-                connectedComp = c;
-                found = true;
-                break;
-            }
-        } // For each component already in the ArrayList
-
-        if(found) {
-            GridLine gridLine = new GridLine(mainSketch, id, name, "GRIDLINE", orientation, 0, connectedComp, inNodeConnectedToNode,
-                    length, name, "CC", 'H', 'R', "12KV_DIAGRAM");
-            mainSketch.components.add(gridLine);
-            mainSketch.gridComponents.add(gridLine);
-        } else {
-            System.out.println("Connected component for " + name + " not found.");
-            return;
-        }
-
-    } // END buildGridLine
+//    public static void buildGridLine(Main mainSketch, String[] values) {
+//
+//
+//        // I want:  1-NODE, 11456, GRIDLINE_A3-2, GRIDLINE,  GRIDLINE_A3-1, OUT, R, 3, 12KV_DIAGRAM
+//        //            0       1          2            3           4          5   6  7      8
+//
+//        int id = Integer.parseInt(values[1]);
+//        String name = values[2].toUpperCase();
+//        String inNodeConnectedToComponent = values[4].toUpperCase();
+//        String inNodeConnectedToNode = values[5].toUpperCase();
+//        char orientation = values[6].charAt(0);
+//        int length = Integer.parseInt(values[7]);
+//        String assoc = values[8];
+//
+//        // Find the component this component is connected to
+//        Component connectedComp = new Component();
+//        boolean found = false;
+//        for (Component c : mainSketch.components) {
+//            if (c.getName().equals(inNodeConnectedToComponent)) {
+//                connectedComp = c;
+//                found = true;
+//                break;
+//            }
+//        } // For each component already in the ArrayList
+//
+//        if(found) {
+//            GridLine gridLine = new GridLine(mainSketch, id, name, "GRIDLINE", orientation, 0, connectedComp, inNodeConnectedToNode,
+//                    length, name, "CC", 'H', 'R', "12KV_DIAGRAM");
+//            mainSketch.components.add(gridLine);
+//            mainSketch.gridComponents.add(gridLine);
+//        } else {
+//            System.out.println("Connected component for " + name + " not found.");
+//            return;
+//        }
+//
+//    } // END buildGridLine
 
     public static void buildSubstation(Main mainSketch, String[] values) {
 
@@ -584,9 +571,9 @@ public class Main extends PApplet {
         String cutoutDirection = "NORMAL";
 
         if(values[3].toUpperCase().equals("GRIDLINE")) {
-            buildGridLine(mainSketch, values);
+            //buildGridLine(mainSketch, values);
         } else if(values[3].toUpperCase().equals("GRIDBREAKER")) {
-            buildGridLine(mainSketch, values);
+            //buildGridLine(mainSketch, values);
         } else if(values[3].toUpperCase().equals("LOAD")) {
             buildConnectedLoad(mainSketch, values);
         } else if(!values[3].toUpperCase().equals("LOAD")) {
@@ -795,10 +782,6 @@ public class Main extends PApplet {
             }
         } // For each component already in the ArrayList
 
-        ConnectedLoad load = new ConnectedLoad(mainSketch, id, name, type, orientation, normalState, connectedComp, inNodeConnectedToNode, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith, labels);
-        mainSketch.components.add(load);
-        mainSketch.connectedLoads.add(load);
-
     } // END build connected load
 
     public void mousePressed() {
@@ -848,21 +831,6 @@ public class Main extends PApplet {
     public void keyPressed() {
 
         System.out.println("Inside keyPressed.  Key entered was: " + key);
-
-        // REMINDER: Get rid of these hard-coded values
-
-// [S] Sw Station:  scale: 0.782   XPOS:   500   YPOS:  -180
-// [A] SUB A:       scale: 1.167   XPOS:   270   YPOS: -1015
-// [B] SUB B:       scale: 0.870   XPOS:  -755   YPOS:   300
-// [C] SUB C:       scale: 0.999   XPOS:  1567   YPOS:  -665
-// [D] SUB D:       scale: 0.874   XPOS:  1700   YPOS:   250
-// [K] SUB K:       scale: 0.778   XPOS: -1957   YPOS: -1518
-// [M] SWSTA M:     scale: 0.940   XPOS: -1102   YPOS: -2387
-// [N] SUB N:       scale: 0.781   XPOS:  2093   YPOS: -1423
-// [V] SVPP:        scale: 1.162   XPOS:   268   YPOS: -2339
-// [Z] Whole Base:  scale: 0.199   XPOS:   238   YPOS:  -987
-// [1] 12 kv North: scale: 2.200   XPOS: -9389   YPOS:    89
-// [2] Circuits:    scale: 0.700   XPOS: -4222   YPOS: -3095
 
         String assoc = "NONE";
 
@@ -922,7 +890,6 @@ public class Main extends PApplet {
                 break;
             } // END if association found
         } // END for each association stored
-
     } // END keyPressed
 
     public static void testRun(Main mainSketch) {

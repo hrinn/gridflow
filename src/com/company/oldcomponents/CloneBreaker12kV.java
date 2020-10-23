@@ -1,5 +1,6 @@
-package com.company.components;
+package com.company.oldcomponents;
 
+import com.company.geometry.Point;
 import com.company.main.Main;
 import processing.core.PConstants;
 
@@ -7,14 +8,14 @@ import java.util.ArrayList;
 
 public class CloneBreaker12kV extends Breaker12kV {
 
-    private Component clone;
+    private OldComponent clone;
     private String cloneType;
     private String color;
     private String substationAttach;
     private int substationAttachNode;
 
 
-    public CloneBreaker12kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith, Component clone,
+    public CloneBreaker12kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith, OldComponent clone,
                             String cloneType, String color, String substationAttach, int substationAttachNode) {
         super(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         this.clone = clone;
@@ -29,7 +30,7 @@ public class CloneBreaker12kV extends Breaker12kV {
 
     } // END Constructor #0
 
-    public Component getClone() {
+    public OldComponent getClone() {
         return clone;
     }
 
@@ -97,8 +98,8 @@ public class CloneBreaker12kV extends Breaker12kV {
 
         float unit = mainSketch.UNIT * scale;
 
-        int x = calcPos((int) (getInNode().getCoord().getxPos()), scale, panX);
-        int y = calcPos((int) (getInNode().getCoord().getyPos()), scale, panY);
+        int x = calcPos((int) (getInNode().getCoord().getX()), scale, panX);
+        int y = calcPos((int) (getInNode().getCoord().getY()), scale, panY);
 
         // Draw lines depending on cloneType
         if(!cloneType.equals("12KV_DIAGRAM")) {
@@ -194,75 +195,68 @@ public class CloneBreaker12kV extends Breaker12kV {
 
     private void calcCloneDrawingCoords() {
 
-        ArrayList<Coord> coords = new ArrayList<>();
+        ArrayList<Point> points = new ArrayList<>();
 
         // Set the inNode, by first looking for the substation it is attached to
         boolean foundSub = false;
-        Coord inNodeCoord = null;
+        Point inNodePoint = null;
         Node inNodeClone = clone.getInNode();
         Node outNodeClone = clone.getOutNode();
-        for(Substation sub : mainSketch.substations) {
-            if(this.substationAttach.equals(sub.getName())) {
-                foundSub = true;
-                inNodeCoord = sub.getSubstationNodes().get(this.substationAttachNode).getCoord();
-                break;
-            } // END if substation is found
-        } // END for each substation
 
         // Set the inNode
-        this.setInNode(new Node(inNodeCoord, inNodeClone.isEnergized()));
+        this.setInNode(new Node(inNodePoint, inNodeClone.isEnergized()));
         // Set the outNode coordinate
         int length = 2;
-        Coord newOutNode = new Coord(inNodeCoord.getxPos(), inNodeCoord.getyPos() + length);
+        Point newOutNode = new Point(inNodePoint.getX(), inNodePoint.getY() + length);
         switch (getOrientation()) {
             case 'U' :
-                newOutNode = new Coord(inNodeCoord.getxPos(), inNodeCoord.getyPos() - length);
+                newOutNode = new Point(inNodePoint.getX(), inNodePoint.getY() - length);
                 break;
             case 'L' :
-                newOutNode = new Coord(inNodeCoord.getxPos() - length, inNodeCoord.getyPos());
+                newOutNode = new Point(inNodePoint.getX() - length, inNodePoint.getY());
                 break;
             case 'R' :
-                newOutNode = new Coord(inNodeCoord.getxPos() + length, inNodeCoord.getyPos());
+                newOutNode = new Point(inNodePoint.getX() + length, inNodePoint.getY());
                 break;
             default :
                 break;
         } // END switch(orientation)
         this.setOutNode(new Node(newOutNode, outNodeClone.isEnergized()));
 
-        float x = this.getInNode().getCoord().getxPos();
-        float y = this.getInNode().getCoord().getyPos();
+        float x = this.getInNode().getCoord().getX();
+        float y = this.getInNode().getCoord().getY();
 
         // This step puts the inNode in the ArrayList as element #0.  This is important!
-        coords.add(this.getInNode().getCoord());
+        points.add(this.getInNode().getCoord());
 
         // This next step puts the outNode in the ArrayList as element #1.  This is also important!
-        coords.add(this.getOutNode().getCoord());
+        points.add(this.getOutNode().getCoord());
 
         // These next steps define specific points
-        Coord coord;
-        coord = new Coord(x + 0.75f, y + 1.0f);     // Element #2 - Right text label anchor point
-        coords.add(coord);
-        coord = new Coord(x - 0.75f, y + 1.0f);     // Element #3 - Left text label anchor
-        coords.add(coord);
-        coord = new Coord(x - 0.25f, y);                  // Element #4 - Top left click area
-        coords.add(coord);
-        coord = new Coord(x + 0.25f, y + 2.0f);     // Element #5 - Bottom right click area
-        coords.add(coord);
+        Point point;
+        point = new Point(x + 0.75f, y + 1.0f);     // Element #2 - Right text label anchor point
+        points.add(point);
+        point = new Point(x - 0.75f, y + 1.0f);     // Element #3 - Left text label anchor
+        points.add(point);
+        point = new Point(x - 0.25f, y);                  // Element #4 - Top left click area
+        points.add(point);
+        point = new Point(x + 0.25f, y + 2.0f);     // Element #5 - Bottom right click area
+        points.add(point);
 
         // This next step determines if the coordinates have to be rotated, rotates them, and
         // then executes the setDs() method for this component.
         switch (this.getOrientation()) {
             case 'U':
-                setDs(rotateDwgCoords(coords, 180));
+                setDs(rotateDwgCoords(points, 180));
                 break;
             case 'L':
-                setDs(rotateDwgCoords(coords, 90));
+                setDs(rotateDwgCoords(points, 90));
                 break;
             case 'R':
-                setDs(rotateDwgCoords(coords, 270));
+                setDs(rotateDwgCoords(points, 270));
                 break;
             default:
-                setDs(coords);
+                setDs(points);
                 break;
         } // END switch (orientation)
 

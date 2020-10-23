@@ -1,11 +1,12 @@
-package com.company.components;
+package com.company.oldcomponents;
 
+import com.company.geometry.Point;
 import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-public class Turbine extends Component {
+public class Turbine extends OldComponent {
 
     public Turbine(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
@@ -39,8 +40,8 @@ public class Turbine extends Component {
         float strokeWt = mainSketch.STROKE_THIN * scale;
         float unit = mainSketch.UNIT * scale;
 
-        int x = calcPos((int) (getInNode().getCoord().getxPos()), scale, panX);
-        int y = calcPos((int) (getInNode().getCoord().getyPos()), scale, panY);
+        int x = calcPos((int) (getInNode().getCoord().getX()), scale, panX);
+        int y = calcPos((int) (getInNode().getCoord().getY()), scale, panY);
 
         // Set drawing parameters
         mainSketch.stroke(0);  // black
@@ -68,45 +69,45 @@ public class Turbine extends Component {
     // Establishes all of the grid coordinates needed to draw this object at the correct orientation
     public void calcDrawingCoords() {
 
-        ArrayList<Coord> coords = new ArrayList<>();
-        float x = this.getInNode().getCoord().getxPos();
-        float y = this.getInNode().getCoord().getyPos();
+        ArrayList<Point> points = new ArrayList<>();
+        float x = this.getInNode().getCoord().getX();
+        float y = this.getInNode().getCoord().getY();
 
         // This step puts the inNode in the ArrayList as element #0.  This is important!
-        coords.add(this.getInNode().getCoord());
+        points.add(this.getInNode().getCoord());
 
         // This next step puts the outNode in the ArrayList as element #1.  This is also important!
-        coords.add(this.getOutNode().getCoord());
+        points.add(this.getOutNode().getCoord());
 
         // These next steps define specific points
-        Coord coord;
-        coord = new Coord(x, y + 1f); // Element #2 - bottom of top vertical line
-        coords.add(coord);
-        coord = new Coord(x, y + 3f); // Element #3 - top of bottom vertical line
-        coords.add(coord);
-        coord = new Coord(x, y + 2f); // Element #4 - circle centerpoint
-        coords.add(coord);
-        coord = new Coord(x - 0.707f, y + 1.293f); // Element #5 - TL of click coordinates
-        coords.add(coord);
-        coord = new Coord(x + 0.707f, y + 2.707f); // Element #6 - BR of click coordinates
-        coords.add(coord);
-        coord = new Coord(x, y + 1.75f); // Element #7 - Text anchor
-        coords.add(coord);
+        Point point;
+        point = new Point(x, y + 1f); // Element #2 - bottom of top vertical line
+        points.add(point);
+        point = new Point(x, y + 3f); // Element #3 - top of bottom vertical line
+        points.add(point);
+        point = new Point(x, y + 2f); // Element #4 - circle centerpoint
+        points.add(point);
+        point = new Point(x - 0.707f, y + 1.293f); // Element #5 - TL of click coordinates
+        points.add(point);
+        point = new Point(x + 0.707f, y + 2.707f); // Element #6 - BR of click coordinates
+        points.add(point);
+        point = new Point(x, y + 1.75f); // Element #7 - Text anchor
+        points.add(point);
 
         // This next step determines if the coordinates have to be rotated, rotates them, and
         // then executes the setDs() method for this component.
         switch (this.getOrientation()) {
             case 'U':
-                setDs(rotateDwgCoords(coords, 180));
+                setDs(rotateDwgCoords(points, 180));
                 break;
             case 'L':
-                setDs(rotateDwgCoords(coords, 90));
+                setDs(rotateDwgCoords(points, 90));
                 break;
             case 'R':
-                setDs(rotateDwgCoords(coords, 270));
+                setDs(rotateDwgCoords(points, 270));
                 break;
             default:
-                setDs(coords);
+                setDs(points);
                 break;
         } // END switch (orientation)
 

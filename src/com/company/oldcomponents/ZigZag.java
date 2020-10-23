@@ -1,14 +1,15 @@
-package com.company.components;
+package com.company.oldcomponents;
 
+import com.company.geometry.Point;
 import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-public class ZigZag extends Component {
+public class ZigZag extends OldComponent {
 
 
-    public ZigZag(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public ZigZag(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedTo, inout, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
         setNormalState(0);  // ensures "closed"
@@ -46,8 +47,8 @@ public class ZigZag extends Component {
         float strokeWt = mainSketch.STROKE_THIN * scale;
         float unit = mainSketch.UNIT * scale;
 
-        int x = calcPos((int) (getInNode().getCoord().getxPos()), scale, panX);
-        int y = calcPos((int) (getInNode().getCoord().getyPos()), scale, panY);
+        int x = calcPos((int) (getInNode().getCoord().getX()), scale, panX);
+        int y = calcPos((int) (getInNode().getCoord().getY()), scale, panY);
 
         // Set drawing parameters
         mainSketch.stroke(0);  // black
@@ -70,50 +71,50 @@ public class ZigZag extends Component {
 
     private void calcDrawingCoords() {
 
-        ArrayList<Coord> coords = new ArrayList<>();
-        float x = this.getInNode().getCoord().getxPos();
-        float y = this.getInNode().getCoord().getyPos();
+        ArrayList<Point> points = new ArrayList<>();
+        float x = this.getInNode().getCoord().getX();
+        float y = this.getInNode().getCoord().getY();
 
         // This step puts the inNode in the ArrayList as element #0.  This is important!
-        coords.add(this.getInNode().getCoord());
+        points.add(this.getInNode().getCoord());
 
         // This next step puts the outNode in the ArrayList as element #1.  This is also important!
-        coords.add(this.getOutNode().getCoord());
+        points.add(this.getOutNode().getCoord());
 
         // These next steps put coordinates into the array for clicking (mouse-hovering)
-        Coord coord = new Coord(x + 0.174f, y + 2.985f); // Element #2 - inside elbow A
-        coords.add(coord);
-        coord = new Coord(x - 0.940f, y + 1.658f); // Element #3 - inside elbow B
-        coords.add(coord);
-        coord = new Coord(x + 0.766f, y + 1.357f); // Element #4 - inside elbow C
-        coords.add(coord);
-        coord = new Coord(x - 0.811f, y + 3.159f); // Element #5 - outside elbow A
-        coords.add(coord);
-        coord = new Coord(x - 0.598f, y + 0.718f); // Element #6 - outside elbow B
-        coords.add(coord);
-        coord = new Coord(x + 1.409f, y + 2.123f); // Element #7 - outside elbow C
-        coords.add(coord);
-        coord = new Coord(x, y + 4f); // Element #8 - text anchor
-        coords.add(coord);
-        coord = new Coord(x - 1f, y + 1f); // Element #9 - TL click coordinate
-        coords.add(coord);
-        coord = new Coord(x + 1f, y + 3f); // Element #10 - BR click coordinate
-        coords.add(coord);
+        Point point = new Point(x + 0.174f, y + 2.985f); // Element #2 - inside elbow A
+        points.add(point);
+        point = new Point(x - 0.940f, y + 1.658f); // Element #3 - inside elbow B
+        points.add(point);
+        point = new Point(x + 0.766f, y + 1.357f); // Element #4 - inside elbow C
+        points.add(point);
+        point = new Point(x - 0.811f, y + 3.159f); // Element #5 - outside elbow A
+        points.add(point);
+        point = new Point(x - 0.598f, y + 0.718f); // Element #6 - outside elbow B
+        points.add(point);
+        point = new Point(x + 1.409f, y + 2.123f); // Element #7 - outside elbow C
+        points.add(point);
+        point = new Point(x, y + 4f); // Element #8 - text anchor
+        points.add(point);
+        point = new Point(x - 1f, y + 1f); // Element #9 - TL click coordinate
+        points.add(point);
+        point = new Point(x + 1f, y + 3f); // Element #10 - BR click coordinate
+        points.add(point);
 
         // This next step determines if the coordinates have to be rotated, rotates them, and
         // then executes the setDs() method for this component.
         switch (this.getOrientation()) {
             case 'U':
-                setDs(rotateDwgCoords(coords, 180));
+                setDs(rotateDwgCoords(points, 180));
                 break;
             case 'L':
-                setDs(rotateDwgCoords(coords, 90));
+                setDs(rotateDwgCoords(points, 90));
                 break;
             case 'R':
-                setDs(rotateDwgCoords(coords, 270));
+                setDs(rotateDwgCoords(points, 270));
                 break;
             default:
-                setDs(coords);
+                setDs(points);
                 break;
         } // END switch (orientation)
 

@@ -1,23 +1,24 @@
-package com.company.components;
+package com.company.oldcomponents;
 
+import com.company.geometry.Point;
 import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-public class Breaker12kV extends Component {
+public class Breaker12kV extends OldComponent {
 
     public Breaker12kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
     calcDrawingCoords();
     } // END Constructor #0
 
-    public Breaker12kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Breaker12kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedTo, inout, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     } // END Constructor #1
 
-    public Breaker12kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedToIn, String inoutIn, Component connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Breaker12kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedToIn, String inoutIn, OldComponent connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedToIn, inoutIn, connectedToOut, inoutOut, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     } // END Constructor #2
@@ -64,8 +65,8 @@ public class Breaker12kV extends Component {
         float strokeWt = mainSketch.STROKE_THIN * scale;
         float unit = mainSketch.UNIT * scale;
 
-        int x = calcPos((int) (getInNode().getCoord().getxPos()), scale, panX);
-        int y = calcPos((int) (getInNode().getCoord().getyPos()), scale, panY);
+        int x = calcPos((int) (getInNode().getCoord().getX()), scale, panX);
+        int y = calcPos((int) (getInNode().getCoord().getY()), scale, panY);
 
         // Set drawing parameters
         mainSketch.stroke(0);  // black
@@ -120,75 +121,75 @@ public class Breaker12kV extends Component {
     } // END renderLines()
 
     private void calcDrawingCoords() {
-        ArrayList<Coord> coords = new ArrayList<>();
-        float x = this.getInNode().getCoord().getxPos();
-        float y = this.getInNode().getCoord().getyPos();
+        ArrayList<Point> points = new ArrayList<>();
+        float x = this.getInNode().getCoord().getX();
+        float y = this.getInNode().getCoord().getY();
 
         // This step puts the inNode in the ArrayList as element #0.  This is important!
-        coords.add(this.getInNode().getCoord());
+        points.add(this.getInNode().getCoord());
 
         // This next step puts the outNode in the ArrayList as element #1.  This is also important!
-        coords.add(this.getOutNode().getCoord());
+        points.add(this.getOutNode().getCoord());
 
         // These next steps define specific points
-        Coord coord;
-        coord = new Coord(x, y + 1.5f);              // Element #2 - bottom of top vertical line
-        coords.add(coord);
-        coord = new Coord(x, y + 2.5f);              // Element #3 - top of bottom vertical line
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 1.5f); // Element #4 - top left corner of box
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 2.5f); // Element #5 - bottom left corner of box
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 1.5f); // Element #6 - top right corner of box
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 2.5f); // Element #7 - bottom right corner of box
-        coords.add(coord);
-        coord = new Coord(x, y + 2f);                // Element #8 - center-point for N/C, N/O text
-        coords.add(coord);
-        coord = new Coord(x + 0.75f, y + 2f);  // Element #9 - Right text label anchor point
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 1f);   // Element #10 - top chevron TL outer point
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 3f);   // Element #11 - bot chevron BL outer point
-        coords.add(coord);
-        coord = new Coord(x, y + 0.75f);             // Element #12 - top chevron TC point
-        coords.add(coord);
-        coord = new Coord(x, y + 3.25f);             // Element #13 - bot chevron BC point
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 1f);   // Element #14 - top chevron TR outer point
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 3f);   // Element #15 - bot chevron BR outer point
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 1.25f);// Element #16 - top chevron BL outer point
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 2.75f);// Element #17 - bot chevron TL outer point
-        coords.add(coord);
-        coord = new Coord(x, y + 1f);                // Element #18 - top chevron BC point
-        coords.add(coord);
-        coord = new Coord(x, y + 3f);                // Element #19 - bot chevron TC point
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 1.25f);// Element #20 - top chevron BR outer point
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 2.75f);// Element #21 - bot chevron TR outer point
-        coords.add(coord);
-        coord = new Coord(x - 0.75f, y + 2f);  // Element #22 - Left text label anchor point
-        coords.add(coord);
+        Point point;
+        point = new Point(x, y + 1.5f);              // Element #2 - bottom of top vertical line
+        points.add(point);
+        point = new Point(x, y + 2.5f);              // Element #3 - top of bottom vertical line
+        points.add(point);
+        point = new Point(x - 0.5f, y + 1.5f); // Element #4 - top left corner of box
+        points.add(point);
+        point = new Point(x - 0.5f, y + 2.5f); // Element #5 - bottom left corner of box
+        points.add(point);
+        point = new Point(x + 0.5f, y + 1.5f); // Element #6 - top right corner of box
+        points.add(point);
+        point = new Point(x + 0.5f, y + 2.5f); // Element #7 - bottom right corner of box
+        points.add(point);
+        point = new Point(x, y + 2f);                // Element #8 - center-point for N/C, N/O text
+        points.add(point);
+        point = new Point(x + 0.75f, y + 2f);  // Element #9 - Right text label anchor point
+        points.add(point);
+        point = new Point(x - 0.5f, y + 1f);   // Element #10 - top chevron TL outer point
+        points.add(point);
+        point = new Point(x - 0.5f, y + 3f);   // Element #11 - bot chevron BL outer point
+        points.add(point);
+        point = new Point(x, y + 0.75f);             // Element #12 - top chevron TC point
+        points.add(point);
+        point = new Point(x, y + 3.25f);             // Element #13 - bot chevron BC point
+        points.add(point);
+        point = new Point(x + 0.5f, y + 1f);   // Element #14 - top chevron TR outer point
+        points.add(point);
+        point = new Point(x + 0.5f, y + 3f);   // Element #15 - bot chevron BR outer point
+        points.add(point);
+        point = new Point(x - 0.5f, y + 1.25f);// Element #16 - top chevron BL outer point
+        points.add(point);
+        point = new Point(x - 0.5f, y + 2.75f);// Element #17 - bot chevron TL outer point
+        points.add(point);
+        point = new Point(x, y + 1f);                // Element #18 - top chevron BC point
+        points.add(point);
+        point = new Point(x, y + 3f);                // Element #19 - bot chevron TC point
+        points.add(point);
+        point = new Point(x + 0.5f, y + 1.25f);// Element #20 - top chevron BR outer point
+        points.add(point);
+        point = new Point(x + 0.5f, y + 2.75f);// Element #21 - bot chevron TR outer point
+        points.add(point);
+        point = new Point(x - 0.75f, y + 2f);  // Element #22 - Left text label anchor point
+        points.add(point);
 
         // This next step determines if the coordinates have to be rotated, rotates them, and
         // then executes the setDs() method for this component.
         switch (this.getOrientation()) {
             case 'U':
-                setDs(rotateDwgCoords(coords, 180));
+                setDs(rotateDwgCoords(points, 180));
                 break;
             case 'L':
-                setDs(rotateDwgCoords(coords, 90));
+                setDs(rotateDwgCoords(points, 90));
                 break;
             case 'R':
-                setDs(rotateDwgCoords(coords, 270));
+                setDs(rotateDwgCoords(points, 270));
                 break;
             default:
-                setDs(coords);
+                setDs(points);
                 break;
         } // END switch (orientation)
 

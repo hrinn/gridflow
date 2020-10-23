@@ -1,6 +1,6 @@
 package com.company.main;
 
-import com.company.components.*;
+import com.company.oldcomponents.*;
 import processing.core.PConstants;
 
 import java.io.File;
@@ -34,7 +34,7 @@ public class Click {
 
     // writeFile writes to positions.txt every time a component is clicked
     // it looks for the target line by looking at the component number and changes its current state
-    public static void writeFile(Component c, String fName, int changedstate, int newstate) {
+    public static void writeFile(OldComponent c, String fName, int changedstate, int newstate) {
         File file = new File(fName);
 //        String target = c.getId() + " " + c.getType() + " " + c.getX() + " " + c.getY() + " " + c.getOrientation() + " " + c.getName() + " " + c.getNormalState() + " " + changedstate;
 //        String replacement = c.getId() + " " + c.getType() + " " + c.getX() + " " + c.getY() + " " + c.getOrientation() + " " + c.getName() + " " + c.getNormalState() + " " + newstate;
@@ -66,14 +66,14 @@ public class Click {
         // TODO:  WRITE CODE FOR MENU ITEMS!!!
         // If not on a menu item, check if mouse is on a clickable component
 
-        for (Component c : mainSketch.components) {
+        for (OldComponent c : mainSketch.oldComponents) {
 
             // Is this even a clickable object?
             if (c.isCanOpen()) {
                 // If so, is the mouse on this particular component?
                 if (c.isOnComponent(scale, panX, panY, mouseX, mouseY)) {
 
-                    resetEnergy(mainSketch.components);
+                    resetEnergy(mainSketch.oldComponents);
                     // If so, is the mouse button the LEFT mouse?
                     if (mouseButton == PConstants.LEFT) {
                         if (c.getCurrentState() == 0) {
@@ -168,24 +168,24 @@ public class Click {
         return '\0';
     } // END mousePress
 
-    public void updateClones(Main mainSketch, Component clickedComponent) {
+    public void updateClones(Main mainSketch, OldComponent clickedOldComponent) {
 
         boolean cloneUpdated = false;
 
-        ArrayList<Component> clonesFound = new ArrayList<>();
+        ArrayList<OldComponent> clonesFound = new ArrayList<>();
         String masterComponentName = "";
 
         // Establish the master component name
-        if(clickedComponent instanceof CloneBreaker12kV) {
-            Component master = ((CloneBreaker12kV) clickedComponent).getClone();
+        if(clickedOldComponent instanceof CloneBreaker12kV) {
+            OldComponent master = ((CloneBreaker12kV) clickedOldComponent).getClone();
             masterComponentName = master.getName();
         }
-        else if(clickedComponent instanceof Breaker12kV) {
-            masterComponentName = clickedComponent.getName();
+        else if(clickedOldComponent instanceof Breaker12kV) {
+            masterComponentName = clickedOldComponent.getName();
         }
 
         // Search through all components to find any clones or masters and add them to the arrayList
-        for(Component c : mainSketch.components) {
+        for(OldComponent c : mainSketch.oldComponents) {
             if(c.getName().equals(masterComponentName)) {
                 clonesFound.add(c);
                 continue;
@@ -198,20 +198,20 @@ public class Click {
         } // END for each Component
 
         // Assign currentState to all masters/clones in the ArrayList
-        for(Component c: clonesFound) {
-            c.setCurrentState(clickedComponent.getCurrentState());
+        for(OldComponent c: clonesFound) {
+            c.setCurrentState(clickedOldComponent.getCurrentState());
             cloneUpdated = true;
         }
 
     } // END updateClones
 
     // Resets the energy state for all Nodes except PowerSource inNodes
-    public void resetEnergy(ArrayList<Component> components) {
+    public void resetEnergy(ArrayList<OldComponent> oldComponents) {
 
 
         // Set all nodes to denergized except Power Sources
-        for (Component c : components) {
-            if (!(c instanceof PowerSource)) {
+        for (OldComponent c : oldComponents) {
+            if (!(c instanceof OldPowerSource)) {
                 c.getInNode().setEnergized(false);
                 c.getOutNode().setEnergized(false);
             } else {
@@ -237,7 +237,7 @@ public class Click {
             int changeCount = 0;
             iterationCounter++;
             // First address primary grid components
-            for (Component c : mainSketch.components) {
+            for (OldComponent c : mainSketch.oldComponents) {
                 boolean previousInNode = c.getInNode().isEnergized();
                 boolean previousOutNode = c.getOutNode().isEnergized();
 

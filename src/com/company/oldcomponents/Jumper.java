@@ -1,11 +1,12 @@
-package com.company.components;
+package com.company.oldcomponents;
 
+import com.company.geometry.Point;
 import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-public class Jumper extends Component {
+public class Jumper extends OldComponent {
 
     // TODO:  create upfeed option
 
@@ -14,12 +15,12 @@ public class Jumper extends Component {
         calcDrawingCoords();
     } // END Constructor #0
 
-    public Jumper(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Jumper(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedTo, inout, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     } // END Constructor #1
 
-    public Jumper(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedToIn, String inoutIn, Component connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Jumper(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedToIn, String inoutIn, OldComponent connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedToIn, inoutIn, connectedToOut, inoutOut, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     } // END Constructor #2
@@ -59,8 +60,8 @@ public class Jumper extends Component {
         float strokeWt = mainSketch.STROKE_THIN * scale;
         float unit = mainSketch.UNIT * scale;
 
-        int x = calcPos((int) (getInNode().getCoord().getxPos()), scale, panX);
-        int y = calcPos((int) (getInNode().getCoord().getyPos()), scale, panY);
+        int x = calcPos((int) (getInNode().getCoord().getX()), scale, panX);
+        int y = calcPos((int) (getInNode().getCoord().getY()), scale, panY);
 
 
         // Set drawing parameters
@@ -80,8 +81,8 @@ public class Jumper extends Component {
         else drawBezier(3, 5, 6);
 
         // Place yellow dot if locked out
-        float xCir = getDs().get(7).getxPos();
-        float yCir = getDs().get(7).getyPos();
+        float xCir = getDs().get(7).getX();
+        float yCir = getDs().get(7).getY();
         xCir = calcPos(xCir, scale, panX);
         yCir = calcPos(yCir, scale, panY);
         if(getCurrentState() == 2) {
@@ -104,49 +105,49 @@ public class Jumper extends Component {
 
     private void calcDrawingCoords() {
 
-        ArrayList<Coord> coords = new ArrayList<>();
-        float x = this.getInNode().getCoord().getxPos();
-        float y = this.getInNode().getCoord().getyPos();
+        ArrayList<Point> points = new ArrayList<>();
+        float x = this.getInNode().getCoord().getX();
+        float y = this.getInNode().getCoord().getY();
 
         // This step puts the inNode in the ArrayList as element #0.  This is important!
-        coords.add(this.getInNode().getCoord());
+        points.add(this.getInNode().getCoord());
 
         // This next step puts the outNode in the ArrayList as element #1.  This is also important!
-        coords.add(this.getOutNode().getCoord());
+        points.add(this.getOutNode().getCoord());
 
         // These next steps define specific points
-        Coord coord;
-        coord = new Coord(x, y + 1f); // Element #2 - bottom of top vertical line
-        coords.add(coord);
-        coord = new Coord(x, y + 2f); // Element #3 - top of bottom vertical line
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 1.5f); // Element #4 - control point for arc, closed
-        coords.add(coord);
-        coord = new Coord(x + 0.707f, y + 2f); // Element #5 - control point for arc, open
-        coords.add(coord);
-        coord = new Coord(x + 0.707f, y + 1.293f); // Element #6 - end point for arc, open
-        coords.add(coord);
-        coord = new Coord(x, y + 1.5f); // Element #7 - anchor point for text/label
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 1f); // Element #8 - top left mouse click area
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 2f); // Element #9 - bot right mouse click area
-        coords.add(coord);
+        Point point;
+        point = new Point(x, y + 1f); // Element #2 - bottom of top vertical line
+        points.add(point);
+        point = new Point(x, y + 2f); // Element #3 - top of bottom vertical line
+        points.add(point);
+        point = new Point(x + 0.5f, y + 1.5f); // Element #4 - control point for arc, closed
+        points.add(point);
+        point = new Point(x + 0.707f, y + 2f); // Element #5 - control point for arc, open
+        points.add(point);
+        point = new Point(x + 0.707f, y + 1.293f); // Element #6 - end point for arc, open
+        points.add(point);
+        point = new Point(x, y + 1.5f); // Element #7 - anchor point for text/label
+        points.add(point);
+        point = new Point(x - 0.5f, y + 1f); // Element #8 - top left mouse click area
+        points.add(point);
+        point = new Point(x + 0.5f, y + 2f); // Element #9 - bot right mouse click area
+        points.add(point);
 
         // This next step determines if the coordinates have to be rotated, rotates them, and
         // then executes the setDs() method for this component.
         switch (this.getOrientation()) {
             case 'U':
-                setDs(rotateDwgCoords(coords, 180));
+                setDs(rotateDwgCoords(points, 180));
                 break;
             case 'L':
-                setDs(rotateDwgCoords(coords, 90));
+                setDs(rotateDwgCoords(points, 90));
                 break;
             case 'R':
-                setDs(rotateDwgCoords(coords, 270));
+                setDs(rotateDwgCoords(points, 270));
                 break;
             default:
-                setDs(coords);
+                setDs(points);
                 break;
         } // END switch (orientation)
 

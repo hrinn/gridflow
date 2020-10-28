@@ -2,22 +2,11 @@ package com.company.components;
 
 import com.company.geometry.Point;
 
-public class Turbine extends Device implements IToggleable {
+import java.util.List;
 
-    private boolean closed;
+public class Turbine extends Source {
 
-    public Turbine(String name, Point position, Component inComponent, Component outComponent, boolean closed) {
-        super(name, position, inComponent, outComponent);
-        this.closed = closed;
-    }
-
-    @Override
-    public void toggle() {
-        closed = !closed;
-    }
-
-    @Override
-    public boolean getState() {
-        return closed;
+    public Turbine(String name, Point position, List<Component> outputs) {
+        super(name, position, outputs);
     }
 }

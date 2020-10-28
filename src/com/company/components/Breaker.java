@@ -2,7 +2,7 @@ package com.company.components;
 
 import com.company.geometry.Point;
 
-public class Breaker extends Device implements IToggleable, ICloneable {
+public class Breaker extends Device implements IToggleable, ICloneable, IPairable {
 
     private Voltage voltage;
     private boolean closed;

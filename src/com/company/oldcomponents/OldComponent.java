@@ -21,8 +21,8 @@ public class OldComponent {
     private int normalState; // 0 = closed
     private int currentState; // 0 = closed
     private boolean canOpen; // true = object can be clicked on to open or close; false = object is static
-    private Node inNode;
-    private Node outNode;
+    private OldNode inOldNode;
+    private OldNode outOldNode;
     private int length;
     private int width, height; // dimensions of click box area in grid units
     private Point clickMin, clickMax;  // Coordinates of clickable area in grid units
@@ -53,17 +53,17 @@ public class OldComponent {
         this.currentState = normalState;
         this.canOpen = calcCanOpen(type);
 
-        this.inNode = (new Node(new Point(xPos, yPos), true));
-        mainSketch.addNode(this.inNode);
+        this.inOldNode = (new OldNode(new Point(xPos, yPos), true));
+        mainSketch.addNode(this.inOldNode);
         if(this.compType.equals("BUS") || this.compType.equals("UG_PASS")) {
-            setOutNode(calcOutNode(this.inNode, this.orientation, length));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, length));
             this.length = length;
         } else if(this.compType.equals("12KVB") || this.compType.equals("TURB") || this.compType.equals("CLONE_12KVB")) {
-            setOutNode(calcOutNode(this.inNode, this.orientation, 4));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, 4));
         } else {
-            setOutNode(calcOutNode(this.inNode, this.orientation, mainSketch.STD_OBJ_LENGTH));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, mainSketch.STD_OBJ_LENGTH));
         }
-        mainSketch.addNode(this.outNode);
+        mainSketch.addNode(this.outOldNode);
         this.inComps = new ArrayList<>();
         this.outComps = new ArrayList<>();
         this.ds = new ArrayList<>();
@@ -90,28 +90,28 @@ public class OldComponent {
         this.currentState = normalState;
         this.canOpen = calcCanOpen(type);
         if(inout.equals("OUT")) {
-            this.inNode = connectedTo.getOutNode();
+            this.inOldNode = connectedTo.getOutNode();
         } else {
-            this.inNode = connectedTo.getInNode();
+            this.inOldNode = connectedTo.getInNode();
         }
 
         if(this.compType.equals("BUS") || this.compType.equals("UG_PASS")) {
-            setOutNode(calcOutNode(this.inNode, this.orientation, length));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, length));
             this.length = length;
         } else if(this.compType.equals("12KVB") || this.compType.equals("CLONE_12KVB")) {
-            setOutNode(calcOutNode(this.inNode, this.orientation, 4));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, 4));
         } else if(this.compType.equals("ZIGZAG")) {
-            setOutNode(calcOutNode(this.inNode, this.orientation, 2));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, 2));
         } else if(this.compType.equals("LOAD")) {
             this.setLength(1);
-            setOutNode(calcOutNode(this.inNode, this.orientation, this.getLength()));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, this.getLength()));
         } else if(this.compType.equals("GRIDLINE")){
             this.setLength(length);
-            setOutNode(calcOutNode(this.inNode, this.orientation, this.getLength()));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, this.getLength()));
         } else {
-            setOutNode(calcOutNode(this.inNode, this.orientation, mainSketch.STD_OBJ_LENGTH));
+            setOutNode(calcOutNode(this.inOldNode, this.orientation, mainSketch.STD_OBJ_LENGTH));
         }
-        mainSketch.addNode(this.outNode);
+        mainSketch.addNode(this.outOldNode);
         this.inComps = new ArrayList<>();
         this.outComps = new ArrayList<>();
         if(inout.equals("OUT")) {
@@ -146,17 +146,17 @@ public class OldComponent {
         this.canOpen = calcCanOpen(type);
 
         if(inoutIn.equals("OUT")) {
-            this.inNode = connectedToIn.getOutNode();
+            this.inOldNode = connectedToIn.getOutNode();
             connectedToIn.addOutComp(this);
         } else {
-            this.inNode = connectedToIn.getInNode();
+            this.inOldNode = connectedToIn.getInNode();
             connectedToIn.addInComp(this);
         }
         if(inoutOut.equals("OUT")) {
-            this.outNode = connectedToOut.getOutNode();
+            this.outOldNode = connectedToOut.getOutNode();
             connectedToOut.addOutComp(this);
         } else {
-            this.outNode = connectedToOut.getInNode();
+            this.outOldNode = connectedToOut.getInNode();
             connectedToOut.addInComp(this);
         }
         if(this.compType.equals("BUS")) this.length = calcBusLength();
@@ -194,17 +194,17 @@ public class OldComponent {
 
     } // END calcCanOpen
 
-    private Node calcOutNode(Node inNode, char orientation, int length) {
+    private OldNode calcOutNode(OldNode inOldNode, char orientation, int length) {
 
         switch (orientation) {
             case 'U' :
-                return new Node(new Point(inNode.getCoord().getX(), inNode.getCoord().getY() - length));
+                return new OldNode(new Point(inOldNode.getCoord().getX(), inOldNode.getCoord().getY() - length));
             case 'L' :
-                return new Node(new Point(inNode.getCoord().getX() - length, inNode.getCoord().getY()));
+                return new OldNode(new Point(inOldNode.getCoord().getX() - length, inOldNode.getCoord().getY()));
             case 'R' :
-                return new Node(new Point(inNode.getCoord().getX() + length, inNode.getCoord().getY()));
+                return new OldNode(new Point(inOldNode.getCoord().getX() + length, inOldNode.getCoord().getY()));
             default :
-                return new Node(new Point(inNode.getCoord().getX(), inNode.getCoord().getY() + length));
+                return new OldNode(new Point(inOldNode.getCoord().getX(), inOldNode.getCoord().getY() + length));
         } // END switch
 
     } // END calcOutNode
@@ -285,21 +285,21 @@ public class OldComponent {
         this.length = length;
     }
 
-    public void setInNode(Node inNode) {
-        this.inNode = inNode;
+    public void setInNode(OldNode inOldNode) {
+        this.inOldNode = inOldNode;
     }
 
-    public void setOutNode(Node outNode) {
+    public void setOutNode(OldNode outOldNode) {
 
-        this.outNode = outNode;
+        this.outOldNode = outOldNode;
     }
 
-    public Node getInNode() {
-        return inNode;
+    public OldNode getInNode() {
+        return inOldNode;
     }
 
-    public Node getOutNode() {
-        return outNode;
+    public OldNode getOutNode() {
+        return outOldNode;
     }
 
     public int getWidth() {

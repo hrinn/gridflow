@@ -6,14 +6,19 @@ import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-public class Meter extends OldComponent {
+public class OldZigZag extends OldComponent {
 
-    public Meter(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+
+    public OldZigZag(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedTo, inout, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
-        setCanOpen(false); // ensure not operable
+        setNormalState(0);  // ensures "closed"
+        setCurrentState(0); // ensures "closed"
+        setCanOpen(false);  // ensures logic will not allow this component to operate
+
     } // END Constructor #1
-    // DO NOT use with constructor #0 o #2!!
+    // DO NOT USE with Construtor #0 or #2
+
 
     public void renderEnergy(float scale, float panX, float panY) {
 
@@ -24,16 +29,16 @@ public class Meter extends OldComponent {
         mainSketch.strokeWeight(strokeWt);
         mainSketch.strokeCap(PConstants.SQUARE);
 
-        // Draw top energy line if present
-        if (getInNode().isEnergized()) {
-            drawLine(0, 2);
+        // Draw energy lines if present
+        if (getInNode().isEnergized() || getOutNode().isEnergized()) {
+            drawLine(0, 1);
+            drawLine(1, 2); // Elbow A inside
+            drawLine(2, 5); // Elbow A outside
+            drawLine(1, 3); // Elbow B inside
+            drawLine(3, 6); // Elbow B outside
+            drawLine(1, 4); // Elbow C inside
+            drawLine(4, 7); // Elbow C outside
         }
-
-        // Draw energy circle if present
-        if (getInNode().isEnergized()) {
-            mainSketch.noFill();
-            drawTeardropDot(3, 1f);
-        } // END if energized
 
     } // END renderEnergy()
 
@@ -50,16 +55,17 @@ public class Meter extends OldComponent {
         mainSketch.strokeWeight(strokeWt);
         mainSketch.strokeCap(PConstants.SQUARE);
 
-        // Draw top line regardless
-        drawLine(0, 2);
+        // Draw lines regardless
+        drawLine(0, 1);
+        drawLine(1, 2); // Elbow A inside
+        drawLine(2, 5); // Elbow A outside
+        drawLine(1, 3); // Elbow B inside
+        drawLine(3, 6); // Elbow B outside
+        drawLine(1, 4); // Elbow C inside
+        drawLine(4, 7); // Elbow C outside
 
-        // Draw circle regardless
-        mainSketch.noFill();
-        drawTeardropDot(3, 1f);
-
-        // Place "M" in circle
-        mainSketch.textAlign(PConstants.CENTER, PConstants.CENTER);
-        drawText(3, "M", "CC", 'H');
+        // Place text/label at dS(8)
+        drawText(8, getLabel(), getTextAnchor(), getLabelOrientation());
 
     } // END renderLines()
 
@@ -75,17 +81,24 @@ public class Meter extends OldComponent {
         // This next step puts the outNode in the ArrayList as element #1.  This is also important!
         points.add(this.getOutNode().getCoord());
 
-        // These next steps define specific points
-        Point point;
-        point = new Point(x, y + 2f); // Element #2 - bottom of top vertical line
+        // These next steps put coordinates into the array for clicking (mouse-hovering)
+        Point point = new Point(x + 0.174f, y + 2.985f); // Element #2 - inside elbow A
         points.add(point);
-        point = new Point(x, y + 2.5f); // Element #3 - CP of circle and "M" text point
+        point = new Point(x - 0.940f, y + 1.658f); // Element #3 - inside elbow B
         points.add(point);
-        point = new Point(x + 1f, y + 2.5f); // Element #4 - anchor point text/label
+        point = new Point(x + 0.766f, y + 1.357f); // Element #4 - inside elbow C
         points.add(point);
-        point = new Point(x - 0.5f, y + 2f); // Element #5 - top left mouse click area
+        point = new Point(x - 0.811f, y + 3.159f); // Element #5 - outside elbow A
         points.add(point);
-        point = new Point(x + 0.5f, y + 3f); // Element #6 - bot right mouse click area
+        point = new Point(x - 0.598f, y + 0.718f); // Element #6 - outside elbow B
+        points.add(point);
+        point = new Point(x + 1.409f, y + 2.123f); // Element #7 - outside elbow C
+        points.add(point);
+        point = new Point(x, y + 4f); // Element #8 - text anchor
+        points.add(point);
+        point = new Point(x - 1f, y + 1f); // Element #9 - TL click coordinate
+        points.add(point);
+        point = new Point(x + 1f, y + 3f); // Element #10 - BR click coordinate
         points.add(point);
 
         // This next step determines if the coordinates have to be rotated, rotates them, and
@@ -105,12 +118,9 @@ public class Meter extends OldComponent {
                 break;
         } // END switch (orientation)
 
-        // Update the location of the outNode
-        this.getOutNode().setCoord(getDs().get(1));
-
         // Establish the click coordinates
-        this.setClickCoords(5, 6);
+        this.setClickCoords(2, 3);
 
     } // END calcDrawingCoords
 
-} // END public class Meter
+} // END public class ZigZag

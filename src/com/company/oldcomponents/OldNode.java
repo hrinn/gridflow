@@ -2,19 +2,19 @@ package com.company.oldcomponents;
 
 import com.company.geometry.Point;
 
-public class Node {
+public class OldNode {
 
     private Point point;
     private boolean isEnergized;
     private int powerSourceCount;
 
-    public Node(Point point, boolean isEnergized) {
+    public OldNode(Point point, boolean isEnergized) {
         this.point = point;
         this.isEnergized = isEnergized;
         this.powerSourceCount = 0;
     }  // END constructor for a component where you know the node is energized (isEnergized = true)
 
-    public Node(Point inPoint) {
+    public OldNode(Point inPoint) {
         this.point = inPoint;
         this.isEnergized = false;
         this.powerSourceCount = 0;

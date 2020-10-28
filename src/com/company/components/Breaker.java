@@ -2,17 +2,16 @@ package com.company.components;
 
 import com.company.geometry.Point;
 
-import java.util.List;
-
-public class Breaker extends Component implements IToggleable, ICloneable {
+public class Breaker extends Device implements IToggleable, ICloneable {
 
     private Voltage voltage;
     private boolean closed;
 
-    public Breaker(String name, boolean energized, List<Component> connections, Point position, Voltage voltage, boolean closed) {
-        super(name, energized, connections, position);
+    public Breaker(String name, Point position, Component inComponent, Component outComponent, Voltage voltage, boolean closed) {
+        super(name, position, inComponent, outComponent);
         this.voltage = voltage;
         this.closed = closed;
+
     }
 
     public void toggle() {

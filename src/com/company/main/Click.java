@@ -242,7 +242,7 @@ public class Click {
                 boolean previousOutNode = c.getOutNode().isEnergized();
 
                 // These steps are necessary ONLY for Turbine components
-                if(c instanceof Turbine) {
+                if(c instanceof OldTurbine) {
                     if (c.getCurrentState() == 0) {
                         c.getInNode().setEnergized(true);
                         c.getOutNode().setEnergized(true);
@@ -253,7 +253,7 @@ public class Click {
                 } // END for turbines only
 
                 // Now update the nodes of each component EXCEPT Turbines
-                if(!(c instanceof Turbine)) {
+                if(!(c instanceof OldTurbine)) {
                     if (c.getInNode().isEnergized() && c.getCurrentState() == 0) {
                         c.getOutNode().setEnergized(true);
                     } else if (c.getOutNode().isEnergized() && c.getCurrentState() == 0) {

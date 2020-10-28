@@ -200,11 +200,11 @@ public class CloneBreaker12kV extends Breaker12kV {
         // Set the inNode, by first looking for the substation it is attached to
         boolean foundSub = false;
         Point inNodePoint = null;
-        Node inNodeClone = clone.getInNode();
-        Node outNodeClone = clone.getOutNode();
+        OldNode inOldNodeClone = clone.getInNode();
+        OldNode outOldNodeClone = clone.getOutNode();
 
         // Set the inNode
-        this.setInNode(new Node(inNodePoint, inNodeClone.isEnergized()));
+        this.setInNode(new OldNode(inNodePoint, inOldNodeClone.isEnergized()));
         // Set the outNode coordinate
         int length = 2;
         Point newOutNode = new Point(inNodePoint.getX(), inNodePoint.getY() + length);
@@ -221,7 +221,7 @@ public class CloneBreaker12kV extends Breaker12kV {
             default :
                 break;
         } // END switch(orientation)
-        this.setOutNode(new Node(newOutNode, outNodeClone.isEnergized()));
+        this.setOutNode(new OldNode(newOutNode, outOldNodeClone.isEnergized()));
 
         float x = this.getInNode().getCoord().getX();
         float y = this.getInNode().getCoord().getY();

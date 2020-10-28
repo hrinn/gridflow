@@ -60,7 +60,7 @@ public class Main extends PApplet {
     public ArrayList<OldComponent> oldComponents;
     public ArrayList<CloneBreaker12kV> clones;
     public ArrayList<Breaker12kVTandem> tandems;
-    public ArrayList<Node> nodes;
+    public ArrayList<OldNode> oldNodes;
     public ArrayList<Association> associations;
 
     boolean energized = true;
@@ -135,7 +135,7 @@ public class Main extends PApplet {
         // Draw grey hints for Components with no static labels drawn
         for (OldComponent c : this.oldComponents) {
 
-            if (c instanceof OldBus || c instanceof Cutout || c instanceof Jumper || c instanceof Meter) {
+            if (c instanceof OldBus || c instanceof Cutout || c instanceof OldJumper || c instanceof OldMeter) {
                 if (c.isOnComponent(viewport.scale, viewport.getX(), viewport.getY(), mouseX, mouseY)) {
                     c.renderHint(mouseX, mouseY);
                 }
@@ -186,7 +186,7 @@ public class Main extends PApplet {
         mainSketch.oldComponents = new ArrayList<>();
         mainSketch.clones = new ArrayList<>();
         mainSketch.tandems = new ArrayList<>();
-        mainSketch.nodes = new ArrayList<>();
+        mainSketch.oldNodes = new ArrayList<>();
         mainSketch.associations = new ArrayList<>();
 
         try {
@@ -510,7 +510,7 @@ public class Main extends PApplet {
                     mainSketch.oldComponents.add(breaker12);
                     break;
                 case "SWITCH":
-                    Switch sw = new Switch(mainSketch, id, name, type, orientation,
+                    OldSwitch sw = new OldSwitch(mainSketch, id, name, type, orientation,
                             normalState, connectedInComp, inNodeConnectedToNode,
                             connectedOutComp, outNodeConnectedToNode, label, textAnchor, labelOrientation,
                             labelPlacement, associatedWith);
@@ -533,11 +533,11 @@ public class Main extends PApplet {
                     mainSketch.oldComponents.add(cutout);
                     break;
                 case "JUMPER":
-                    Jumper jumper = new Jumper(mainSketch, id, name, type, orientation,
+                    OldJumper oldJumper = new OldJumper(mainSketch, id, name, type, orientation,
                             normalState, connectedInComp, inNodeConnectedToNode,
                             connectedOutComp, outNodeConnectedToNode, label, textAnchor, labelOrientation,
                             labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(jumper);
+                    mainSketch.oldComponents.add(oldJumper);
                     break;
                 case "METER":
                     break;
@@ -624,13 +624,13 @@ public class Main extends PApplet {
                     mainSketch.oldComponents.add(breaker12);
                     break;
                 case "SWITCH":
-                    Switch sw = new Switch(mainSketch, id, name, type, orientation,
+                    OldSwitch sw = new OldSwitch(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
                     mainSketch.oldComponents.add(sw);
                     break;
                 case "XFMR":
-                    Transformer xfmr = new Transformer(mainSketch, id, name, type, orientation,
+                    OldTransformer xfmr = new OldTransformer(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
                     mainSketch.oldComponents.add(xfmr);
@@ -642,10 +642,10 @@ public class Main extends PApplet {
                     mainSketch.oldComponents.add(oldBus);
                     break;
                 case "UG_PASS" :
-                    UGPass ugPass = new UGPass(mainSketch, id, name, type, orientation,
+                    OldUGPass oldUgPass = new OldUGPass(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, length, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(ugPass);
+                    mainSketch.oldComponents.add(oldUgPass);
                     break;
                 case "CUTOUT":
                     Cutout cutout = new Cutout(mainSketch, id, name, type, orientation,
@@ -654,19 +654,19 @@ public class Main extends PApplet {
                     mainSketch.oldComponents.add(cutout);
                     break;
                 case "JUMPER":
-                    Jumper jumper = new Jumper(mainSketch, id, name, type, orientation,
+                    OldJumper oldJumper = new OldJumper(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(jumper);
+                    mainSketch.oldComponents.add(oldJumper);
                     break;
                 case "METER":
-                    Meter meter = new Meter(mainSketch, id, name, type, orientation,
+                    OldMeter oldMeter = new OldMeter(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(meter);
+                    mainSketch.oldComponents.add(oldMeter);
                     break;
                 case "ZIGZAG":
-                    ZigZag zz = new ZigZag(mainSketch, id, name, type, orientation,
+                    OldZigZag zz = new OldZigZag(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
                     mainSketch.oldComponents.add(zz);
@@ -714,12 +714,12 @@ public class Main extends PApplet {
                 mainSketch.oldComponents.add(breaker12);
                 break;
             case "SWITCH":
-                Switch sw = new Switch(mainSketch, id, name, type, orientation, normalState, xPos, yPos, STD_OBJ_LENGTH,
+                OldSwitch sw = new OldSwitch(mainSketch, id, name, type, orientation, normalState, xPos, yPos, STD_OBJ_LENGTH,
                         label, textAnchor, labelOrientation, labelPlacement, associatedWith);
                 mainSketch.oldComponents.add(sw);
                 break;
             case "XFMR":
-                Transformer xfmr = new Transformer(mainSketch, id, name, type, orientation, normalState, xPos, yPos, STD_OBJ_LENGTH,
+                OldTransformer xfmr = new OldTransformer(mainSketch, id, name, type, orientation, normalState, xPos, yPos, STD_OBJ_LENGTH,
                         label, textAnchor, labelOrientation, labelPlacement, associatedWith);
                 break;
             case "BUS":
@@ -734,9 +734,9 @@ public class Main extends PApplet {
             case "METER":
                 break;
             case "TURB":
-                Turbine turbine = new Turbine(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length,
+                OldTurbine oldTurbine = new OldTurbine(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length,
                         label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                mainSketch.oldComponents.add(turbine);
+                mainSketch.oldComponents.add(oldTurbine);
 
         } // END switch(type)
 
@@ -891,12 +891,12 @@ public class Main extends PApplet {
 
     } // END testRun()
 
-    public ArrayList<Node> getNodes() {
-        return nodes;
+    public ArrayList<OldNode> getNodes() {
+        return oldNodes;
     }
 
-    public void addNode(Node node) {
-        nodes.add(node);
+    public void addNode(OldNode oldNode) {
+        oldNodes.add(oldNode);
     }
 
     public void displayButtons() {

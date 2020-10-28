@@ -1,26 +1,27 @@
-package com.company.components;
+package com.company.oldcomponents;
 
-public class Node {
+import com.company.geometry.Point;
 
-    private Coord coord;
+public class OldNode {
+
+    private Point point;
     private boolean isEnergized;
     private int powerSourceCount;
 
-    public Node(Coord inCoord, boolean isEnergized) {
-        this.coord = inCoord;
+    public OldNode(Point point, boolean isEnergized) {
+        this.point = point;
         this.isEnergized = isEnergized;
         this.powerSourceCount = 0;
     }  // END constructor for a component where you know the node is energized (isEnergized = true)
 
-    public Node(Coord inCoord) {
-        this.coord = inCoord;
+    public OldNode(Point inPoint) {
+        this.point = inPoint;
         this.isEnergized = false;
         this.powerSourceCount = 0;
     } // END generic constructor drives isEnergized = false
 
     // updates energy state
     public void update() {
-
 
     }
 
@@ -32,12 +33,12 @@ public class Node {
         this.powerSourceCount++;
     }
 
-    public Coord getCoord() {
-        return coord;
+    public Point getCoord() {
+        return point;
     }
 
-    public void setCoord(Coord coord) {
-        this.coord = coord;
+    public void setCoord(Point point) {
+        this.point = point;
     }
 
     public boolean isEnergized() {

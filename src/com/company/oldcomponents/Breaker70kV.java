@@ -1,11 +1,12 @@
-package com.company.components;
+package com.company.oldcomponents;
 
+import com.company.geometry.Point;
 import com.company.main.Main;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
-public class Breaker70kV extends Component {
+public class Breaker70kV extends OldComponent {
 
     // TODO:  Link the solar plant to SS70-1 and SS70-2
 
@@ -14,12 +15,12 @@ public class Breaker70kV extends Component {
     calcDrawingCoords();
     } // END Constructor #0
 
-    public Breaker70kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Breaker70kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedTo, inout, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     } // END Constructor #1
 
-    public Breaker70kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, Component connectedToIn, String inoutIn, Component connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public Breaker70kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedToIn, String inoutIn, OldComponent connectedToOut, String inoutOut, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedToIn, inoutIn, connectedToOut, inoutOut, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     } // END Constructor #2
@@ -56,8 +57,8 @@ public class Breaker70kV extends Component {
         float strokeWt = mainSketch.STROKE_THIN * scale;
         float unit = mainSketch.UNIT * scale;
 
-        int x = calcPos((int) (getInNode().getCoord().getxPos()), scale, panX);
-        int y = calcPos((int) (getInNode().getCoord().getyPos()), scale, panY);
+        int x = calcPos((int) (getInNode().getCoord().getX()), scale, panX);
+        int y = calcPos((int) (getInNode().getCoord().getY()), scale, panY);
 
 
         // Set drawing parameters
@@ -104,51 +105,51 @@ public class Breaker70kV extends Component {
     } // END renderLines()
 
     private void calcDrawingCoords() {
-        ArrayList<Coord> coords = new ArrayList<>();
-        float x = this.getInNode().getCoord().getxPos();
-        float y = this.getInNode().getCoord().getyPos();
+        ArrayList<Point> points = new ArrayList<>();
+        float x = this.getInNode().getCoord().getX();
+        float y = this.getInNode().getCoord().getY();
 
         // This step puts the inNode in the ArrayList as element #0.  This is important!
-        coords.add(this.getInNode().getCoord());
+        points.add(this.getInNode().getCoord());
 
         // This next step puts the outNode in the ArrayList as element #1.  This is also important!
-        coords.add(this.getOutNode().getCoord());
+        points.add(this.getOutNode().getCoord());
 
         // These next steps define specific points
-        Coord coord;
-        coord = new Coord(x, y + 1f); // Element #2 - bottom of top line
-        coords.add(coord);
-        coord = new Coord(x, y + 2f); // Element #3 - Top of bottom line
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 1f); // Element #4 - top left corner of box
-        coords.add(coord);
-        coord = new Coord(x - 0.5f, y + 2f); // Element #5 - bottom left corner of box
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 1f); // Element #6 - top right corner of box
-        coords.add(coord);
-        coord = new Coord(x + 0.5f, y + 2f); // Element #7 - bottom right corner of box
-        coords.add(coord);
-        coord = new Coord(x , y + 1.5f); // Element #8 - anchor for N/C, N/O indicator
-        coords.add(coord);
-        coord = new Coord(x + 0.75f, y + 1.5f); // Element #9 - Right anchor for text/label
-        coords.add(coord);
-        coord = new Coord(x - 0.75f, y + 1.5f); // Element #10 - Left anchor for text/label
-        coords.add(coord);
+        Point point;
+        point = new Point(x, y + 1f); // Element #2 - bottom of top line
+        points.add(point);
+        point = new Point(x, y + 2f); // Element #3 - Top of bottom line
+        points.add(point);
+        point = new Point(x - 0.5f, y + 1f); // Element #4 - top left corner of box
+        points.add(point);
+        point = new Point(x - 0.5f, y + 2f); // Element #5 - bottom left corner of box
+        points.add(point);
+        point = new Point(x + 0.5f, y + 1f); // Element #6 - top right corner of box
+        points.add(point);
+        point = new Point(x + 0.5f, y + 2f); // Element #7 - bottom right corner of box
+        points.add(point);
+        point = new Point(x , y + 1.5f); // Element #8 - anchor for N/C, N/O indicator
+        points.add(point);
+        point = new Point(x + 0.75f, y + 1.5f); // Element #9 - Right anchor for text/label
+        points.add(point);
+        point = new Point(x - 0.75f, y + 1.5f); // Element #10 - Left anchor for text/label
+        points.add(point);
 
         // This next step determines if the coordinates have to be rotated, rotates them, and
         // then executes the setDs() method for this component.
         switch (this.getOrientation()) {
             case 'U':
-                setDs(rotateDwgCoords(coords, 180));
+                setDs(rotateDwgCoords(points, 180));
                 break;
             case 'L':
-                setDs(rotateDwgCoords(coords, 90));
+                setDs(rotateDwgCoords(points, 90));
                 break;
             case 'R':
-                setDs(rotateDwgCoords(coords, 270));
+                setDs(rotateDwgCoords(points, 270));
                 break;
             default:
-                setDs(coords);
+                setDs(points);
                 break;
         } // END switch (orientation)
 

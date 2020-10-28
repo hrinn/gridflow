@@ -1,4 +1,4 @@
-package com.company.components;
+package com.company.oldcomponents;
 
 import com.company.main.Main;
 
@@ -18,10 +18,10 @@ public class Breaker12kVTandem {
     public void updateTandemStatus() {
 
         // Update all tandem breakers
-        Component compA = new Component();
-        Component compB = new Component();
+        OldComponent compA = new OldComponent();
+        OldComponent compB = new OldComponent();
 
-        for (Component c : mainSketch.components) {
+        for (OldComponent c : mainSketch.oldComponents) {
             if (this.getNameA().equals(c.getName())) compA = c;
             if (this.getNameB().equals(c.getName())) compB = c;
         } // END for each component

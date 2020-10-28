@@ -14,7 +14,7 @@ public class Breaker extends Device implements IToggleable, ICloneable, IPairabl
 
     }
 
-    public void toggle() {
+    public void toggleState() {
         this.closed = !this.closed;
     }
 

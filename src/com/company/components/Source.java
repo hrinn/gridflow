@@ -17,7 +17,7 @@ public class Source extends Component implements IToggleable {
         this.on = false;
     }
 
-    public void toggle() {
+    public void toggleState() {
         on = !on;
     }
 

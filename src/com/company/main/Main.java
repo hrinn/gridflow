@@ -63,22 +63,14 @@ public class Main extends PApplet {
     public ArrayList<OldNode> oldNodes;
     public ArrayList<Association> associations;
 
-    boolean energized = true;
-    public boolean canPan = true;
     public boolean canZoom = true;
 
     public void setup() {
 
         background(255);  // 0 = black
         cp5 = new ControlP5(this);
-//        System.out.println("Printing fonts");
-//        for(int i = 0; i < PFont.list().length; i++) {
-//            System.out.println(PFont.list()[i].toString());
-//        }
 
         System.out.println("Begin Switching Order");
-
-//        displayButtons();
 
 
     } // END setup()
@@ -100,22 +92,6 @@ public class Main extends PApplet {
         for(Association a : this.associations) {
             a.renderAssociation(viewport.scale, viewport.getX(), viewport.getY());
         } // END for each Association
-
-        // TODO:  Move this out of Draw so it doesn't run 60x/sec
-//        // Iterate through all components and determine if nodes should be energized
-//        for (Component c : this.components) {
-//            if (c.getInNode().isEnergized() && c.getCurrentState() == 0) {
-//                c.getOutNode().setEnergized(true);
-//            } else if (c.getOutNode().isEnergized() && c.getCurrentState() == 0) {
-//                c.getInNode().setEnergized(true);
-//            }
-//        }
-
-//        // Iterate through all clones and set their inNodes energized according to their clone's inNode
-//        for (CloneBreaker12kV c : this.clones) {
-//            c.getInNode().setEnergized(c.getClone().getInNode().isEnergized());
-//        }
-
 
         // Draw yellow highlights first
         for (OldComponent c : this.oldComponents) {
@@ -143,35 +119,7 @@ public class Main extends PApplet {
 
         } // END draw hints for each component
 
-
-
-        // TODO:  Fix this test block
-        // Render all of the lost loads
-//        this.fill(255);
-//        this.rect(1200,25,1299,200);
-//        this.fill(0);
-//        int linePosIterator = 35;
-//        this.textSize(25);
-//        this.text("Lost Loads", 1200, linePosIterator);
-//        linePosIterator += linePosIterator;
-//        for (ConnectedLoad l : this.connectedLoads) {
-//            if(!l.getOutNode().isEnergized()) {
-//                this.textSize(25);
-//                this.text(l.getName(), 1200, linePosIterator);
-//                linePosIterator += 35;
-//            }
-//        } // END test code for connected loads
-
-        // draw the ui
         ui.draw();
-
-        // test Substation box
-
-
-        // TODO delete this "X""
-//        this.stroke(70,70,70);
-//        this.line(0,0,1299,699);
-//        this.line(1299,0,0,699);
 
     } // END draw()
 
@@ -203,13 +151,6 @@ public class Main extends PApplet {
         // Run PApplet to create sketch
         PApplet.runSketch(processingArgs, mainSketch);
         mainSketch.surface.setTitle("Switch Boss");
-
-        // TODO delete test block for fonts
-//        String[] allFonts = PFont.list();
-//        for(String font : allFonts) {
-//
-//            System.out.println(font);
-//        }
 
     } // END psvm
 
@@ -291,43 +232,6 @@ public class Main extends PApplet {
         }
 
     } // END buildGridPowerSource()
-
-//    public static void buildGridLine(Main mainSketch, String[] values) {
-//
-//
-//        // I want:  1-NODE, 11456, GRIDLINE_A3-2, GRIDLINE,  GRIDLINE_A3-1, OUT, R, 3, 12KV_DIAGRAM
-//        //            0       1          2            3           4          5   6  7      8
-//
-//        int id = Integer.parseInt(values[1]);
-//        String name = values[2].toUpperCase();
-//        String inNodeConnectedToComponent = values[4].toUpperCase();
-//        String inNodeConnectedToNode = values[5].toUpperCase();
-//        char orientation = values[6].charAt(0);
-//        int length = Integer.parseInt(values[7]);
-//        String assoc = values[8];
-//
-//        // Find the component this component is connected to
-//        Component connectedComp = new Component();
-//        boolean found = false;
-//        for (Component c : mainSketch.components) {
-//            if (c.getName().equals(inNodeConnectedToComponent)) {
-//                connectedComp = c;
-//                found = true;
-//                break;
-//            }
-//        } // For each component already in the ArrayList
-//
-//        if(found) {
-//            GridLine gridLine = new GridLine(mainSketch, id, name, "GRIDLINE", orientation, 0, connectedComp, inNodeConnectedToNode,
-//                    length, name, "CC", 'H', 'R', "12KV_DIAGRAM");
-//            mainSketch.components.add(gridLine);
-//            mainSketch.gridComponents.add(gridLine);
-//        } else {
-//            System.out.println("Connected component for " + name + " not found.");
-//            return;
-//        }
-//
-//    } // END buildGridLine
 
     public static void buildSubstation(Main mainSketch, String[] values) {
 
@@ -779,32 +683,7 @@ public class Main extends PApplet {
     } // END build connected load
 
     public void mousePressed() {
-//        canZoom = false;
-//        char ret = click.mousePress(components, mouseX, mouseY, mouseButton, viewport.getScale(), (int) viewport.getX(), (int) viewport.getY(), ui);
-        char ret = click.mousePress(this, mouseX, mouseY, mouseButton, viewport.getScale(), (int) viewport.getX(), (int) viewport.getY(), ui);
-//        if (ret == 'z') {
-//            // zoom in
-//            viewport.setScale(-10);
-//        } else if (ret == 'Z') {
-//            // zoom out
-//            viewport.setScale(10);
-//        } else if (ret == 'r') {
-//            // reload grid
-//            try {
-//                readFile("positions.txt", this);
-//            } catch (IOException e) {
-//                System.err.println("Unable to reload file! Quitting...");
-//                System.exit(-1);
-//            }
-//        } else if (ret == 'v') {
-//            // grid verification on line 2 of positions.txt
-//            verifyGrid();
-//        }
-
-//        if(ret == '\0') {
-//            System.out.println("Updating Node Energy");
-//            updateNodeEnergy();
-//        }
+        //char ret = click.mousePress(this, mouseX, mouseY, mouseButton, viewport.getScale(), (int) viewport.getX(), (int) viewport.getY(), ui);
         viewport.mousePress(mouseX, mouseY);
     }
 
@@ -904,9 +783,6 @@ public class Main extends PApplet {
         String[] dropDownZoomStrings = {"A", "B", "C", "D", "E", "F", "K", "N", "T", "M", "SVPP", "VAFB"};
         String[] dropDownFileStrings = {"Open", "Save", "Close", "Exit"};
         cp5.setFont(new ControlFont(createFont("Arial",14),14));
-//        cp5.addButton("TEST").setValue(0).setPosition(1000, 100).setSize(40, 40);
-//        cp5.addTab("TAB1").setValue(0).setPosition(400,10).setSize(40, 40);
-//        cp5.addButtonBar("Zoom").addItems(btnBarStrings).setPosition(100, 25).setSize(1000, 50).setLabel("FUCK OFF").setLabelVisible(true);
         DropdownList fileMenu = new DropdownList(cp5, "File");
         fileMenu.addItems(dropDownFileStrings).setPosition(0, 0).setSize(100,700).setValue(0).setOpen(false).setWidth(75).setItemHeight(30).setBarHeight(30);
 

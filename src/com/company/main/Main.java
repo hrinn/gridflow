@@ -30,6 +30,7 @@ public class Main extends PApplet {
     Click click = new Click();
     UserInterface ui = new UserInterface();
     ControlP5 cp5;
+    private Grid grid = new Grid();
     public static ArrayList<String> switchingOrder;
 
 
@@ -57,11 +58,7 @@ public class Main extends PApplet {
     public static final float LTGRAY =   0xE0E0E0;        // {224, 224, 224};
     public static final float NAVY =     0x000080;        // {0, 0, 128};
 
-    public ArrayList<OldComponent> oldComponents;
-    public ArrayList<CloneBreaker12kV> clones;
-    public ArrayList<Breaker12kVTandem> tandems;
-    public ArrayList<OldNode> oldNodes;
-    public ArrayList<Association> associations;
+
 
     public boolean canZoom = true;
 
@@ -89,27 +86,27 @@ public class Main extends PApplet {
         background(0xFFFFFF);
 
         // Iterate through all Associations and render the boxes and labels
-        for(Association a : this.associations) {
+        for(Association a : grid.associations) {
             a.renderAssociation(viewport.scale, viewport.getX(), viewport.getY());
         } // END for each Association
 
         // Draw yellow highlights first
-        for (OldComponent c : this.oldComponents) {
+        for (OldComponent c : grid.components) {
             c.renderEnergy(viewport.scale, viewport.getX(), viewport.getY());
         }
 
         // Then draw black lines and labels
-        for (OldComponent c : this.oldComponents) {
+        for (OldComponent c : grid.components) {
             c.renderLines(viewport.scale, viewport.getX(), viewport.getY());
         }
 
         // Update all tandem breakers
-        for (Breaker12kVTandem bt : this.tandems) {
+        for (Breaker12kVTandem bt : grid.tandems) {
             bt.updateTandemStatus();
         } // END for each tandem breaker
 
         // Draw grey hints for Components with no static labels drawn
-        for (OldComponent c : this.oldComponents) {
+        for (OldComponent c : grid.components) {
 
             if (c instanceof OldBus || c instanceof Cutout || c instanceof OldJumper || c instanceof OldMeter) {
                 if (c.isOnComponent(viewport.scale, viewport.getX(), viewport.getY(), mouseX, mouseY)) {
@@ -131,12 +128,6 @@ public class Main extends PApplet {
 
         switchingOrder = new ArrayList<>();
 
-        mainSketch.oldComponents = new ArrayList<>();
-        mainSketch.clones = new ArrayList<>();
-        mainSketch.tandems = new ArrayList<>();
-        mainSketch.oldNodes = new ArrayList<>();
-        mainSketch.associations = new ArrayList<>();
-
         try {
             readComponentFile(mainSketch, "lib/MtJediGalaxyGrid.TXT"); // Was "ModelAll_TEST_THIS_FILE.TXT"
         } catch (IOException e) {
@@ -157,7 +148,7 @@ public class Main extends PApplet {
     public static void readComponentFile(Main mainSketch, String fileName) throws IOException {
 
         File readThisFile = new File(fileName);
-        mainSketch.oldComponents.clear(); // empties the arrayList of components
+        mainSketch.grid.components.clear(); // empties the arrayList of components
         Scanner scanner;
         int count = 0;
         try {
@@ -224,7 +215,7 @@ public class Main extends PApplet {
         // Search for the breaker
         CloneBreaker12kV breaker = null;
         boolean breakerFound = false;
-        for(CloneBreaker12kV c : mainSketch.clones) {
+        for(CloneBreaker12kV c : mainSketch.grid.clones) {
             if(c.getName().equals(breakerName)) {
                 breakerFound = true;
                 breaker = c;
@@ -250,7 +241,7 @@ public class Main extends PApplet {
         String name = values[1];
         int currentState = Integer.parseInt(values[2]);
 
-        for(OldComponent c:  mainSketch.oldComponents) {
+        for(OldComponent c:  mainSketch.grid.components) {
             if(c.getName().equals(name)) {
                 c.setCurrentState(currentState);
                 break;
@@ -286,7 +277,7 @@ public class Main extends PApplet {
         // Build the association
         Association association = new Association(mainSketch, assoc, label1, label1Size, label2, label2Size, labelAlt,
                 bufferLeft, bufferRight, bufferTop, bufferBottom, labelHorizPct, labelVertPct, hide);
-        mainSketch.associations.add(association);
+        mainSketch.grid.associations.add(association);
 
     } // END buildAssociation
 
@@ -326,7 +317,7 @@ public class Main extends PApplet {
 
 
         // Look for clone in all components
-        for(OldComponent c : mainSketch.oldComponents) {
+        for(OldComponent c : mainSketch.grid.components) {
             if(c.getName().equals(cloneName)) {
                 normalState = c.getNormalState();
                 label = c.getLabel();
@@ -338,8 +329,8 @@ public class Main extends PApplet {
         CloneBreaker12kV clone12KVB = new CloneBreaker12kV(mainSketch, id, name, compType, orientation, normalState,
                 xPos, yPos, 4, label, textAnchor, labelOrientation, labelPlacement, associatedWith, clone,
                 cloneType, color, substationAttach, substationAttachNode);
-        mainSketch.oldComponents.add(clone12KVB);
-        mainSketch.clones.add(clone12KVB);
+        mainSketch.grid.components.add(clone12KVB);
+        mainSketch.grid.clones.add(clone12KVB);
 
     } // END buildClone12kVB
 
@@ -350,7 +341,7 @@ public class Main extends PApplet {
 
         // Build the tandem breaker and add to ArrayList
         Breaker12kVTandem b12t = new Breaker12kVTandem(mainSketch, nameA, nameB);
-        mainSketch.tandems.add(b12t);
+        mainSketch.grid.tandems.add(b12t);
 
     } // END buildTandemBreakers
 
@@ -383,7 +374,7 @@ public class Main extends PApplet {
         boolean foundIn = false;
         OldComponent connectedOutComp = new OldComponent();
         boolean foundOut = false;
-        for (OldComponent c : mainSketch.oldComponents) {
+        for (OldComponent c : mainSketch.grid.components) {
             if (c.getName().equals(inNodeConnectedToComponent)) {
                 connectedInComp = c;
                 foundIn = true;
@@ -404,21 +395,21 @@ public class Main extends PApplet {
                             normalState, connectedInComp, inNodeConnectedToNode,
                             connectedOutComp, outNodeConnectedToNode, label, textAnchor, labelOrientation,
                             labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(breaker70);
+                    mainSketch.grid.components.add(breaker70);
                     break;
                 case "12KVB":
                     Breaker12kV breaker12 = new Breaker12kV(mainSketch, id, name, type, orientation,
                             normalState, connectedInComp, inNodeConnectedToNode,
                             connectedOutComp, outNodeConnectedToNode, label, textAnchor, labelOrientation,
                             labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(breaker12);
+                    mainSketch.grid.components.add(breaker12);
                     break;
                 case "SWITCH":
                     OldSwitch sw = new OldSwitch(mainSketch, id, name, type, orientation,
                             normalState, connectedInComp, inNodeConnectedToNode,
                             connectedOutComp, outNodeConnectedToNode, label, textAnchor, labelOrientation,
                             labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(sw);
+                    mainSketch.grid.components.add(sw);
                     break;
                 case "XFMR":
                     break;
@@ -427,21 +418,21 @@ public class Main extends PApplet {
                             normalState, connectedInComp, inNodeConnectedToNode,
                             connectedOutComp, outNodeConnectedToNode, label, textAnchor, labelOrientation,
                             labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(oldBus);
+                    mainSketch.grid.components.add(oldBus);
                     break;
                 case "CUTOUT":
                     Cutout cutout = new Cutout(mainSketch, id, name, type, orientation,
                             normalState, connectedInComp, inNodeConnectedToNode,
                             connectedOutComp, outNodeConnectedToNode, label, textAnchor, labelOrientation,
                             labelPlacement, associatedWith, cutoutDirection);
-                    mainSketch.oldComponents.add(cutout);
+                    mainSketch.grid.components.add(cutout);
                     break;
                 case "JUMPER":
                     OldJumper oldJumper = new OldJumper(mainSketch, id, name, type, orientation,
                             normalState, connectedInComp, inNodeConnectedToNode,
                             connectedOutComp, outNodeConnectedToNode, label, textAnchor, labelOrientation,
                             labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(oldJumper);
+                    mainSketch.grid.components.add(oldJumper);
                     break;
                 case "METER":
                     break;
@@ -502,7 +493,7 @@ public class Main extends PApplet {
         // Find the component this component is connected to
         OldComponent connectedComp = new OldComponent();
         boolean found = false;
-        for (OldComponent c : mainSketch.oldComponents) {
+        for (OldComponent c : mainSketch.grid.components) {
             if (c.getName().equals(inNodeConnectedToComponent)) {
                 connectedComp = c;
                 found = true;
@@ -519,61 +510,61 @@ public class Main extends PApplet {
                     Breaker70kV breaker70 = new Breaker70kV(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH,
                             label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(breaker70);
+                    mainSketch.grid.components.add(breaker70);
                     break;
                 case "12KVB":
                     Breaker12kV breaker12 = new Breaker12kV(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, 4,
                             label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(breaker12);
+                    mainSketch.grid.components.add(breaker12);
                     break;
                 case "SWITCH":
                     OldSwitch sw = new OldSwitch(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(sw);
+                    mainSketch.grid.components.add(sw);
                     break;
                 case "XFMR":
                     OldTransformer xfmr = new OldTransformer(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(xfmr);
+                    mainSketch.grid.components.add(xfmr);
                     break;
                 case "BUS":
                     OldBus oldBus = new OldBus(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, length, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(oldBus);
+                    mainSketch.grid.components.add(oldBus);
                     break;
                 case "UG_PASS" :
                     OldUGPass oldUgPass = new OldUGPass(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, length, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(oldUgPass);
+                    mainSketch.grid.components.add(oldUgPass);
                     break;
                 case "CUTOUT":
                     Cutout cutout = new Cutout(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith, cutoutDirection);
-                    mainSketch.oldComponents.add(cutout);
+                    mainSketch.grid.components.add(cutout);
                     break;
                 case "JUMPER":
                     OldJumper oldJumper = new OldJumper(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(oldJumper);
+                    mainSketch.grid.components.add(oldJumper);
                     break;
                 case "METER":
                     OldMeter oldMeter = new OldMeter(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(oldMeter);
+                    mainSketch.grid.components.add(oldMeter);
                     break;
                 case "ZIGZAG":
                     OldZigZag zz = new OldZigZag(mainSketch, id, name, type, orientation,
                             normalState, connectedComp, inNodeConnectedToNode, STD_OBJ_LENGTH, label, textAnchor,
                             labelOrientation, labelPlacement, associatedWith);
-                    mainSketch.oldComponents.add(zz);
+                    mainSketch.grid.components.add(zz);
                     break;
                 case "LOAD" :
                     break;
@@ -605,22 +596,22 @@ public class Main extends PApplet {
         switch (type) {
             case "POWER":
                 OldPowerSource ps = new OldPowerSource(mainSketch, id, name, type, orientation, normalState, xPos, yPos, STD_OBJ_LENGTH, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                mainSketch.oldComponents.add(ps);
+                mainSketch.grid.components.add(ps);
                 break;
             case "70KVB":
                 Breaker70kV breaker70 = new Breaker70kV(mainSketch, id, name, type, orientation, normalState, xPos, yPos, STD_OBJ_LENGTH,
                         label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                mainSketch.oldComponents.add(breaker70);
+                mainSketch.grid.components.add(breaker70);
                 break;
             case "12KVB":
                 Breaker12kV breaker12 = new Breaker12kV(mainSketch, id, name, type, orientation, normalState, xPos, yPos, 4,
                         label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                mainSketch.oldComponents.add(breaker12);
+                mainSketch.grid.components.add(breaker12);
                 break;
             case "SWITCH":
                 OldSwitch sw = new OldSwitch(mainSketch, id, name, type, orientation, normalState, xPos, yPos, STD_OBJ_LENGTH,
                         label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                mainSketch.oldComponents.add(sw);
+                mainSketch.grid.components.add(sw);
                 break;
             case "XFMR":
                 OldTransformer xfmr = new OldTransformer(mainSketch, id, name, type, orientation, normalState, xPos, yPos, STD_OBJ_LENGTH,
@@ -629,7 +620,7 @@ public class Main extends PApplet {
             case "BUS":
                 OldBus oldBus = new OldBus(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length,
                         label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                mainSketch.oldComponents.add(oldBus);
+                mainSketch.grid.components.add(oldBus);
                 break;
             case "CUTOUT":
                 break;
@@ -640,7 +631,7 @@ public class Main extends PApplet {
             case "TURB":
                 OldTurbine oldTurbine = new OldTurbine(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length,
                         label, textAnchor, labelOrientation, labelPlacement, associatedWith);
-                mainSketch.oldComponents.add(oldTurbine);
+                mainSketch.grid.components.add(oldTurbine);
 
         } // END switch(type)
 
@@ -672,7 +663,7 @@ public class Main extends PApplet {
         // Find the component this component is connected to
         OldComponent connectedComp = new OldComponent();
         boolean found = false;
-        for (OldComponent c : mainSketch.oldComponents) {
+        for (OldComponent c : mainSketch.grid.components) {
             if (c.getName().equals(inNodeConnectedToComponent)) {
                 connectedComp = c;
                 found = true;
@@ -757,7 +748,7 @@ public class Main extends PApplet {
                 break;
         } // END switch(key)
 
-        for(Association a : associations) {
+        for(Association a : grid.associations) {
             if(a.getAssoc().equals(assoc)) {
                 viewport.jumpToPosition(a.getZoomScale(), a.getZoomPanX(), a.getZoomPanY());
                 break;
@@ -770,13 +761,6 @@ public class Main extends PApplet {
 
     } // END testRun()
 
-    public ArrayList<OldNode> getNodes() {
-        return oldNodes;
-    }
-
-    public void addNode(OldNode oldNode) {
-        oldNodes.add(oldNode);
-    }
 
     public void displayButtons() {
         String[] btnBarStrings = {"A", "B", "C", "D", "E", "F", "K", "N", "T", "M", "SVPP", "VAFB"};
@@ -801,9 +785,7 @@ public class Main extends PApplet {
     public static void setInitialEnergyState(Main mainSketch) {
 
         Click clickInit = new Click();
-        clickInit.recalcAllGridEnergy(mainSketch);
-
-
+        mainSketch.getGrid().recalcAllGridEnergy();
     }
 
     public void updateNodeEnergy() {
@@ -815,7 +797,7 @@ public class Main extends PApplet {
         boolean changeFound = true;
         while(changeFound) {
             int countChanges = 0;
-            for (OldComponent c : this.oldComponents) {
+            for (OldComponent c : this.grid.components) {
                 if (c.getInNode().isEnergized() && c.getCurrentState() == 0) {
                     c.getOutNode().setEnergized(true);
                     countChanges++;
@@ -826,7 +808,7 @@ public class Main extends PApplet {
             }
 
             // Iterate through all clones and set their inNodes energized according to their clone's inNode
-            for (CloneBreaker12kV c : this.clones) {
+            for (CloneBreaker12kV c : this.grid.clones) {
                 c.getInNode().setEnergized(c.getClone().getInNode().isEnergized());
             }
 
@@ -834,5 +816,9 @@ public class Main extends PApplet {
         } // END while change found
 
     } // END updateNodeEnergy
+
+    public Grid getGrid() {
+        return this.grid;
+    }
 
 } // END public class Main

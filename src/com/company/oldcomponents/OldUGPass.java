@@ -53,7 +53,7 @@ public class OldUGPass extends OldComponent {
         drawDashedLine(0, 1);
 
         // Draw underpass if this line crosses another line already existing in the sketch
-        for (OldComponent c : mainSketch.oldComponents) {
+        for (OldComponent c : mainSketch.getGrid().components) {
             if (c instanceof OldBus &&                   // If component is a bus
                     this.getId() > c.getId() &&       // and component is already on the screen
                     calcOrtho(this, c) &&     // and component is orthogonal with THIS

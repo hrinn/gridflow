@@ -54,7 +54,7 @@ public class OldComponent {
         this.canOpen = calcCanOpen(type);
 
         this.inOldNode = (new OldNode(new Point(xPos, yPos), true));
-        mainSketch.addNode(this.inOldNode);
+        mainSketch.getGrid().addNode(this.inOldNode);
         if(this.compType.equals("BUS") || this.compType.equals("UG_PASS")) {
             setOutNode(calcOutNode(this.inOldNode, this.orientation, length));
             this.length = length;
@@ -63,7 +63,7 @@ public class OldComponent {
         } else {
             setOutNode(calcOutNode(this.inOldNode, this.orientation, mainSketch.STD_OBJ_LENGTH));
         }
-        mainSketch.addNode(this.outOldNode);
+        mainSketch.getGrid().addNode(this.outOldNode);
         this.inComps = new ArrayList<>();
         this.outComps = new ArrayList<>();
         this.ds = new ArrayList<>();
@@ -111,7 +111,7 @@ public class OldComponent {
         } else {
             setOutNode(calcOutNode(this.inOldNode, this.orientation, mainSketch.STD_OBJ_LENGTH));
         }
-        mainSketch.addNode(this.outOldNode);
+        mainSketch.getGrid().addNode(this.outOldNode);
         this.inComps = new ArrayList<>();
         this.outComps = new ArrayList<>();
         if(inout.equals("OUT")) {

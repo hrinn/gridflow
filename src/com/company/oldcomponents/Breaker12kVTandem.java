@@ -21,7 +21,7 @@ public class Breaker12kVTandem {
         OldComponent compA = new OldComponent();
         OldComponent compB = new OldComponent();
 
-        for (OldComponent c : mainSketch.oldComponents) {
+        for (OldComponent c : mainSketch.getGrid().components) {
             if (this.getNameA().equals(c.getName())) compA = c;
             if (this.getNameB().equals(c.getName())) compB = c;
         } // END for each component

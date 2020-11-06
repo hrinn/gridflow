@@ -160,7 +160,7 @@ public class Association {
         float yMax = -1000000;
 
         // Determine min and max x,y grid coordinates for all components
-        for(OldComponent c : mainSketch.oldComponents) {
+        for(OldComponent c : mainSketch.getGrid().components) {
             if (c.getAssociatedWith().equals(this.getAssoc())) {
                 xMin = Math.min(c.getInNode().getCoord().getX(), xMin);
                 xMin = Math.min(c.getOutNode().getCoord().getX(), xMin);

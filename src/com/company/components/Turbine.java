@@ -6,7 +6,12 @@ import java.util.List;
 
 public class Turbine extends Source {
 
-    public Turbine(String name, Point position, List<Component> outputs) {
-        super(name, position, outputs);
+    private Component output1;
+    private Component output2;
+
+    public Turbine(String name, Point position, Component output1, Component output2) {
+        super(name, position);
+        output1 = output1;
+        output2 = output2;
     }
 }

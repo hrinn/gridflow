@@ -7,13 +7,11 @@ import java.util.List;
 public class Source extends Component implements IToggleable {
 
     private Point position;
-    private List<Component> outputs;
     private boolean on;
 
-    public Source(String name, Point position, List<Component> outputs) {
+    public Source(String name, Point position) {
         super(name);
         this.position = position;
-        this.outputs = outputs;
         this.on = false;
     }
 

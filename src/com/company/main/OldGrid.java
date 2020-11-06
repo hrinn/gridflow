@@ -5,7 +5,7 @@ import com.company.oldcomponents.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class Grid {
+public class OldGrid {
 
     public ArrayList<OldComponent> components;
     public ArrayList<CloneBreaker12kV> clones;
@@ -13,7 +13,7 @@ public class Grid {
     public ArrayList<OldNode> nodes;
     public ArrayList<Association> associations;
 
-    public Grid() {
+    public OldGrid() {
         components = new ArrayList<>();
         clones = new ArrayList<>();
         tandems = new ArrayList<>();

@@ -1,5 +1,9 @@
-package com.company.components;
+package com.company.components.device;
 
+import com.company.components.IToggleable;
+import com.company.components.Wire;
+import com.company.components.device.Device;
+import com.company.components.device.ILockable;
 import com.company.geometry.Point;
 
 public class Switch extends Device implements IToggleable, ILockable {
@@ -7,8 +11,8 @@ public class Switch extends Device implements IToggleable, ILockable {
     boolean closed;
     boolean locked;
 
-    public Switch(String name, Point position, Component inComponent, Component outComponent, boolean closed) {
-        super(name, position, inComponent, outComponent);
+    public Switch(String name, Point position, Wire inWire, Wire outWire, boolean closed) {
+        super(name, position, inWire, outWire);
         this.closed = closed;
         this.locked = false;
     }

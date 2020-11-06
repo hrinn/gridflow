@@ -1,5 +1,6 @@
-package com.company.components;
+package com.company.components.device;
 
+import com.company.components.*;
 import com.company.geometry.Point;
 
 public class Breaker extends Device implements IToggleable, ICloneable, IPairable {
@@ -7,8 +8,8 @@ public class Breaker extends Device implements IToggleable, ICloneable, IPairabl
     private Voltage voltage;
     private boolean closed;
 
-    public Breaker(String name, Point position, Component inComponent, Component outComponent, Voltage voltage, boolean closed) {
-        super(name, position, inComponent, outComponent);
+    public Breaker(String name, Point position, Wire inWire, Wire outWire, Voltage voltage, boolean closed) {
+        super(name, position, inWire, outWire);
         this.voltage = voltage;
         this.closed = closed;
 

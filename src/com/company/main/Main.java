@@ -674,7 +674,7 @@ public class Main extends PApplet {
     } // END build connected load
 
     public void mousePressed() {
-        //char ret = click.mousePress(this, mouseX, mouseY, mouseButton, viewport.getScale(), (int) viewport.getX(), (int) viewport.getY(), ui);
+        click.mousePress(this, mouseX, mouseY, mouseButton, viewport.getScale(), (int) viewport.getX(), (int) viewport.getY(), ui);
         viewport.mousePress(mouseX, mouseY);
     }
 

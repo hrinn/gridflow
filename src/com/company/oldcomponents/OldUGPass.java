@@ -1,14 +1,14 @@
 package com.company.oldcomponents;
 
 import com.company.geometry.Point;
-import com.company.main.Main;
+import com.company.main.OldMain;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
 public class OldUGPass extends OldComponent {
 
-    public OldUGPass(Main mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public OldUGPass(OldMain mainSketch, int id, String name, String type, char orientation, int normalState, OldComponent connectedTo, String inout, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, connectedTo, inout, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
         setNormalState(0);  // ensures "closed"

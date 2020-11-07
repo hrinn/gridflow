@@ -1,15 +1,15 @@
 package com.company.oldcomponents;
 
-import com.company.main.Main;
+import com.company.main.OldMain;
 
 public class Breaker12kVTandem {
 
-    protected Main mainSketch;
+    protected OldMain mainSketch;
 
     private String nameA;
     private String nameB;
 
-    public Breaker12kVTandem(Main mainSketch, String nameA, String nameB) {
+    public Breaker12kVTandem(OldMain mainSketch, String nameA, String nameB) {
         this.mainSketch = mainSketch;
         this.nameA = nameA;
         this.nameB = nameB;

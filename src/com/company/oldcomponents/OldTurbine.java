@@ -1,14 +1,14 @@
 package com.company.oldcomponents;
 
 import com.company.geometry.Point;
-import com.company.main.Main;
+import com.company.main.OldMain;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
 
 public class OldTurbine extends OldComponent {
 
-    public OldTurbine(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
+    public OldTurbine(OldMain mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         super(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         calcDrawingCoords();
     }  // END Constructor #0

@@ -61,7 +61,7 @@ public class Click {
 //        }
     }
 
-    public char mousePress(Main mainSketch, int mouseX, int mouseY, int mouseButton, float scale, int panX, int panY, UserInterface ui) {
+    public char mousePress(OldMain mainSketch, int mouseX, int mouseY, int mouseButton, float scale, int panX, int panY, UserInterface ui) {
         // check if clicked in tools box
         // TODO:  WRITE CODE FOR MENU ITEMS!!!
         // If not on a menu item, check if mouse is on a clickable component
@@ -124,7 +124,7 @@ public class Click {
         return '\0';
     } // END mousePress
 
-    public void updateClones(Main mainSketch, OldComponent clickedOldComponent) {
+    public void updateClones(OldMain mainSketch, OldComponent clickedOldComponent) {
 
         boolean cloneUpdated = false;
 

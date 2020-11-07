@@ -1,7 +1,7 @@
 package com.company.oldcomponents;
 
 import com.company.geometry.Point;
-import com.company.main.Main;
+import com.company.main.OldMain;
 import processing.core.PApplet;
 import processing.core.PConstants;
 
@@ -11,7 +11,7 @@ public class OldComponent {
 
 //    public static final int UNIT = 20;
 
-    protected Main mainSketch;
+    protected OldMain mainSketch;
 
     private int id;  // unique ID #
     private String name; // SS70-603, B4, SW_53
@@ -41,7 +41,7 @@ public class OldComponent {
     } // NULL constructor
 
     // Constructor #0 - When no existing Nodes are already defined
-    public OldComponent(Main mainSketch, int id, String name, String type, char orientation,
+    public OldComponent(OldMain mainSketch, int id, String name, String type, char orientation,
                         int normalState, int xPos, int yPos, int length, String label, String textAnchor,
                         char labelOrientation, char labelPlacement, String associatedWith) {
         this.mainSketch = mainSketch;
@@ -78,7 +78,7 @@ public class OldComponent {
     } // END Constructor #0
 
     // Constructor #1 - When one Node already exists
-    public OldComponent(Main mainSketch, int id, String name, String type, char orientation,
+    public OldComponent(OldMain mainSketch, int id, String name, String type, char orientation,
                         int normalState, OldComponent connectedTo, String inout, int length,
                         String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
         this.mainSketch = mainSketch;
@@ -132,7 +132,7 @@ public class OldComponent {
     }  // END Constructor #1
 
     // Constructor #2 - When both Nodes already exist
-    public OldComponent(Main mainSketch, int id, String name, String type, char orientation,
+    public OldComponent(OldMain mainSketch, int id, String name, String type, char orientation,
                         int normalState, OldComponent connectedToIn, String inoutIn,
                         OldComponent connectedToOut, String inoutOut,
                         String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith) {
@@ -210,7 +210,7 @@ public class OldComponent {
     } // END calcOutNode
 
     public int calcPos(double point, float scale, float pan) {
-        return (int) ((Main.UNIT * point * scale) + (pan * scale));
+        return (int) ((OldMain.UNIT * point * scale) + (pan * scale));
     }
 
     public void render(float scale, float panX, float panY) {

@@ -1,7 +1,5 @@
 package com.company.main;
 
-import com.company.main.Main;
-
 public class Viewport {
 
     // TODO:  study whether unit is even needed in this class
@@ -36,10 +34,10 @@ public class Viewport {
         this.startY = 0;
         this.changeX = 0;
         this.changeY = 0;
-        this.width = Main.SKETCH_WINDOW_WIDTH;
-        this.height = Main.SKETCH_WINDOW_HEIGHT;
+        this.width = OldMain.SKETCH_WINDOW_WIDTH;
+        this.height = OldMain.SKETCH_WINDOW_HEIGHT;
         this.scale = 1.0f;
-        this.unit = Main.UNIT;
+        this.unit = OldMain.UNIT;
 
         setSize(this.width, this.height);
     }
@@ -91,7 +89,7 @@ public class Viewport {
 
         // TODO delete this
         System.out.println("scale: " + this.scale + "  XPOS:  " + this.x + "  YPOS:  " + this.y + "  Screen Size in Grid Units: Width, " +
-                Main.SKETCH_WINDOW_WIDTH / this.unit / this.scale + "   Height, " + Main.SKETCH_WINDOW_HEIGHT / this.unit / this.scale);
+                OldMain.SKETCH_WINDOW_WIDTH / this.unit / this.scale + "   Height, " + OldMain.SKETCH_WINDOW_HEIGHT / this.unit / this.scale);
 
     } // END setScale()
 

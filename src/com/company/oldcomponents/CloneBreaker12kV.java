@@ -1,7 +1,7 @@
 package com.company.oldcomponents;
 
 import com.company.geometry.Point;
-import com.company.main.Main;
+import com.company.main.OldMain;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class CloneBreaker12kV extends Breaker12kV {
     private int substationAttachNode;
 
 
-    public CloneBreaker12kV(Main mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith, OldComponent clone,
+    public CloneBreaker12kV(OldMain mainSketch, int id, String name, String type, char orientation, int normalState, int xPos, int yPos, int length, String label, String textAnchor, char labelOrientation, char labelPlacement, String associatedWith, OldComponent clone,
                             String cloneType, String color, String substationAttach, int substationAttachNode) {
         super(mainSketch, id, name, type, orientation, normalState, xPos, yPos, length, label, textAnchor, labelOrientation, labelPlacement, associatedWith);
         this.clone = clone;

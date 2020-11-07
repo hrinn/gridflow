@@ -1,7 +1,7 @@
 package com.company.oldcomponents;
 
 import com.company.geometry.Point;
-import com.company.main.Main;
+import com.company.main.OldMain;
 import processing.core.PConstants;
 
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class Association {
 
     // Values provided by constructor
-    protected Main mainSketch;
+    protected OldMain mainSketch;
     private String assoc;           // The name of the association eg. "SUBA", "SVPP", "PGE" etc.
     private String label1;          // Text for primary label
     private String label1Size;      // Size of label 1 in pixels at 1.0f scale
@@ -41,7 +41,7 @@ public class Association {
     private float zoomPanY;      // Provides zooming value to shortcut key
     private float zoomScale;     // Provides zooming value to shortcut key
 
-    public Association(Main mainSketch, String assoc, String label1, String label1Size, String label2, String label2Size, String labelAlt, int bufferLeft, int bufferRight, int bufferTop, int bufferBottom, int labelHorizPct, int labelVertPct, boolean hide) {
+    public Association(OldMain mainSketch, String assoc, String label1, String label1Size, String label2, String label2Size, String labelAlt, int bufferLeft, int bufferRight, int bufferTop, int bufferBottom, int labelHorizPct, int labelVertPct, boolean hide) {
         this.mainSketch = mainSketch;
         this.assoc = assoc;
         this.label1 = label1;
@@ -66,7 +66,7 @@ public class Association {
     }
 
     private int calcPos(float coord, float scale, float pan) {
-        return (int) ((Main.UNIT * coord * scale) + (pan * scale));
+        return (int) ((OldMain.UNIT * coord * scale) + (pan * scale));
     }
 
     public void renderAssociation(float scale, float panX, float panY) {
@@ -79,7 +79,7 @@ public class Association {
         mainSketch.noFill();
         if(!hide) {
             mainSketch.rect(calcPos(this.boxTopLeft.getX(), scale, panX), calcPos(this.boxTopLeft.getY(), scale, panY),
-                    this.boxWidth * scale * Main.UNIT, this.boxHeight * scale * Main.UNIT);
+                    this.boxWidth * scale * OldMain.UNIT, this.boxHeight * scale * OldMain.UNIT);
         }
 
         if(mainSketch.getViewport().getScale() > 0.33f) {
@@ -110,7 +110,7 @@ public class Association {
             // Draw Label 1 with shadow
             mainSketch.textAlign(PConstants.CENTER, PConstants.CENTER);
             mainSketch.fill(224, 224, 224); // light grey
-            mainSketch.text(label1, xLabel1Anchor + 0.05f * scale * Main.UNIT, yLabel1Anchor + 0.05f * scale * Main.UNIT);
+            mainSketch.text(label1, xLabel1Anchor + 0.05f * scale * OldMain.UNIT, yLabel1Anchor + 0.05f * scale * OldMain.UNIT);
             mainSketch.fill(0, 0, 102); // navy blue
             mainSketch.text(label1, xLabel1Anchor, yLabel1Anchor);
 
@@ -135,7 +135,7 @@ public class Association {
             // Draw Label 2 with shadow
             mainSketch.textAlign(PConstants.CENTER, PConstants.TOP);
             mainSketch.fill(224, 224, 224); // light grey
-            mainSketch.text(label2, xLabel2Anchor + 0.05f * scale * Main.UNIT, yLabel2Anchor + 0.05f * scale * Main.UNIT);
+            mainSketch.text(label2, xLabel2Anchor + 0.05f * scale * OldMain.UNIT, yLabel2Anchor + 0.05f * scale * OldMain.UNIT);
             mainSketch.fill(0, 0, 102); // navy blue
             mainSketch.text(label2, xLabel2Anchor, yLabel2Anchor);
         } else {
@@ -145,7 +145,7 @@ public class Association {
             mainSketch.textAlign(PConstants.CENTER, PConstants.CENTER);
             mainSketch.textSize(80 * scale);
             mainSketch.fill(224, 224, 224); // light grey
-            mainSketch.text(labelAlt, xLabel1Anchor + 0.05f * scale * Main.UNIT, yLabel1Anchor + 0.05f * scale * Main.UNIT);
+            mainSketch.text(labelAlt, xLabel1Anchor + 0.05f * scale * OldMain.UNIT, yLabel1Anchor + 0.05f * scale * OldMain.UNIT);
             mainSketch.fill(0, 0, 102); // navy blue
             mainSketch.text(labelAlt, xLabel1Anchor, yLabel1Anchor);
         }

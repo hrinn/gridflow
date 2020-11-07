@@ -1,6 +1,5 @@
 package com.company.main;
 
-import com.company.main.Main;
 import controlP5.ControlP5;
 
 public class UserInterface {
@@ -44,7 +43,7 @@ public class UserInterface {
     public float toolsWidth;
     public float toolsHeight;
 
-    protected Main mainSketch;
+    protected OldMain mainSketch;
     // Controls GUI
     protected ControlP5 cp5;
 
@@ -56,7 +55,7 @@ public class UserInterface {
 //        this.cp5 = new ControlP5(mainSketch);
     }
 
-    public void setSize(Main mainSketch) {
+    public void setSize(OldMain mainSketch) {
         this.mainSketch = mainSketch;
 
         this.screenWidth = mainSketch.SKETCH_WINDOW_WIDTH;

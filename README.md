@@ -1,6 +1,6 @@
 ![GridFlow Logo](lib/logo.png)
 ---
-GridFlow is a power grid simulator focused on energy flow. This is a Cal Poly Capstone project in partnership with Vandenberg Air Force Base. 
+GridFlow is a power grid simulation focused on energy flow. This is a Cal Poly Capstone project in partnership with Vandenberg Air Force Base. 
 
 ## Install & Run
 These instructions are for IntelliJ IDEA

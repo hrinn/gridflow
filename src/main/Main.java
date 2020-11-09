@@ -53,7 +53,9 @@ public class Main extends Application {
                 center.add(yShift.multiply(2)).add(xShift.negative().multiply(2)),
                 Voltage.KV12, true);
         Wire w1 = new Wire("w1", center.add(yShift));
-        Transformer dd1 = new Transformer("DD1", center);
+        Breaker dd1main = new Breaker("dd1 Main", center, Voltage.KV12, true);
+        Wire w2 = new Wire("w2", center.add(yShift.negative()));
+        Transformer dd1 = new Transformer("transformer dd1", center.add(yShift.negative().multiply(2)));
 
         // Connections
         dd3.connectInWire(w1);
@@ -61,12 +63,15 @@ public class Main extends Application {
         dd7.connectInWire(w1);
         dd8.connectInWire(w1);
         dd9.connectInWire(w1);
-        w1.setConnections(List.of(dd3, dd5, dd7, dd8, dd9, dd1));
-        dd1.connectInWire(w1);
+        w1.setConnections(List.of(dd3, dd5, dd7, dd8, dd9, dd1main));
+        dd1main.connectInWire(w1);
+        dd1main.connectOutWire(w2);
+        w2.setConnections(List.of(dd1main, dd1));
+        dd1.connectInWire(w2);
 
         // Return grid
         Grid grid = new Grid();
-        grid.setComponents(List.of(dd3, dd5, dd7, dd8, dd9, w1, dd1));
+        grid.setComponents(List.of(dd3, dd5, dd7, dd8, dd9, w1, dd1main, w2, dd1));
         return grid;
     }
 

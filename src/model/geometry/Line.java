@@ -1,4 +1,4 @@
-package model.components.geometry;
+package model.geometry;
 
 public class Line {
     private Point start;

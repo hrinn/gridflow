@@ -1,4 +1,4 @@
-package model.components.devices;
+package model.components;
 
 public interface IPairable {
 }

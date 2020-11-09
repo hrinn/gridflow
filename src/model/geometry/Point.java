@@ -1,4 +1,4 @@
-package model.components.geometry;
+package model.geometry;
 
 public class Point {
 
@@ -24,6 +24,18 @@ public class Point {
 
     public void setY(float y) {
         this.y = y;
+    }
+
+    public Point add(Point other) {
+        return new Point(this.x + other.x, this.y + other.y);
+    }
+
+    public Point multiply(float multiplicand) {
+        return new Point(this.x * multiplicand, this.y * multiplicand);
+    }
+
+    public Point negative() {
+        return new Point(this.x * -1, this.y * -1);
     }
 
     @Override

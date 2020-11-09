@@ -1,6 +1,6 @@
 package old.oldcomponents;
 
-import model.components.geometry.Point;
+import model.geometry.Point;
 
 public class OldNode {
 

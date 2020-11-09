@@ -1,6 +1,6 @@
 package old.oldcomponents;
 
-import model.components.geometry.Point;
+import model.geometry.Point;
 import old.main.OldMain;
 import processing.core.PApplet;
 import processing.core.PConstants;

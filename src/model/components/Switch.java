@@ -1,8 +1,6 @@
-package model.components.devices;
+package model.components;
 
-import model.components.IToggleable;
-import model.components.Wire;
-import model.components.geometry.Point;
+import model.geometry.Point;
 
 public class Switch extends Device implements IToggleable, ILockable {
 
@@ -10,7 +8,7 @@ public class Switch extends Device implements IToggleable, ILockable {
     boolean locked;
 
     public Switch(String name, Point position, Wire inWire, Wire outWire, boolean closed) {
-        super(name, position, inWire, outWire);
+        super(name, position);
         this.closed = closed;
         this.locked = false;
     }

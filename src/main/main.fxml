@@ -1,31 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.effect.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="500.0" minWidth="500.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="500.0" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
-      <HBox fx:id="ComponentBuilderMenu" maxHeight="200.0" maxWidth="150.0" minHeight="200.0" minWidth="150.0" prefHeight="200.0" prefWidth="150.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="225.0" BorderPane.alignment="CENTER">
          <children>
-            <SplitPane fx:id="ComponentSplitPane" dividerPositions="0.5" maxHeight="200.0" maxWidth="50.0" minHeight="200.0" minWidth="50.0" prefHeight="200.0" prefWidth="50.0">
+            <SplitPane fx:id="ComponentSplitPane" dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="200.0" prefHeight="600.0" prefWidth="200.0">
               <items>
-                <AnchorPane maxHeight="200.0" maxWidth="50.0" minHeight="200.0" minWidth="50.0" prefHeight="200.0" prefWidth="50.0" />
-                <AnchorPane maxHeight="200.0" maxWidth="50.0" minHeight="200.0" minWidth="50.0" prefHeight="200.0" prefWidth="50.0" />
+                <AnchorPane fx:id="LeftComponentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="100.0" prefHeight="600.0" prefWidth="100.0" />
+                <AnchorPane fx:id="RightComponentPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="600.0" minWidth="100.0" prefHeight="600.0" prefWidth="100.0" />
               </items>
             </SplitPane>
-            <Pane fx:id="ExpandButtonPane" maxHeight="100.0" maxWidth="25.0" minHeight="100.0" minWidth="25.0" prefHeight="100.0" prefWidth="25.0" translateY="50.0">
+            <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateY="150.0">
                <children>
-                  <Button fx:id="ToggleComponentMenu" alignment="CENTER" contentDisplay="CENTER" layoutX="-37.0" layoutY="38.0" maxHeight="25.0" maxWidth="100.0" minHeight="25.0" minWidth="100.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="100.0" rotate="90.0" text="Expando!" />
-               </children></Pane>
+                  <Button fx:id="ToggleComponentMenu" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" rotate="90.0" text="Expando!" />
+               </children>
+            </Pane>
          </children>
       </HBox>
    </left>
    <top>
-      <SplitPane dividerPositions="0.5" maxHeight="50.0" minHeight="50.0" minWidth="300.0" orientation="VERTICAL" prefHeight="50.0" BorderPane.alignment="CENTER">
+      <SplitPane fx:id="TopMenuSplitPane" dividerPositions="0.5" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" orientation="VERTICAL" prefHeight="100.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
         <items>
-          <AnchorPane maxHeight="25.0" minHeight="25.0" minWidth="300.0" prefHeight="25.0" />
-          <AnchorPane maxHeight="25.0" minHeight="25.0" minWidth="300.0" prefHeight="25.0" />
+          <AnchorPane fx:id="TopMenuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" prefHeight="50.0" prefWidth="1920.0" />
+          <AnchorPane fx:id="BottomMenuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" prefHeight="50.0" prefWidth="1920.0" />
         </items>
       </SplitPane>
    </top>

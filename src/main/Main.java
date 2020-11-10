@@ -6,6 +6,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import main.events.Event;
@@ -44,6 +45,14 @@ public class Main extends Application {
         // Init Simulation Module
         new EnergySimulator(grid, eventManager);
 
+        System.out.println(System.getProperty("user.dir"));
+
+        primaryStage.setTitle(TITLE);
+        primaryStage.getIcons().add(new Image("/resources/iconScaled.png"));
+        primaryStage.setMinHeight(700);
+        primaryStage.setMinWidth(500);
+        primaryStage.setScene(scene);
+        primaryStage.show();
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
         eventManager.sendEvent(Event.GridChanged); // build would do this later

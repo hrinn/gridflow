@@ -24,5 +24,33 @@ public class Device extends Component {
         this.outWire = outWire;
     }
 
+    public boolean isInWireEnergized() {
+        return this.inWire.isEnergized();
+    }
+
+    public boolean isOutWireEnergized() {
+        return this.outWire.isEnergized();
+    }
+
+    protected boolean checkClosed() {
+        return true;
+    }
+
+    @Override
+    public List<Component> getAccessibleConnections() {
+        if(this.checkClosed()) {
+            if(inWire.isEnergized()) {
+                outWire.energize();
+                return List.of(outWire);
+            }
+
+            else{
+                inWire.energize();
+                return List.of(inWire);
+            }
+        }
+        return List.of();
+    }
+
 
 }

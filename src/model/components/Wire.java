@@ -9,7 +9,6 @@ public class Wire extends Component {
 
     private List<Component> connections;
     private List<Line> segments;
-    private Point center;
     private boolean energized;
 
     public Wire(String name, Point center) {
@@ -36,5 +35,13 @@ public class Wire extends Component {
 
     public List<Component> getConnections() {
         return connections;
+    }
+
+    @Override
+    public List<Component> getAccessibleConnections() {
+        if(energized) {
+            return connections;
+        }
+        return List.of();
     }
 }

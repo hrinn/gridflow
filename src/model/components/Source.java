@@ -11,9 +11,9 @@ public class Source extends Component implements IToggleable {
     private boolean on;
     private List<Wire> outputs;
 
-    public Source(String name, Point position) {
+    public Source(String name, Point position, boolean on) {
         super(name, position);
-        this.on = false;
+        this.on = on;
         this.outputs = new ArrayList<>();
     }
 
@@ -31,5 +31,18 @@ public class Source extends Component implements IToggleable {
 
     public void addOutput(Wire wire) {
         outputs.add(wire);
+    }
+
+    @Override
+    public List<Component> getAccessibleConnections() {
+        if(on) {
+            List<Component> outComponents = new ArrayList<>();
+            for(Wire output : outputs) {
+                output.energize();
+                outComponents.add(output);
+            }
+            return outComponents;
+        }
+        return List.of();
     }
 }

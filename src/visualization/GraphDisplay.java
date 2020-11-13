@@ -11,9 +11,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.Grid;
-import model.components.Component;
-import model.components.IToggleable;
-import model.components.Wire;
+import model.components.*;
 
 import java.util.UUID;
 
@@ -96,7 +94,29 @@ public class GraphDisplay {
         ellipse.setCenterY(component.getPosition().getY());
         ellipse.setRadiusX(30);
         ellipse.setRadiusY(20);
-        ellipse.setStroke(Color.BLACK);
+
+        // set fill different based on type (this is bad code and will work differently later)
+        if (component instanceof Wire) {
+            Wire wire = (Wire)component;
+            ellipse.setStroke(wire.isEnergized() ? Color.YELLOW : Color.BLACK);
+
+        } else if (component instanceof Device) {
+            Device device = (Device)component;
+
+            if (device.isInWireEnergized() && device.isOutWireEnergized()) {
+                ellipse.setStroke(Color.YELLOW);
+            } else if (!device.isInWireEnergized() && !device.isOutWireEnergized()) {
+                ellipse.setStroke(Color.BLACK);
+            } else  {
+                // partially energized
+                ellipse.setStroke(Color.MEDIUMVIOLETRED);
+            }
+
+        } else { // its a source
+            Source source = (Source)component;
+            ellipse.setStroke(source.getState() ? Color.YELLOW : Color.BLACK);
+
+        }
         ellipse.setFill(Color.WHITE);
 
         Text name = new Text();

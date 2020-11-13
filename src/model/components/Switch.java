@@ -24,4 +24,9 @@ public class Switch extends Device implements IToggleable, ILockable {
     public void toggleLocked() {
         locked = !locked;
     }
+
+    @Override
+    protected boolean checkClosed() {
+        return closed;
+    }
 }

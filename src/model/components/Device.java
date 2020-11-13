@@ -24,6 +24,14 @@ public class Device extends Component {
         this.outWire = outWire;
     }
 
+    public boolean isInWireEnergized() {
+        return this.inWire.isEnergized();
+    }
+
+    public boolean isOutWireEnergized() {
+        return this.outWire.isEnergized();
+    }
+
     protected boolean checkClosed() {
         return true;
     }

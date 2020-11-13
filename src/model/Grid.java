@@ -1,7 +1,6 @@
 package model;
 
 import model.components.Component;
-import model.components.Source;
 import model.components.Wire;
 
 import java.util.ArrayList;
@@ -34,6 +33,13 @@ public class Grid {
                 .map(component -> (Wire)component)
                 .collect(Collectors.toList());
     }
+
+    public Component getComponent(String id) {
+        return components.stream()
+                .filter(comp -> comp.getId().toString().equals(id))
+                .findFirst().orElse(null);
+    }
+
 
 
 }

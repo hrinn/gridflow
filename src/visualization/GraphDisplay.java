@@ -1,7 +1,10 @@
 package visualization;
 
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
@@ -9,22 +12,54 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.Grid;
 import model.components.Component;
+import model.components.IToggleable;
 import model.components.Wire;
+
+import java.util.UUID;
 
 public class GraphDisplay {
 
-    private Group root;
+    private Group nodes;
+    private Group edges;
+    private Group graphRoot;
+    private Grid grid;
 
-    public GraphDisplay() {
-        root = new Group();
+    public GraphDisplay(Grid grid) {
+        nodes = new Group();
+        edges = new Group();
+        graphRoot = new Group(edges, nodes);
+        this.grid = grid;
+
+        EventHandler<MouseEvent> nodeClickedHandler = mouseEvent -> handleNodeClicked(mouseEvent);
+        nodes.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeClickedHandler);
     }
+
+    private void handleNodeClicked(MouseEvent mouseEvent) {
+        Parent targetNode = ((Node)mouseEvent.getTarget()).getParent();
+
+        Component component = grid.getComponent(targetNode.getId());
+
+        if (component instanceof IToggleable) {
+            ((IToggleable)component).toggleState();
+            updateComponent(component); // TODO: This should be moved, update component should not be called directly by click
+        }
+    }
+
 
     public Group getGraphRoot() {
-        return root;
+        return graphRoot;
     }
 
-    private void addElement(Node node) {
-        root.getChildren().add(node);
+    private void addTextElement(Group node, Text text) {
+        node.getChildren().add(text);
+    }
+
+    private void addNodeElement(Group node) {
+        nodes.getChildren().add(node);
+    }
+
+    private void addEdgeElement(Line edge) {
+        edges.getChildren().add(edge);
     }
 
     public void displayGrid(Grid grid) {
@@ -39,7 +74,6 @@ public class GraphDisplay {
         for (Component component : grid.getComponents()) {
             addComponent(component);
         }
-
     }
 
     public void addConnection(Component c1, Component c2) {
@@ -51,28 +85,54 @@ public class GraphDisplay {
         line.setEndX(c2.getPosition().getX());
         line.setEndY(c2.getPosition().getY());
 
-        addElement(line);
+        addEdgeElement(line);
     }
 
-    public void addComponent(Component component) {
-        Ellipse graphcomp = new Ellipse();
+    private void addComponent(Component component) {
+        // base ellipse
+        Ellipse ellipse = new Ellipse();
 
-        graphcomp.setCenterX(component.getPosition().getX());
-        graphcomp.setCenterY(component.getPosition().getY());
-        graphcomp.setRadiusX(30);
-        graphcomp.setRadiusY(20);
-        graphcomp.setStroke(Color.BLACK);
-        graphcomp.setFill(Color.WHITE);
+        ellipse.setCenterX(component.getPosition().getX());
+        ellipse.setCenterY(component.getPosition().getY());
+        ellipse.setRadiusX(30);
+        ellipse.setRadiusY(20);
+        ellipse.setStroke(Color.BLACK);
+        ellipse.setFill(Color.WHITE);
 
-        addElement(graphcomp);
+        Text name = new Text();
+        name.setText(component.getName());
+        name.setX(ellipse.getCenterX());
+        name.setY(ellipse.getCenterY());
+        name.setTextAlignment(TextAlignment.RIGHT);
 
-        Text text = new Text();
-        text.setText(component.getName());
-        text.setX(graphcomp.getCenterX());
-        text.setY(graphcomp.getCenterY());
-        text.setTextAlignment(TextAlignment.CENTER);
+        Group node = new Group(ellipse, name);
+        node.setId(component.getId().toString());
+        addNodeElement(node);
 
-        addElement(text);
+        // only display if it can be toggled
+        if (component instanceof IToggleable) {
+            Text state = new Text();
+            state.setText(((IToggleable) component).getState() ? "true" : "false");
+            state.setX(ellipse.getCenterX());
+            state.setY(ellipse.getCenterY() + 10);
+            state.setTextAlignment(TextAlignment.LEFT);
+            addTextElement(node, state);
+        }
+
     }
+
+    private void deleteComponent(UUID id) {
+        Node node = nodes.getChildren().stream()
+                .filter(node1 -> node1.getId().equals(id.toString()))
+                .findFirst().orElse(null);
+        if (node == null) return;
+        nodes.getChildren().remove(node);
+    }
+
+    private void updateComponent(Component component) {
+        deleteComponent(component.getId());
+        addComponent(component);
+    }
+
 
 }

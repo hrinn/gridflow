@@ -10,10 +10,20 @@ public class Wire extends Component {
     private List<Component> connections;
     private List<Line> segments;
     private Point center;
+    private boolean energized;
 
     public Wire(String name, Point center) {
         super(name, center);
         this.connections = new ArrayList<>();
+        energized = false;
+    }
+
+    public void energize() {
+        energized = true;
+    }
+
+    public boolean isEnergized() {
+        return energized;
     }
 
     public void connect(Component component) {

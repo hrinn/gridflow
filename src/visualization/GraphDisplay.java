@@ -134,5 +134,4 @@ public class GraphDisplay {
         addComponent(component);
     }
 
-
 }

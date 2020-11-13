@@ -23,10 +23,11 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        GraphDisplay graphDisplay = new GraphDisplay();
+        Grid grid = createTestGrid();
+
+        GraphDisplay graphDisplay = new GraphDisplay(grid);
         initGui(primaryStage, graphDisplay.getGraphRoot());
 
-        Grid grid = createTestGrid();
         graphDisplay.displayGrid(grid);
     }
 

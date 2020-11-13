@@ -1,7 +1,9 @@
 package visualization;
 
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
@@ -13,18 +15,35 @@ import model.components.Wire;
 
 public class GraphDisplay {
 
-    private Group root;
+    private Group graphRoot;
 
     public GraphDisplay() {
-        root = new Group();
+        graphRoot = new Group();
+
+        EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                handleMouseEvent(mouseEvent);
+            }
+        };
+
+        graphRoot.addEventFilter(MouseEvent.MOUSE_CLICKED, eventHandler);
     }
 
+    private void handleMouseEvent(MouseEvent mouseEvent) {
+        Node target = (Node)mouseEvent.getTarget();
+        if (target instanceof Ellipse) {
+            ((Ellipse)target).setFill(Color.YELLOW);
+        }
+    }
+
+
     public Group getGraphRoot() {
-        return root;
+        return graphRoot;
     }
 
     private void addElement(Node node) {
-        root.getChildren().add(node);
+        graphRoot.getChildren().add(node);
     }
 
     public void displayGrid(Grid grid) {

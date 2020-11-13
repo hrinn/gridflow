@@ -37,4 +37,12 @@ public class Wire extends Component {
     public List<Component> getConnections() {
         return connections;
     }
+
+    @Override
+    public List<Component> getAccessibleConnections() {
+        if(energized) {
+            return connections;
+        }
+        return List.of();
+    }
 }

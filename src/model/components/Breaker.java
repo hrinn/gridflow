@@ -21,4 +21,9 @@ public class Breaker extends Device implements IToggleable, ICloneable, IPairabl
     public boolean getState() {
         return this.closed;
     }
+
+    @Override
+    protected boolean checkClosed() {
+        return closed;
+    }
 }

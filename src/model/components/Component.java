@@ -31,4 +31,8 @@ public class Component {
     public Point getPosition() {
         return position;
     }
+
+    public List<Component> getAccessibleConnections() {
+        return List.of();
+    }
 }

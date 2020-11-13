@@ -32,4 +32,17 @@ public class Source extends Component implements IToggleable {
     public void addOutput(Wire wire) {
         outputs.add(wire);
     }
+
+    @Override
+    public List<Component> getAccessibleConnections() {
+        if(on) {
+            List<Component> outComponents = List.of();
+            for(Wire output : outputs) {
+                output.energize();
+                outComponents.add(output);
+            }
+            return outComponents;
+        }
+        return List.of();
+    }
 }

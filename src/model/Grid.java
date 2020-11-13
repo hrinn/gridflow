@@ -1,6 +1,7 @@
 package model;
 
 import model.components.Component;
+import model.components.Source;
 import model.components.Wire;
 
 import java.util.ArrayList;
@@ -31,6 +32,13 @@ public class Grid {
         return components.stream()
                 .filter(component -> component instanceof Wire)
                 .map(component -> (Wire)component)
+                .collect(Collectors.toList());
+    }
+
+    public List<Source> getSources() {
+        return components.stream()
+                .filter(component -> component instanceof Source)
+                .map(component -> (Source)component)
                 .collect(Collectors.toList());
     }
 

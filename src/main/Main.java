@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 import model.Grid;
 import model.components.*;
 import model.geometry.*;
+import simulation.EnergySimulator;
 import visualization.GraphDisplay;
 
 import java.io.IOException;
@@ -29,6 +30,9 @@ public class Main extends Application {
         initGui(primaryStage, graphDisplay.getGraphRoot());
 
         graphDisplay.displayGrid(grid);
+
+        EnergySimulator energySimulator = new EnergySimulator(grid);
+        energySimulator.EnergyDFS();
     }
 
     private Grid createTestGrid() {

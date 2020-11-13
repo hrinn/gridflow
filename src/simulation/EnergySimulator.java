@@ -15,7 +15,7 @@ public class EnergySimulator {
         this.grid = grid;
     }
 
-    public void EnergyDFS() {
+    public void energyDFS() {
         clearVisited();
         for (Source source : grid.getSources()) {
             explore(source);

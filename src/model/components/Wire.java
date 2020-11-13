@@ -9,7 +9,6 @@ public class Wire extends Component {
 
     private List<Component> connections;
     private List<Line> segments;
-    private Point center;
     private boolean energized;
 
     public Wire(String name, Point center) {

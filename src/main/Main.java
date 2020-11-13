@@ -32,7 +32,7 @@ public class Main extends Application {
         graphDisplay.displayGrid(grid);
 
         EnergySimulator energySimulator = new EnergySimulator(grid);
-        energySimulator.EnergyDFS();
+        energySimulator.energyDFS();
     }
 
     private Grid createTestGrid() {
@@ -42,6 +42,7 @@ public class Main extends Application {
         Point yShift = new Point(0, 75);
 
         // Components
+        Wire outwire = new Wire("outwire", center.add(yShift.multiply(3)));
         Breaker dd3 = new Breaker("dd3",
                 center.add(yShift.multiply(2)).add(xShift.multiply(2)),
                 Voltage.KV12, true);
@@ -61,22 +62,35 @@ public class Main extends Application {
         Breaker dd1main = new Breaker("dd1 Main", center, Voltage.KV12, true);
         Wire w2 = new Wire("w2", center.add(yShift.negative()));
         Transformer dd1 = new Transformer("transformer dd1", center.add(yShift.negative().multiply(2)));
+        Wire w3 = new Wire("w3", center.add(yShift.negative().multiply(3)));
+        PowerSource p1 = new PowerSource("p1", center.add(yShift.negative().multiply(4)), true);
 
         // Connections
+        dd3.connectOutWire(outwire);
+        dd5.connectOutWire(outwire);
+        dd7.connectOutWire(outwire);
+        dd8.connectOutWire(outwire);
+        dd9.connectOutWire(outwire);
+        outwire.setConnections(List.of(dd3, dd5, dd7, dd8, dd9));
+
         dd3.connectInWire(w1);
         dd5.connectInWire(w1);
         dd7.connectInWire(w1);
         dd8.connectInWire(w1);
         dd9.connectInWire(w1);
         w1.setConnections(List.of(dd3, dd5, dd7, dd8, dd9, dd1main));
+
         dd1main.connectInWire(w1);
         dd1main.connectOutWire(w2);
         w2.setConnections(List.of(dd1main, dd1));
         dd1.connectInWire(w2);
+        dd1.connectOutWire(w3);
+        w3.setConnections(List.of(dd1, p1));
+        p1.connectWire(w3);
 
         // Return grid
         Grid grid = new Grid();
-        grid.setComponents(List.of(dd3, dd5, dd7, dd8, dd9, w1, dd1main, w2, dd1));
+        grid.setComponents(List.of(dd3, dd5, dd7, dd8, dd9, w1, dd1main, w2, dd1, w3, p1, outwire));
         return grid;
     }
 

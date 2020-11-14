@@ -10,26 +10,37 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import main.Event;
+import main.EventManager;
+import main.IEventListener;
 import model.Grid;
 import model.components.*;
 
 import java.util.UUID;
 
-public class GraphDisplay {
+public class GraphDisplay implements IEventListener {
 
     private Group nodes;
     private Group edges;
     private Group graphRoot;
     private Grid grid;
+    private EventManager eventManager;
 
-    public GraphDisplay(Grid grid) {
+    public GraphDisplay(Grid grid, EventManager eventManager) {
         nodes = new Group();
         edges = new Group();
         graphRoot = new Group(edges, nodes);
         this.grid = grid;
+        this.eventManager = eventManager;
 
-        EventHandler<MouseEvent> nodeClickedHandler = mouseEvent -> handleNodeClicked(mouseEvent);
+        EventHandler<MouseEvent> nodeClickedHandler = this::handleNodeClicked;
         nodes.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeClickedHandler);
+    }
+
+    public void handleEvent(Event event) {
+        if (event == Event.GridEnergized) {
+            displayGrid();
+        }
     }
 
     private void handleNodeClicked(MouseEvent mouseEvent) {
@@ -39,7 +50,8 @@ public class GraphDisplay {
 
         if (component instanceof IToggleable) {
             ((IToggleable)component).toggleState();
-            updateComponent(component); // TODO: This should be moved, update component should not be called directly by click
+            eventManager.sendEvent(Event.GridChanged);
+
         }
     }
 
@@ -60,7 +72,9 @@ public class GraphDisplay {
         edges.getChildren().add(edge);
     }
 
-    public void displayGrid(Grid grid) {
+    public void displayGrid() {
+        clearGraph();
+
         // draw connections
         for (Wire wire : grid.getWires()) {
             for (Component connection : wire.getConnections()) {
@@ -141,17 +155,9 @@ public class GraphDisplay {
 
     }
 
-    private void deleteComponent(UUID id) {
-        Node node = nodes.getChildren().stream()
-                .filter(node1 -> node1.getId().equals(id.toString()))
-                .findFirst().orElse(null);
-        if (node == null) return;
-        nodes.getChildren().remove(node);
-    }
-
-    private void updateComponent(Component component) {
-        deleteComponent(component.getId());
-        addComponent(component);
+    private void clearGraph() {
+        nodes.getChildren().clear();
+        edges.getChildren().clear();
     }
 
 }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public class DevUtils {
 
-    public static Grid createTestGrid(int width, int height) {
+    public static List<Component> createTestComponents(int width, int height) {
         // Points used to place components
         Point center = new Point(width/2, height/2);
         Point xShift = new Point(100, 0);
@@ -61,9 +61,7 @@ public class DevUtils {
         w3.setConnections(List.of(dd1, p1));
         p1.connectWire(w3);
 
-        // Return grid
-        Grid grid = new Grid();
-        grid.setComponents(List.of(dd3, dd5, dd7, dd8, dd9, w1, dd1main, w2, dd1, w3, p1, outwire));
-        return grid;
+        // Return components
+        return List.of(dd3, dd5, dd7, dd8, dd9, w1, dd1main, w2, dd1, w3, p1, outwire);
     }
 }

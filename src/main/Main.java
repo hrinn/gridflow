@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import main.events.Event;
+import main.events.EventManager;
 import model.Grid;
 import simulation.EnergySimulator;
 import visualization.GraphDisplay;
@@ -21,14 +23,23 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Grid grid = DevUtils.createTestGrid(1300, 700);
+        Grid grid = new Grid();
+        EventManager eventManager = new EventManager();
 
-        GraphDisplay graphDisplay = new GraphDisplay(grid);
+        // Init modules
+        GraphDisplay graphDisplay = new GraphDisplay(grid, eventManager);
+        EnergySimulator energySimulator = new EnergySimulator(grid, eventManager);
+
+        // Connect event manager dependencies
+        eventManager.addListener(energySimulator);
+        eventManager.addListener(graphDisplay);
+
+        // Draw base GUI
         initGui(primaryStage, graphDisplay.getGraphRoot());
 
-        EnergySimulator energySimulator = new EnergySimulator(grid);
-        energySimulator.energyDFS();
-        graphDisplay.displayGrid(grid);
+        // Load components into grid
+        grid.loadComponents(DevUtils.createTestComponents(WINDOW_WIDTH, WINDOW_HEIGHT));
+        eventManager.sendEvent(Event.GridChanged); // build would do this later
     }
 
     private void initGui(Stage primaryStage, Group graphRoot) throws IOException {

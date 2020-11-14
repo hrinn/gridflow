@@ -21,6 +21,10 @@ public class Wire extends Component {
         energized = true;
     }
 
+    public void deEnergize() {
+        energized = false;
+    }
+
     public boolean isEnergized() {
         return energized;
     }

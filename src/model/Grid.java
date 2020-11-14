@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 public class Grid {
 
-    private List<Component> components;
+    private final List<Component> components;
 
     public Grid() {
         components = new ArrayList<>();
@@ -24,8 +24,8 @@ public class Grid {
         components.add(component);
     }
 
-    public void setComponents(List<Component> components) {
-        this.components = components;
+    public void loadComponents(List<Component> components) {
+        for (Component component : components) addComponent(component);
     }
 
     public List<Wire> getWires() {
@@ -47,7 +47,5 @@ public class Grid {
                 .filter(comp -> comp.getId().toString().equals(id))
                 .findFirst().orElse(null);
     }
-
-
 
 }

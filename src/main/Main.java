@@ -7,6 +7,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import main.events.Event;
+import main.events.EventManager;
 import model.Grid;
 import simulation.EnergySimulator;
 import visualization.GraphDisplay;

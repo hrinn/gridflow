@@ -1,8 +1,8 @@
 package simulation;
 
-import main.Event;
-import main.EventManager;
-import main.IEventListener;
+import main.events.Event;
+import main.events.EventManager;
+import main.events.IEventListener;
 import model.Grid;
 import model.components.Component;
 import model.components.Source;

@@ -10,13 +10,11 @@ import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import main.Event;
-import main.EventManager;
-import main.IEventListener;
+import main.events.Event;
+import main.events.EventManager;
+import main.events.IEventListener;
 import model.Grid;
 import model.components.*;
-
-import java.util.UUID;
 
 public class GraphDisplay implements IEventListener {
 

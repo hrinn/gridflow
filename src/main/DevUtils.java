@@ -33,10 +33,11 @@ public class DevUtils {
                 center.add(yShift.multiply(2)).add(xShift.negative().multiply(2)),
                 Voltage.KV12, false);
         Wire w1 = new Wire("w1", center.add(yShift));
-        Breaker dd1main = new Breaker("dd1 Main", center, Voltage.KV12, true);
+        Switch dd1main = new Switch("dd1 Main", center, true);
         Wire w2 = new Wire("w2", center.add(yShift.negative()));
         Transformer dd1 = new Transformer("transformer dd1", center.add(yShift.negative().multiply(2)));
         Wire w3 = new Wire("w3", center.add(yShift.negative().multiply(3)));
+        Switch dd105 = new Switch("dd105", center.add(yShift.negative().multiply(2)).add(xShift), true);
         PowerSource p1 = new PowerSource("p1", center.add(yShift.negative().multiply(4)), true);
 
         // Connections
@@ -57,13 +58,15 @@ public class DevUtils {
 
         dd1main.connectInWire(w2);
         dd1main.connectOutWire(w1);
-        w2.setConnections(List.of(dd1main, dd1));
+        w2.setConnections(List.of(dd1main, dd1, dd105));
         dd1.connectInWire(w2);
         dd1.connectOutWire(w3);
-        w3.setConnections(List.of(dd1, p1));
+        dd105.connectInWire(w2);
+        dd105.connectOutWire(w3);
+        w3.setConnections(List.of(dd1, p1, dd105));
         p1.connectWire(w3);
 
         // Return components
-        return List.of(dd3, dd5, dd7, dd8, dd9, w1, dd1main, w2, dd1, w3, p1, w4, w5);
+        return List.of(dd3, dd5, dd7, dd8, dd9, w1, dd1main, w2, dd1, w3, p1, w4, w5, dd105);
     }
 }

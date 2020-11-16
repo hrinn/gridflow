@@ -37,7 +37,6 @@ public class GraphVisualizer implements IEventListener {
         canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-        canvas.addGrid();
     }
 
     public void handleEvent(Event event) {

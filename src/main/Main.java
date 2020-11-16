@@ -36,7 +36,7 @@ public class Main extends Application {
         initGui(primaryStage, graphVisualizer.getGridCanvas());
 
         // Load components into grid
-        grid.loadComponents(DevUtils.createTestComponents(2600, 1400));
+        grid.loadComponents(DevUtils.createTestComponents());
         eventManager.sendEvent(Event.GridChanged); // build would do this later
     }
 

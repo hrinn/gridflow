@@ -15,6 +15,7 @@ import main.events.EventManager;
 import main.events.IEventListener;
 import model.Grid;
 import model.components.*;
+import model.geometry.Point;
 
 public class GraphVisualizer implements IEventListener {
 
@@ -27,6 +28,8 @@ public class GraphVisualizer implements IEventListener {
         this.grid = grid;
         this.eventManager = eventManager;
         eventManager.addListener(this);
+        canvas.setTranslateX(-5350);
+        canvas.setTranslateY(-2650);
 
         nodeGestures = new NodeGestures(canvas, eventManager, grid);
         SceneGestures sceneGestures = new SceneGestures(canvas);
@@ -72,21 +75,31 @@ public class GraphVisualizer implements IEventListener {
 
     public void addConnection(Component c1, Component c2) {
         Line line = new Line();
+        Point c1CanvasPosition = gridPositionToCanvasPosition(c1.getPosition());
+        Point c2CanvasPosition = gridPositionToCanvasPosition(c2.getPosition());
 
-        line.setStartX(c1.getPosition().getX());
-        line.setStartY(c1.getPosition().getY());
+        line.setStartX(c1CanvasPosition.getX());
+        line.setStartY(c1CanvasPosition.getY());
 
-        line.setEndX(c2.getPosition().getX());
-        line.setEndY(c2.getPosition().getY());
+        line.setEndX(c2CanvasPosition.getX());
+        line.setEndY(c2CanvasPosition.getY());
 
         addNodeToCanvas(line);
     }
 
+    private Point gridPositionToCanvasPosition(Point gridPosition) {
+        return gridPosition.scale(100).translate(canvas.getWidth()/2, canvas.getHeight()/2);
+    }
+
     private void addComponent(Component component) {
+        // Component position to canvas position
+        Point canvasPosition = gridPositionToCanvasPosition(component.getPosition());
+
         // upperArc definition
         Arc upperArc = new Arc();
-        upperArc.setCenterX(component.getPosition().getX());
-        upperArc.setCenterY(component.getPosition().getY());
+        upperArc.setCenterX(canvasPosition.getX());
+        upperArc.setCenterY(canvasPosition.getY());
+
         upperArc.setLength(180);
         upperArc.setRadiusX(30);
         upperArc.setRadiusY(20);
@@ -95,8 +108,8 @@ public class GraphVisualizer implements IEventListener {
 
         // lowerArc definition
         Arc lowerArc = new Arc();
-        lowerArc.setCenterX(component.getPosition().getX());
-        lowerArc.setCenterY(component.getPosition().getY());
+        lowerArc.setCenterX(canvasPosition.getX());
+        lowerArc.setCenterY(canvasPosition.getY());
         lowerArc.setLength(180);
         lowerArc.setRadiusX(30);
         lowerArc.setRadiusY(20);
@@ -111,18 +124,8 @@ public class GraphVisualizer implements IEventListener {
 
         } else if (component instanceof Device) {
             Device device = (Device)component;
-
-            if (device.isInWireEnergized() && device.isOutWireEnergized()) {
-                upperArc.setStroke(Color.YELLOW);
-                lowerArc.setStroke(Color.YELLOW);
-            } else if (!device.isInWireEnergized() && !device.isOutWireEnergized()) {
-                upperArc.setStroke(Color.BLACK);
-                lowerArc.setStroke(Color.BLACK);
-            } else  {
-                // partially energized
-                upperArc.setStroke(device.isInWireEnergized() ? Color.YELLOW : Color.BLACK);
-                lowerArc.setStroke(device.isOutWireEnergized() ? Color.YELLOW : Color.BLACK);
-            }
+            upperArc.setStroke(device.isInWireEnergized() ? Color.YELLOW : Color.BLACK);
+            lowerArc.setStroke(device.isOutWireEnergized() ? Color.YELLOW: Color.BLACK);
 
         } else { // its a source
             Source source = (Source)component;

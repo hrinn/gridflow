@@ -19,6 +19,7 @@ public class EnergySimulator implements IEventListener {
     public EnergySimulator(Grid grid, EventManager eventManager) {
         this.grid = grid;
         this.eventManager = eventManager;
+        eventManager.addListener(this);
         visitedMap = new HashMap<>();
     }
 

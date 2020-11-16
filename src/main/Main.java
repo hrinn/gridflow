@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import main.events.Event;
@@ -12,6 +13,7 @@ import main.events.EventManager;
 import model.Grid;
 import simulation.EnergySimulator;
 import visualization.GraphVisualizer;
+import visualization.PannableCanvas;
 
 import java.io.IOException;
 
@@ -28,25 +30,22 @@ public class Main extends Application {
 
         // Init modules
         GraphVisualizer graphVisualizer = new GraphVisualizer(grid, eventManager);
-        EnergySimulator energySimulator = new EnergySimulator(grid, eventManager);
-
-        // Connect event manager dependencies
-        eventManager.addListener(energySimulator);
-        eventManager.addListener(graphVisualizer);
+        new EnergySimulator(grid, eventManager);
 
         // Draw base GUI
-        initGui(primaryStage, graphVisualizer.getGraphRoot());
+        initGui(primaryStage, graphVisualizer.getGridCanvas());
 
         // Load components into grid
-        grid.loadComponents(DevUtils.createTestComponents(WINDOW_WIDTH, WINDOW_HEIGHT));
+        grid.loadComponents(DevUtils.createTestComponents(2600, 1400));
         eventManager.sendEvent(Event.GridChanged); // build would do this later
     }
 
-    private void initGui(Stage primaryStage, Group graphRoot) throws IOException {
+    private void initGui(Stage primaryStage, PannableCanvas gridCanvas) throws IOException {
         Node mainUI = FXMLLoader.load(getClass().getResource("main.fxml"));
 
-        Group root = new Group(graphRoot, mainUI);
+        Group root = new Group(gridCanvas, mainUI);
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        scene.setFill(Color.LIGHTGRAY);
 
         primaryStage.setTitle(TITLE);
         primaryStage.setScene(scene);

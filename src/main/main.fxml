@@ -5,5 +5,4 @@
 <?import javafx.scene.control.Label?>
 <GridPane fx:controller="main.Controller"
           xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
-    <Button text="Test" />
 </GridPane>

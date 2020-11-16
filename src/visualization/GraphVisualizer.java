@@ -32,6 +32,7 @@ public class GraphVisualizer implements IEventListener {
         graphRoot = new Group(edges, nodes);
         this.grid = grid;
         this.eventManager = eventManager;
+        eventManager.addListener(this);
 
         EventHandler<MouseEvent> nodeClickedHandler = this::handleNodeClicked;
         nodes.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeClickedHandler);
@@ -45,6 +46,8 @@ public class GraphVisualizer implements IEventListener {
 
     private void handleNodeClicked(MouseEvent mouseEvent) {
         Parent targetNode = ((Node)mouseEvent.getTarget()).getParent();
+        targetNode.setScaleX(100);
+        targetNode.setScaleY(100);
 
         Component component = grid.getComponent(targetNode.getId());
 

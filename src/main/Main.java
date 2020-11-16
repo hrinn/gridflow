@@ -30,10 +30,6 @@ public class Main extends Application {
         GraphVisualizer graphVisualizer = new GraphVisualizer(grid, eventManager);
         EnergySimulator energySimulator = new EnergySimulator(grid, eventManager);
 
-        // Connect event manager dependencies
-        eventManager.addListener(energySimulator);
-        eventManager.addListener(graphVisualizer);
-
         // Draw base GUI
         initGui(primaryStage, graphVisualizer.getGraphRoot());
 

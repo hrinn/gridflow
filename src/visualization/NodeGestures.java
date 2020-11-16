@@ -2,17 +2,26 @@ package visualization;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
+import main.events.Event;
+import main.events.EventManager;
+import model.Grid;
+import model.components.Component;
+import model.components.IToggleable;
 
 public class NodeGestures {
 
     private DragContext nodeDragContext = new DragContext();
 
     PannableCanvas canvas;
+    EventManager eventManager; // should model interaction be moved somewhere else?
+    Grid grid;
 
-    public NodeGestures( PannableCanvas canvas) {
+    public NodeGestures(PannableCanvas canvas, EventManager eventManager, Grid grid) {
         this.canvas = canvas;
-
+        this.eventManager = eventManager;
+        this.grid = grid;
     }
 
     public EventHandler<MouseEvent> getOnMousePressedEventHandler() {
@@ -27,18 +36,16 @@ public class NodeGestures {
 
         public void handle(MouseEvent event) {
 
-            // left mouse button => dragging
-            if( !event.isPrimaryButtonDown())
-                return;
+            if (event.isSecondaryButtonDown()) return;
 
-            nodeDragContext.mouseAnchorX = event.getSceneX();
-            nodeDragContext.mouseAnchorY = event.getSceneY();
+            Parent targetNode = ((Node)event.getTarget()).getParent();
+            Component component = grid.getComponent(targetNode.getId());
 
-            Node node = (Node) event.getSource();
+            if (component instanceof IToggleable) {
+                ((IToggleable)component).toggleState();
+                eventManager.sendEvent(Event.GridChanged);
 
-            nodeDragContext.translateAnchorX = node.getTranslateX();
-            nodeDragContext.translateAnchorY = node.getTranslateY();
-
+            }
         }
 
     };

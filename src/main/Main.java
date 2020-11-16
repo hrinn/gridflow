@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import main.events.Event;
@@ -29,7 +30,7 @@ public class Main extends Application {
 
         // Init modules
         GraphVisualizer graphVisualizer = new GraphVisualizer(grid, eventManager);
-        EnergySimulator energySimulator = new EnergySimulator(grid, eventManager);
+        new EnergySimulator(grid, eventManager);
 
         // Draw base GUI
         initGui(primaryStage, graphVisualizer.getGridCanvas());
@@ -44,6 +45,7 @@ public class Main extends Application {
 
         Group root = new Group(gridCanvas, mainUI);
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        scene.setFill(Color.LIGHTGRAY);
 
         primaryStage.setTitle(TITLE);
         primaryStage.setScene(scene);

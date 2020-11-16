@@ -34,7 +34,7 @@ public class SceneGestures {
         public void handle(MouseEvent event) {
 
             // right mouse button => panning
-            if( !event.isSecondaryButtonDown())
+            if(!event.isSecondaryButtonDown())
                 return;
 
             sceneDragContext.mouseAnchorX = event.getSceneX();

@@ -25,20 +25,19 @@ public class GraphVisualizer implements IEventListener {
     private PannableCanvas canvas = new PannableCanvas();
     private Grid grid;
     private EventManager eventManager;
+    private NodeGestures nodeGestures;
 
     public GraphVisualizer(Grid grid, EventManager eventManager) {
         this.grid = grid;
         this.eventManager = eventManager;
         eventManager.addListener(this);
 
-        NodeGestures nodeGestures = new NodeGestures(canvas);
+        nodeGestures = new NodeGestures(canvas, eventManager, grid);
         SceneGestures sceneGestures = new SceneGestures(canvas);
         canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-
-        //EventHandler<MouseEvent> nodeClickedHandler = this::handleNodeClicked;
-        //nodes.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeClickedHandler);
+        canvas.addGrid();
     }
 
     public void handleEvent(Event event) {
@@ -46,21 +45,6 @@ public class GraphVisualizer implements IEventListener {
             displayGrid();
         }
     }
-
-    private void handleNodeClicked(MouseEvent mouseEvent) {
-        Parent targetNode = ((Node)mouseEvent.getTarget()).getParent();
-        targetNode.setScaleX(100);
-        targetNode.setScaleY(100);
-
-        Component component = grid.getComponent(targetNode.getId());
-
-        if (component instanceof IToggleable) {
-            ((IToggleable)component).toggleState();
-            eventManager.sendEvent(Event.GridChanged);
-
-        }
-    }
-
 
     public PannableCanvas getGridCanvas() {
         return canvas;
@@ -72,6 +56,7 @@ public class GraphVisualizer implements IEventListener {
 
     private void addNodeToCanvas(Node node) {
         canvas.getChildren().add(node);
+        node.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
     }
 
     public void displayGrid() {

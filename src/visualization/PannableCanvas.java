@@ -12,8 +12,8 @@ public class PannableCanvas extends Pane {
     DoubleProperty scale = new SimpleDoubleProperty(1.0);
 
     public PannableCanvas() {
-        setPrefSize(1300, 700);
-        setStyle("-fx-background-color: white;");
+        setPrefSize(10000, 5000);
+        setStyle("-fx-background-color: white; -fx-border-color: blue;");
 
         scaleXProperty().bind(scale);
         scaleYProperty().bind(scale);
@@ -31,7 +31,7 @@ public class PannableCanvas extends Pane {
 
         GraphicsContext graphicsContext = grid.getGraphicsContext2D();
 
-        graphicsContext.setStroke(Color.LIGHTGRAY);
+        graphicsContext.setStroke(Color.GRAY);
         graphicsContext.setLineWidth(1);
 
         // draw grid lines

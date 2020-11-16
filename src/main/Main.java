@@ -11,7 +11,7 @@ import main.events.Event;
 import main.events.EventManager;
 import model.Grid;
 import simulation.EnergySimulator;
-import visualization.GraphDisplay;
+import visualization.GraphVisualizer;
 
 import java.io.IOException;
 
@@ -27,15 +27,15 @@ public class Main extends Application {
         EventManager eventManager = new EventManager();
 
         // Init modules
-        GraphDisplay graphDisplay = new GraphDisplay(grid, eventManager);
+        GraphVisualizer graphVisualizer = new GraphVisualizer(grid, eventManager);
         EnergySimulator energySimulator = new EnergySimulator(grid, eventManager);
 
         // Connect event manager dependencies
         eventManager.addListener(energySimulator);
-        eventManager.addListener(graphDisplay);
+        eventManager.addListener(graphVisualizer);
 
         // Draw base GUI
-        initGui(primaryStage, graphDisplay.getGraphRoot());
+        initGui(primaryStage, graphVisualizer.getGraphRoot());
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents(WINDOW_WIDTH, WINDOW_HEIGHT));

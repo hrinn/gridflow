@@ -18,7 +18,7 @@ import main.events.IEventListener;
 import model.Grid;
 import model.components.*;
 
-public class GraphDisplay implements IEventListener {
+public class GraphVisualizer implements IEventListener {
 
     private Group nodes;
     private Group edges;
@@ -26,7 +26,7 @@ public class GraphDisplay implements IEventListener {
     private Grid grid;
     private EventManager eventManager;
 
-    public GraphDisplay(Grid grid, EventManager eventManager) {
+    public GraphVisualizer(Grid grid, EventManager eventManager) {
         nodes = new Group();
         edges = new Group();
         graphRoot = new Group(edges, nodes);

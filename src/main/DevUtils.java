@@ -53,8 +53,8 @@ public class DevUtils {
         dd9.connectInWire(w1);
         w1.setConnections(List.of(dd3, dd5, dd7, dd8, dd9, dd1main));
 
-        dd1main.connectInWire(w1);
-        dd1main.connectOutWire(w2);
+        dd1main.connectInWire(w2);
+        dd1main.connectOutWire(w1);
         w2.setConnections(List.of(dd1main, dd1));
         dd1.connectInWire(w2);
         dd1.connectOutWire(w3);

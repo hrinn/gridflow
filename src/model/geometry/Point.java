@@ -2,27 +2,31 @@ package model.geometry;
 
 public class Point {
 
-    private float x;
-    private float y;
+    private int x;
+    private int y;
 
-    public Point(float x, float y) {
+    public Point(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public float getX() {
+    public static Point origin() {
+        return new Point(0, 0);
+    }
+
+    public int getX() {
         return x;
     }
 
-    public void setX(float x) {
+    public void setX(int x) {
         this.x = x;
     }
 
-    public float getY() {
+    public int getY() {
         return y;
     }
 
-    public void setY(float y) {
+    public void setY(int y) {
         this.y = y;
     }
 
@@ -30,8 +34,12 @@ public class Point {
         return new Point(this.x + other.x, this.y + other.y);
     }
 
-    public Point multiply(float multiplicand) {
-        return new Point(this.x * multiplicand, this.y * multiplicand);
+    public Point scale(int scalar) {
+        return new Point(this.x * scalar, this.y * scalar);
+    }
+
+    public Point translate(double x, double y) {
+        return new Point(this.x + (int)x, this.y + (int)y);
     }
 
     public Point negative() {

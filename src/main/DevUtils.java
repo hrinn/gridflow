@@ -1,6 +1,5 @@
 package main;
 
-import model.Grid;
 import model.components.*;
 import model.geometry.Point;
 
@@ -8,37 +7,33 @@ import java.util.List;
 
 public class DevUtils {
 
-    public static List<Component> createTestComponents(int width, int height) {
-        // Points used to place components
-        Point center = new Point(width/2, height/2);
-        Point xShift = new Point(100, 0);
-        Point yShift = new Point(0, 75);
+    public static List<Component> createTestComponents() {
 
         // Components
-        Wire w4 = new Wire("w4", center.add(yShift.multiply(3)).add(xShift));
-        Wire w5 = new Wire("w5", center.add(yShift.multiply(3)).add(xShift.negative()));
+        Wire w4 = new Wire("w4", new Point(1, 3));
+        Wire w5 = new Wire("w5", new Point(-1, 3));
         Breaker dd3 = new Breaker("dd3",
-                center.add(yShift.multiply(2)).add(xShift.multiply(2)),
+                new Point(2, 2),
                 Voltage.KV12, false);
         Breaker dd5 = new Breaker("dd5",
-                center.add(yShift.multiply(2)).add(xShift),
+                new Point(1, 2),
                 Voltage.KV12, false);
         Breaker dd7 = new Breaker("dd7",
-                center.add(yShift.multiply(2)),
+                new Point(0, 2),
                 Voltage.KV12, false);
         Breaker dd8 = new Breaker("dd8",
-                center.add(yShift.multiply(2)).add(xShift.negative()),
+                new Point(-1, 2),
                 Voltage.KV12, false);
         Breaker dd9 = new Breaker("dd9",
-                center.add(yShift.multiply(2)).add(xShift.negative().multiply(2)),
+                new Point(-2, 2),
                 Voltage.KV12, false);
-        Wire w1 = new Wire("w1", center.add(yShift));
-        Switch dd1main = new Switch("dd1 Main", center, true);
-        Wire w2 = new Wire("w2", center.add(yShift.negative()));
-        Transformer dd1 = new Transformer("transformer dd1", center.add(yShift.negative().multiply(2)));
-        Wire w3 = new Wire("w3", center.add(yShift.negative().multiply(3)));
-        Switch dd105 = new Switch("dd105", center.add(yShift.negative().multiply(2)).add(xShift), true);
-        PowerSource p1 = new PowerSource("p1", center.add(yShift.negative().multiply(4)), true);
+        Wire w1 = new Wire("w1", new Point(0, 1));
+        Switch dd1main = new Switch("dd1 Main", Point.origin(), true);
+        Wire w2 = new Wire("w2", new Point(0, -1));
+        Transformer dd1 = new Transformer("xform-dd1", new Point(0, -2));
+        Wire w3 = new Wire("w3", new Point(0, -3));
+        Switch dd105 = new Switch("dd105", new Point(1, -2), true);
+        PowerSource p1 = new PowerSource("p1", new Point(0, -4), true);
 
         // Connections
         dd3.connectOutWire(w4);

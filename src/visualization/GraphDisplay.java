@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
@@ -99,45 +101,62 @@ public class GraphDisplay implements IEventListener {
     }
 
     private void addComponent(Component component) {
-        // base ellipse
-        Ellipse ellipse = new Ellipse();
+        // upperArc definition
+        Arc upperArc = new Arc();
+        upperArc.setCenterX(component.getPosition().getX());
+        upperArc.setCenterY(component.getPosition().getY());
+        upperArc.setLength(180);
+        upperArc.setRadiusX(30);
+        upperArc.setRadiusY(20);
+        upperArc.setStartAngle(0);
+        upperArc.setType(ArcType.OPEN);
 
-        ellipse.setCenterX(component.getPosition().getX());
-        ellipse.setCenterY(component.getPosition().getY());
-        ellipse.setRadiusX(30);
-        ellipse.setRadiusY(20);
+        // lowerArc definition
+        Arc lowerArc = new Arc();
+        lowerArc.setCenterX(component.getPosition().getX());
+        lowerArc.setCenterY(component.getPosition().getY());
+        lowerArc.setLength(180);
+        lowerArc.setRadiusX(30);
+        lowerArc.setRadiusY(20);
+        lowerArc.setStartAngle(180);
+        lowerArc.setType(ArcType.OPEN);
 
         // set fill different based on type (this is bad code and will work differently later)
         if (component instanceof Wire) {
             Wire wire = (Wire)component;
-            ellipse.setStroke(wire.isEnergized() ? Color.YELLOW : Color.BLACK);
+            upperArc.setStroke(wire.isEnergized() ? Color.YELLOW : Color.BLACK);
+            lowerArc.setStroke(wire.isEnergized() ? Color.YELLOW : Color.BLACK);
 
         } else if (component instanceof Device) {
             Device device = (Device)component;
 
             if (device.isInWireEnergized() && device.isOutWireEnergized()) {
-                ellipse.setStroke(Color.YELLOW);
+                upperArc.setStroke(Color.YELLOW);
+                lowerArc.setStroke(Color.YELLOW);
             } else if (!device.isInWireEnergized() && !device.isOutWireEnergized()) {
-                ellipse.setStroke(Color.BLACK);
+                upperArc.setStroke(Color.BLACK);
+                lowerArc.setStroke(Color.BLACK);
             } else  {
                 // partially energized
-                ellipse.setStroke(Color.MEDIUMVIOLETRED);
+                upperArc.setStroke(device.isInWireEnergized() ? Color.YELLOW : Color.BLACK);
+                lowerArc.setStroke(device.isOutWireEnergized() ? Color.YELLOW : Color.BLACK);
             }
 
         } else { // its a source
             Source source = (Source)component;
-            ellipse.setStroke(source.getState() ? Color.YELLOW : Color.BLACK);
-
+            upperArc.setStroke(source.getState() ? Color.YELLOW : Color.BLACK);
+            lowerArc.setStroke(source.getState() ? Color.YELLOW : Color.BLACK);
         }
-        ellipse.setFill(Color.WHITE);
+        upperArc.setFill(Color.WHITE);
+        lowerArc.setFill(Color.WHITE);
 
         Text name = new Text();
         name.setText(component.getName());
-        name.setX(ellipse.getCenterX());
-        name.setY(ellipse.getCenterY());
+        name.setX(upperArc.getCenterX());
+        name.setY(upperArc.getCenterY());
         name.setTextAlignment(TextAlignment.RIGHT);
 
-        Group node = new Group(ellipse, name);
+        Group node = new Group(upperArc, lowerArc, name);
         node.setId(component.getId().toString());
         addNodeElement(node);
 
@@ -145,8 +164,8 @@ public class GraphDisplay implements IEventListener {
         if (component instanceof IToggleable) {
             Text state = new Text();
             state.setText(((IToggleable) component).getState() ? "true" : "false");
-            state.setX(ellipse.getCenterX());
-            state.setY(ellipse.getCenterY() + 10);
+            state.setX(upperArc.getCenterX());
+            state.setY(upperArc.getCenterY() + 10);
             state.setTextAlignment(TextAlignment.LEFT);
             addTextElement(node, state);
         }

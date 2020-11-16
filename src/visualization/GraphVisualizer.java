@@ -1,16 +1,12 @@
 package visualization;
 
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
@@ -22,7 +18,7 @@ import model.components.*;
 
 public class GraphVisualizer implements IEventListener {
 
-    private PannableCanvas canvas = new PannableCanvas();
+    private PannableCanvas canvas = new PannableCanvas(12000, 6000);
     private Grid grid;
     private EventManager eventManager;
     private NodeGestures nodeGestures;

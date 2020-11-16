@@ -28,11 +28,7 @@ public class NodeGestures {
         return onMousePressedEventHandler;
     }
 
-    public EventHandler<MouseEvent> getOnMouseDraggedEventHandler() {
-        return onMouseDraggedEventHandler;
-    }
-
-    private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
+    private final EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<>() {
 
         public void handle(MouseEvent event) {
 
@@ -48,24 +44,5 @@ public class NodeGestures {
             }
         }
 
-    };
-
-    private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
-        public void handle(MouseEvent event) {
-
-            // left mouse button => dragging
-            if( !event.isPrimaryButtonDown())
-                return;
-
-            double scale = canvas.getScale();
-
-            Node node = (Node) event.getSource();
-
-            node.setTranslateX(nodeDragContext.translateAnchorX + (( event.getSceneX() - nodeDragContext.mouseAnchorX) / scale));
-            node.setTranslateY(nodeDragContext.translateAnchorY + (( event.getSceneY() - nodeDragContext.mouseAnchorY) / scale));
-
-            event.consume();
-
-        }
     };
 }

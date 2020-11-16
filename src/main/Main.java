@@ -12,6 +12,7 @@ import main.events.EventManager;
 import model.Grid;
 import simulation.EnergySimulator;
 import visualization.GraphVisualizer;
+import visualization.PannableCanvas;
 
 import java.io.IOException;
 
@@ -31,17 +32,17 @@ public class Main extends Application {
         EnergySimulator energySimulator = new EnergySimulator(grid, eventManager);
 
         // Draw base GUI
-        initGui(primaryStage, graphVisualizer.getGraphRoot());
+        initGui(primaryStage, graphVisualizer.getGridCanvas());
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents(WINDOW_WIDTH, WINDOW_HEIGHT));
         eventManager.sendEvent(Event.GridChanged); // build would do this later
     }
 
-    private void initGui(Stage primaryStage, Group graphRoot) throws IOException {
+    private void initGui(Stage primaryStage, PannableCanvas gridCanvas) throws IOException {
         Node mainUI = FXMLLoader.load(getClass().getResource("main.fxml"));
 
-        Group root = new Group(graphRoot, mainUI);
+        Group root = new Group(gridCanvas, mainUI);
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
         primaryStage.setTitle(TITLE);

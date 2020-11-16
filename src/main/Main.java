@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
 import main.events.Event;
 import main.events.EventManager;
@@ -15,6 +16,7 @@ import model.Grid;
 import simulation.EnergySimulator;
 import visualization.GridScene;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +74,18 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+/*    private Button CreateRoundButton(){
+        Button roundButton = new Button("Account");
+
+        roundButton.setStyle(
+
+
+        );
+
+        return roundButton;
+    }*/
+
 
     public static void main(String[] args) {
         launch(args);

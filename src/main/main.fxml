@@ -29,7 +29,7 @@
                <children>
                   <Button fx:id="ToggleComponentMenu" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: #b0b0b0;">
                      <graphic>
-                        <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+                        <ImageView fx:id="CollapseArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
                            <image>
                               <Image url="@../resources/ArrowLeft.png" />
                            </image>
@@ -44,11 +44,11 @@
       <DropShadow />
    </effect>
    <top>
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" prefHeight="80.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" prefHeight="80.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
          <children>
             <AnchorPane fx:id="TopMenuPane1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" prefHeight="40.0" prefWidth="1920.0" style="-fx-background-color: #b0b0b0;">
                <children>
-                  <MenuBar maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="1620.0" style="-fx-alignment: left; -fx-background-color: #b0b0b0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <MenuBar fx:id="TopMenuBar" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="1620.0" style="-fx-alignment: left; -fx-background-color: #b0b0b0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <menus>
                         <Menu mnemonicParsing="false" style="-fx-font-size: 14; -fx-text-alignment: center;" text="File">
                            <items>
@@ -67,11 +67,11 @@
                         </Menu>
                      </menus>
                   </MenuBar>
-                  <ImageView fitHeight="40.0" fitWidth="250.0" layoutX="1620.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" style="-fx-graphic: url(';" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="2.0">
+                  <ImageView fx:id="MenuLogo" fitHeight="40.0" fitWidth="250.0" layoutX="1620.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="2.0">
                      <image>
                         <Image url="@../resources/logoScaled.png" />
                      </image></ImageView>
-                  <Button fx:id="AccountButton1" layoutX="1889.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-graphic: url('/resources/AccountCircle.png'); -fx-background-radius: 15px; -fx-min-height: 30px; -fx-max-height: 30px; -fx-min-width: 30px; -fx-max-width: 30px; -fx-background-color: #008eb0;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
+                  <Button fx:id="AccountButton" layoutX="1889.0" layoutY="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" style="-fx-graphic: url('/resources/AccountCircle.png'); -fx-background-radius: 15px; -fx-min-height: 30px; -fx-max-height: 30px; -fx-min-width: 30px; -fx-max-width: 30px; -fx-background-color: #008eb0;" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="5.0">
                      <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                      </padding>

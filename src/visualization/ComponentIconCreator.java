@@ -1,5 +1,6 @@
 package visualization;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -50,22 +51,22 @@ public class ComponentIconCreator {
         DeviceIcon breakerIcon = new DeviceIcon();
 
         Line inLine1 = createLine(p, p.translate(0, 0.75 * UNIT));
-        Line inLine2 = createLine(p.translate(0, UNIT), p.translate(0, 1.5 * UNIT));
-        Line inChevron1L = createLine(p.translate(-0.5 * UNIT, UNIT), p.translate(0, 0.75 * UNIT));
-        Line inChevron1R = createLine(p.translate(0.5 * UNIT, UNIT), p.translate(0, 0.75 * UNIT));
-        Line inChevron2L = createLine(p.translate(-0.5 * UNIT, 1.25 * UNIT), p.translate(0, UNIT));
-        Line inChevron2R = createLine(p.translate(0.5 * UNIT, 1.25 * UNIT), p.translate(0, UNIT));
+        Line inLine2 = createRoundedLine(p.translate(0, UNIT), p.translate(0, 1.5 * UNIT));
+        Line inChevron1L = createRoundedLine(p.translate(-0.5 * UNIT, UNIT), p.translate(0, 0.75 * UNIT));
+        Line inChevron1R = createRoundedLine(p.translate(0.5 * UNIT, UNIT), p.translate(0, 0.75 * UNIT));
+        Line inChevron2L = createRoundedLine(p.translate(-0.5 * UNIT, 1.25 * UNIT), p.translate(0, UNIT));
+        Line inChevron2R = createRoundedLine(p.translate(0.5 * UNIT, 1.25 * UNIT), p.translate(0, UNIT));
         breakerIcon.addInNodeShapes(inLine1, inLine2, inChevron1L, inChevron1R, inChevron2L, inChevron2R);
 
-        Line outLine1 = createLine(p.translate(0, 2.5 * UNIT), p.translate(0, 3 * UNIT));
+        Line outLine1 = createRoundedLine(p.translate(0, 2.5 * UNIT), p.translate(0, 3 * UNIT));
         Line outLine2 = createLine(p.translate(0, 3.25 * UNIT), p.translate(0, 4 * UNIT));
-        Line outChevron1L = createLine(p.translate(-0.5 * UNIT, 2.75 * UNIT),
+        Line outChevron1L = createRoundedLine(p.translate(-0.5 * UNIT, 2.75 * UNIT),
                 p.translate(0, 3 * UNIT));
-        Line outChevron1R = createLine(p.translate(0.5 * UNIT, 2.75 * UNIT),
+        Line outChevron1R = createRoundedLine(p.translate(0.5 * UNIT, 2.75 * UNIT),
                 p.translate(0, 3 * UNIT));
-        Line outChevron2L = createLine(p.translate(-0.5 * UNIT, 3 * UNIT),
+        Line outChevron2L = createRoundedLine(p.translate(-0.5 * UNIT, 3 * UNIT),
                 p.translate(0, 3.25 * UNIT));
-        Line outChevron2R = createLine(p.translate(0.5 * UNIT, 3 * UNIT),
+        Line outChevron2R = createRoundedLine(p.translate(0.5 * UNIT, 3 * UNIT),
                 p.translate(0, 3.25 * UNIT));
         breakerIcon.addOutNodeShapes(outLine1, outLine2, outChevron1L, outChevron1R, outChevron2L, outChevron2R);
 
@@ -77,6 +78,8 @@ public class ComponentIconCreator {
     }
 
     public static DeviceIcon getTransformerIcon(Point p) {
+
+        // change to new icon that can't be split energy maybe
         DeviceIcon transformerIcon = new DeviceIcon();
 
         Line inLine = createLine(p, p.translate(0, 1.1 * UNIT));
@@ -112,10 +115,40 @@ public class ComponentIconCreator {
 
         Line outLine = createLine(p.translate(0, 2 * UNIT), p.translate(0, 3 * UNIT));
         Arc jumper = createHalfArc(p.translate(0, 1.5 * UNIT), 0.5 * UNIT, Orientation.RIGHT);
+        // transforms must be applied prior to adding the node
         if (!closed) rotateNode(jumper, p.translate(0, 2 * UNIT), 45);
+
         jumperIcon.addOutNodeShapes(outLine, jumper);
 
         return jumperIcon;
+    }
+
+    public static DeviceIcon getCutoutIcon(Point p, boolean closed) {
+        DeviceIcon cutoutIcon = new DeviceIcon();
+
+        Line inLine = createLine(p, p.translate(0, .95 * UNIT));
+        cutoutIcon.addInNodeShapes(inLine);
+
+        Line outLine = createLine(p.translate(0, 2 * UNIT), p.translate(0, 3 * UNIT));
+        // these shapes get rotated together
+        Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * UNIT), 0.15 * UNIT, Orientation.UP);
+        Circle cutoutDot = createCircle(p.translate(0, 1.125 * UNIT), 0.5);
+        Line cutoutLineL = createRoundedLine(p.translate(0, 2 * UNIT), p.translate(-0.15 * UNIT, 1.125 * UNIT));
+        Line cutoutLineR = createRoundedLine(p.translate(0, 2 * UNIT), p.translate(0.15 * UNIT, 1.125 * UNIT));
+
+        // rotate shapes
+        if (!closed) {
+            Point pivot = p.translate(0, 2 * UNIT);
+            double angle = 135;
+
+            rotateNode(cutoutArc, pivot, angle);
+            rotateNode(cutoutLineL, pivot, angle);
+            rotateNode(cutoutLineR, pivot, angle);
+            rotateNode(cutoutDot, pivot, angle);
+        }
+        cutoutIcon.addOutNodeShapes(outLine, cutoutArc, cutoutDot, cutoutLineL, cutoutLineR);
+
+        return cutoutIcon;
     }
 
     private static Line createLine(Point p1, Point p2) {
@@ -131,9 +164,16 @@ public class ComponentIconCreator {
         return line;
     }
 
+    private static Line createRoundedLine(Point p1, Point p2) {
+        Line line = createLine(p1, p2);
+        line.setStrokeLineCap(StrokeLineCap.ROUND);
+        return line;
+    }
+
     private static Rectangle createRectangle(Point p1, Point p2, Color fill) {
         Rectangle rectangle = new Rectangle();
         rectangle.setStrokeWidth(STROKE_WIDTH);
+        rectangle.setStrokeType(StrokeType.CENTERED);
         rectangle.setStroke(Color.BLACK);
         rectangle.setFill(fill);
 
@@ -152,6 +192,7 @@ public class ComponentIconCreator {
         arc.setStroke(Color.BLACK);
         arc.setFill(Color.TRANSPARENT);
         arc.setType(ArcType.OPEN);
+        arc.setStrokeType(StrokeType.CENTERED);
 
         arc.setCenterX(center.getX());
         arc.setCenterY(center.getY());
@@ -161,6 +202,19 @@ public class ComponentIconCreator {
         arc.setStartAngle(getArcStartAngle(orientation));
 
         return arc;
+    }
+
+    private static Circle createCircle(Point center, double radius) {
+        Circle circle = new Circle();
+        circle.setStroke(Color.BLACK);
+        circle.setStrokeWidth(STROKE_WIDTH);
+        circle.setFill(Color.TRANSPARENT);
+
+        circle.setCenterX(center.getX());
+        circle.setCenterY(center.getY());
+        circle.setRadius(radius);
+
+        return circle;
     }
 
     private static void rotateNode(Node node, Point pivot, double angle) {

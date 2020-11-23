@@ -61,9 +61,9 @@ public class GraphVisualizer implements IEventListener {
         jumperIcon.setNodeEnergyStates(false, true);
         addNodeToCanvas(jumperIcon);
 
-        DeviceIcon jumperIcon2 = ComponentIconCreator.getJumperIcon(center.translate(200, 0), true);
-        jumperIcon2.setNodeEnergyStates(true, true);
-        addNodeToCanvas(jumperIcon2);
+        DeviceIcon cutoutIcon = ComponentIconCreator.getCutoutIcon(center.translate(210, 0), false);
+        cutoutIcon.setNodeEnergyStates(false, false);
+        addNodeToCanvas(cutoutIcon);
     }
 
     public void handleEvent(Event event) {

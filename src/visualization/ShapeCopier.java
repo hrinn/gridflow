@@ -13,6 +13,8 @@ public class ShapeCopier {
             return copyArc((Arc)shape);
         } else if (shape instanceof QuadCurve) {
             return copyQuadCurve((QuadCurve)shape);
+        } else if (shape instanceof Circle) {
+            return copyCircle((Circle)shape);
         } else {
             throw new UnsupportedOperationException();
         }
@@ -27,15 +29,16 @@ public class ShapeCopier {
     }
 
     private static Arc copyArc(Arc arc) {
-        Arc copy = new Arc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(),
+        return new Arc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(),
                 arc.getStartAngle(), arc.getLength());
-        // apply transforms to copy
-        arc.getTransforms().forEach(transform -> copy.getTransforms().add(transform));
-        return copy;
     }
 
     private static QuadCurve copyQuadCurve(QuadCurve qc) {
         return new QuadCurve(qc.getStartX(), qc.getStartY(), qc.getControlX(), qc.getControlY(),
                 qc.getEndX(), qc.getEndY());
+    }
+
+    private static Circle copyCircle(Circle circle) {
+        return new Circle(circle.getCenterX(), circle.getCenterY(), circle.getRadius());
     }
 }

@@ -55,6 +55,8 @@ public class DeviceIcon extends Group {
             energyOutlineShape.setStrokeWidth(ENERGY_STROKE_WIDTH);
             energyOutlineShape.setStroke(Color.YELLOW);
             energyOutlineShape.setFill(Color.TRANSPARENT);
+            // apply transforms to copy
+            shape.getTransforms().forEach(transform -> energyOutlineShape.getTransforms().add(transform));
 
             energyOutline.getChildren().add(energyOutlineShape);
         }

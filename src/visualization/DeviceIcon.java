@@ -2,11 +2,12 @@ package visualization;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 
 public class DeviceIcon extends Group {
+
+    // TODO: add endpoint circles that don't get energized, can be clicked to add a component
 
     private static final double ENERGY_STROKE_WIDTH = 2;
 
@@ -23,7 +24,8 @@ public class DeviceIcon extends Group {
     private final Group indicatorNode = new Group();
 
     public DeviceIcon() {
-        getChildren().addAll(inNodeEnergyOutline, outNodeEnergyOutline, midNodeEnergyOutline, inNode, outNode, midNode, indicatorNode);
+        getChildren().addAll(inNodeEnergyOutline, outNodeEnergyOutline, midNodeEnergyOutline,
+                inNode, outNode, midNode, indicatorNode);
     }
 
     public void addInNodeShapes(Shape... shapes) {
@@ -46,6 +48,7 @@ public class DeviceIcon extends Group {
             energyOutlineShape.setStrokeType(StrokeType.OUTSIDE);
             energyOutlineShape.setStrokeWidth(ENERGY_STROKE_WIDTH);
             energyOutlineShape.setStroke(Color.YELLOW);
+            energyOutlineShape.setFill(Color.WHITE);
             energyOutline.getChildren().add(energyOutlineShape);
         }
     }

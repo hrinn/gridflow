@@ -40,15 +40,22 @@ public class GraphVisualizer implements IEventListener {
 
     private void testDrawComps() {
         Point center = new Point(5350, 2650);
+
         DeviceIcon switchIcon = ComponentIconCreator.getSwitchIcon(center);
         switchIcon.setNodeEnergyStates(true, false);
-
         addNodeToCanvas(switchIcon);
 
         DeviceIcon breakerIcon = ComponentIconCreator.get70KVBreakerIcon(center.translate(40, 0));
-        breakerIcon.setNodeEnergyStates(false, true);
-
+        breakerIcon.setNodeEnergyStates(true, true);
         addNodeToCanvas(breakerIcon);
+
+        DeviceIcon breakerIcon2 = ComponentIconCreator.get12KVBreakerIcon(center.translate(80, -10));
+        breakerIcon2.setNodeEnergyStates(true, false);
+        addNodeToCanvas(breakerIcon2);
+
+        DeviceIcon xformIcon = ComponentIconCreator.getTransformerIcon(center.translate(130, 0));
+        xformIcon.setNodeEnergyStates(true, true);
+        addNodeToCanvas(xformIcon);
     }
 
     public void handleEvent(Event event) {

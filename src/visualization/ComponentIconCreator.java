@@ -1,13 +1,15 @@
 package visualization;
 
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.transform.Rotate;
 import model.geometry.Point;
 
 public class ComponentIconCreator {
 
-    private static double UNIT = 20;
-    private static double STROKE_WIDTH = 1.5;
+    private static final double UNIT = 20;
+    private static final double STROKE_WIDTH = 1.5;
 
     public static DeviceIcon getSwitchIcon(Point position) {
         DeviceIcon switchIcon = new DeviceIcon();
@@ -82,10 +84,10 @@ public class ComponentIconCreator {
                 p.translate(-1 * UNIT, 1.1 * UNIT));
         Line inEdgeR = createLine(p.translate(1 * UNIT, 0.9 * UNIT),
                 p.translate(1 * UNIT, 1.1 * UNIT));
-        Arc arcIn1 = createHalfArc(p.translate(-0.75 * UNIT, 1.1 * UNIT), 0.25 * UNIT, true);
-        Arc arcIn2 = createHalfArc(p.translate(-0.25 * UNIT, 1.1 * UNIT), 0.25 * UNIT, true);
-        Arc arcIn3 = createHalfArc(p.translate(0.25 * UNIT, 1.1 * UNIT), 0.25 * UNIT, true);
-        Arc arcIn4 = createHalfArc(p.translate(0.75 * UNIT, 1.1 * UNIT), 0.25 * UNIT, true);
+        Arc arcIn1 = createHalfArc(p.translate(-0.75 * UNIT, 1.1 * UNIT), 0.25 * UNIT, Orientation.DOWN);
+        Arc arcIn2 = createHalfArc(p.translate(-0.25 * UNIT, 1.1 * UNIT), 0.25 * UNIT, Orientation.DOWN);
+        Arc arcIn3 = createHalfArc(p.translate(0.25 * UNIT, 1.1 * UNIT), 0.25 * UNIT, Orientation.DOWN);
+        Arc arcIn4 = createHalfArc(p.translate(0.75 * UNIT, 1.1 * UNIT), 0.25 * UNIT, Orientation.DOWN);
         transformerIcon.addInNodeShapes(inLine, inEdgeL, inEdgeR, arcIn1, arcIn2, arcIn3, arcIn4);
 
         Line outLine = createLine(p.translate(0, 1.9 * UNIT), p.translate(0, 3 * UNIT));
@@ -93,13 +95,27 @@ public class ComponentIconCreator {
                 p.translate(-1 * UNIT, 2.1 * UNIT));
         Line outEdgeR = createLine(p.translate(1 * UNIT, 1.9 * UNIT),
                 p.translate(1 * UNIT, 2.1 * UNIT));
-        Arc arcOut1 = createHalfArc(p.translate(-0.75 * UNIT, 1.9 * UNIT), 0.25 * UNIT, false);
-        Arc arcOut2 = createHalfArc(p.translate(-0.25 * UNIT, 1.9 * UNIT), 0.25 * UNIT, false);
-        Arc arcOut3 = createHalfArc(p.translate(0.25 * UNIT, 1.9 * UNIT), 0.25 * UNIT, false);
-        Arc arcOut4 = createHalfArc(p.translate(0.75 * UNIT, 1.9 * UNIT), 0.25 * UNIT, false);
-        transformerIcon.addInNodeShapes(outLine, outEdgeL, outEdgeR, arcOut1, arcOut2, arcOut3, arcOut4);
+        Arc arcOut1 = createHalfArc(p.translate(-0.75 * UNIT, 1.9 * UNIT), 0.25 * UNIT, Orientation.UP);
+        Arc arcOut2 = createHalfArc(p.translate(-0.25 * UNIT, 1.9 * UNIT), 0.25 * UNIT, Orientation.UP);
+        Arc arcOut3 = createHalfArc(p.translate(0.25 * UNIT, 1.9 * UNIT), 0.25 * UNIT, Orientation.UP);
+        Arc arcOut4 = createHalfArc(p.translate(0.75 * UNIT, 1.9 * UNIT), 0.25 * UNIT, Orientation.UP);
+        transformerIcon.addOutNodeShapes(outLine, outEdgeL, outEdgeR, arcOut1, arcOut2, arcOut3, arcOut4);
 
         return transformerIcon;
+    }
+
+    public static DeviceIcon getJumperIcon(Point p, boolean closed) {
+        DeviceIcon jumperIcon = new DeviceIcon();
+
+        Line inLine = createLine(p, p.translate(0, UNIT));
+        jumperIcon.addInNodeShapes(inLine);
+
+        Line outLine = createLine(p.translate(0, 2 * UNIT), p.translate(0, 3 * UNIT));
+        Arc jumper = createHalfArc(p.translate(0, 1.5 * UNIT), 0.5 * UNIT, Orientation.RIGHT);
+        if (!closed) rotateNode(jumper, p.translate(0, 2 * UNIT), 45);
+        jumperIcon.addOutNodeShapes(outLine, jumper);
+
+        return jumperIcon;
     }
 
     private static Line createLine(Point p1, Point p2) {
@@ -130,7 +146,7 @@ public class ComponentIconCreator {
         return rectangle;
     }
 
-    private static Arc createHalfArc(Point center, double radius, boolean up) {
+    private static Arc createHalfArc(Point center, double radius, Orientation orientation) {
         Arc arc = new Arc();
         arc.setStrokeWidth(STROKE_WIDTH);
         arc.setStroke(Color.BLACK);
@@ -141,9 +157,36 @@ public class ComponentIconCreator {
         arc.setCenterY(center.getY());
         arc.setRadiusX(radius);
         arc.setRadiusY(radius);
-        arc.setStartAngle(up ? 180 : 0);
         arc.setLength(180);
+        arc.setStartAngle(getArcStartAngle(orientation));
 
         return arc;
     }
+
+    private static void rotateNode(Node node, Point pivot, double angle) {
+        Rotate rotateTransform = new Rotate();
+        rotateTransform.setPivotX(pivot.getX());
+        rotateTransform.setPivotY(pivot.getY());
+        rotateTransform.setAngle(angle);
+
+        node.getTransforms().add(rotateTransform);
+    }
+
+    private static double getArcStartAngle(Orientation orientation) {
+        switch (orientation) {
+            case UP:
+                return 0;
+            case DOWN:
+                return 180;
+            case LEFT:
+                return 90;
+            case RIGHT:
+                return 270;
+        }
+        return 0;
+    }
+}
+
+enum Orientation {
+    UP, DOWN, LEFT, RIGHT
 }

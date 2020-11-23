@@ -10,6 +10,7 @@ public class DeviceIcon extends Group {
     // TODO: add endpoint circles that don't get energized, can be clicked to add a component
     // TODO: add a source icon class that can be backfed
     // TODO: add a one node class
+    // TODO: add clickable bounding box
 
     private static final double ENERGY_STROKE_WIDTH = 4;
 

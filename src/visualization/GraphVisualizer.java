@@ -56,6 +56,14 @@ public class GraphVisualizer implements IEventListener {
         DeviceIcon xformIcon = ComponentIconCreator.getTransformerIcon(center.translate(130, 0));
         xformIcon.setNodeEnergyStates(true, true);
         addNodeToCanvas(xformIcon);
+
+        DeviceIcon jumperIcon = ComponentIconCreator.getJumperIcon(center.translate(170, 0), false);
+        jumperIcon.setNodeEnergyStates(false, true);
+        addNodeToCanvas(jumperIcon);
+
+        DeviceIcon jumperIcon2 = ComponentIconCreator.getJumperIcon(center.translate(200, 0), true);
+        jumperIcon2.setNodeEnergyStates(true, true);
+        addNodeToCanvas(jumperIcon2);
     }
 
     public void handleEvent(Event event) {

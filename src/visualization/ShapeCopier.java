@@ -27,8 +27,11 @@ public class ShapeCopier {
     }
 
     private static Arc copyArc(Arc arc) {
-        return new Arc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(),
+        Arc copy = new Arc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(),
                 arc.getStartAngle(), arc.getLength());
+        // apply transforms to copy
+        arc.getTransforms().forEach(transform -> copy.getTransforms().add(transform));
+        return copy;
     }
 
     private static QuadCurve copyQuadCurve(QuadCurve qc) {

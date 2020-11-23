@@ -5,10 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import main.events.Event;
@@ -37,11 +34,26 @@ public class GraphVisualizer implements IEventListener {
         canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
         canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+
+        testDrawComps();
+    }
+
+    private void testDrawComps() {
+        Point center = new Point(5350, 2650);
+        DeviceIcon switchIcon = ComponentIconCreator.getSwitchIcon(center);
+        switchIcon.setNodeEnergyStates(true, false);
+
+        addNodeToCanvas(switchIcon);
+
+        DeviceIcon breakerIcon = ComponentIconCreator.get70KVBreakerIcon(center.translate(40, 0));
+        breakerIcon.setNodeEnergyStates(false, true);
+
+        addNodeToCanvas(breakerIcon);
     }
 
     public void handleEvent(Event event) {
         if (event == Event.GridEnergized) {
-            displayGrid();
+            //displayGrid();
         }
     }
 

@@ -2,10 +2,10 @@ package model.geometry;
 
 public class Point {
 
-    private int x;
-    private int y;
+    private double x;
+    private double y;
 
-    public Point(int x, int y) {
+    public Point(double x, double y) {
         this.x = x;
         this.y = y;
     }
@@ -14,24 +14,12 @@ public class Point {
         return new Point(0, 0);
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
+    public double getY() {
         return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public Point add(Point other) {
-        return new Point(this.x + other.x, this.y + other.y);
     }
 
     public Point scale(int scalar) {
@@ -42,8 +30,12 @@ public class Point {
         return new Point(this.x + (int)x, this.y + (int)y);
     }
 
-    public Point negative() {
-        return new Point(this.x * -1, this.y * -1);
+    public double differenceY(Point other) {
+        return Math.abs(this.y - other.y);
+    }
+
+    public double differenceX(Point other) {
+        return Math.abs(this.x - other.x);
     }
 
     @Override

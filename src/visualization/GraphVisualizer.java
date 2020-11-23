@@ -8,6 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.Line;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import main.events.Event;
@@ -83,7 +84,6 @@ public class GraphVisualizer implements IEventListener {
 
         line.setEndX(c2CanvasPosition.getX());
         line.setEndY(c2CanvasPosition.getY());
-
         addNodeToCanvas(line);
     }
 

@@ -11,6 +11,7 @@ public class ComponentIconCreator {
 
     private static final double UNIT = 20;
     private static final double STROKE_WIDTH = 1.5;
+    public static final double ENERGY_STROKE_WIDTH = 4;
 
     public static DeviceIcon getSwitchIcon(Point position) {
         DeviceIcon switchIcon = new DeviceIcon();
@@ -132,7 +133,7 @@ public class ComponentIconCreator {
         Line outLine = createLine(p.translate(0, 2 * UNIT), p.translate(0, 3 * UNIT));
         // these shapes get rotated together
         Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * UNIT), 0.15 * UNIT, Orientation.UP);
-        Circle cutoutDot = createCircle(p.translate(0, 1.125 * UNIT), 0.5);
+        Circle cutoutDot = createCircle(p.translate(0, 1.125 * UNIT), 0.5, Color.TRANSPARENT);
         Line cutoutLineL = createRoundedLine(p.translate(0, 2 * UNIT), p.translate(-0.15 * UNIT, 1.125 * UNIT));
         Line cutoutLineR = createRoundedLine(p.translate(0, 2 * UNIT), p.translate(0.15 * UNIT, 1.125 * UNIT));
 
@@ -149,6 +150,33 @@ public class ComponentIconCreator {
         cutoutIcon.addOutNodeShapes(outLine, cutoutArc, cutoutDot, cutoutLineL, cutoutLineR);
 
         return cutoutIcon;
+    }
+
+    public static SourceIcon getPowerSourceIcon(Point p) {
+        SourceIcon powerSourceIcon = new SourceIcon();
+
+        Rectangle sourceBox = createRectangle(p.translate(-UNIT, 0), p.translate(UNIT, 2 * UNIT), Color.GREEN);
+        powerSourceIcon.addSourceNodeShapes(sourceBox);
+
+        Line outLine = createLine(p.translate(0, 2 * UNIT), p.translate(0, 3 * UNIT));
+        powerSourceIcon.addOutputLine(outLine);
+
+        return powerSourceIcon;
+    }
+
+    public static SourceIcon getTurbineIcon(Point p) {
+        SourceIcon turbineIcon = new SourceIcon();
+
+        Circle turbineCircle = createCircle(p.translate(0, 2 * UNIT), UNIT, Color.RED);
+        turbineIcon.addSourceNodeShapes(turbineCircle);
+
+        Line outLine1 = createLine(p, p.translate(0, UNIT));
+        turbineIcon.addOutputLine(outLine1);
+
+        Line outLine2 = createLine(p.translate(0, 3 * UNIT), p.translate(0, 4 * UNIT));
+        turbineIcon.addOutputLine(outLine2);
+
+        return turbineIcon;
     }
 
     private static Line createLine(Point p1, Point p2) {
@@ -204,11 +232,11 @@ public class ComponentIconCreator {
         return arc;
     }
 
-    private static Circle createCircle(Point center, double radius) {
+    private static Circle createCircle(Point center, double radius, Color fill) {
         Circle circle = new Circle();
         circle.setStroke(Color.BLACK);
         circle.setStrokeWidth(STROKE_WIDTH);
-        circle.setFill(Color.TRANSPARENT);
+        circle.setFill(fill);
 
         circle.setCenterX(center.getX());
         circle.setCenterY(center.getY());

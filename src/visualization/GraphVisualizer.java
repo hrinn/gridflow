@@ -42,27 +42,27 @@ public class GraphVisualizer implements IEventListener {
         Point center = new Point(5350, 2650);
 
         DeviceIcon switchIcon = ComponentIconCreator.getSwitchIcon(center);
-        switchIcon.setNodeEnergyStates(true, false);
+        switchIcon.setDeviceEnergyStates(true, false);
         addNodeToCanvas(switchIcon);
 
         DeviceIcon breakerIcon = ComponentIconCreator.get70KVBreakerIcon(center.translate(40, 0));
-        breakerIcon.setNodeEnergyStates(true, true);
+        breakerIcon.setDeviceEnergyStates(true, true);
         addNodeToCanvas(breakerIcon);
 
         DeviceIcon breakerIcon2 = ComponentIconCreator.get12KVBreakerIcon(center.translate(80, -10));
-        breakerIcon2.setNodeEnergyStates(true, false);
+        breakerIcon2.setDeviceEnergyStates(true, false);
         addNodeToCanvas(breakerIcon2);
 
         DeviceIcon xformIcon = ComponentIconCreator.getTransformerIcon(center.translate(130, 0));
-        xformIcon.setNodeEnergyStates(true, true);
+        xformIcon.setDeviceEnergyStates(true, true);
         addNodeToCanvas(xformIcon);
 
         DeviceIcon jumperIcon = ComponentIconCreator.getJumperIcon(center.translate(170, 0), false);
-        jumperIcon.setNodeEnergyStates(false, true);
+        jumperIcon.setDeviceEnergyStates(false, true);
         addNodeToCanvas(jumperIcon);
 
         DeviceIcon cutoutIcon = ComponentIconCreator.getCutoutIcon(center.translate(210, 0), false);
-        cutoutIcon.setNodeEnergyStates(false, false);
+        cutoutIcon.setDeviceEnergyStates(false, false);
         addNodeToCanvas(cutoutIcon);
     }
 

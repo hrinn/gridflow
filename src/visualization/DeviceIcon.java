@@ -12,8 +12,6 @@ public class DeviceIcon extends Group {
     // TODO: add a one node class
     // TODO: add clickable bounding box
 
-    private static final double ENERGY_STROKE_WIDTH = 4;
-
     // shapes that are energized when the in node is energized
     private final Group inNode = new Group();
     private final Group inNodeEnergyOutline = new Group();
@@ -52,7 +50,7 @@ public class DeviceIcon extends Group {
 
             Shape energyOutlineShape = ShapeCopier.copyShape(shape);
             energyOutlineShape.setStrokeType(StrokeType.CENTERED);
-            energyOutlineShape.setStrokeWidth(ENERGY_STROKE_WIDTH);
+            energyOutlineShape.setStrokeWidth(ComponentIconCreator.ENERGY_STROKE_WIDTH);
             energyOutlineShape.setStroke(Color.YELLOW);
             energyOutlineShape.setFill(Color.TRANSPARENT);
             // apply transforms to copy
@@ -62,7 +60,7 @@ public class DeviceIcon extends Group {
         }
     }
 
-    public void setNodeEnergyStates(boolean inNodeEnergized, boolean outNodeEnergized) {
+    public void setDeviceEnergyStates(boolean inNodeEnergized, boolean outNodeEnergized) {
         setInNodeEnergyState(inNodeEnergized);
         setOutNodeEnergyState(outNodeEnergized);
 

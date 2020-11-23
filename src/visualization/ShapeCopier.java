@@ -1,9 +1,6 @@
 package visualization;
 
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
+import javafx.scene.shape.*;
 
 public class ShapeCopier {
 
@@ -14,6 +11,8 @@ public class ShapeCopier {
             return copyRectangle((Rectangle)shape);
         } else if (shape instanceof Arc) {
             return copyArc((Arc)shape);
+        } else if (shape instanceof QuadCurve) {
+            return copyQuadCurve((QuadCurve)shape);
         } else {
             throw new UnsupportedOperationException();
         }
@@ -30,5 +29,10 @@ public class ShapeCopier {
     private static Arc copyArc(Arc arc) {
         return new Arc(arc.getCenterX(), arc.getCenterY(), arc.getRadiusX(), arc.getRadiusY(),
                 arc.getStartAngle(), arc.getLength());
+    }
+
+    private static QuadCurve copyQuadCurve(QuadCurve qc) {
+        return new QuadCurve(qc.getStartX(), qc.getStartY(), qc.getControlX(), qc.getControlY(),
+                qc.getEndX(), qc.getEndY());
     }
 }

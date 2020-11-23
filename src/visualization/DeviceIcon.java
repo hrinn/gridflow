@@ -8,19 +8,24 @@ import javafx.scene.shape.StrokeType;
 public class DeviceIcon extends Group {
 
     // TODO: add endpoint circles that don't get energized, can be clicked to add a component
+    // TODO: add a source icon class that can be backfed
+    // TODO: add a one node class
 
-    private static final double ENERGY_STROKE_WIDTH = 2;
+    private static final double ENERGY_STROKE_WIDTH = 4;
 
+    // shapes that are energized when the in node is energized
     private final Group inNode = new Group();
     private final Group inNodeEnergyOutline = new Group();
 
+    // shapes that are energized when the out node is energized
     private final Group outNode = new Group();
     private final Group outNodeEnergyOutline = new Group();
 
-    // the mid node is used when part of the component is only shown energized when both nodes are energized
+    // shapes that are energized when both nodes are energized
     private final Group midNode = new Group();
     private final Group midNodeEnergyOutline = new Group();
 
+    // shapes used to indicate state
     private final Group indicatorNode = new Group();
 
     public DeviceIcon() {
@@ -45,10 +50,11 @@ public class DeviceIcon extends Group {
             node.getChildren().add(shape);
 
             Shape energyOutlineShape = ShapeCopier.copyShape(shape);
-            energyOutlineShape.setStrokeType(StrokeType.OUTSIDE);
+            energyOutlineShape.setStrokeType(StrokeType.CENTERED);
             energyOutlineShape.setStrokeWidth(ENERGY_STROKE_WIDTH);
             energyOutlineShape.setStroke(Color.YELLOW);
-            energyOutlineShape.setFill(Color.WHITE);
+            energyOutlineShape.setFill(Color.TRANSPARENT);
+
             energyOutline.getChildren().add(energyOutlineShape);
         }
     }

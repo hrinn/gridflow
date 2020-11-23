@@ -1,18 +1,13 @@
 package visualization;
 
-import com.sun.javafx.print.Units;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.Line;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.*;
 import model.geometry.Point;
 
 public class ComponentIconCreator {
 
     private static double UNIT = 20;
     private static double STROKE_WIDTH = 1.5;
-
-    // Might need 2Node Icon or 1Node Icon
 
     public static DeviceIcon getSwitchIcon(Point position) {
         DeviceIcon switchIcon = new DeviceIcon();
@@ -27,6 +22,8 @@ public class ComponentIconCreator {
         Line outBar = createLine(position.translate(-0.5 * UNIT, 1.75 * UNIT),
                 position.translate(0.5 * UNIT, 1.75 * UNIT));
         switchIcon.addOutNodeShapes(outLine, outBar);
+
+        // TODO: Add indicator, cases for normal state and state. n/c closed has to be a mid node
 
         return switchIcon;
     }
@@ -138,6 +135,7 @@ public class ComponentIconCreator {
         arc.setStrokeWidth(STROKE_WIDTH);
         arc.setStroke(Color.BLACK);
         arc.setFill(Color.TRANSPARENT);
+        arc.setType(ArcType.OPEN);
 
         arc.setCenterX(center.getX());
         arc.setCenterY(center.getY());

@@ -14,6 +14,10 @@ public class Point {
         return new Point(0, 0);
     }
 
+    public static Point midpoint(Point p1, Point p2) {
+        return new Point((p1.x + p2.x)/2, (p1.y + p2.y)/2);
+    }
+
     public double getX() {
         return x;
     }
@@ -36,6 +40,10 @@ public class Point {
 
     public double differenceX(Point other) {
         return Math.abs(this.x - other.x);
+    }
+
+    public boolean equals(Point point) {
+        return x == point.x && y == point.y;
     }
 
     @Override

@@ -1,15 +1,14 @@
-package visualization;
+package visualization.components;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
+import visualization.ShapeCopier;
 
-public class DeviceIcon extends Group {
+public class DeviceIcon extends ComponentIcon {
 
     // TODO: add endpoint circles that don't get energized, can be clicked to add a component
-    // TODO: add a source icon class that can be backfed
-    // TODO: add a one node class
     // TODO: add clickable bounding box
 
     // shapes that are energized when the in node is energized
@@ -42,22 +41,6 @@ public class DeviceIcon extends Group {
 
     public void addMidNodeShapes(Shape... shapes) {
         addNodeShapes(midNode, midNodeEnergyOutline, shapes);
-    }
-
-    private void addNodeShapes(Group node, Group energyOutline, Shape... shapes) {
-        for (Shape shape : shapes) {
-            node.getChildren().add(shape);
-
-            Shape energyOutlineShape = ShapeCopier.copyShape(shape);
-            energyOutlineShape.setStrokeType(StrokeType.CENTERED);
-            energyOutlineShape.setStrokeWidth(ComponentIconCreator.ENERGY_STROKE_WIDTH);
-            energyOutlineShape.setStroke(Color.YELLOW);
-            energyOutlineShape.setFill(Color.TRANSPARENT);
-            // apply transforms to copy
-            shape.getTransforms().forEach(transform -> energyOutlineShape.getTransforms().add(transform));
-
-            energyOutline.getChildren().add(energyOutlineShape);
-        }
     }
 
     public void setDeviceEnergyStates(boolean inNodeEnergized, boolean outNodeEnergized) {

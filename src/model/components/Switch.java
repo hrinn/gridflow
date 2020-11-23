@@ -1,6 +1,9 @@
 package model.components;
 
 import model.geometry.Point;
+import visualization.components.ComponentIcon;
+import visualization.components.ComponentIconCreator;
+import visualization.components.DeviceIcon;
 
 public class Switch extends Device implements IToggleable, ILockable {
 
@@ -28,5 +31,12 @@ public class Switch extends Device implements IToggleable, ILockable {
     @Override
     protected boolean checkClosed() {
         return closed;
+    }
+
+    @Override
+    public ComponentIcon getComponentIcon() {
+        DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition());
+        icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+        return icon;
     }
 }

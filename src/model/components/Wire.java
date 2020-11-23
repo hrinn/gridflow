@@ -1,6 +1,9 @@
 package model.components;
 
 import model.geometry.*;
+import visualization.components.ComponentIcon;
+import visualization.components.ComponentIconCreator;
+import visualization.components.WireIcon;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,12 +11,23 @@ import java.util.List;
 public class Wire extends Component {
 
     private List<Component> connections;
-    private List<Line> segments;
+    private Point start;
+    private Point end;
     private boolean energized;
 
-    public Wire(String name, Point center) {
-        super(name, center);
+    public Wire(String name, Point p1, Point p2) {
+        super(name, Point.midpoint(p1, p2));
         this.connections = new ArrayList<>();
+        start = p1;
+        end = p2;
+        energized = false;
+    }
+
+    public Wire(String name, Point p) {
+        super(name, p);
+        this.connections = new ArrayList<>();
+        start = p;
+        end = p;
         energized = false;
     }
 
@@ -47,5 +61,12 @@ public class Wire extends Component {
             return connections;
         }
         return List.of();
+    }
+
+    @Override
+    public ComponentIcon getComponentIcon() {
+        WireIcon icon = ComponentIconCreator.getWireIcon(start, end);
+        icon.setWireIconEnergyState(energized);
+        return icon;
     }
 }

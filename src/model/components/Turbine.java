@@ -1,6 +1,9 @@
 package model.components;
 
 import model.geometry.Point;
+import visualization.components.ComponentIcon;
+import visualization.components.ComponentIconCreator;
+import visualization.components.SourceIcon;
 
 import java.util.List;
 
@@ -14,5 +17,15 @@ public class Turbine extends Source {
         if (super.getOutputCount() < 2) {
             super.addOutput(wire);
         }
+    }
+
+    @Override
+    public ComponentIcon getComponentIcon() {
+        SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition());
+        icon.setSourceNodeEnergyState(getState());
+        for (int i = 0; i < getOutputCount(); i++) {
+            icon.setWireEnergyState(isOutputEnergized(i), i);
+        }
+        return icon;
     }
 }

@@ -1,6 +1,9 @@
 package model.components;
 
 import model.geometry.Point;
+import visualization.components.ComponentIcon;
+import visualization.components.ComponentIconCreator;
+import visualization.components.DeviceIcon;
 
 public class Breaker extends Device implements IToggleable, ICloneable, IPairable {
 
@@ -25,5 +28,17 @@ public class Breaker extends Device implements IToggleable, ICloneable, IPairabl
     @Override
     protected boolean checkClosed() {
         return closed;
+    }
+
+    @Override
+    public ComponentIcon getComponentIcon() {
+        DeviceIcon icon;
+        if (voltage == Voltage.KV12) {
+            icon = ComponentIconCreator.get12KVBreakerIcon(getPosition());
+        } else {
+            icon = ComponentIconCreator.get70KVBreakerIcon(getPosition());
+        }
+        icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+        return icon;
     }
 }

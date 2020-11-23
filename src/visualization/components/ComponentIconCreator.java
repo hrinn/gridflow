@@ -1,6 +1,5 @@
-package visualization;
+package visualization.components;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -155,7 +154,7 @@ public class ComponentIconCreator {
     public static SourceIcon getPowerSourceIcon(Point p) {
         SourceIcon powerSourceIcon = new SourceIcon();
 
-        Rectangle sourceBox = createRectangle(p.translate(-UNIT, 0), p.translate(UNIT, 2 * UNIT), Color.GREEN);
+        Rectangle sourceBox = createRectangle(p.translate(-UNIT, 0), p.translate(UNIT, 2 * UNIT), Color.LIME);
         powerSourceIcon.addSourceNodeShapes(sourceBox);
 
         Line outLine = createLine(p.translate(0, 2 * UNIT), p.translate(0, 3 * UNIT));
@@ -177,6 +176,20 @@ public class ComponentIconCreator {
         turbineIcon.addOutputLine(outLine2);
 
         return turbineIcon;
+    }
+
+    public static WireIcon getWireIcon(Point p1, Point p2) {
+        WireIcon wireIcon = new WireIcon();
+
+        if (p1.equals(p2)) {
+            Circle wireDot = createCircle(p1, 1, Color.BLACK);
+            wireIcon.addWireShape(wireDot);
+        } else {
+            Line wireLine = createLine(p1, p2);
+            wireIcon.addWireShape(wireLine);
+        }
+
+        return wireIcon;
     }
 
     private static Line createLine(Point p1, Point p2) {

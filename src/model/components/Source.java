@@ -33,6 +33,10 @@ public class Source extends Component implements IToggleable {
         outputs.add(wire);
     }
 
+    public boolean isOutputEnergized(int index) {
+        return outputs.get(index).isEnergized();
+    }
+
     @Override
     public List<Component> getAccessibleConnections() {
         if(on) {

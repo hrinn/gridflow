@@ -1,15 +1,16 @@
-package visualization;
+package visualization.components;
 
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
+import visualization.ShapeCopier;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class SourceIcon extends Group {
+public class SourceIcon extends ComponentIcon {
 
     private final Group sourceNode = new Group();
     private final Group sourceNodeEnergyOutline = new Group();
@@ -22,19 +23,7 @@ public class SourceIcon extends Group {
 
     // could create a base class component icon and add this function there
     public void addSourceNodeShapes(Shape... shapes) {
-        for (Shape shape: shapes) {
-            sourceNode.getChildren().add(shape);
-
-            Shape energyOutlineShape = ShapeCopier.copyShape(shape);
-            energyOutlineShape.setStrokeType(StrokeType.CENTERED);
-            energyOutlineShape.setStrokeWidth(ComponentIconCreator.ENERGY_STROKE_WIDTH);
-            energyOutlineShape.setStroke(Color.YELLOW);
-            energyOutlineShape.setFill(Color.TRANSPARENT);
-            // apply transforms to copy
-            shape.getTransforms().forEach(transform -> energyOutlineShape.getTransforms().add(transform));
-
-            sourceNodeEnergyOutline.getChildren().add(energyOutlineShape);
-        }
+        addNodeShapes(sourceNode, sourceNodeEnergyOutline, shapes);
     }
 
     public void addOutputLine(Line line) {
@@ -45,6 +34,8 @@ public class SourceIcon extends Group {
         outputLineEnergyOutlines.add(energyOutlineLine);
 
         getChildren().addAll(energyOutlineLine, line);
+        line.toBack();
+        energyOutlineLine.toBack();
     }
 
     public void setSourceNodeEnergyState(boolean energized) {

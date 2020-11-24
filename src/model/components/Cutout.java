@@ -22,7 +22,8 @@ public class Cutout extends Device implements ILockable, IToggleable {
     public ComponentIcon getComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getCutoutIcon(getPosition(), closed);
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
-        icon.setComponentNodeID(getId().toString());
+        icon.setComponentIconID(getId().toString());
+        icon.setBoundingRect(getPosition(), 2, 3);
         return icon;
     }
 

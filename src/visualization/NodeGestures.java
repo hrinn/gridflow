@@ -2,7 +2,6 @@ package visualization;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import main.events.Event;
 import main.events.EventManager;
@@ -36,8 +35,6 @@ public class NodeGestures {
 
             Node target = (Node)event.getTarget();
             Component component = grid.getComponent(target.getId());
-
-            System.out.println(target);
 
             if (component instanceof IToggleable) {
                 ((IToggleable)component).toggleState();

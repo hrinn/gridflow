@@ -12,7 +12,7 @@ import main.events.Event;
 import main.events.EventManager;
 import model.Grid;
 import simulation.EnergySimulator;
-import visualization.GridVisualizer;
+import visualization.GridScene;
 import visualization.PannableCanvas;
 
 import java.io.IOException;
@@ -29,11 +29,11 @@ public class Main extends Application {
         EventManager eventManager = new EventManager();
 
         // Init modules
-        GridVisualizer gridVisualizer = new GridVisualizer(grid, eventManager);
+        GridScene gridScene = new GridScene(grid, eventManager);
         new EnergySimulator(grid, eventManager);
 
         // Draw base GUI
-        initGui(primaryStage, gridVisualizer.getCanvas());
+        initGui(primaryStage, gridScene.getCanvas());
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());

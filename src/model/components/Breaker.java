@@ -35,11 +35,13 @@ public class Breaker extends Device implements IToggleable, ICloneable, IPairabl
         DeviceIcon icon;
         if (voltage == Voltage.KV12) {
             icon = ComponentIconCreator.get12KVBreakerIcon(getPosition());
+            icon.setBoundingRect(getPosition(), 2, 4);
         } else {
             icon = ComponentIconCreator.get70KVBreakerIcon(getPosition());
+            icon.setBoundingRect(getPosition(), 2, 3);
         }
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
-        icon.setComponentNodeID(getId().toString());
+        icon.setComponentIconID(getId().toString());
         return icon;
     }
 }

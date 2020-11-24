@@ -2,6 +2,7 @@ package visualization.componentIcons;
 
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
+import visualization.GridScene;
 
 public class WireIcon extends ComponentIcon {
 
@@ -12,7 +13,7 @@ public class WireIcon extends ComponentIcon {
 
     public void addWireShape(Shape wireShape) {
         energyOutline = ShapeCopier.copyShape(wireShape);
-        energyOutline.setStrokeWidth(ComponentIconCreator.ENERGY_STROKE_WIDTH);
+        energyOutline.setStrokeWidth(GridScene.ENERGY_STROKE_WIDTH);
         energyOutline.setStroke(Color.YELLOW);
         energyOutline.setFill(Color.TRANSPARENT);
 

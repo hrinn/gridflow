@@ -65,7 +65,7 @@ public class Wire extends Component {
     public ComponentIcon getComponentIcon() {
         WireIcon icon = ComponentIconCreator.getWireIcon(start, end);
         icon.setWireIconEnergyState(energized);
-        icon.setComponentNodeID(getId().toString());
+        icon.setComponentIconID(getId().toString());
         return icon;
     }
 }

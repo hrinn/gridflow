@@ -10,13 +10,17 @@ import model.Grid;
 import model.components.*;
 import visualization.componentIcons.*;
 
-public class GridVisualizer implements IEventListener {
+public class GridScene implements IEventListener {
+
+    public static final double UNIT = 20;
+    public static final double STROKE_WIDTH = 1.5;
+    public static final double ENERGY_STROKE_WIDTH = 4;
 
     private final PannableCanvas canvas = new PannableCanvas(12000, 6000);
     private final Grid grid;
     private final NodeGestures nodeGestures;
 
-    public GridVisualizer(Grid grid, EventManager eventManager) {
+    public GridScene(Grid grid, EventManager eventManager) {
         this.grid = grid;
         this.nodeGestures = new NodeGestures(canvas, eventManager, grid);
 

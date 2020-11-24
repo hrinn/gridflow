@@ -6,6 +6,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
+import model.geometry.Point;
+import visualization.GridScene;
 
 public class ComponentIcon {
 
@@ -19,21 +21,31 @@ public class ComponentIcon {
         energyOutlineNodes.setMouseTransparent(true);
     }
 
-    public void setComponentNodeID(String id) {
-        componentNode.setId(id);
+    public void setComponentIconID(String id) {
+        boundingRect.setId(id);
     }
 
-    protected void addShapesToEnergyOutlineNode(Group energyOutline, Shape... shapes) {
+    public void setBoundingRect(Point position, int unitWidth, int unitHeight) {
+        Point topLeft = position.translate(-(unitWidth * GridScene.UNIT)/2, 0);
+        boundingRect.setX(topLeft.getX());
+        boundingRect.setY(topLeft.getY());
+        boundingRect.setWidth(unitWidth * GridScene.UNIT);
+        boundingRect.setHeight(unitHeight * GridScene.UNIT);
+        boundingRect.setFill(Color.TRANSPARENT);
+        boundingRect.setStroke(Color.TRANSPARENT);
+    }
+
+    protected void addShapesToEnergyOutlineNode(Group energyOutlineNode, Shape... shapes) {
         for (Shape shape : shapes) {
             Shape energyOutlineShape = ShapeCopier.copyShape(shape);
             energyOutlineShape.setStrokeType(StrokeType.CENTERED);
-            energyOutlineShape.setStrokeWidth(ComponentIconCreator.ENERGY_STROKE_WIDTH);
+            energyOutlineShape.setStrokeWidth(GridScene.ENERGY_STROKE_WIDTH);
             energyOutlineShape.setStroke(Color.YELLOW);
             energyOutlineShape.setFill(Color.TRANSPARENT);
             // apply transforms to copy
             shape.getTransforms().forEach(transform -> energyOutlineShape.getTransforms().add(transform));
 
-            energyOutline.getChildren().add(energyOutlineShape);
+            energyOutlineNode.getChildren().add(energyOutlineShape);
         }
     }
 

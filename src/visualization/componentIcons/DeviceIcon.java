@@ -1,10 +1,10 @@
-package visualization.components;
+package visualization.componentIcons;
 
 import javafx.scene.Group;
-import javafx.scene.paint.Color;
+import javafx.scene.Node;
 import javafx.scene.shape.Shape;
-import javafx.scene.shape.StrokeType;
-import visualization.ShapeCopier;
+
+import java.util.List;
 
 public class DeviceIcon extends ComponentIcon {
 
@@ -27,20 +27,28 @@ public class DeviceIcon extends ComponentIcon {
     private final Group indicatorNode = new Group();
 
     public DeviceIcon() {
-        getChildren().addAll(inNodeEnergyOutline, outNodeEnergyOutline, midNodeEnergyOutline,
-                inNode, outNode, midNode, indicatorNode);
+    }
+
+    @Override
+    public List<Node> getNodes() {
+        return List.of(inNode, outNode, midNode, indicatorNode);
+    }
+
+    @Override
+    public List<Node> getEnergyOutlineNodes() {
+        return List.of(inNodeEnergyOutline, outNodeEnergyOutline, midNodeEnergyOutline);
     }
 
     public void addInNodeShapes(Shape... shapes) {
-        addNodeShapes(inNode, inNodeEnergyOutline, shapes);
+        addShapesToNodeAndEnergyOutline(inNode, inNodeEnergyOutline, shapes);
     }
 
     public void addOutNodeShapes(Shape... shapes) {
-        addNodeShapes(outNode, outNodeEnergyOutline, shapes);
+        addShapesToNodeAndEnergyOutline(outNode, outNodeEnergyOutline, shapes);
     }
 
     public void addMidNodeShapes(Shape... shapes) {
-        addNodeShapes(midNode, midNodeEnergyOutline, shapes);
+        addShapesToNodeAndEnergyOutline(midNode, midNodeEnergyOutline, shapes);
     }
 
     public void setDeviceEnergyStates(boolean inNodeEnergized, boolean outNodeEnergized) {

@@ -1,14 +1,16 @@
-package visualization.components;
+package visualization.componentIcons;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
-import visualization.ShapeCopier;
 
-public class ComponentIcon extends Group {
+import java.util.List;
 
-    protected void addNodeShapes(Group node, Group energyOutline, Shape... shapes) {
+public class ComponentIcon {
+
+    protected void addShapesToNodeAndEnergyOutline(Group node, Group energyOutline, Shape... shapes) {
         for (Shape shape : shapes) {
             node.getChildren().add(shape);
 
@@ -22,5 +24,13 @@ public class ComponentIcon extends Group {
 
             energyOutline.getChildren().add(energyOutlineShape);
         }
+    }
+
+    public List<Node> getNodes() {
+        return List.of();
+    }
+
+    public List<Node> getEnergyOutlineNodes() {
+        return List.of();
     }
 }

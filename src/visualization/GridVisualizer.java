@@ -1,6 +1,5 @@
 package visualization;
 
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import main.events.Event;
@@ -9,10 +8,7 @@ import main.events.IEventListener;
 import model.Grid;
 import model.components.*;
 import model.geometry.Point;
-import visualization.components.ComponentIconCreator;
-import visualization.components.DeviceIcon;
-import visualization.components.SourceIcon;
-import visualization.components.WireIcon;
+import visualization.componentIcons.*;
 
 public class GridVisualizer implements IEventListener {
 
@@ -42,46 +38,46 @@ public class GridVisualizer implements IEventListener {
 
         DeviceIcon switchIcon = ComponentIconCreator.getSwitchIcon(center);
         switchIcon.setDeviceEnergyStates(true, false);
-        addNodeToCanvas(switchIcon);
+        addComponentIconToCanvas(switchIcon);
 
         DeviceIcon breakerIcon = ComponentIconCreator.get70KVBreakerIcon(center.translate(40, 0));
         breakerIcon.setDeviceEnergyStates(true, true);
-        addNodeToCanvas(breakerIcon);
+        addComponentIconToCanvas(breakerIcon);
 
         DeviceIcon breakerIcon2 = ComponentIconCreator.get12KVBreakerIcon(center.translate(80, -10));
         breakerIcon2.setDeviceEnergyStates(true, false);
-        addNodeToCanvas(breakerIcon2);
+        addComponentIconToCanvas(breakerIcon2);
 
         DeviceIcon xformIcon = ComponentIconCreator.getTransformerIcon(center.translate(130, 0));
         xformIcon.setDeviceEnergyStates(true, true);
-        addNodeToCanvas(xformIcon);
+        addComponentIconToCanvas(xformIcon);
 
         DeviceIcon jumperIcon = ComponentIconCreator.getJumperIcon(center.translate(170, 0), false);
         jumperIcon.setDeviceEnergyStates(false, true);
-        addNodeToCanvas(jumperIcon);
+        addComponentIconToCanvas(jumperIcon);
 
         DeviceIcon cutoutIcon = ComponentIconCreator.getCutoutIcon(center.translate(210, 0), false);
         cutoutIcon.setDeviceEnergyStates(false, false);
-        addNodeToCanvas(cutoutIcon);
+        addComponentIconToCanvas(cutoutIcon);
 
         SourceIcon powerSourceIcon = ComponentIconCreator.getPowerSourceIcon(center.translate(0, 80));
         powerSourceIcon.setSourceNodeEnergyState(false);
         powerSourceIcon.setWireEnergyState(true, 0);
-        addNodeToCanvas(powerSourceIcon);
+        addComponentIconToCanvas(powerSourceIcon);
 
         SourceIcon turbineIcon = ComponentIconCreator.getTurbineIcon(center.translate(60, 80));
         turbineIcon.setSourceNodeEnergyState(true);
         turbineIcon.setWireEnergyState(true, 0);
         turbineIcon.setWireEnergyState(true, 1);
-        addNodeToCanvas(turbineIcon);
+        addComponentIconToCanvas(turbineIcon);
 
         WireIcon wireIcon1 = ComponentIconCreator.getWireIcon(center.translate(100, 90), center.translate(180, 90));
         wireIcon1.setWireIconEnergyState(true);
-        addNodeToCanvas(wireIcon1);
+        addComponentIconToCanvas(wireIcon1);
 
         WireIcon wireIcon2 = ComponentIconCreator.getWireIcon(center.translate(100, 110), center.translate(180, 110));
         wireIcon2.setWireIconEnergyState(false);
-        addNodeToCanvas(wireIcon2);
+        addComponentIconToCanvas(wireIcon2);
     }
 
     public void handleEvent(Event event) {
@@ -94,10 +90,17 @@ public class GridVisualizer implements IEventListener {
         return canvas;
     }
 
-    private void addNodeToCanvas(Node node) {
-        canvas.getChildren().add(node);
-        // sort children so that energy outlines are behind all other shapes
-        node.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+    private void addComponentIconToCanvas(ComponentIcon icon) {
+        icon.getNodes().forEach(node -> {
+            canvas.getChildren().add(node);
+            node.toFront();
+            node.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+        });
+
+        icon.getEnergyOutlineNodes().forEach(node -> {
+            canvas.getChildren().add(node);
+            node.toBack();
+        });
     }
 
 
@@ -106,12 +109,8 @@ public class GridVisualizer implements IEventListener {
         clearGraph();
 
         for (Component component : grid.getComponents()) {
-            addComponent(component);
+            addComponentIconToCanvas(component.getComponentIcon());
         }
-    }
-
-    private void addComponent(Component component) {
-        addNodeToCanvas(component.getComponentIcon());
     }
 
     private void clearGraph() {

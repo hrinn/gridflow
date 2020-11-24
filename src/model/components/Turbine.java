@@ -1,11 +1,9 @@
 package model.components;
 
 import model.geometry.Point;
-import visualization.components.ComponentIcon;
-import visualization.components.ComponentIconCreator;
-import visualization.components.SourceIcon;
-
-import java.util.List;
+import visualization.componentIcons.ComponentIcon;
+import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.SourceIcon;
 
 public class Turbine extends Source {
 

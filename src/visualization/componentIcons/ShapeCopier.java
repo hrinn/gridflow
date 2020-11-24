@@ -1,4 +1,4 @@
-package visualization;
+package visualization.componentIcons;
 
 import javafx.scene.shape.*;
 

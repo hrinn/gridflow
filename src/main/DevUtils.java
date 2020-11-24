@@ -66,14 +66,14 @@ public class DevUtils {
         xw.connect(xdd1);
 
         // S switch
-        Switch dd101 = new Switch("DD-101", canvasPos(0, 6), true);
+        Switch dd101 = new Switch("DD-101", canvasPos(0, 6), false);
         dd101.connectOutWire(xw);
         Wire dd101w = new Wire("", canvasPos(0, 6));
         dd101.connectInWire(dd101w);
         dd101w.connect(dd101);
 
         // Side route switch
-        Switch dd105 = new Switch("DD-105", canvasPos(2, 9), false);
+        Switch dd105 = new Switch("DD-105", canvasPos(2, 9), true);
         Wire dd105bw = new Wire("", canvasPos(2, 3), canvasPos(2, 6));
         dd105bw.connect(xw);
         xw.connect(dd105bw);
@@ -91,7 +91,7 @@ public class DevUtils {
         dd1w.connect(dd1);
 
         // dd103
-        Switch dd103 = new Switch("DD-103", canvasPos(0, 12), true);
+        Switch dd103 = new Switch("DD-103", canvasPos(0, 12), false);
         dd103.connectOutWire(dd1w);
         Wire nrw = new Wire("", canvasPos(0, 12), canvasPos(2, 12));
         dd103.connectInWire(nrw);

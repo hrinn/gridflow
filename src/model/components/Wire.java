@@ -1,9 +1,9 @@
 package model.components;
 
 import model.geometry.*;
-import visualization.components.ComponentIcon;
-import visualization.components.ComponentIconCreator;
-import visualization.components.WireIcon;
+import visualization.componentIcons.ComponentIcon;
+import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.WireIcon;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,7 +1,7 @@
 package model.components;
 
 import model.geometry.Point;
-import visualization.components.ComponentIcon;
+import visualization.componentIcons.ComponentIcon;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,9 +1,9 @@
 package model.components;
 
 import model.geometry.Point;
-import visualization.components.ComponentIcon;
-import visualization.components.ComponentIconCreator;
-import visualization.components.DeviceIcon;
+import visualization.componentIcons.ComponentIcon;
+import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.DeviceIcon;
 
 public class Cutout extends Device implements ILockable, IToggleable {
 

@@ -20,7 +20,7 @@ public class Turbine extends Source {
     @Override
     public ComponentIcon getComponentIcon() {
         SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition());
-        icon.setSourceNodeEnergyState(getState());
+        icon.setSourceNodeEnergyState(isOn());
         for (int i = 0; i < getOutputCount(); i++) {
             icon.setWireEnergyState(isOutputEnergized(i), i);
         }

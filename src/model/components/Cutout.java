@@ -5,13 +5,16 @@ import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
-public class Cutout extends Device implements ILockable, IToggleable {
+public class Cutout extends Device implements ILockable, ICloseable {
 
     private boolean locked;
     private boolean closed;
+    private boolean closedByDefault;
 
-    public Cutout(String name, Point position, Wire inWire, Wire outWire) {
+    public Cutout(String name, Point position, boolean closedByDefault) {
         super(name, position);
+        this.closedByDefault = closedByDefault;
+        this.closed = closedByDefault;
     }
 
     public void toggleLocked() {
@@ -27,13 +30,15 @@ public class Cutout extends Device implements ILockable, IToggleable {
         return icon;
     }
 
-    @Override
-    public void toggleState() {
-        closed = !closed;
+    public boolean isClosed() {
+        return closed;
     }
 
-    @Override
-    public boolean getState() {
-        return closed;
+    public boolean isClosedByDefault() {
+        return closedByDefault;
+    }
+
+    public void toggle() {
+        closed = !closed;
     }
 }

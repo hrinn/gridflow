@@ -5,7 +5,7 @@ import model.geometry.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Source extends Component implements IToggleable {
+public class Source extends Component implements IEnergizeable {
 
     //private Point position;
     private boolean on;
@@ -15,14 +15,6 @@ public class Source extends Component implements IToggleable {
         super(name, position);
         this.on = on;
         this.outputs = new ArrayList<>();
-    }
-
-    public void toggleState() {
-        on = !on;
-    }
-
-    public boolean getState() {
-        return on;
     }
 
     public int getOutputCount() {
@@ -47,5 +39,13 @@ public class Source extends Component implements IToggleable {
             return outComponents;
         }
         return List.of();
+    }
+
+    public boolean isOn() {
+        return on;
+    }
+
+    public void toggle() {
+        on = !on;
     }
 }

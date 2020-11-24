@@ -37,7 +37,7 @@ public class NodeGestures {
             Component component = grid.getComponent(target.getId());
 
             if (component instanceof IToggleable) {
-                ((IToggleable)component).toggleState();
+                ((IToggleable)component).toggle();
                 eventManager.sendEvent(Event.GridChanged);
 
             }

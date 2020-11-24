@@ -5,27 +5,19 @@ import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
-public class Breaker extends Device implements IToggleable, ICloneable, IPairable {
+public class Breaker extends Device implements ICloseable, ICloneable, IPairable {
 
     private Voltage voltage;
     private boolean closed;
+    private boolean closedByDefault;
 
-    public Breaker(String name, Point position, Voltage voltage, boolean closed) {
+    public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault) {
         super(name, position);
         this.voltage = voltage;
-        this.closed = closed;
+        this.closed = closedByDefault;
+        this.closedByDefault = closedByDefault;
 
-    }
-
-    public void toggleState() {
-        this.closed = !this.closed;
-    }
-
-    public boolean getState() {
-        return this.closed;
-    }
-
-    @Override
+    } @Override
     protected boolean checkClosed() {
         return closed;
     }
@@ -43,5 +35,20 @@ public class Breaker extends Device implements IToggleable, ICloneable, IPairabl
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
         return icon;
+    }
+
+    @Override
+    public boolean isClosed() {
+        return closed;
+    }
+
+    @Override
+    public boolean isClosedByDefault() {
+        return closedByDefault;
+    }
+
+    @Override
+    public void toggle() {
+        closed = !closed;
     }
 }

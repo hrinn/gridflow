@@ -42,7 +42,6 @@ public class Source extends Component implements IToggleable {
         if(on) {
             List<Component> outComponents = new ArrayList<>();
             for(Wire output : outputs) {
-                output.energize();
                 outComponents.add(output);
             }
             return outComponents;

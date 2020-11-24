@@ -76,6 +76,7 @@ public class DevUtils {
         Switch dd105 = new Switch("DD-105", canvasPos(2, 9), false);
         Wire dd105bw = new Wire("", canvasPos(2, 3), canvasPos(2, 6));
         dd105bw.connect(xw);
+        xw.connect(dd105bw);
         dd105bw.connect(dd105);
         dd105.connectOutWire(dd105bw);
         Wire dd105aw = new Wire("", canvasPos(2, 9), canvasPos(2, 12));
@@ -95,6 +96,7 @@ public class DevUtils {
         Wire nrw = new Wire("", canvasPos(0, 12), canvasPos(2, 12));
         dd103.connectInWire(nrw);
         nrw.setConnections(List.of(dd103, dd105aw));
+        dd105aw.connect(nrw);
 
         // power source
         PowerSource source = new PowerSource("A", canvasPos(0, 15), true);

@@ -96,8 +96,11 @@ public class GridVisualizer implements IEventListener {
 
     private void addNodeToCanvas(Node node) {
         canvas.getChildren().add(node);
+        // sort children so that energy outlines are behind all other shapes
         node.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
     }
+
+
 
     public void displayGrid() {
         clearGraph();

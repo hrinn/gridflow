@@ -27,6 +27,7 @@ public class Jumper extends Device implements IToggleable {
     public ComponentIcon getComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), closed);
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+        icon.setComponentNodeID(getId().toString());
         return icon;
     }
 }

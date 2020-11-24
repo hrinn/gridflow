@@ -2,7 +2,9 @@ package main;
 
 import model.components.*;
 import model.geometry.Point;
+import visualization.componentIcons.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class DevUtils {
@@ -106,6 +108,56 @@ public class DevUtils {
                 dd101, dd105, dd105bw, dd105aw, dd1, dd1w, dd103, nrw, source);
 
         // Return components
+    }
+
+    private static List<ComponentIcon> drawAllComps() {
+        Point center = new Point(5350, 2650);
+        List<ComponentIcon> comps = new ArrayList<>();
+
+        DeviceIcon switchIcon = ComponentIconCreator.getSwitchIcon(center);
+        switchIcon.setDeviceEnergyStates(true, false);
+        comps.add(switchIcon);
+
+        DeviceIcon breakerIcon = ComponentIconCreator.get70KVBreakerIcon(center.translate(40, 0));
+        breakerIcon.setDeviceEnergyStates(true, true);
+        comps.add(breakerIcon);
+
+        DeviceIcon breakerIcon2 = ComponentIconCreator.get12KVBreakerIcon(center.translate(80, -10));
+        breakerIcon2.setDeviceEnergyStates(true, false);
+        comps.add(breakerIcon2);
+
+        DeviceIcon xformIcon = ComponentIconCreator.getTransformerIcon(center.translate(130, 0));
+        xformIcon.setDeviceEnergyStates(true, true);
+        comps.add(xformIcon);
+
+        DeviceIcon jumperIcon = ComponentIconCreator.getJumperIcon(center.translate(170, 0), false);
+        jumperIcon.setDeviceEnergyStates(false, true);
+        comps.add(jumperIcon);
+
+        DeviceIcon cutoutIcon = ComponentIconCreator.getCutoutIcon(center.translate(210, 0), false);
+        cutoutIcon.setDeviceEnergyStates(false, false);
+        comps.add(cutoutIcon);
+
+        SourceIcon powerSourceIcon = ComponentIconCreator.getPowerSourceIcon(center.translate(0, 80));
+        powerSourceIcon.setSourceNodeEnergyState(false);
+        powerSourceIcon.setWireEnergyState(true, 0);
+        comps.add(powerSourceIcon);
+
+        SourceIcon turbineIcon = ComponentIconCreator.getTurbineIcon(center.translate(60, 80));
+        turbineIcon.setSourceNodeEnergyState(true);
+        turbineIcon.setWireEnergyState(true, 0);
+        turbineIcon.setWireEnergyState(true, 1);
+        comps.add(turbineIcon);
+
+        WireIcon wireIcon1 = ComponentIconCreator.getWireIcon(center.translate(100, 90), center.translate(180, 90));
+        wireIcon1.setWireIconEnergyState(true);
+        comps.add(wireIcon1);
+
+        WireIcon wireIcon2 = ComponentIconCreator.getWireIcon(center.translate(100, 110), center.translate(180, 110));
+        wireIcon2.setWireIconEnergyState(false);
+        comps.add(wireIcon2);
+
+        return comps;
     }
 
     private static Point canvasPos(int x, int y) {

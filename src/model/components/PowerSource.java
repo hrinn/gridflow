@@ -24,6 +24,7 @@ public class PowerSource extends Source {
         for (int i = 0; i < getOutputCount(); i++) {
             icon.setWireEnergyState(isOutputEnergized(i), i);
         }
+        icon.setComponentNodeID(getId().toString());
         return icon;
     }
 }

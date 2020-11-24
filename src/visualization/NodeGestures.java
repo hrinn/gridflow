@@ -34,8 +34,10 @@ public class NodeGestures {
 
             if (event.isSecondaryButtonDown()) return;
 
-            Parent targetNode = ((Node)event.getTarget()).getParent();
-            Component component = grid.getComponent(targetNode.getId());
+            Node target = (Node)event.getTarget();
+            Component component = grid.getComponent(target.getId());
+
+            System.out.println(target);
 
             if (component instanceof IToggleable) {
                 ((IToggleable)component).toggleState();

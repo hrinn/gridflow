@@ -33,7 +33,7 @@ public class Main extends Application {
         new EnergySimulator(grid, eventManager);
 
         // Draw base GUI
-        initGui(primaryStage, gridVisualizer.getGridCanvas());
+        initGui(primaryStage, gridVisualizer.getCanvas());
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());

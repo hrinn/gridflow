@@ -39,6 +39,7 @@ public class Breaker extends Device implements IToggleable, ICloneable, IPairabl
             icon = ComponentIconCreator.get70KVBreakerIcon(getPosition());
         }
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+        icon.setComponentNodeID(getId().toString());
         return icon;
     }
 }

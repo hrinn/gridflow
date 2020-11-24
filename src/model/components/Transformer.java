@@ -15,6 +15,7 @@ public class Transformer extends Device {
     public ComponentIcon getComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getTransformerIcon(getPosition());
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+        icon.setComponentNodeID(getId().toString());
         return icon;
     }
 }

@@ -37,6 +37,7 @@ public class Switch extends Device implements IToggleable, ILockable {
     public ComponentIcon getComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition());
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+        icon.setComponentNodeID(getId().toString());
         return icon;
     }
 }

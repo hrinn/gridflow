@@ -1,51 +1,112 @@
 package visualization.componentIcons;
 
+import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import javafx.scene.transform.Rotate;
+import model.components.Breaker;
+import model.components.PowerSource;
+import model.components.Switch;
+import model.components.Voltage;
 import model.geometry.Point;
 import visualization.GridScene;
 
 public class ComponentIconCreator {
 
-    public static DeviceIcon getSwitchIcon(Point position) {
+    public static DeviceIcon getSwitchIcon(Switch switchComponent) {
         DeviceIcon switchIcon = new DeviceIcon();
+        Point p = switchComponent.getPosition();
 
-        Line inLine = createLine(position, position.translate(0, 1.25 * GridScene.UNIT));
-        Line inBar = createLine(position.translate(-0.5 * GridScene.UNIT, 1.25 * GridScene.UNIT),
-                position.translate(0.5 * GridScene.UNIT, 1.25 * GridScene.UNIT));
+        // base shape
+        Line inLine = createLine(p, p.translate(0, 1.25 * GridScene.UNIT));
+        Line inBar = createLine(p.translate(-0.5 * GridScene.UNIT, 1.25 * GridScene.UNIT),
+                p.translate(0.5 * GridScene.UNIT, 1.25 * GridScene.UNIT));
         switchIcon.addInNodeShapes(inLine, inBar);
 
-        Line outLine = createLine(position.translate(0, 1.75 * GridScene.UNIT),
-                position.translate(0, 3 * GridScene.UNIT));
-        Line outBar = createLine(position.translate(-0.5 * GridScene.UNIT, 1.75 * GridScene.UNIT),
-                position.translate(0.5 * GridScene.UNIT, 1.75 * GridScene.UNIT));
+        Line outLine = createLine(p.translate(0, 1.75 * GridScene.UNIT),
+                p.translate(0, 3 * GridScene.UNIT));
+        Line outBar = createLine(p.translate(-0.5 * GridScene.UNIT, 1.75 * GridScene.UNIT),
+                p.translate(0.5 * GridScene.UNIT, 1.75 * GridScene.UNIT));
         switchIcon.addOutNodeShapes(outLine, outBar);
 
-        // TODO: Add indicator, cases for normal state and state. n/c closed has to be a mid node
+        // State indicators
+        if (switchComponent.isClosedByDefault()) {
+            if (switchComponent.isClosed()){
+                Line closedBar = createLine(p.translate(0.5 * GridScene.UNIT, GridScene.UNIT),
+                        p.translate(-0.5 * GridScene.UNIT, 2 * GridScene.UNIT));
+                switchIcon.addMidNodeShapes(closedBar);
+            }
+            else {
+                Circle openCircle = createCircle(p.translate(0, 1.5 * GridScene.UNIT), 0.25 * GridScene.UNIT,
+                        Color.TRANSPARENT, Color.LIMEGREEN);
+                switchIcon.addStaticNodes(openCircle);
+            }
+        }
+        else {
+            if (switchComponent.isClosed()) {
+                Line closedBar1 = createLine(p.translate(0.5 * GridScene.UNIT, GridScene.UNIT),
+                        p.translate(-0.5 * GridScene.UNIT, 2 * GridScene.UNIT));
+                closedBar1.setStroke(Color.RED);
+                Line closedBar2 = createLine(p.translate(-0.5 * GridScene.UNIT, GridScene.UNIT),
+                        p.translate(0.5 * GridScene.UNIT, 2 * GridScene.UNIT));
+                closedBar2.setStroke(Color.RED);
+                switchIcon.addStaticNodes(closedBar1, closedBar2);
+            }
+        }
 
         return switchIcon;
     }
 
-    public static DeviceIcon get70KVBreakerIcon(Point position) {
-        DeviceIcon breakerIcon = new DeviceIcon();
+    public static DeviceIcon getBreakerIcon(Breaker breaker) {
+        if (breaker.getVoltage() == Voltage.KV12) {
+            return get12KVBreakerIcon(breaker);
+        } else {
+            return get70KVBreakerIcon(breaker);
+        }
+    }
 
-        Line inLine = createLine(position, position.translate(0, 1 * GridScene.UNIT));
+    private static DeviceIcon get70KVBreakerIcon(Breaker breaker) {
+        DeviceIcon breakerIcon = new DeviceIcon();
+        Point p = breaker.getPosition();
+        Line inLine = createLine(p, p.translate(0, 1 * GridScene.UNIT));
         breakerIcon.addInNodeShapes(inLine);
 
-        Line outLine = createLine(position.translate(0, 2 * GridScene.UNIT), position.translate(0, 3 * GridScene.UNIT));
+        Line outLine = createLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
         breakerIcon.addOutNodeShapes(outLine);
 
-        Rectangle box = createRectangle(position.translate(-0.5 * GridScene.UNIT, 1 * GridScene.UNIT),
-                position.translate(0.5 * GridScene.UNIT, 2 * GridScene.UNIT), Color.RED);
+        Rectangle box = createRectangle(p.translate(-0.5 * GridScene.UNIT, 1 * GridScene.UNIT),
+                p.translate(0.5 * GridScene.UNIT, 2 * GridScene.UNIT), Color.RED, Color.BLACK);
         breakerIcon.addMidNodeShapes(box);
 
+        if (breaker.isClosedByDefault()) {
+            if (!breaker.isClosed()) {
+                box.setFill(Color.LIME);
+                Node textBox = createTextBox("N/C", p.translate(-3.5 * GridScene.UNIT, GridScene.UNIT),
+                        p.translate(-2.5 * GridScene.UNIT, 2 * GridScene.UNIT));
+                breakerIcon.addStaticNodes(textBox);
+            }
+        }
+        else {
+            if (breaker.isClosed()) {
+                // Draw N/O text
+            }
+            else {
+                box.setFill(Color.LIME);
+            }
+        }
+
+        breakerIcon.setBoundingRect(p, 2, 3);
         return breakerIcon;
     }
 
-    public static DeviceIcon get12KVBreakerIcon(Point p) {
+    private static DeviceIcon get12KVBreakerIcon(Breaker breaker) {
         DeviceIcon breakerIcon = new DeviceIcon();
+        Point p = breaker.getPosition();
 
         Line inLine1 = createLine(p, p.translate(0, 0.75 * GridScene.UNIT));
         Line inLine2 = createRoundedLine(p.translate(0, GridScene.UNIT), p.translate(0, 1.5 * GridScene.UNIT));
@@ -68,9 +129,12 @@ public class ComponentIconCreator {
         breakerIcon.addOutNodeShapes(outLine1, outLine2, outChevron1L, outChevron1R, outChevron2L, outChevron2R);
 
         Rectangle box = createRectangle(p.translate(-0.5 * GridScene.UNIT, 1.5 * GridScene.UNIT),
-                p.translate(0.5 * GridScene.UNIT, 2.5 * GridScene.UNIT), Color.RED);
+                p.translate(0.5 * GridScene.UNIT, 2.5 * GridScene.UNIT), Color.RED, Color.BLACK);
         breakerIcon.addMidNodeShapes(box);
 
+        if (!breaker.isClosed()) box.setFill(Color.LIME);
+
+        breakerIcon.setBoundingRect(p, 2, 4);
         return breakerIcon;
     }
 
@@ -129,7 +193,7 @@ public class ComponentIconCreator {
         Line outLine = createLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
         // these shapes get rotated together
         Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * GridScene.UNIT), 0.15 * GridScene.UNIT, Orientation.UP);
-        Circle cutoutDot = createCircle(p.translate(0, 1.125 * GridScene.UNIT), 0.5, Color.TRANSPARENT);
+        Circle cutoutDot = createCircle(p.translate(0, 1.125 * GridScene.UNIT), 0.5, Color.TRANSPARENT, Color.BLACK);
         Line cutoutLineL = createRoundedLine(p.translate(0, 2 * GridScene.UNIT), p.translate(-0.15 * GridScene.UNIT, 1.125 * GridScene.UNIT));
         Line cutoutLineR = createRoundedLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0.15 * GridScene.UNIT, 1.125 * GridScene.UNIT));
 
@@ -148,14 +212,18 @@ public class ComponentIconCreator {
         return cutoutIcon;
     }
 
-    public static SourceIcon getPowerSourceIcon(Point p) {
+    public static SourceIcon getPowerSourceIcon(PowerSource source) {
         SourceIcon powerSourceIcon = new SourceIcon();
+        Point p = source.getPosition();
 
-        Rectangle sourceBox = createRectangle(p.translate(-GridScene.UNIT, 0), p.translate(GridScene.UNIT, 2 * GridScene.UNIT), Color.LIME);
+        Rectangle sourceBox = createRectangle(p.translate(-GridScene.UNIT, 0),
+                p.translate(GridScene.UNIT, 2 * GridScene.UNIT), Color.RED, Color.BLACK);
         powerSourceIcon.addSourceNodeShapes(sourceBox);
 
         Line outLine = createLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
         powerSourceIcon.addOutputLine(outLine);
+
+        if (!source.isOn()) sourceBox.setFill(Color.LIME);
 
         return powerSourceIcon;
     }
@@ -163,7 +231,7 @@ public class ComponentIconCreator {
     public static SourceIcon getTurbineIcon(Point p) {
         SourceIcon turbineIcon = new SourceIcon();
 
-        Circle turbineCircle = createCircle(p.translate(0, 2 * GridScene.UNIT), GridScene.UNIT, Color.RED);
+        Circle turbineCircle = createCircle(p.translate(0, 2 * GridScene.UNIT), GridScene.UNIT, Color.RED, Color.BLACK);
         turbineIcon.addSourceNodeShapes(turbineCircle);
 
         Line outLine1 = createLine(p, p.translate(0, GridScene.UNIT));
@@ -179,7 +247,7 @@ public class ComponentIconCreator {
         WireIcon wireIcon = new WireIcon();
 
         if (p1.equals(p2)) {
-            Circle wireDot = createCircle(p1, 1, Color.BLACK);
+            Circle wireDot = createCircle(p1, 1, Color.BLACK, Color.BLACK);
             wireIcon.addWireShape(wireDot);
         } else {
             Line wireLine = createLine(p1, p2);
@@ -208,11 +276,11 @@ public class ComponentIconCreator {
         return line;
     }
 
-    private static Rectangle createRectangle(Point p1, Point p2, Color fill) {
+    private static Rectangle createRectangle(Point p1, Point p2, Color fill, Color stroke) {
         Rectangle rectangle = new Rectangle();
         rectangle.setStrokeWidth(GridScene.STROKE_WIDTH);
         rectangle.setStrokeType(StrokeType.CENTERED);
-        rectangle.setStroke(Color.BLACK);
+        rectangle.setStroke(stroke);
         rectangle.setFill(fill);
 
         rectangle.setX(p1.getX());
@@ -242,9 +310,23 @@ public class ComponentIconCreator {
         return arc;
     }
 
-    private static Circle createCircle(Point center, double radius, Color fill) {
+    private static double getArcStartAngle(Orientation orientation) {
+        switch (orientation) {
+            case UP:
+                return 0;
+            case DOWN:
+                return 180;
+            case LEFT:
+                return 90;
+            case RIGHT:
+                return 270;
+        }
+        return 0;
+    }
+
+    private static Circle createCircle(Point center, double radius, Color fill, Color stroke) {
         Circle circle = new Circle();
-        circle.setStroke(Color.BLACK);
+        circle.setStroke(stroke);
         circle.setStrokeWidth(GridScene.STROKE_WIDTH);
         circle.setFill(fill);
 
@@ -264,18 +346,15 @@ public class ComponentIconCreator {
         node.getTransforms().add(rotateTransform);
     }
 
-    private static double getArcStartAngle(Orientation orientation) {
-        switch (orientation) {
-            case UP:
-                return 0;
-            case DOWN:
-                return 180;
-            case LEFT:
-                return 90;
-            case RIGHT:
-                return 270;
-        }
-        return 0;
+    public static Node createTextBox(String string, Point corner1, Point corner2) {
+        Rectangle rect = createRectangle(corner1, corner2, Color.TRANSPARENT, Color.BLUE);
+        Text text = new Text(string);
+        text.setFill(Color.RED);
+        text.setBoundsType(TextBoundsType.VISUAL);
+
+        StackPane layout = new StackPane(rect, text);
+        layout.setPadding(new Insets(20));
+        return layout;
     }
 }
 

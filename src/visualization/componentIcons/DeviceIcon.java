@@ -1,6 +1,7 @@
 package visualization.componentIcons;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.shape.Shape;
 
 public class DeviceIcon extends ComponentIcon {
@@ -22,8 +23,8 @@ public class DeviceIcon extends ComponentIcon {
         addEnergyOutlineNode(inNodeEnergyOutline, outNodeEnergyOutline, midNodeEnergyOutline);
     }
 
-    public void addStaticShapes(Shape... shapes) {
-        addNodesToIconNode(shapes);
+    public void addStaticNodes(Node... nodes) {
+        addNodesToIconNode(nodes);
     }
 
     public void addInNodeShapes(Shape... shapes) {

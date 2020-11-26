@@ -24,17 +24,14 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
 
     @Override
     public ComponentIcon getComponentIcon() {
-        DeviceIcon icon;
-        if (voltage == Voltage.KV12) {
-            icon = ComponentIconCreator.get12KVBreakerIcon(getPosition());
-            icon.setBoundingRect(getPosition(), 2, 4);
-        } else {
-            icon = ComponentIconCreator.get70KVBreakerIcon(getPosition());
-            icon.setBoundingRect(getPosition(), 2, 3);
-        }
+        DeviceIcon icon = ComponentIconCreator.getBreakerIcon(this);
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
         return icon;
+    }
+
+    public Voltage getVoltage() {
+        return voltage;
     }
 
     @Override

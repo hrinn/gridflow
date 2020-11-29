@@ -1,7 +1,9 @@
 package visualization.componentIcons;
 
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import model.geometry.Point;
 import visualization.GridScene;
 
 public class WireIcon extends ComponentIcon {
@@ -26,4 +28,8 @@ public class WireIcon extends ComponentIcon {
         energyOutline.setOpacity(energized ? 1 : 0);
     }
 
+    @Override
+    public void setBoundingRect(Point position, double unitWidth, double unitHeight, double widthPadding, double heightPadding) {
+        setBoundingRectParametersByCenter(position, unitWidth * GridScene.UNIT, unitHeight * GridScene.UNIT);
+    }
 }

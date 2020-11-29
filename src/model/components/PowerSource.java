@@ -19,13 +19,13 @@ public class PowerSource extends Source {
 
     @Override
     public ComponentIcon getComponentIcon() {
-        SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(this);
+        SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), isOn());
         icon.setSourceNodeEnergyState(isOn());
         for (int i = 0; i < getOutputCount(); i++) {
             icon.setWireEnergyState(isOutputEnergized(i), i);
         }
         icon.setComponentIconID(getId().toString());
-        icon.setBoundingRect(getPosition(), 2, 3);
+        icon.setBoundingRect(getPosition(), 2, 2, 0, 0);
         return icon;
     }
 }

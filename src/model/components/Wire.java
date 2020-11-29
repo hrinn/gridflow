@@ -1,6 +1,7 @@
 package model.components;
 
 import model.geometry.*;
+import visualization.GridScene;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.WireIcon;
@@ -55,6 +56,14 @@ public class Wire extends Component {
         return connections;
     }
 
+    public boolean isPointWire() {
+        return start.equals(end);
+    }
+
+    public boolean isVerticalWire() {
+        return start.getX() == end.getX() && start.getY() != end.getY();
+    }
+
     @Override
     public List<Component> getAccessibleConnections() {
         energize();
@@ -66,6 +75,11 @@ public class Wire extends Component {
         WireIcon icon = ComponentIconCreator.getWireIcon(start, end);
         icon.setWireIconEnergyState(energized);
         icon.setComponentIconID(getId().toString());
+
+        double unitWidth = Math.max(0.5, start.differenceX(end) / GridScene.UNIT);
+        double unitHeight = Math.max(0.5, start.differenceY(end) / GridScene.UNIT);
+
+        icon.setBoundingRect(getPosition(), unitWidth, unitHeight, 0, 0);
         return icon;
     }
 }

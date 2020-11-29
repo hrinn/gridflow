@@ -11,16 +11,14 @@ import javafx.scene.text.TextBoundsType;
 import javafx.scene.transform.Rotate;
 import model.components.Breaker;
 import model.components.PowerSource;
-import model.components.Switch;
 import model.components.Voltage;
 import model.geometry.Point;
 import visualization.GridScene;
 
 public class ComponentIconCreator {
 
-    public static DeviceIcon getSwitchIcon(Switch switchComponent) {
+    public static DeviceIcon getSwitchIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon switchIcon = new DeviceIcon();
-        Point p = switchComponent.getPosition();
 
         // base shape
         Line inLine = createLine(p, p.translate(0, 1.25 * GridScene.UNIT));
@@ -35,8 +33,8 @@ public class ComponentIconCreator {
         switchIcon.addOutNodeShapes(outLine, outBar);
 
         // State indicators
-        if (switchComponent.isClosedByDefault()) {
-            if (switchComponent.isClosed()){
+        if (isClosedByDefault) {
+            if (isClosed){
                 Line closedBar = createLine(p.translate(0.5 * GridScene.UNIT, GridScene.UNIT),
                         p.translate(-0.5 * GridScene.UNIT, 2 * GridScene.UNIT));
                 switchIcon.addMidNodeShapes(closedBar);
@@ -48,7 +46,7 @@ public class ComponentIconCreator {
             }
         }
         else {
-            if (switchComponent.isClosed()) {
+            if (isClosed) {
                 Line closedBar1 = createLine(p.translate(0.5 * GridScene.UNIT, GridScene.UNIT),
                         p.translate(-0.5 * GridScene.UNIT, 2 * GridScene.UNIT));
                 closedBar1.setStroke(Color.RED);
@@ -62,17 +60,8 @@ public class ComponentIconCreator {
         return switchIcon;
     }
 
-    public static DeviceIcon getBreakerIcon(Breaker breaker) {
-        if (breaker.getVoltage() == Voltage.KV12) {
-            return get12KVBreakerIcon(breaker);
-        } else {
-            return get70KVBreakerIcon(breaker);
-        }
-    }
-
-    private static DeviceIcon get70KVBreakerIcon(Breaker breaker) {
+    public static DeviceIcon get70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon breakerIcon = new DeviceIcon();
-        Point p = breaker.getPosition();
         Line inLine = createLine(p, p.translate(0, 1 * GridScene.UNIT));
         breakerIcon.addInNodeShapes(inLine);
 
@@ -83,8 +72,8 @@ public class ComponentIconCreator {
                 p.translate(0.5 * GridScene.UNIT, 2 * GridScene.UNIT), Color.RED, Color.BLACK);
         breakerIcon.addMidNodeShapes(box);
 
-        if (breaker.isClosedByDefault()) {
-            if (!breaker.isClosed()) {
+        if (isClosedByDefault) {
+            if (!isClosed) {
                 box.setFill(Color.LIME);
                 Node textBox = createTextBox("N/C", p.translate(-3.5 * GridScene.UNIT, GridScene.UNIT),
                         p.translate(-2.5 * GridScene.UNIT, 2 * GridScene.UNIT));
@@ -92,7 +81,7 @@ public class ComponentIconCreator {
             }
         }
         else {
-            if (breaker.isClosed()) {
+            if (isClosed) {
                 // Draw N/O text
             }
             else {
@@ -100,13 +89,11 @@ public class ComponentIconCreator {
             }
         }
 
-        breakerIcon.setBoundingRect(p, 2, 3);
         return breakerIcon;
     }
 
-    private static DeviceIcon get12KVBreakerIcon(Breaker breaker) {
+    public static DeviceIcon get12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon breakerIcon = new DeviceIcon();
-        Point p = breaker.getPosition();
 
         Line inLine1 = createLine(p, p.translate(0, 0.75 * GridScene.UNIT));
         Line inLine2 = createRoundedLine(p.translate(0, GridScene.UNIT), p.translate(0, 1.5 * GridScene.UNIT));
@@ -132,9 +119,8 @@ public class ComponentIconCreator {
                 p.translate(0.5 * GridScene.UNIT, 2.5 * GridScene.UNIT), Color.RED, Color.BLACK);
         breakerIcon.addMidNodeShapes(box);
 
-        if (!breaker.isClosed()) box.setFill(Color.LIME);
+        if (!isClosed) box.setFill(Color.LIME);
 
-        breakerIcon.setBoundingRect(p, 2, 4);
         return breakerIcon;
     }
 
@@ -212,9 +198,8 @@ public class ComponentIconCreator {
         return cutoutIcon;
     }
 
-    public static SourceIcon getPowerSourceIcon(PowerSource source) {
+    public static SourceIcon getPowerSourceIcon(Point p, boolean isOn) {
         SourceIcon powerSourceIcon = new SourceIcon();
-        Point p = source.getPosition();
 
         Rectangle sourceBox = createRectangle(p.translate(-GridScene.UNIT, 0),
                 p.translate(GridScene.UNIT, 2 * GridScene.UNIT), Color.RED, Color.BLACK);
@@ -223,7 +208,7 @@ public class ComponentIconCreator {
         Line outLine = createLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
         powerSourceIcon.addOutputLine(outLine);
 
-        if (!source.isOn()) sourceBox.setFill(Color.LIME);
+        if (!isOn) sourceBox.setFill(Color.LIME);
 
         return powerSourceIcon;
     }

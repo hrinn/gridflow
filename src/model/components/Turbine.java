@@ -25,7 +25,7 @@ public class Turbine extends Source {
             icon.setWireEnergyState(isOutputEnergized(i), i);
         }
         icon.setComponentIconID(getId().toString());
-        icon.setBoundingRect(getPosition(), 2, 4);
+        icon.setBoundingRect(getPosition(), 2, 4, .5, 0.5);
         return icon;
     }
 }

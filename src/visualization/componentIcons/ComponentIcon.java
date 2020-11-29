@@ -3,6 +3,7 @@ package visualization.componentIcons;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
@@ -25,12 +26,22 @@ public class ComponentIcon {
         boundingRect.setId(id);
     }
 
-    public void setBoundingRect(Point position, int unitWidth, int unitHeight) {
-        Point topLeft = position.translate(-(unitWidth * GridScene.UNIT)/2, 0);
+    public void setBoundingRect(Point position, double unitWidth, double unitHeight, double unitWidthPadding, double unitHeightPadding) {
+        double width = unitWidth * GridScene.UNIT;
+        double height = unitHeight * GridScene.UNIT;
+        double widthPadding = unitWidthPadding * GridScene.UNIT;
+        double heightPadding = unitHeightPadding * GridScene.UNIT;
+
+        Point center = position.translate(0, height/2);
+        setBoundingRectParametersByCenter(center, width - widthPadding, height - heightPadding);
+    }
+
+    protected void setBoundingRectParametersByCenter(Point center, double width, double height) {
+        Point topLeft = center.translate(-width/2, -height/2);
         boundingRect.setX(topLeft.getX());
         boundingRect.setY(topLeft.getY());
-        boundingRect.setWidth(unitWidth * GridScene.UNIT);
-        boundingRect.setHeight(unitHeight * GridScene.UNIT);
+        boundingRect.setWidth(width);
+        boundingRect.setHeight(height);
         boundingRect.setFill(Color.TRANSPARENT);
         boundingRect.setStroke(Color.TRANSPARENT);
     }
@@ -63,5 +74,9 @@ public class ComponentIcon {
 
     public Group getEnergyOutlineNodes() {
         return energyOutlineNodes;
+    }
+
+    protected Rectangle getBoundingRect() {
+        return boundingRect;
     }
 }

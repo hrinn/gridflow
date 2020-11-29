@@ -29,7 +29,12 @@ public class WireIcon extends ComponentIcon {
     }
 
     @Override
-    public void setBoundingRect(Point position, double unitWidth, double unitHeight, double widthPadding, double heightPadding) {
-        setBoundingRectParametersByCenter(position, unitWidth * GridScene.UNIT, unitHeight * GridScene.UNIT);
+    public void setBoundingRect(Point position, double unitWidth, double unitHeight, double unitWidthPadding, double unitHeightPadding) {
+        double width = unitWidth * GridScene.UNIT;
+        double height = unitHeight * GridScene.UNIT;
+        double widthPadding = unitWidthPadding * GridScene.UNIT;
+        double heightPadding = unitHeightPadding * GridScene.UNIT;
+
+        setBoundingRectParametersByCenter(position, width + widthPadding, height + heightPadding);
     }
 }

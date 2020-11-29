@@ -76,10 +76,12 @@ public class Wire extends Component {
         icon.setWireIconEnergyState(energized);
         icon.setComponentIconID(getId().toString());
 
-        double unitWidth = Math.max(0.5, start.differenceX(end) / GridScene.UNIT);
-        double unitHeight = Math.max(0.5, start.differenceY(end) / GridScene.UNIT);
+        //double unitWidth = Math.max(0.5, start.differenceX(end) / GridScene.UNIT);
+        //double unitHeight = Math.max(0.5, start.differenceY(end) / GridScene.UNIT);
+        double unitWidth = start.differenceX(end) / GridScene.UNIT;
+        double unitHeight = start.differenceY(end) / GridScene.UNIT;
 
-        icon.setBoundingRect(getPosition(), unitWidth, unitHeight, 0, 0);
+        icon.setBoundingRect(getPosition(), unitWidth, unitHeight, 0.5, 0.5);
         return icon;
     }
 }

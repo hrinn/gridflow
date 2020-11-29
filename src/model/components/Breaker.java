@@ -27,10 +27,10 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
         DeviceIcon icon;
         if (voltage == Voltage.KV12) {
             icon = ComponentIconCreator.get12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
-            icon.setBoundingRect(getPosition(), 2, 4, 0.5, 0.5);
+            icon.setBoundingRect(getPosition(), 2, 4, -0.5, -0.5);
         } else {
             icon = ComponentIconCreator.get70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
-            icon.setBoundingRect(getPosition(), 2, 3, 0.5, 0.5);
+            icon.setBoundingRect(getPosition(), 2, 3, -0.5, -0.5);
         }
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());

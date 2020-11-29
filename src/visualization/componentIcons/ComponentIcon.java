@@ -33,7 +33,7 @@ public class ComponentIcon {
         double heightPadding = unitHeightPadding * GridScene.UNIT;
 
         Point center = position.translate(0, height/2);
-        setBoundingRectParametersByCenter(center, width - widthPadding, height - heightPadding);
+        setBoundingRectParametersByCenter(center, width + widthPadding, height + heightPadding);
     }
 
     protected void setBoundingRectParametersByCenter(Point center, double width, double height) {

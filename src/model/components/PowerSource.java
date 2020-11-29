@@ -25,7 +25,7 @@ public class PowerSource extends Source {
             icon.setWireEnergyState(isOutputEnergized(i), i);
         }
         icon.setComponentIconID(getId().toString());
-        icon.setBoundingRect(getPosition(), 2, 2, 0, 0);
+        icon.setBoundingRect(getPosition(), 2, 2.75, 0, 0);
         return icon;
     }
 }

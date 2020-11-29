@@ -21,7 +21,7 @@ public class Jumper extends Device implements ICloseable {
         DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), closed);
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
-        icon.setBoundingRect(getPosition(), 2, 3, .5, 0.5);
+        icon.setBoundingRect(getPosition(), 2, 3, -0.5, -0.5);
         return icon;
     }
 

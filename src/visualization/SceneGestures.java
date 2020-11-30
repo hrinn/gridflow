@@ -29,7 +29,7 @@ public class SceneGestures {
         return onScrollEventHandler;
     }
 
-    private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
+    private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<>() {
 
         public void handle(MouseEvent event) {
 
@@ -47,11 +47,11 @@ public class SceneGestures {
 
     };
 
-    private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
+    private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<>() {
         public void handle(MouseEvent event) {
 
             // right mouse button => panning
-            if( !event.isSecondaryButtonDown())
+            if(!event.isSecondaryButtonDown())
                 return;
 
             canvas.setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
@@ -64,7 +64,7 @@ public class SceneGestures {
     /**
      * Mouse wheel handler: zoom to pivot point
      */
-    private EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<ScrollEvent>() {
+    private EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<>() {
 
         @Override
         public void handle(ScrollEvent event) {
@@ -86,7 +86,7 @@ public class SceneGestures {
             double dx = (event.getSceneX() - (canvas.getBoundsInParent().getWidth()/2 + canvas.getBoundsInParent().getMinX()));
             double dy = (event.getSceneY() - (canvas.getBoundsInParent().getHeight()/2 + canvas.getBoundsInParent().getMinY()));
 
-            canvas.setScale( scale);
+            canvas.setScale(scale);
 
             // note: pivot value must be untransformed, i. e. without scaling
             canvas.setPivot(f*dx, f*dy);

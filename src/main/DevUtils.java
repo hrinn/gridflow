@@ -62,7 +62,7 @@ public class DevUtils {
 
         //Transformer
         Transformer xdd1 = new Transformer("Transformer DD1", canvasPos(0, 3));
-        Wire xw = new Wire("", canvasPos(0, 3), canvasPos(2, 3));
+        Wire xw = new Wire("", canvasPos(0, 3), canvasPos(3, 3));
         xdd1.connectInWire(xw);
         xdd1.connectOutWire(dd1mw);
         xw.connect(xdd1);
@@ -76,13 +76,13 @@ public class DevUtils {
         dd101w.connect(dd101);
 
         // Side route switch
-        Switch dd105 = new Switch("DD-105", canvasPos(2, 9), false);
-        Wire dd105bw = new Wire("", canvasPos(2, 3), canvasPos(2, 6));
+        Switch dd105 = new Switch("DD-105", canvasPos(3, 9), false);
+        Wire dd105bw = new Wire("", canvasPos(3, 3), canvasPos(3, 6));
         dd105bw.connect(xw);
         xw.connect(dd105bw);
         dd105bw.connect(dd105);
         dd105.connectOutWire(dd105bw);
-        Wire dd105aw = new Wire("", canvasPos(2, 9), canvasPos(2, 12));
+        Wire dd105aw = new Wire("", canvasPos(3, 9), canvasPos(3, 12));
         dd105aw.connect(dd105);
         dd105.connectInWire(dd105aw);
 
@@ -96,7 +96,7 @@ public class DevUtils {
         // dd103
         Switch dd103 = new Switch("DD-103", canvasPos(0, 12), true);
         dd103.connectOutWire(dd1w);
-        Wire nrw = new Wire("", canvasPos(0, 12), canvasPos(2, 12));
+        Wire nrw = new Wire("", canvasPos(0, 12), canvasPos(3, 12));
         dd103.connectInWire(nrw);
         nrw.setConnections(List.of(dd103, dd105aw));
         dd105aw.connect(nrw);

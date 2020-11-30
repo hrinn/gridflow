@@ -32,6 +32,7 @@ public class Switch extends Device implements ICloseable, ILockable {
         DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
+        icon.setComponentName(getName());
         icon.setBoundingRect(getPosition(), 2, 3, -0.5, -0.5);
         return icon;
     }

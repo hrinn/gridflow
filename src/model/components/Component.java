@@ -1,6 +1,7 @@
 package model.components;
 
 import model.geometry.Point;
+import visualization.componentIcons.ComponentIcon;
 
 import java.util.List;
 import java.util.UUID;
@@ -30,6 +31,10 @@ public class Component {
 
     public Point getPosition() {
         return position;
+    }
+
+    public ComponentIcon getComponentIcon() {
+        throw new UnsupportedOperationException();
     }
 
     public List<Component> getAccessibleConnections() {

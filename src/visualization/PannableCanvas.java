@@ -3,12 +3,11 @@ package visualization;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Line;
+import model.geometry.Point;
 
 public class PannableCanvas extends Pane {
 
-    DoubleProperty scale = new SimpleDoubleProperty(1.0);
+    private DoubleProperty scale = new SimpleDoubleProperty(1.0);
 
     public PannableCanvas(double x, double y) {
         setPrefSize(x, y);
@@ -16,6 +15,10 @@ public class PannableCanvas extends Pane {
 
         scaleXProperty().bind(scale);
         scaleYProperty().bind(scale);
+    }
+
+    public Point getCenterPoint() {
+        return new Point(getWidth()/2, getHeight()/2);
     }
 
     public double getScale() {

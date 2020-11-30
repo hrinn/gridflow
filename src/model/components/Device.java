@@ -40,12 +40,10 @@ public class Device extends Component {
     public List<Component> getAccessibleConnections() {
         if(this.checkClosed()) {
             if(inWire.isEnergized()) {
-                outWire.energize();
                 return List.of(outWire);
             }
 
             else{
-                inWire.energize();
                 return List.of(inWire);
             }
         }

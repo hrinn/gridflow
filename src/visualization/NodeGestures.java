@@ -2,7 +2,6 @@ package visualization;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import main.events.Event;
 import main.events.EventManager;
@@ -34,11 +33,11 @@ public class NodeGestures {
 
             if (event.isSecondaryButtonDown()) return;
 
-            Parent targetNode = ((Node)event.getTarget()).getParent();
-            Component component = grid.getComponent(targetNode.getId());
+            Node target = (Node)event.getTarget();
+            Component component = grid.getComponent(target.getId());
 
             if (component instanceof IToggleable) {
-                ((IToggleable)component).toggleState();
+                ((IToggleable)component).toggle();
                 eventManager.sendEvent(Event.GridChanged);
 
             }

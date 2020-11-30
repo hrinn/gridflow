@@ -12,10 +12,11 @@ import main.events.Event;
 import main.events.EventManager;
 import model.Grid;
 import simulation.EnergySimulator;
-import visualization.GraphVisualizer;
-import visualization.PannableCanvas;
+import visualization.GridScene;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main extends Application {
 
@@ -25,25 +26,36 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+        List<Node> moduleGuiRoots = initModules();
+        initGui(primaryStage, moduleGuiRoots);
+    }
+
+    private List<Node> initModules() {
+        List<Node> moduleGuiRoots = new ArrayList<>();
+
+        // Create instance of Grid and Event manager
         Grid grid = new Grid();
         EventManager eventManager = new EventManager();
 
-        // Init modules
-        GraphVisualizer graphVisualizer = new GraphVisualizer(grid, eventManager);
-        new EnergySimulator(grid, eventManager);
+        // Init Visualization Module
+        GridScene gridScene = new GridScene(grid, eventManager);
+        moduleGuiRoots.add(gridScene.getCanvas());
 
-        // Draw base GUI
-        initGui(primaryStage, graphVisualizer.getGridCanvas());
+        // Init Simulation Module
+        new EnergySimulator(grid, eventManager);
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
         eventManager.sendEvent(Event.GridChanged); // build would do this later
+
+        return moduleGuiRoots;
     }
 
-    private void initGui(Stage primaryStage, PannableCanvas gridCanvas) throws IOException {
-        Node mainUI = FXMLLoader.load(getClass().getResource("main.fxml"));
+    private void initGui(Stage primaryStage, List<Node> moduleGuiRoots) throws IOException {
+        Node mainGui = FXMLLoader.load(getClass().getResource("main.fxml"));
 
-        Group root = new Group(gridCanvas, mainUI);
+        Group root = new Group(mainGui);
+        root.getChildren().addAll(moduleGuiRoots);
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         scene.setFill(Color.LIGHTGRAY);
 

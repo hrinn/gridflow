@@ -1,17 +1,10 @@
 package visualization.componentIcons;
 
-import javafx.geometry.Insets;
-import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
+import javafx.scene.text.*;
 import javafx.scene.transform.Rotate;
-import model.components.Breaker;
-import model.components.PowerSource;
-import model.components.Voltage;
 import model.geometry.Point;
 import visualization.GridScene;
 
@@ -72,17 +65,19 @@ public class ComponentIconCreator {
                 p.translate(0.5 * GridScene.UNIT, 2 * GridScene.UNIT), Color.RED, Color.BLACK);
         breakerIcon.addMidNodeShapes(box);
 
+        Point center = p.translate(0, 1.5 * GridScene.UNIT);
+
         if (isClosedByDefault) {
             if (!isClosed) {
                 box.setFill(Color.LIME);
-                Node textBox = createTextBox("N/C", p.translate(-3.5 * GridScene.UNIT, GridScene.UNIT),
-                        p.translate(-2.5 * GridScene.UNIT, 2 * GridScene.UNIT));
-                breakerIcon.addStaticNodes(textBox);
+                Text text = createText(center, "N/C", Color.WHITE, 10);
+                breakerIcon.addStaticNodes(text);
             }
         }
         else {
             if (isClosed) {
-                // Draw N/O text
+                Text text = createText(center, "N/O", Color.WHITE, 10);
+                breakerIcon.addStaticNodes(text);
             }
             else {
                 box.setFill(Color.LIME);
@@ -119,7 +114,24 @@ public class ComponentIconCreator {
                 p.translate(0.5 * GridScene.UNIT, 2.5 * GridScene.UNIT), Color.RED, Color.BLACK);
         breakerIcon.addMidNodeShapes(box);
 
-        if (!isClosed) box.setFill(Color.LIME);
+        Point center = p.translate(0, 2 * GridScene.UNIT);
+
+        if (isClosedByDefault) {
+            if (!isClosed) {
+                box.setFill(Color.LIME);
+                Text text = createText(center, "N/C", Color.WHITE, 10);
+                breakerIcon.addStaticNodes(text);
+            }
+        }
+        else {
+            if (isClosed) {
+                Text text = createText(center, "N/O", Color.WHITE, 10);
+                breakerIcon.addStaticNodes(text);
+            }
+            else {
+                box.setFill(Color.LIME);
+            }
+        }
 
         return breakerIcon;
     }
@@ -198,7 +210,7 @@ public class ComponentIconCreator {
         return cutoutIcon;
     }
 
-    public static SourceIcon getPowerSourceIcon(Point p, boolean isOn) {
+    public static SourceIcon getPowerSourceIcon(Point p, String name, boolean isOn) {
         SourceIcon powerSourceIcon = new SourceIcon();
 
         Rectangle sourceBox = createRectangle(p.translate(-GridScene.UNIT, 0),
@@ -209,6 +221,9 @@ public class ComponentIconCreator {
         powerSourceIcon.addOutputLine(outLine);
 
         if (!isOn) sourceBox.setFill(Color.LIME);
+        Point center = p.translate(0, GridScene.UNIT);
+        Text text = createText(center, name, Color.BLACK, 12);
+        powerSourceIcon.addStaticNodeShapes(text);
 
         return powerSourceIcon;
     }
@@ -331,15 +346,14 @@ public class ComponentIconCreator {
         node.getTransforms().add(rotateTransform);
     }
 
-    public static Node createTextBox(String string, Point corner1, Point corner2) {
-        Rectangle rect = createRectangle(corner1, corner2, Color.TRANSPARENT, Color.BLUE);
+    public static Text createText(Point center, String string, Color fill, double size) {
         Text text = new Text(string);
-        text.setFill(Color.RED);
-        text.setBoundsType(TextBoundsType.VISUAL);
-
-        StackPane layout = new StackPane(rect, text);
-        layout.setPadding(new Insets(20));
-        return layout;
+        text.setTextAlignment(TextAlignment.CENTER);
+        text.setFont(Font.font(null, size));
+        text.setFill(fill);
+        text.setLayoutX(center.getX() - text.prefWidth(-1)/2);
+        text.setLayoutY(center.getY() + text.prefHeight(-1)/4);
+        return text;
     }
 }
 

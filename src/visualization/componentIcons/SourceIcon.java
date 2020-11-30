@@ -1,6 +1,7 @@
 package visualization.componentIcons;
 
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
@@ -21,6 +22,10 @@ public class SourceIcon extends ComponentIcon {
     public void addSourceNodeShapes(Shape... shapes) {
         addNodesToIconNode(shapes);
         addShapesToEnergyOutlineNode(sourceNodeEnergyOutline, shapes);
+    }
+
+    public void addStaticNodeShapes(Node... nodes) {
+        addNodesToIconNode(nodes);
     }
 
     public void addOutputLine(Line line) {

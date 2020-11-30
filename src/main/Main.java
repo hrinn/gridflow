@@ -13,7 +13,6 @@ import main.events.EventManager;
 import model.Grid;
 import simulation.EnergySimulator;
 import visualization.GridScene;
-import visualization.PannableCanvas;
 
 import java.io.IOException;
 import java.util.ArrayList;

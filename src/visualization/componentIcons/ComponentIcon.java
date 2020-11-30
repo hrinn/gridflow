@@ -2,13 +2,15 @@ package visualization.componentIcons;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 import model.geometry.Point;
 import visualization.GridScene;
+
+import java.util.Arrays;
 
 public class ComponentIcon {
 

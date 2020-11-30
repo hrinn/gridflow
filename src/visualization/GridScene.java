@@ -1,7 +1,6 @@
 package visualization;
 
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import main.events.Event;
@@ -9,7 +8,6 @@ import main.events.EventManager;
 import main.events.IEventListener;
 import model.Grid;
 import model.components.*;
-import model.geometry.Point;
 import visualization.componentIcons.*;
 
 public class GridScene implements IEventListener {
@@ -51,13 +49,13 @@ public class GridScene implements IEventListener {
 
     private void addComponentIconToCanvas(ComponentIcon icon) {
         Group componentNode = icon.getComponentNode();
-        Group energyOutlineNode = icon.getEnergyOutlineNodes();
+        Group energyOutlineNodes = icon.getEnergyOutlineNodes();
         componentNode.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 
-        canvas.getChildren().addAll(energyOutlineNode, componentNode);
+        canvas.getChildren().addAll(energyOutlineNodes, componentNode);
 
         componentNode.toFront();
-        energyOutlineNode.toBack();
+        energyOutlineNodes.toBack();
     }
 
     public void displayGrid() {

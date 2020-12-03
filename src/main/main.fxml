@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,13 +12,14 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="500.0" pickOnBounds="false" prefHeight="1080.0" prefWidth="1920.0" translateY="2.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="500.0" pickOnBounds="false" prefHeight="1080.0" prefWidth="3840.0" translateY="2.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <HBox fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="225.0" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <VBox fx:id="LeftComponentMenu" style="-fx-border-color: BLACK" prefHeight="200.0" prefWidth="100.0" />
-            <VBox fx:id="RightComponentMenu" style="-fx-border-color: BLACK" prefHeight="200.0" prefWidth="100.0" />
-            <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateY="150.0">
+            <VBox fx:id="LeftComponentMenu" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: BLACK; -fx-background-color: WHITE;" />
+            
+            <VBox fx:id="RightComponentMenu" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: BLACK; -fx-background-color: WHITE;" />
+            <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0">
                <children>
                   <Button fx:id="ToggleComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: #b0b0b0;">
                      <graphic>
@@ -34,19 +34,21 @@
          </children>
       </HBox>
    </left>
-   <effect>
-      <DropShadow />
-   </effect>
    <top>
-      <VBox fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" prefHeight="30.0" prefWidth="1920.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" prefHeight="30.0" prefWidth="3840.0" style="-fx-border-color: WHITE;" translateX="-1.0" translateY="-2.0" BorderPane.alignment="TOP_LEFT">
          <children>
-            <AnchorPane fx:id="TopMenuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" prefHeight="30.0" prefWidth="1920.0" style="-fx-background-color: #b0b0b0;">
+            <AnchorPane fx:id="TopMenuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" prefWidth="3840.0" style="-fx-background-color: WHITE; -fx-border-color: WHITE;">
                <children>
-                  <ImageView fx:id="MenuLogo" fitHeight="30.0" fitWidth="250.0" layoutX="1723.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="1.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="1.0">
-                     <image>
-                        <Image url="@../resources/logoScaled.png" />
-                     </image></ImageView>
-                  <MenuBar fx:id="TopMenuBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="500.0" prefHeight="30.0" prefWidth="1700.0" style="-fx-alignment: center-left; -fx-background-color: #b0b0b0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <AnchorPane fx:id="MenuLogoPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="30.0" prefWidth="200.0" style="-fx-border-color: WHITE;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ImageView fx:id="MenuLogo" fitHeight="30.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" style="-fx-background: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <image>
+                              <Image url="@../resources/logoScaled.png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </AnchorPane>
+                  <MenuBar fx:id="TopMenuBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="500.0" prefHeight="30.0" prefWidth="500.0" style="-fx-alignment: center-left; -fx-background-color: #FFFFFF;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <menus>
                         <Menu fx:id="FileMenu" mnemonicParsing="false" style="-fx-font-size: 14; -fx-text-alignment: center;" text="File">
                            <items>

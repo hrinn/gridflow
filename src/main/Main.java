@@ -24,6 +24,7 @@ import java.util.List;
 public class Main extends Application {
 
     private static final String TITLE = "GridFlow";
+    private static final String WINDOWICONPATH = "/resources/iconScaled.png";
     private static final int WINDOW_WIDTH = 1300;
     private static final int WINDOW_HEIGHT = 700;
 
@@ -47,14 +48,6 @@ public class Main extends Application {
         // Init Simulation Module
         new EnergySimulator(grid, eventManager);
 
-        System.out.println(System.getProperty("user.dir"));
-
-        primaryStage.setTitle(TITLE);
-        primaryStage.getIcons().add(new Image("/resources/iconScaled.png"));
-        primaryStage.setMinHeight(700);
-        primaryStage.setMinWidth(500);
-        primaryStage.setScene(scene);
-        primaryStage.show();
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
         eventManager.sendEvent(Event.GridChanged); // build would do this later
@@ -65,12 +58,16 @@ public class Main extends Application {
     private void initGui(Stage primaryStage, List<Node> moduleGuiRoots) throws IOException {
         Node mainGui = FXMLLoader.load(getClass().getResource("main.fxml"));
 
-        Group root = new Group(mainGui);
+        Group root = new Group();
         root.getChildren().addAll(moduleGuiRoots);
+        root.getChildren().add(mainGui);
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        scene.setFill(Color.LIGHTGRAY);
+        //scene.setFill(Color.LIGHTGRAY);
 
         primaryStage.setTitle(TITLE);
+        primaryStage.getIcons().add(new Image(WINDOWICONPATH));
+        primaryStage.setMinHeight(700);
+        primaryStage.setMinWidth(500);
         primaryStage.setScene(scene);
         primaryStage.show();
     }

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="500.0" prefHeight="1080.0" prefWidth="1920.0" translateY="2.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="500.0" pickOnBounds="false" prefHeight="1080.0" prefWidth="1920.0" translateY="2.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <HBox fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="225.0" BorderPane.alignment="CENTER_LEFT">
          <children>
@@ -21,7 +21,7 @@
             <VBox fx:id="RightComponentMenu" prefHeight="200.0" prefWidth="100.0" />
             <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateY="150.0">
                <children>
-                  <Button fx:id="ToggleComponentMenu" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: #b0b0b0;">
+                  <Button fx:id="ToggleComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: #b0b0b0;">
                      <graphic>
                         <ImageView fx:id="CollapseArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
                            <image>
@@ -46,7 +46,7 @@
                      <image>
                         <Image url="@../resources/logoScaled.png" />
                      </image></ImageView>
-                  <MenuBar fx:id="TopMenuBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="500.0" prefHeight="30.0" prefWidth="1700.0" style="-fx-alignment: left; -fx-background-color: #b0b0b0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <MenuBar fx:id="TopMenuBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="500.0" prefHeight="30.0" prefWidth="1700.0" style="-fx-alignment: center-left; -fx-background-color: #b0b0b0;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <menus>
                         <Menu fx:id="FileMenu" mnemonicParsing="false" style="-fx-font-size: 14; -fx-text-alignment: center;" text="File">
                            <items>

@@ -17,8 +17,8 @@
    <left>
       <HBox fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="225.0" BorderPane.alignment="CENTER_LEFT">
          <children>
-            <VBox fx:id="LeftComponentMenu" prefHeight="200.0" prefWidth="100.0" />
-            <VBox fx:id="RightComponentMenu" prefHeight="200.0" prefWidth="100.0" />
+            <VBox fx:id="LeftComponentMenu" style="-fx-border-color: BLACK" prefHeight="200.0" prefWidth="100.0" />
+            <VBox fx:id="RightComponentMenu" style="-fx-border-color: BLACK" prefHeight="200.0" prefWidth="100.0" />
             <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateY="150.0">
                <children>
                   <Button fx:id="ToggleComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: #b0b0b0;">

@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="500.0" pickOnBounds="false" prefHeight="1080" prefWidth="1920" translateY="2.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="500.0" pickOnBounds="false" prefHeight="1080" prefWidth="1920" translateY="2.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="main.UIController">
    <!-- This block defines an attribute "screen" to extract resolution height and width (${screen.visualBounds.height}) (${screen.visualBounds.width}) -->
    <fx:define>
       <Screen fx:factory="getPrimary" fx:id="screen"/>
@@ -27,7 +27,7 @@
             <VBox fx:id="RightComponentMenu" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: BLACK; -fx-background-color: WHITE;" />
             <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0">
                <children>
-                  <Button fx:id="ToggleComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: #b0b0b0;">
+                  <Button fx:id="ComponentMenuButton" onAction="#printOutput" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: #b0b0b0;">
                      <graphic>
                         <ImageView fx:id="CollapseArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
                            <image>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
@@ -26,7 +27,7 @@
             <VBox fx:id="LeftComponentMenu" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: BLACK; -fx-background-color: WHITE;" />
             
             <VBox fx:id="RightComponentMenu" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: BLACK; -fx-background-color: WHITE;" />
-            <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0">
+            <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0" onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover">
                <children>
                   <Button fx:id="ComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#toggleMenu" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: #b0b0b0;">
                      <graphic>
@@ -37,6 +38,9 @@
                         </ImageView>
                      </graphic></Button>
                </children>
+               <cursor>
+                  <Cursor fx:constant="DEFAULT" />
+               </cursor>
             </Pane>
          </children>
       </HBox>

@@ -55,7 +55,7 @@ public class Main extends Application {
     }
 
     private void initGui(Stage primaryStage, List<Node> moduleGuiRoots) throws IOException {
-        Node mainGui = FXMLLoader.load(getClass().getResource("main.fxml"));
+        Node mainGui = FXMLLoader.load(getClass().getResource("UI.fxml"));
 
         Group root = new Group();
         root.getChildren().addAll(moduleGuiRoots);

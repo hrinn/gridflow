@@ -1,5 +1,6 @@
 package main;
 
+import construction.GridBuilder;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -16,8 +17,6 @@ import simulation.EnergySimulator;
 import visualization.GridScene;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main extends Application {
 
@@ -29,37 +28,37 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        List<Node> moduleGuiRoots = initModules();
-        initGui(primaryStage, moduleGuiRoots);
+        Node canvas = initModules();
+        initGui(primaryStage, canvas);
     }
 
-    private List<Node> initModules() {
-        List<Node> moduleGuiRoots = new ArrayList<>();
+    private Node initModules() {
 
-        // Create instance of Grid and Event manager
+        // Create instance of Grid & Event manager
         Grid grid = new Grid();
         EventManager eventManager = new EventManager();
 
         // Init Visualization Module
         GridScene gridScene = new GridScene(grid, eventManager);
-        moduleGuiRoots.add(gridScene.getCanvas());
 
         // Init Simulation Module
         new EnergySimulator(grid, eventManager);
+
+        // Init Construction Module
+       new GridBuilder(gridScene.getCanvas());
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
         eventManager.sendEvent(Event.GridChanged); // build would do this later
 
-        return moduleGuiRoots;
+        return gridScene.getCanvas();
     }
 
-    private void initGui(Stage primaryStage, List<Node> moduleGuiRoots) throws IOException {
+    private void initGui(Stage primaryStage, Node canvas) throws IOException {
         Node mainGui = FXMLLoader.load(getClass().getResource("UI.fxml"));
 
         Group root = new Group();
-        root.getChildren().addAll(moduleGuiRoots);
-        root.getChildren().add(mainGui);
+        root.getChildren().addAll(canvas, mainGui);
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         scene.setFill(Color.LIGHTGRAY);
 

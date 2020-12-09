@@ -17,7 +17,9 @@ public class GridBuilder {
     }
 
     // place a component standalone on the grid
-    public void placeComponent(Point point) {
+    public void placeComponent(Point inputPoint) {
+        Point point = getNearestUnitCoordinate(inputPoint);
+
         Switch comp = new Switch("test", point, true);
 
         Wire inWire = new Wire(point);
@@ -42,6 +44,12 @@ public class GridBuilder {
         if (component instanceof IToggleable) {
             ((IToggleable) component).toggle();
         }
+    }
+
+    private Point getNearestUnitCoordinate(Point point) {
+        double x = Math.round(point.getX()/Globals.UNIT) * Globals.UNIT;
+        double y = Math.round(point.getY()/Globals.UNIT) * Globals.UNIT;
+        return new Point(x, y);
     }
 
 }

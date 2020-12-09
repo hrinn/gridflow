@@ -15,15 +15,11 @@ public class GridVisualizer {
     }
 
     public void displayGrid() {
-        clearGrid();
-
+        canvas.clearComponents();
+        // maybe set up the complicated component icon display stuff in here instead of component class
         for (Component component : grid.getComponents()) {
             canvas.addComponentIcon(component.getComponentIcon());
         }
-    }
-
-    public void clearGrid() {
-        canvas.getChildren().clear();
     }
 
 }

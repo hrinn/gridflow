@@ -1,23 +1,21 @@
 package application;
 
-import construction.ConstructionController;
-import construction.canvas.GridCanvas;
-import construction.canvas.SceneGestures;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import domain.Grid;
 import application.events.*;
+
 import simulation.SimulationController;
 import visualization.VisualizationController;
+import construction.ConstructionController;
+import construction.canvas.GridCanvas;
 
 public class GridFlowApp extends Application {
 

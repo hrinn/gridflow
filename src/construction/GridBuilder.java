@@ -1,15 +1,12 @@
 package construction;
 
-import model.components.Component;
-import model.geometry.Point;
-import visualization.PannableCanvas;
+import domain.components.Component;
+import domain.geometry.Point;
 
 public class GridBuilder {
 
-    private PannableCanvas canvas;
+    public GridBuilder() {
 
-    public GridBuilder(PannableCanvas canvas) {
-        this.canvas = canvas;
     }
 
     private void placeComponent(Component component, Point point) {

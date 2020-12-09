@@ -1,66 +1,75 @@
 package application;
 
-import construction.GridBuilder;
+import construction.ConstructionController;
+import construction.canvas.GridCanvas;
+import construction.canvas.SceneGestures;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import application.events.Event;
-import application.events.EventManager;
-import model.Grid;
-import simulation.EnergySimulator;
-import visualization.GridScene;
-
-import java.io.IOException;
+import domain.Grid;
+import application.events.*;
+import simulation.SimulationController;
+import visualization.VisualizationController;
 
 public class GridFlowApp extends Application {
 
     private static final String TITLE = "GridFlow";
-    private static final String WINDOW_ICON_PATH = "resources/iconLarge.png";
+    private static final String WINDOW_ICON_PATH = "/resources/iconLarge.png";
     private static final int WINDOW_WIDTH = 1300;
     private static final int WINDOW_HEIGHT = 700;
     private static final String GRIDFLOW_BLUE = "#008EB0";
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Node canvas = initModules();
-        initGui(primaryStage, canvas);
-    }
 
-    private Node initModules() {
-
-        // Create instance of Grid & Event manager
-        Grid grid = new Grid();
+        // Custom event manager for our events
         EventManager eventManager = new EventManager();
 
-        // Init Visualization Module
-        GridScene gridScene = new GridScene(grid, eventManager);
+        // Create empty grid
+        Grid grid = new Grid();
 
-        // Init Simulation Module
-        new EnergySimulator(grid, eventManager);
+        // Init modules
+        ConstructionController constructionController = new ConstructionController();
+        constructionController.initController(grid, eventManager);
+        FXMLLoader constructionViewLoader = new FXMLLoader(getClass().getResource("/construction/ConstructionView.fxml"));
 
-        // Init Construction Module
-       new GridBuilder(gridScene.getCanvas());
+        VisualizationController visualizationController = new VisualizationController();
+        visualizationController.initController(grid, constructionController.getCanvas());
+        eventManager.addListener(visualizationController);
+
+        SimulationController simulationController = new SimulationController();
+        simulationController.initController(grid, eventManager);
+        eventManager.addListener(simulationController);
+
+        FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/baseui/BaseUIView.fxml"));
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
         eventManager.sendEvent(Event.GridChanged); // build would do this later
 
-        return gridScene.getCanvas();
+        // Init GUI
+        initGui(primaryStage, constructionController.getCanvas(), constructionViewLoader.load(), baseUIViewLoader.load());
     }
 
-    private void initGui(Stage primaryStage, Node canvas) throws IOException {
-        Node mainGui = FXMLLoader.load(getClass().getResource("UI.fxml"));
-
+    private void initGui(Stage primaryStage, GridCanvas canvas, Node constructionView, Node baseUIView) {
         Group root = new Group();
-        root.getChildren().addAll(canvas, mainGui);
+
+        BorderPane ui = new BorderPane();
+        ui.setLeft(constructionView);
+        ui.setTop(baseUIView);
+        ui.setPickOnBounds(false);
+
+        root.getChildren().addAll(canvas, ui);
+
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        scene.setFill(Color.LIGHTGRAY);
 
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));

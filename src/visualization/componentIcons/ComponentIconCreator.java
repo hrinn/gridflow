@@ -5,8 +5,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.*;
 import javafx.scene.transform.Rotate;
-import model.geometry.Point;
-import visualization.GridScene;
+import domain.geometry.Point;
+import visualization.GridVisualizer;
 
 public class ComponentIconCreator {
 
@@ -14,37 +14,37 @@ public class ComponentIconCreator {
         DeviceIcon switchIcon = new DeviceIcon();
 
         // base shape
-        Line inLine = createLine(p, p.translate(0, 1.25 * GridScene.UNIT));
-        Line inBar = createLine(p.translate(-0.5 * GridScene.UNIT, 1.25 * GridScene.UNIT),
-                p.translate(0.5 * GridScene.UNIT, 1.25 * GridScene.UNIT));
+        Line inLine = createLine(p, p.translate(0, 1.25 * GridVisualizer.UNIT));
+        Line inBar = createLine(p.translate(-0.5 * GridVisualizer.UNIT, 1.25 * GridVisualizer.UNIT),
+                p.translate(0.5 * GridVisualizer.UNIT, 1.25 * GridVisualizer.UNIT));
         switchIcon.addInNodeShapes(inLine, inBar);
 
-        Line outLine = createLine(p.translate(0, 1.75 * GridScene.UNIT),
-                p.translate(0, 3 * GridScene.UNIT));
-        Line outBar = createLine(p.translate(-0.5 * GridScene.UNIT, 1.75 * GridScene.UNIT),
-                p.translate(0.5 * GridScene.UNIT, 1.75 * GridScene.UNIT));
+        Line outLine = createLine(p.translate(0, 1.75 * GridVisualizer.UNIT),
+                p.translate(0, 3 * GridVisualizer.UNIT));
+        Line outBar = createLine(p.translate(-0.5 * GridVisualizer.UNIT, 1.75 * GridVisualizer.UNIT),
+                p.translate(0.5 * GridVisualizer.UNIT, 1.75 * GridVisualizer.UNIT));
         switchIcon.addOutNodeShapes(outLine, outBar);
 
         // State indicators
         if (isClosedByDefault) {
             if (isClosed){
-                Line closedBar = createLine(p.translate(0.5 * GridScene.UNIT, GridScene.UNIT),
-                        p.translate(-0.5 * GridScene.UNIT, 2 * GridScene.UNIT));
+                Line closedBar = createLine(p.translate(0.5 * GridVisualizer.UNIT, GridVisualizer.UNIT),
+                        p.translate(-0.5 * GridVisualizer.UNIT, 2 * GridVisualizer.UNIT));
                 switchIcon.addMidNodeShapes(closedBar);
             }
             else {
-                Circle openCircle = createCircle(p.translate(0, 1.5 * GridScene.UNIT), 0.25 * GridScene.UNIT,
+                Circle openCircle = createCircle(p.translate(0, 1.5 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT,
                         Color.TRANSPARENT, Color.LIMEGREEN);
                 switchIcon.addStaticNodes(openCircle);
             }
         }
         else {
             if (isClosed) {
-                Line closedBar1 = createLine(p.translate(0.5 * GridScene.UNIT, GridScene.UNIT),
-                        p.translate(-0.5 * GridScene.UNIT, 2 * GridScene.UNIT));
+                Line closedBar1 = createLine(p.translate(0.5 * GridVisualizer.UNIT, GridVisualizer.UNIT),
+                        p.translate(-0.5 * GridVisualizer.UNIT, 2 * GridVisualizer.UNIT));
                 closedBar1.setStroke(Color.RED);
-                Line closedBar2 = createLine(p.translate(-0.5 * GridScene.UNIT, GridScene.UNIT),
-                        p.translate(0.5 * GridScene.UNIT, 2 * GridScene.UNIT));
+                Line closedBar2 = createLine(p.translate(-0.5 * GridVisualizer.UNIT, GridVisualizer.UNIT),
+                        p.translate(0.5 * GridVisualizer.UNIT, 2 * GridVisualizer.UNIT));
                 closedBar2.setStroke(Color.RED);
                 switchIcon.addStaticNodes(closedBar1, closedBar2);
             }
@@ -55,17 +55,17 @@ public class ComponentIconCreator {
 
     public static DeviceIcon get70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon breakerIcon = new DeviceIcon();
-        Line inLine = createLine(p, p.translate(0, 1 * GridScene.UNIT));
+        Line inLine = createLine(p, p.translate(0, 1 * GridVisualizer.UNIT));
         breakerIcon.addInNodeShapes(inLine);
 
-        Line outLine = createLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
+        Line outLine = createLine(p.translate(0, 2 * GridVisualizer.UNIT), p.translate(0, 3 * GridVisualizer.UNIT));
         breakerIcon.addOutNodeShapes(outLine);
 
-        Rectangle box = createRectangle(p.translate(-0.5 * GridScene.UNIT, 1 * GridScene.UNIT),
-                p.translate(0.5 * GridScene.UNIT, 2 * GridScene.UNIT), Color.RED, Color.BLACK);
+        Rectangle box = createRectangle(p.translate(-0.5 * GridVisualizer.UNIT, 1 * GridVisualizer.UNIT),
+                p.translate(0.5 * GridVisualizer.UNIT, 2 * GridVisualizer.UNIT), Color.RED, Color.BLACK);
         breakerIcon.addMidNodeShapes(box);
 
-        Point center = p.translate(0, 1.5 * GridScene.UNIT);
+        Point center = p.translate(0, 1.5 * GridVisualizer.UNIT);
 
         if (isClosedByDefault) {
             if (!isClosed) {
@@ -90,31 +90,31 @@ public class ComponentIconCreator {
     public static DeviceIcon get12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon breakerIcon = new DeviceIcon();
 
-        Line inLine1 = createLine(p, p.translate(0, 0.75 * GridScene.UNIT));
-        Line inLine2 = createRoundedLine(p.translate(0, GridScene.UNIT), p.translate(0, 1.5 * GridScene.UNIT));
-        Line inChevron1L = createRoundedLine(p.translate(-0.5 * GridScene.UNIT, GridScene.UNIT), p.translate(0, 0.75 * GridScene.UNIT));
-        Line inChevron1R = createRoundedLine(p.translate(0.5 * GridScene.UNIT, GridScene.UNIT), p.translate(0, 0.75 * GridScene.UNIT));
-        Line inChevron2L = createRoundedLine(p.translate(-0.5 * GridScene.UNIT, 1.25 * GridScene.UNIT), p.translate(0, GridScene.UNIT));
-        Line inChevron2R = createRoundedLine(p.translate(0.5 * GridScene.UNIT, 1.25 * GridScene.UNIT), p.translate(0, GridScene.UNIT));
+        Line inLine1 = createLine(p, p.translate(0, 0.75 * GridVisualizer.UNIT));
+        Line inLine2 = createRoundedLine(p.translate(0, GridVisualizer.UNIT), p.translate(0, 1.5 * GridVisualizer.UNIT));
+        Line inChevron1L = createRoundedLine(p.translate(-0.5 * GridVisualizer.UNIT, GridVisualizer.UNIT), p.translate(0, 0.75 * GridVisualizer.UNIT));
+        Line inChevron1R = createRoundedLine(p.translate(0.5 * GridVisualizer.UNIT, GridVisualizer.UNIT), p.translate(0, 0.75 * GridVisualizer.UNIT));
+        Line inChevron2L = createRoundedLine(p.translate(-0.5 * GridVisualizer.UNIT, 1.25 * GridVisualizer.UNIT), p.translate(0, GridVisualizer.UNIT));
+        Line inChevron2R = createRoundedLine(p.translate(0.5 * GridVisualizer.UNIT, 1.25 * GridVisualizer.UNIT), p.translate(0, GridVisualizer.UNIT));
         breakerIcon.addInNodeShapes(inLine1, inLine2, inChevron1L, inChevron1R, inChevron2L, inChevron2R);
 
-        Line outLine1 = createRoundedLine(p.translate(0, 2.5 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
-        Line outLine2 = createLine(p.translate(0, 3.25 * GridScene.UNIT), p.translate(0, 4 * GridScene.UNIT));
-        Line outChevron1L = createRoundedLine(p.translate(-0.5 * GridScene.UNIT, 2.75 * GridScene.UNIT),
-                p.translate(0, 3 * GridScene.UNIT));
-        Line outChevron1R = createRoundedLine(p.translate(0.5 * GridScene.UNIT, 2.75 * GridScene.UNIT),
-                p.translate(0, 3 * GridScene.UNIT));
-        Line outChevron2L = createRoundedLine(p.translate(-0.5 * GridScene.UNIT, 3 * GridScene.UNIT),
-                p.translate(0, 3.25 * GridScene.UNIT));
-        Line outChevron2R = createRoundedLine(p.translate(0.5 * GridScene.UNIT, 3 * GridScene.UNIT),
-                p.translate(0, 3.25 * GridScene.UNIT));
+        Line outLine1 = createRoundedLine(p.translate(0, 2.5 * GridVisualizer.UNIT), p.translate(0, 3 * GridVisualizer.UNIT));
+        Line outLine2 = createLine(p.translate(0, 3.25 * GridVisualizer.UNIT), p.translate(0, 4 * GridVisualizer.UNIT));
+        Line outChevron1L = createRoundedLine(p.translate(-0.5 * GridVisualizer.UNIT, 2.75 * GridVisualizer.UNIT),
+                p.translate(0, 3 * GridVisualizer.UNIT));
+        Line outChevron1R = createRoundedLine(p.translate(0.5 * GridVisualizer.UNIT, 2.75 * GridVisualizer.UNIT),
+                p.translate(0, 3 * GridVisualizer.UNIT));
+        Line outChevron2L = createRoundedLine(p.translate(-0.5 * GridVisualizer.UNIT, 3 * GridVisualizer.UNIT),
+                p.translate(0, 3.25 * GridVisualizer.UNIT));
+        Line outChevron2R = createRoundedLine(p.translate(0.5 * GridVisualizer.UNIT, 3 * GridVisualizer.UNIT),
+                p.translate(0, 3.25 * GridVisualizer.UNIT));
         breakerIcon.addOutNodeShapes(outLine1, outLine2, outChevron1L, outChevron1R, outChevron2L, outChevron2R);
 
-        Rectangle box = createRectangle(p.translate(-0.5 * GridScene.UNIT, 1.5 * GridScene.UNIT),
-                p.translate(0.5 * GridScene.UNIT, 2.5 * GridScene.UNIT), Color.RED, Color.BLACK);
+        Rectangle box = createRectangle(p.translate(-0.5 * GridVisualizer.UNIT, 1.5 * GridVisualizer.UNIT),
+                p.translate(0.5 * GridVisualizer.UNIT, 2.5 * GridVisualizer.UNIT), Color.RED, Color.BLACK);
         breakerIcon.addMidNodeShapes(box);
 
-        Point center = p.translate(0, 2 * GridScene.UNIT);
+        Point center = p.translate(0, 2 * GridVisualizer.UNIT);
 
         if (isClosedByDefault) {
             if (!isClosed) {
@@ -141,26 +141,26 @@ public class ComponentIconCreator {
         // change to new icon that can't be split energy maybe
         DeviceIcon transformerIcon = new DeviceIcon();
 
-        Line inLine = createLine(p, p.translate(0, 1.1 * GridScene.UNIT));
-        Line inEdgeL = createLine(p.translate(-1 * GridScene.UNIT, 0.9 * GridScene.UNIT),
-                p.translate(-1 * GridScene.UNIT, 1.1 * GridScene.UNIT));
-        Line inEdgeR = createLine(p.translate(1 * GridScene.UNIT, 0.9 * GridScene.UNIT),
-                p.translate(1 * GridScene.UNIT, 1.1 * GridScene.UNIT));
-        Arc arcIn1 = createHalfArc(p.translate(-0.75 * GridScene.UNIT, 1.1 * GridScene.UNIT), 0.25 * GridScene.UNIT, Orientation.DOWN);
-        Arc arcIn2 = createHalfArc(p.translate(-0.25 * GridScene.UNIT, 1.1 * GridScene.UNIT), 0.25 * GridScene.UNIT, Orientation.DOWN);
-        Arc arcIn3 = createHalfArc(p.translate(0.25 * GridScene.UNIT, 1.1 * GridScene.UNIT), 0.25 * GridScene.UNIT, Orientation.DOWN);
-        Arc arcIn4 = createHalfArc(p.translate(0.75 * GridScene.UNIT, 1.1 * GridScene.UNIT), 0.25 * GridScene.UNIT, Orientation.DOWN);
+        Line inLine = createLine(p, p.translate(0, 1.1 * GridVisualizer.UNIT));
+        Line inEdgeL = createLine(p.translate(-1 * GridVisualizer.UNIT, 0.9 * GridVisualizer.UNIT),
+                p.translate(-1 * GridVisualizer.UNIT, 1.1 * GridVisualizer.UNIT));
+        Line inEdgeR = createLine(p.translate(1 * GridVisualizer.UNIT, 0.9 * GridVisualizer.UNIT),
+                p.translate(1 * GridVisualizer.UNIT, 1.1 * GridVisualizer.UNIT));
+        Arc arcIn1 = createHalfArc(p.translate(-0.75 * GridVisualizer.UNIT, 1.1 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT, Orientation.DOWN);
+        Arc arcIn2 = createHalfArc(p.translate(-0.25 * GridVisualizer.UNIT, 1.1 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT, Orientation.DOWN);
+        Arc arcIn3 = createHalfArc(p.translate(0.25 * GridVisualizer.UNIT, 1.1 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT, Orientation.DOWN);
+        Arc arcIn4 = createHalfArc(p.translate(0.75 * GridVisualizer.UNIT, 1.1 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT, Orientation.DOWN);
         transformerIcon.addInNodeShapes(inLine, inEdgeL, inEdgeR, arcIn1, arcIn2, arcIn3, arcIn4);
 
-        Line outLine = createLine(p.translate(0, 1.9 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
-        Line outEdgeL = createLine(p.translate(-1 * GridScene.UNIT, 1.9 * GridScene.UNIT),
-                p.translate(-1 * GridScene.UNIT, 2.1 * GridScene.UNIT));
-        Line outEdgeR = createLine(p.translate(1 * GridScene.UNIT, 1.9 * GridScene.UNIT),
-                p.translate(1 * GridScene.UNIT, 2.1 * GridScene.UNIT));
-        Arc arcOut1 = createHalfArc(p.translate(-0.75 * GridScene.UNIT, 1.9 * GridScene.UNIT), 0.25 * GridScene.UNIT, Orientation.UP);
-        Arc arcOut2 = createHalfArc(p.translate(-0.25 * GridScene.UNIT, 1.9 * GridScene.UNIT), 0.25 * GridScene.UNIT, Orientation.UP);
-        Arc arcOut3 = createHalfArc(p.translate(0.25 * GridScene.UNIT, 1.9 * GridScene.UNIT), 0.25 * GridScene.UNIT, Orientation.UP);
-        Arc arcOut4 = createHalfArc(p.translate(0.75 * GridScene.UNIT, 1.9 * GridScene.UNIT), 0.25 * GridScene.UNIT, Orientation.UP);
+        Line outLine = createLine(p.translate(0, 1.9 * GridVisualizer.UNIT), p.translate(0, 3 * GridVisualizer.UNIT));
+        Line outEdgeL = createLine(p.translate(-1 * GridVisualizer.UNIT, 1.9 * GridVisualizer.UNIT),
+                p.translate(-1 * GridVisualizer.UNIT, 2.1 * GridVisualizer.UNIT));
+        Line outEdgeR = createLine(p.translate(1 * GridVisualizer.UNIT, 1.9 * GridVisualizer.UNIT),
+                p.translate(1 * GridVisualizer.UNIT, 2.1 * GridVisualizer.UNIT));
+        Arc arcOut1 = createHalfArc(p.translate(-0.75 * GridVisualizer.UNIT, 1.9 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT, Orientation.UP);
+        Arc arcOut2 = createHalfArc(p.translate(-0.25 * GridVisualizer.UNIT, 1.9 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT, Orientation.UP);
+        Arc arcOut3 = createHalfArc(p.translate(0.25 * GridVisualizer.UNIT, 1.9 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT, Orientation.UP);
+        Arc arcOut4 = createHalfArc(p.translate(0.75 * GridVisualizer.UNIT, 1.9 * GridVisualizer.UNIT), 0.25 * GridVisualizer.UNIT, Orientation.UP);
         transformerIcon.addOutNodeShapes(outLine, outEdgeL, outEdgeR, arcOut1, arcOut2, arcOut3, arcOut4);
 
         return transformerIcon;
@@ -169,13 +169,13 @@ public class ComponentIconCreator {
     public static DeviceIcon getJumperIcon(Point p, boolean closed) {
         DeviceIcon jumperIcon = new DeviceIcon();
 
-        Line inLine = createLine(p, p.translate(0, GridScene.UNIT));
+        Line inLine = createLine(p, p.translate(0, GridVisualizer.UNIT));
         jumperIcon.addInNodeShapes(inLine);
 
-        Line outLine = createLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
-        Arc jumper = createHalfArc(p.translate(0, 1.5 * GridScene.UNIT), 0.5 * GridScene.UNIT, Orientation.RIGHT);
+        Line outLine = createLine(p.translate(0, 2 * GridVisualizer.UNIT), p.translate(0, 3 * GridVisualizer.UNIT));
+        Arc jumper = createHalfArc(p.translate(0, 1.5 * GridVisualizer.UNIT), 0.5 * GridVisualizer.UNIT, Orientation.RIGHT);
         // transforms must be applied prior to adding the node
-        if (!closed) rotateNode(jumper, p.translate(0, 2 * GridScene.UNIT), 45);
+        if (!closed) rotateNode(jumper, p.translate(0, 2 * GridVisualizer.UNIT), 45);
 
         jumperIcon.addOutNodeShapes(outLine, jumper);
 
@@ -185,19 +185,19 @@ public class ComponentIconCreator {
     public static DeviceIcon getCutoutIcon(Point p, boolean closed) {
         DeviceIcon cutoutIcon = new DeviceIcon();
 
-        Line inLine = createLine(p, p.translate(0, .95 * GridScene.UNIT));
+        Line inLine = createLine(p, p.translate(0, .95 * GridVisualizer.UNIT));
         cutoutIcon.addInNodeShapes(inLine);
 
-        Line outLine = createLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
+        Line outLine = createLine(p.translate(0, 2 * GridVisualizer.UNIT), p.translate(0, 3 * GridVisualizer.UNIT));
         // these shapes get rotated together
-        Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * GridScene.UNIT), 0.15 * GridScene.UNIT, Orientation.UP);
-        Circle cutoutDot = createCircle(p.translate(0, 1.125 * GridScene.UNIT), 0.5, Color.TRANSPARENT, Color.BLACK);
-        Line cutoutLineL = createRoundedLine(p.translate(0, 2 * GridScene.UNIT), p.translate(-0.15 * GridScene.UNIT, 1.125 * GridScene.UNIT));
-        Line cutoutLineR = createRoundedLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0.15 * GridScene.UNIT, 1.125 * GridScene.UNIT));
+        Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * GridVisualizer.UNIT), 0.15 * GridVisualizer.UNIT, Orientation.UP);
+        Circle cutoutDot = createCircle(p.translate(0, 1.125 * GridVisualizer.UNIT), 0.5, Color.TRANSPARENT, Color.BLACK);
+        Line cutoutLineL = createRoundedLine(p.translate(0, 2 * GridVisualizer.UNIT), p.translate(-0.15 * GridVisualizer.UNIT, 1.125 * GridVisualizer.UNIT));
+        Line cutoutLineR = createRoundedLine(p.translate(0, 2 * GridVisualizer.UNIT), p.translate(0.15 * GridVisualizer.UNIT, 1.125 * GridVisualizer.UNIT));
 
         // rotate shapes
         if (!closed) {
-            Point pivot = p.translate(0, 2 * GridScene.UNIT);
+            Point pivot = p.translate(0, 2 * GridVisualizer.UNIT);
             double angle = 135;
 
             rotateNode(cutoutArc, pivot, angle);
@@ -213,15 +213,15 @@ public class ComponentIconCreator {
     public static SourceIcon getPowerSourceIcon(Point p, String name, boolean isOn) {
         SourceIcon powerSourceIcon = new SourceIcon();
 
-        Rectangle sourceBox = createRectangle(p.translate(-GridScene.UNIT, 0),
-                p.translate(GridScene.UNIT, 2 * GridScene.UNIT), Color.RED, Color.BLACK);
+        Rectangle sourceBox = createRectangle(p.translate(-GridVisualizer.UNIT, 0),
+                p.translate(GridVisualizer.UNIT, 2 * GridVisualizer.UNIT), Color.RED, Color.BLACK);
         powerSourceIcon.addSourceNodeShapes(sourceBox);
 
-        Line outLine = createLine(p.translate(0, 2 * GridScene.UNIT), p.translate(0, 3 * GridScene.UNIT));
+        Line outLine = createLine(p.translate(0, 2 * GridVisualizer.UNIT), p.translate(0, 3 * GridVisualizer.UNIT));
         powerSourceIcon.addOutputLine(outLine);
 
         if (!isOn) sourceBox.setFill(Color.LIME);
-        Point center = p.translate(0, GridScene.UNIT);
+        Point center = p.translate(0, GridVisualizer.UNIT);
         Text text = createText(center, name, Color.BLACK, 12);
         powerSourceIcon.addStaticNodeShapes(text);
 
@@ -231,13 +231,13 @@ public class ComponentIconCreator {
     public static SourceIcon getTurbineIcon(Point p) {
         SourceIcon turbineIcon = new SourceIcon();
 
-        Circle turbineCircle = createCircle(p.translate(0, 2 * GridScene.UNIT), GridScene.UNIT, Color.RED, Color.BLACK);
+        Circle turbineCircle = createCircle(p.translate(0, 2 * GridVisualizer.UNIT), GridVisualizer.UNIT, Color.RED, Color.BLACK);
         turbineIcon.addSourceNodeShapes(turbineCircle);
 
-        Line outLine1 = createLine(p, p.translate(0, GridScene.UNIT));
+        Line outLine1 = createLine(p, p.translate(0, GridVisualizer.UNIT));
         turbineIcon.addOutputLine(outLine1);
 
-        Line outLine2 = createLine(p.translate(0, 3 * GridScene.UNIT), p.translate(0, 4 * GridScene.UNIT));
+        Line outLine2 = createLine(p.translate(0, 3 * GridVisualizer.UNIT), p.translate(0, 4 * GridVisualizer.UNIT));
         turbineIcon.addOutputLine(outLine2);
 
         return turbineIcon;
@@ -259,7 +259,7 @@ public class ComponentIconCreator {
 
     private static Line createLine(Point p1, Point p2) {
         Line line = new Line();
-        line.setStrokeWidth(GridScene.STROKE_WIDTH);
+        line.setStrokeWidth(GridVisualizer.STROKE_WIDTH);
 
         line.setStartX(p1.getX());
         line.setStartY(p1.getY());
@@ -278,7 +278,7 @@ public class ComponentIconCreator {
 
     private static Rectangle createRectangle(Point p1, Point p2, Color fill, Color stroke) {
         Rectangle rectangle = new Rectangle();
-        rectangle.setStrokeWidth(GridScene.STROKE_WIDTH);
+        rectangle.setStrokeWidth(GridVisualizer.STROKE_WIDTH);
         rectangle.setStrokeType(StrokeType.CENTERED);
         rectangle.setStroke(stroke);
         rectangle.setFill(fill);
@@ -294,7 +294,7 @@ public class ComponentIconCreator {
 
     private static Arc createHalfArc(Point center, double radius, Orientation orientation) {
         Arc arc = new Arc();
-        arc.setStrokeWidth(GridScene.STROKE_WIDTH);
+        arc.setStrokeWidth(GridVisualizer.STROKE_WIDTH);
         arc.setStroke(Color.BLACK);
         arc.setFill(Color.TRANSPARENT);
         arc.setType(ArcType.OPEN);
@@ -327,7 +327,7 @@ public class ComponentIconCreator {
     private static Circle createCircle(Point center, double radius, Color fill, Color stroke) {
         Circle circle = new Circle();
         circle.setStroke(stroke);
-        circle.setStrokeWidth(GridScene.STROKE_WIDTH);
+        circle.setStrokeWidth(GridVisualizer.STROKE_WIDTH);
         circle.setFill(fill);
 
         circle.setCenterX(center.getX());

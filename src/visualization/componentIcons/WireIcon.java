@@ -1,9 +1,9 @@
 package visualization.componentIcons;
 
+import application.Globals;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
-import model.geometry.Point;
-import visualization.GridScene;
+import domain.geometry.Point;
 
 public class WireIcon extends ComponentIcon {
 
@@ -14,7 +14,7 @@ public class WireIcon extends ComponentIcon {
 
     public void addWireShape(Shape wireShape) {
         energyOutline = ShapeCopier.copyShape(wireShape);
-        energyOutline.setStrokeWidth(GridScene.ENERGY_STROKE_WIDTH);
+        energyOutline.setStrokeWidth(Globals.ENERGY_STROKE_WIDTH);
         energyOutline.setStroke(Color.YELLOW);
         energyOutline.setFill(Color.TRANSPARENT);
 
@@ -29,11 +29,12 @@ public class WireIcon extends ComponentIcon {
 
     @Override
     public void setBoundingRect(Point position, double unitWidth, double unitHeight, double unitWidthPadding, double unitHeightPadding) {
-        double width = unitWidth * GridScene.UNIT;
-        double height = unitHeight * GridScene.UNIT;
-        double widthPadding = unitWidthPadding * GridScene.UNIT;
-        double heightPadding = unitHeightPadding * GridScene.UNIT;
+        double width = unitWidth * Globals.UNIT;
+        double height = unitHeight * Globals.UNIT;
+        double widthPadding = unitWidthPadding * Globals.UNIT;
+        double heightPadding = unitHeightPadding * Globals.UNIT;
 
         setBoundingRectParametersByCenter(position, width + widthPadding, height + heightPadding);
+        getBoundingRect().setStroke(Color.BLUE);
     }
 }

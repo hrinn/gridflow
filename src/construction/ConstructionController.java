@@ -17,11 +17,13 @@ public class ConstructionController {
     private Grid grid;
     private GridCanvas canvas;
     private EventManager eventManager;
+    private GridBuilder model;
 
     public void initController(Grid grid, EventManager eventManager) {
         this.grid = grid;
         this.eventManager = eventManager;
         this.canvas = createCanvas();
+        this.model = new GridBuilder();
     }
 
     private GridCanvas createCanvas() {

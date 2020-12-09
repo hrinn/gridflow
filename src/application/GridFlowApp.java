@@ -79,14 +79,13 @@ public class GridFlowApp extends Application {
         Group root = new Group();
 
         BorderPane ui = new BorderPane();
-        ui.setPickOnBounds(false);
+        ui.setMouseTransparent(true);
         ui.setLeft(constructionView);
         ui.setTop(baseUIView);
 
         root.getChildren().addAll(canvas, ui);
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-        scene.setFill(Color.LIGHTGRAY);
 
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));

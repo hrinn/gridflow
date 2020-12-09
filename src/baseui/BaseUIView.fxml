@@ -29,12 +29,13 @@
                         <Menu fx:id="EditMenu" mnemonicParsing="false" style="-fx-font-size: 14; -fx-text-alignment: center;" text="Edit">
                            <items>
                               <MenuItem fx:id="ExpandItem" mnemonicParsing="false" text="Expand Canvas" />
-                              <MenuItem fx:id="UndoItem" mnemonicParsing="false" text="Undo" />
+                              <MenuItem fx:id="SelectAllItem" mnemonicParsing="false" text="Select All" />
+                              <MenuItem fx:id="DeleteItem" mnemonicParsing="false" text="Delete" />
                            </items>
                         </Menu>
                         <Menu fx:id="ViewMenu" mnemonicParsing="false" style="-fx-text-alignment: center; -fx-font-size: 14;" text="View">
                            <items>
-                              <MenuItem fx:id="SourceColorItem" mnemonicParsing="false" text="Source Colors" />
+                              <MenuItem fx:id="SourceColorItem" mnemonicParsing="false" text="Enable Source Colors" />
                               <MenuItem fx:id="AboutItem" mnemonicParsing="false" text="About" />
                            </items>
                         </Menu>

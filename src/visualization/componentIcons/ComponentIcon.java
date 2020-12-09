@@ -2,18 +2,14 @@ package visualization.componentIcons;
 
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import model.geometry.Point;
-import visualization.GridScene;
-
-import java.util.Arrays;
+import domain.geometry.Point;
+import visualization.GridVisualizer;
 
 public class ComponentIcon {
 
@@ -34,12 +30,12 @@ public class ComponentIcon {
     }
 
     public void setBoundingRect(Point position, double unitWidth, double unitHeight, double unitWidthPadding, double unitHeightPadding) {
-        double width = unitWidth * GridScene.UNIT;
-        double height = unitHeight * GridScene.UNIT;
+        double width = unitWidth * GridVisualizer.UNIT;
+        double height = unitHeight * GridVisualizer.UNIT;
 
         // negative padding makes the clickable box a bit smaller than the actual unit size rectangle
-        double widthPadding = unitWidthPadding * GridScene.UNIT;
-        double heightPadding = unitHeightPadding * GridScene.UNIT;
+        double widthPadding = unitWidthPadding * GridVisualizer.UNIT;
+        double heightPadding = unitHeightPadding * GridVisualizer.UNIT;
 
         Point center = position.translate(0, height/2);
         setBoundingRectParametersByCenter(center, width + widthPadding, height + heightPadding);
@@ -74,7 +70,7 @@ public class ComponentIcon {
         for (Shape shape : shapes) {
             Shape energyOutlineShape = ShapeCopier.copyShape(shape);
             energyOutlineShape.setStrokeType(StrokeType.CENTERED);
-            energyOutlineShape.setStrokeWidth(GridScene.ENERGY_STROKE_WIDTH);
+            energyOutlineShape.setStrokeWidth(GridVisualizer.ENERGY_STROKE_WIDTH);
             energyOutlineShape.setStroke(Color.YELLOW);
             energyOutlineShape.setFill(Color.TRANSPARENT);
             // apply transforms to copy

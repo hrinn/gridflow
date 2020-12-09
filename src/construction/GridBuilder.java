@@ -1,8 +1,8 @@
 package construction;
 
-import model.components.Component;
-import model.geometry.Point;
-import visualization.PannableCanvas;
+import domain.components.Component;
+import domain.geometry.Point;
+import application.canvas.PannableCanvas;
 
 public class GridBuilder {
 

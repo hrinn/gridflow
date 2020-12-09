@@ -1,13 +1,15 @@
 package visualization;
 
+import application.canvas.DragContext;
+import application.canvas.PannableCanvas;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import application.events.Event;
 import application.events.EventManager;
-import model.Grid;
-import model.components.Component;
-import model.components.IToggleable;
+import domain.Grid;
+import domain.components.Component;
+import domain.components.IToggleable;
 
 public class NodeGestures {
 

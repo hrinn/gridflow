@@ -1,7 +1,7 @@
 package application;
 
-import model.components.*;
-import model.geometry.Point;
+import domain.components.*;
+import domain.geometry.Point;
 
 import java.util.List;
 

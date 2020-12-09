@@ -5,7 +5,7 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Shape;
-import visualization.GridScene;
+import visualization.GridVisualizer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ public class SourceIcon extends ComponentIcon {
 
     public void addOutputLine(Line line) {
         Line energyOutline = (Line)ShapeCopier.copyShape(line);
-        energyOutline.setStrokeWidth(GridScene.ENERGY_STROKE_WIDTH);
+        energyOutline.setStrokeWidth(GridVisualizer.ENERGY_STROKE_WIDTH);
         energyOutline.setStroke(Color.YELLOW);
 
         outputEnergyOutlines.add(energyOutline);

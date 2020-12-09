@@ -1,4 +1,4 @@
-package model.geometry;
+package domain.geometry;
 
 public class Point {
 

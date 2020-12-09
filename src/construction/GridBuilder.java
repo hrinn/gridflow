@@ -2,13 +2,13 @@ package construction;
 
 import domain.components.Component;
 import domain.geometry.Point;
-import application.canvas.PannableCanvas;
+import construction.canvas.GridCanvas;
 
 public class GridBuilder {
 
-    private PannableCanvas canvas;
+    private GridCanvas canvas;
 
-    public GridBuilder(PannableCanvas canvas) {
+    public GridBuilder(GridCanvas canvas) {
         this.canvas = canvas;
     }
 

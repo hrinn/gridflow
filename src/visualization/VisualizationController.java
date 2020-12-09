@@ -1,6 +1,6 @@
 package visualization;
 
-import application.canvas.PannableCanvas;
+import construction.canvas.GridCanvas;
 import application.events.Event;
 import application.events.IEventListener;
 import domain.Grid;
@@ -9,7 +9,7 @@ public class VisualizationController implements IEventListener {
 
    private GridVisualizer model;
 
-    public void initController(Grid grid, PannableCanvas canvas) {
+    public void initController(Grid grid, GridCanvas canvas) {
         this.model = new GridVisualizer(grid, canvas);
     }
 

@@ -1,6 +1,8 @@
 package application;
 
 import construction.ConstructionController;
+import construction.canvas.GridCanvas;
+import construction.canvas.SceneGestures;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -9,13 +11,10 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import domain.Grid;
-import application.canvas.*;
 import application.events.*;
 import simulation.SimulationController;
 import visualization.VisualizationController;
@@ -34,18 +33,17 @@ public class GridFlowApp extends Application {
         // Custom event manager for our events
         EventManager eventManager = new EventManager();
 
-        // Create shared objects
+        // Create empty grid
         Grid grid = new Grid();
-        PannableCanvas canvas = createCanvas();
 
         // Init modules
-        VisualizationController visualizationController = new VisualizationController();
-        visualizationController.initController(grid, canvas);
-        eventManager.addListener(visualizationController);
-
         ConstructionController constructionController = new ConstructionController();
-        constructionController.initController(grid, canvas);
+        constructionController.initController(grid, eventManager);
         FXMLLoader constructionViewLoader = new FXMLLoader(getClass().getResource("/construction/ConstructionView.fxml"));
+
+        VisualizationController visualizationController = new VisualizationController();
+        visualizationController.initController(grid, constructionController.getCanvas());
+        eventManager.addListener(visualizationController);
 
         SimulationController simulationController = new SimulationController();
         simulationController.initController(grid, eventManager);
@@ -58,23 +56,10 @@ public class GridFlowApp extends Application {
         eventManager.sendEvent(Event.GridChanged); // build would do this later
 
         // Init GUI
-        initGui(primaryStage, canvas, constructionViewLoader.load(), baseUIViewLoader.load());
+        initGui(primaryStage, constructionController.getCanvas(), constructionViewLoader.load(), baseUIViewLoader.load());
     }
 
-    private PannableCanvas createCanvas() {
-        PannableCanvas canvas = new PannableCanvas();
-        canvas.setTranslateX(-5350); // get this from application settings?
-        canvas.setTranslateY(-2650);
-
-        SceneGestures sceneGestures = new SceneGestures(canvas);
-        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-        canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
-        canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-
-        return canvas;
-    }
-
-    private void initGui(Stage primaryStage, PannableCanvas canvas, Node constructionView, Node baseUIView) {
+    private void initGui(Stage primaryStage, GridCanvas canvas, Node constructionView, Node baseUIView) {
         Group root = new Group();
 
         BorderPane ui = new BorderPane();

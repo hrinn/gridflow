@@ -114,3 +114,7 @@ public class ConstructionViewController {
         arrow.setImage(new Image(isImage));
     }
 }
+
+enum MenuState {
+    MenuCollapsed, MenuExpanded
+}

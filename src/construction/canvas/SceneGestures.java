@@ -1,4 +1,4 @@
-package application.canvas;
+package construction.canvas;
 
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -6,14 +6,14 @@ import javafx.scene.input.ScrollEvent;
 
 public class SceneGestures {
 
-    private static final double MAX_SCALE = 10.0d;
-    private static final double MIN_SCALE = .1d;
+    private static final double MAX_SCALE = 5.0d;
+    private static final double MIN_SCALE = 0.1d;
 
     private final DragContext sceneDragContext = new DragContext();
 
-    PannableCanvas canvas;
+    GridCanvas canvas;
 
-    public SceneGestures( PannableCanvas canvas) {
+    public SceneGestures( GridCanvas canvas) {
         this.canvas = canvas;
     }
 

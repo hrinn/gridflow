@@ -1,4 +1,4 @@
-package application.canvas;
+package construction.canvas;
 
 public class DragContext {
     double mouseAnchorX;

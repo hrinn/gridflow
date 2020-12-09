@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -21,6 +22,7 @@ import simulation.SimulationController;
 import visualization.VisualizationController;
 
 import java.io.IOException;
+import java.util.List;
 
 public class GridFlowApp extends Application {
 
@@ -32,11 +34,6 @@ public class GridFlowApp extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Node canvas = initModules();
-        initGui(primaryStage, canvas);
-    }
-
-    private Node initModules() {
 
         // Custom event manager for our events
         EventManager eventManager = new EventManager();
@@ -51,23 +48,18 @@ public class GridFlowApp extends Application {
         eventManager.addListener(visualizationController);
 
         ConstructionController constructionController = new ConstructionController();
-        /* this ^ will be done differently once construction has its own FXML
-           FXMLLoader constructionLoader = new FXMLLoader(getClass().getResources() [ui fxml file] )
-           ConstructionController constructionController = constructionLoader.getController();
-         */
         constructionController.initController(grid, canvas);
+        FXMLLoader constructionViewLoader = new FXMLLoader(getClass().getResource("/construction/ConstructionView.fxml"));
 
         SimulationController simulationController = new SimulationController();
         simulationController.initController(grid, eventManager);
         eventManager.addListener(simulationController);
 
-
-
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
         eventManager.sendEvent(Event.GridChanged); // build would do this later
 
-        return canvas;
+        initGui(primaryStage, canvas, constructionViewLoader.load());
     }
 
     private PannableCanvas createCanvas() {
@@ -83,11 +75,18 @@ public class GridFlowApp extends Application {
         return canvas;
     }
 
-    private void initGui(Stage primaryStage, Node canvas) throws IOException {
+    private void initGui(Stage primaryStage, PannableCanvas canvas, Node constructionView) throws IOException {
         FXMLLoader mainGuiLoader = new FXMLLoader(getClass().getResource("UI.fxml"));
 
         Group root = new Group();
-        root.getChildren().addAll(canvas, mainGuiLoader.load());
+
+        BorderPane ui = new BorderPane();
+        ui.setPickOnBounds(false);
+        ui.setLeft(constructionView);
+        ui.setTop(mainGuiLoader.load());
+
+        root.getChildren().addAll(canvas, ui);
+
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         scene.setFill(Color.LIGHTGRAY);
 

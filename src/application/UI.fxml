@@ -22,28 +22,7 @@
    </fx:define-->
 
    <left>
-      <HBox fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="225.0" BorderPane.alignment="CENTER_LEFT">
-         <children>
-            <VBox fx:id="LeftComponentMenu" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: BLACK; -fx-background-color: WHITE;" />
-            
-            <VBox fx:id="RightComponentMenu" prefHeight="200.0" prefWidth="100.0" style="-fx-border-color: BLACK; -fx-background-color: WHITE;" />
-            <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0" onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover">
-               <children>
-                  <Button fx:id="ComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#toggleMenu" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: LIGHTGRAY;">
-                     <graphic>
-                        <ImageView fx:id="ArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
-                           <image>
-                              <Image url="@../resources/ArrowLeft.png" />
-                           </image>
-                        </ImageView>
-                     </graphic></Button>
-               </children>
-               <cursor>
-                  <Cursor fx:constant="DEFAULT" />
-               </cursor>
-            </Pane>
-         </children>
-      </HBox>
+
    </left>
    <top>
       <VBox fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="3840" prefWidth="3840" style="-fx-border-color: LIGHTGRAY; -fx-background-color: LIGHTGRAY" translateX="-1.0" translateY="-2.0" BorderPane.alignment="TOP_LEFT">

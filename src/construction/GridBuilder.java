@@ -11,14 +11,25 @@ import domain.geometry.Point;
 public class GridBuilder {
 
     private Grid grid;
+    private ToolType currentTool = ToolType.PLACE;
+    private ComponentType currentComponentType = ComponentType.SWITCH;
 
     public GridBuilder(Grid grid) {
         this.grid = grid;
     }
 
+    public ToolType getCurrentTool() {
+        return currentTool;
+    }
+
+    public ComponentType getCurrentComponentType() {
+        return currentComponentType;
+    }
+
     // place a component standalone on the grid
     public void placeComponent(Point inputPoint) {
         Point point = getNearestUnitCoordinate(inputPoint);
+        // check for overlap conflicts! return if there is a conflict
 
         Switch comp = new Switch("test", point, true);
 
@@ -31,9 +42,11 @@ public class GridBuilder {
         outWire.connect(comp);
 
         grid.addComponent(comp);
+        grid.addComponent(inWire);
+        grid.addComponent(outWire);
     }
 
-    // connect a component to an existing component
+    // connect a component to an existing wire
     public void connectComponent() {
 
     }

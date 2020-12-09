@@ -35,5 +35,6 @@ public class WireIcon extends ComponentIcon {
         double heightPadding = unitHeightPadding * Globals.UNIT;
 
         setBoundingRectParametersByCenter(position, width + widthPadding, height + heightPadding);
+        getBoundingRect().setStroke(Color.BLUE);
     }
 }

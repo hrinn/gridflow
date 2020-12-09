@@ -8,6 +8,7 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
+<?import javafx.scene.text.Text?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="construction.ConstructionViewController"
@@ -15,7 +16,8 @@
       prefHeight="600.0" prefWidth="225.0">
     <children>
         <VBox fx:id="LeftComponentMenu" prefHeight="200.0" prefWidth="100.0"
-              style="-fx-border-color: BLACK; -fx-background-color: WHITE;"/>
+              style="-fx-border-color: BLACK; -fx-background-color: WHITE;">
+        </VBox>
 
         <VBox fx:id="RightComponentMenu" prefHeight="200.0" prefWidth="100.0"
               style="-fx-border-color: BLACK; -fx-background-color: WHITE;"/>

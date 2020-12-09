@@ -9,15 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import application.events.Event;
-import application.events.EventManager;
 import domain.Grid;
-import application.canvas.PannableCanvas;
-import application.canvas.SceneGestures;
+import application.canvas.*;
+import application.events.*;
 import simulation.SimulationController;
 import visualization.VisualizationController;
 
@@ -79,9 +78,9 @@ public class GridFlowApp extends Application {
         Group root = new Group();
 
         BorderPane ui = new BorderPane();
-        ui.setMouseTransparent(true);
         ui.setLeft(constructionView);
         ui.setTop(baseUIView);
+        ui.setPickOnBounds(false);
 
         root.getChildren().addAll(canvas, ui);
 

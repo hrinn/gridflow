@@ -6,10 +6,6 @@ import domain.components.*;
 
 public class GridVisualizer {
 
-    public static final double UNIT = 20;
-    public static final double STROKE_WIDTH = 1.5;
-    public static final double ENERGY_STROKE_WIDTH = 4;
-
     private final Grid grid;
     private final GridCanvas canvas;
 

@@ -17,22 +17,19 @@ public class SceneGestures {
         this.canvas = canvas;
     }
 
-    public EventHandler<MouseEvent> getOnMousePressedEventHandler() {
-        return onMousePressedEventHandler;
+    public EventHandler<MouseEvent> getBeginPanEventHandler() {
+        return beginPanEventHandler;
     }
 
-    public EventHandler<MouseEvent> getOnMouseDraggedEventHandler() {
-        return onMouseDraggedEventHandler;
+    public EventHandler<MouseEvent> getOnPanEventHandler() {
+        return OnPanEventHandler;
     }
 
     public EventHandler<ScrollEvent> getOnScrollEventHandler() {
         return onScrollEventHandler;
     }
 
-    private final EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<>() {
-
-        public void handle(MouseEvent event) {
-
+    private final EventHandler<MouseEvent> beginPanEventHandler = event -> {
             // right mouse button => panning
             if(!event.isSecondaryButtonDown())
                 return;
@@ -43,13 +40,9 @@ public class SceneGestures {
             sceneDragContext.translateAnchorX = canvas.getTranslateX();
             sceneDragContext.translateAnchorY = canvas.getTranslateY();
 
-        }
-
     };
 
-    private final EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<>() {
-        public void handle(MouseEvent event) {
-
+    private final EventHandler<MouseEvent> OnPanEventHandler = event -> {
             // right mouse button => panning
             if(!event.isSecondaryButtonDown())
                 return;
@@ -58,13 +51,9 @@ public class SceneGestures {
             canvas.setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);
 
             event.consume();
-        }
     };
 
-    private final EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<>() {
-
-        @Override
-        public void handle(ScrollEvent event) {
+    private final EventHandler<ScrollEvent> onScrollEventHandler = event -> {
 
             double delta = 1.2;
 
@@ -89,9 +78,6 @@ public class SceneGestures {
             canvas.setPivot(f*dx, f*dy);
 
             event.consume();
-
-        }
-
     };
 
     public static double clamp( double value, double min, double max) {

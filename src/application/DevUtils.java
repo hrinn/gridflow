@@ -13,11 +13,11 @@ public class DevUtils {
         // out is down, in is up
 
         // 70KV breakers
-        Wire w3 = new Wire("", canvasPos(6,-8));
-        Wire w5 = new Wire("", canvasPos(3,-8));
-        Wire w7 = new Wire("", canvasPos(0,-8));
-        Wire w8 = new Wire("", canvasPos(-3,-8));
-        Wire w9 = new Wire("", canvasPos(-6,-8));
+        Wire w3 = new Wire(canvasPos(6,-8));
+        Wire w5 = new Wire(canvasPos(3,-8));
+        Wire w7 = new Wire(canvasPos(0,-8));
+        Wire w8 = new Wire(canvasPos(-3,-8));
+        Wire w9 = new Wire(canvasPos(-6,-8));
         Breaker dd3 = new Breaker("DD3",
                 canvasPos(6, -4),
                 Voltage.KV12, false);
@@ -33,7 +33,7 @@ public class DevUtils {
         Breaker dd9 = new Breaker("DD9",
                 canvasPos(-6, -4),
                 Voltage.KV12, false);
-        Wire bbus = new Wire("", canvasPos(6, -4), canvasPos(-6, -4));
+        Wire bbus = new Wire(canvasPos(6, -4), canvasPos(-6, -4));
         dd3.connectInWire(bbus);
         dd5.connectInWire(bbus);
         dd7.connectInWire(bbus);
@@ -53,14 +53,14 @@ public class DevUtils {
 
         // DD1main
         Breaker dd1main = new Breaker("DD1 Main", canvasPos(0, 0), Voltage.KV12, true);
-        Wire dd1mw = new Wire("", canvasPos(0,0));
+        Wire dd1mw = new Wire(canvasPos(0,0));
         dd1main.connectOutWire(bbus);
         dd1main.connectInWire(dd1mw);
         dd1mw.connect(dd1main);
 
         //Transformer
         Transformer xdd1 = new Transformer("Transformer DD1", canvasPos(0, 3));
-        Wire xw = new Wire("", canvasPos(0, 3), canvasPos(3, 3));
+        Wire xw = new Wire(canvasPos(0, 3), canvasPos(3, 3));
         xdd1.connectInWire(xw);
         xdd1.connectOutWire(dd1mw);
         xw.connect(xdd1);
@@ -69,32 +69,32 @@ public class DevUtils {
         Switch dd101 = new Switch("DD-101", canvasPos(0, 6), true);
         dd101.connectOutWire(xw);
         xw.connect(dd101);
-        Wire dd101w = new Wire("", canvasPos(0, 6));
+        Wire dd101w = new Wire(canvasPos(0, 6));
         dd101.connectInWire(dd101w);
         dd101w.connect(dd101);
 
         // Side route switch
         Switch dd105 = new Switch("DD-105", canvasPos(3, 9), false);
-        Wire dd105bw = new Wire("", canvasPos(3, 3), canvasPos(3, 6));
+        Wire dd105bw = new Wire(canvasPos(3, 3), canvasPos(3, 6));
         dd105bw.connect(xw);
         xw.connect(dd105bw);
         dd105bw.connect(dd105);
         dd105.connectOutWire(dd105bw);
-        Wire dd105aw = new Wire("", canvasPos(3, 9), canvasPos(3, 12));
+        Wire dd105aw = new Wire(canvasPos(3, 9), canvasPos(3, 12));
         dd105aw.connect(dd105);
         dd105.connectInWire(dd105aw);
 
         // dd1
         Breaker dd1 = new Breaker("DD-1", canvasPos(0, 9), Voltage.KV70, true);
         dd1.connectOutWire(dd101w);
-        Wire dd1w = new Wire("", canvasPos(0, 9));
+        Wire dd1w = new Wire(canvasPos(0, 9));
         dd1.connectInWire(dd1w);
         dd1w.connect(dd1);
 
         // dd103
         Switch dd103 = new Switch("DD-103", canvasPos(0, 12), true);
         dd103.connectOutWire(dd1w);
-        Wire nrw = new Wire("", canvasPos(0, 12), canvasPos(3, 12));
+        Wire nrw = new Wire(canvasPos(0, 12), canvasPos(3, 12));
         dd103.connectInWire(nrw);
         nrw.setConnections(List.of(dd103, dd105aw));
         dd105aw.connect(nrw);

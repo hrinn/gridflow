@@ -5,8 +5,7 @@ import application.events.EventManager;
 import construction.canvas.GridCanvas;
 import construction.canvas.SceneGestures;
 import domain.Grid;
-import domain.components.Component;
-import domain.components.IToggleable;
+import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -14,16 +13,14 @@ import javafx.scene.input.ScrollEvent;
 
 public class ConstructionController {
 
-    private Grid grid;
     private GridCanvas canvas;
     private EventManager eventManager;
     private GridBuilder model;
 
     public void initController(Grid grid, EventManager eventManager) {
-        this.grid = grid;
         this.eventManager = eventManager;
         this.canvas = createCanvas();
-        this.model = new GridBuilder();
+        this.model = new GridBuilder(grid);
     }
 
     private GridCanvas createCanvas() {
@@ -32,9 +29,10 @@ public class ConstructionController {
         canvas.setTranslateY(-2650);
 
         SceneGestures sceneGestures = new SceneGestures(canvas);
-        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-        canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getBeginPanEventHandler());
+        canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, placeComponentEventHandler);
 
         return canvas;
     }
@@ -44,17 +42,19 @@ public class ConstructionController {
     }
 
     private final EventHandler<MouseEvent> toggleComponentEventHandler = event -> {
-
         if (event.isSecondaryButtonDown()) return;
 
-        Node target = (Node) event.getTarget();
-        Component component = grid.getComponent(target.getId());
+        String targetId = ((Node)event.getTarget()).getId();
+        model.toggleComponent(targetId);
+        eventManager.sendEvent(Event.GridChanged);
+    };
 
-        if (component instanceof IToggleable) {
-            ((IToggleable) component).toggle();
-            eventManager.sendEvent(Event.GridChanged);
-        }
+    private final EventHandler<MouseEvent> placeComponentEventHandler = event -> {
+        if (event.isSecondaryButtonDown()) return;
 
+        Point targetPosition = new Point(event.getX(), event.getY());
+        model.placeComponent(targetPosition);
+        eventManager.sendEvent(Event.GridChanged);
     };
 
 }

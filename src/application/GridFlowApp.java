@@ -25,7 +25,6 @@ public class GridFlowApp extends Application {
     private static final String WINDOW_ICON_PATH = "/resources/iconLarge.png";
     private static final int WINDOW_WIDTH = 1300;
     private static final int WINDOW_HEIGHT = 700;
-    private static final String GRIDFLOW_BLUE = "#008EB0";
 
     @Override
     public void start(Stage primaryStage) throws Exception {

@@ -7,9 +7,13 @@ import visualization.componentIcons.DeviceIcon;
 
 public class Switch extends Device implements ICloseable, ILockable {
 
-    boolean closed;
-    boolean closedByDefault;
-    boolean locked;
+    private boolean closed;
+    private boolean closedByDefault;
+    private boolean locked;
+
+    public final double unitWidth = 2;
+    public final double unitHeight = 3;
+
 
     public Switch(String name, Point position, boolean closedByDefault) {
         super(name, position);
@@ -33,7 +37,7 @@ public class Switch extends Device implements ICloseable, ILockable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getPosition(), 2, 3, -0.5, -0.5);
+        icon.setBoundingRect(getPosition(), unitWidth, unitHeight, -0.5, -0.5);
         return icon;
     }
 

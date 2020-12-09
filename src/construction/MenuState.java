@@ -1,4 +1,4 @@
-package application;
+package construction;
 
 public enum MenuState {
     MenuCollapsed, MenuExpanded

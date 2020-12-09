@@ -1,31 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Cursor?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="700.0" minWidth="500.0" pickOnBounds="false" prefHeight="1080" prefWidth="1920" translateY="2.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.UIController">
-   <!-- Scene builder does not like this next block of code -->
-   <!-- This block defines an attribute "screen" to extract resolution height and width (${screen.visualBounds.height}) (${screen.visualBounds.width}) -->
-   <!-- set this for the application border pane height and width, for the width of the menu vbox, and for the width of the top menu pane -->
-   <!--fx:define>
-      <Screen fx:factory="getPrimary" fx:id="screen"/>
-   </fx:define-->
-
-   <left>
-
-   </left>
-   <top>
-      <VBox fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="3840" prefWidth="3840" style="-fx-border-color: LIGHTGRAY; -fx-background-color: LIGHTGRAY" translateX="-1.0" translateY="-2.0" BorderPane.alignment="TOP_LEFT">
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="baseui.BaseUIViewController"
+            prefHeight="400.0" prefWidth="600.0">
+   <VBox fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="3840" prefWidth="3840" style="-fx-border-color: LIGHTGRAY; -fx-background-color: LIGHTGRAY" translateX="-1.0" translateY="-2.0" BorderPane.alignment="TOP_LEFT">
          <children>
             <AnchorPane fx:id="TopMenuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" prefWidth="3840" >
                <children>
@@ -58,5 +44,4 @@
             </AnchorPane>
          </children>
       </VBox>
-   </top>
-</BorderPane>
+</AnchorPane>

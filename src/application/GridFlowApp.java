@@ -21,13 +21,10 @@ import application.canvas.SceneGestures;
 import simulation.SimulationController;
 import visualization.VisualizationController;
 
-import java.io.IOException;
-import java.util.List;
-
 public class GridFlowApp extends Application {
 
     private static final String TITLE = "GridFlow";
-    private static final String WINDOW_ICON_PATH = "resources/iconLarge.png";
+    private static final String WINDOW_ICON_PATH = "/resources/iconLarge.png";
     private static final int WINDOW_WIDTH = 1300;
     private static final int WINDOW_HEIGHT = 700;
     private static final String GRIDFLOW_BLUE = "#008EB0";
@@ -55,16 +52,19 @@ public class GridFlowApp extends Application {
         simulationController.initController(grid, eventManager);
         eventManager.addListener(simulationController);
 
+        FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/baseui/BaseUIView.fxml"));
+
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
         eventManager.sendEvent(Event.GridChanged); // build would do this later
 
-        initGui(primaryStage, canvas, constructionViewLoader.load());
+        // Init GUI
+        initGui(primaryStage, canvas, constructionViewLoader.load(), baseUIViewLoader.load());
     }
 
     private PannableCanvas createCanvas() {
         PannableCanvas canvas = new PannableCanvas();
-        canvas.setTranslateX(-5350);
+        canvas.setTranslateX(-5350); // get this from application settings?
         canvas.setTranslateY(-2650);
 
         SceneGestures sceneGestures = new SceneGestures(canvas);
@@ -75,15 +75,13 @@ public class GridFlowApp extends Application {
         return canvas;
     }
 
-    private void initGui(Stage primaryStage, PannableCanvas canvas, Node constructionView) throws IOException {
-        FXMLLoader mainGuiLoader = new FXMLLoader(getClass().getResource("UI.fxml"));
-
+    private void initGui(Stage primaryStage, PannableCanvas canvas, Node constructionView, Node baseUIView) {
         Group root = new Group();
 
         BorderPane ui = new BorderPane();
         ui.setPickOnBounds(false);
         ui.setLeft(constructionView);
-        ui.setTop(mainGuiLoader.load());
+        ui.setTop(baseUIView);
 
         root.getChildren().addAll(canvas, ui);
 

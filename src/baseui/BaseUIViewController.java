@@ -1,4 +1,4 @@
-package application;
+package baseui;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,6 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Translate;
 
-public class UIController {
+public class BaseUIViewController {
 
 }

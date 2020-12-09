@@ -1,10 +1,9 @@
-package main;
+package application;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.lang.System;
 import java.lang.String;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

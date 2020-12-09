@@ -32,7 +32,7 @@ public class ConstructionController {
         canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getBeginPanEventHandler());
         canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, placeComponentEventHandler);
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, placeComponentEventHandler);
 
         return canvas;
     }
@@ -47,6 +47,7 @@ public class ConstructionController {
         String targetId = ((Node)event.getTarget()).getId();
         model.toggleComponent(targetId);
         eventManager.sendEvent(Event.GridChanged);
+        event.consume();
     };
 
     private final EventHandler<MouseEvent> placeComponentEventHandler = event -> {
@@ -55,6 +56,7 @@ public class ConstructionController {
         Point targetPosition = new Point(event.getX(), event.getY());
         model.placeComponent(targetPosition);
         eventManager.sendEvent(Event.GridChanged);
+        event.consume();
     };
 
 }

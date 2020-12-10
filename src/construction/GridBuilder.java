@@ -22,8 +22,40 @@ public class GridBuilder {
         return currentTool;
     }
 
+    public void setCurrentTool(ToolType currentTool) {
+        this.currentTool = currentTool;
+    }
+
     public ComponentType getCurrentComponentType() {
         return currentComponentType;
+    }
+
+    public void setCurrentComponentType(ComponentType currentComponentType) {
+        this.currentComponentType = currentComponentType;
+    }
+
+    public String getComponentName() {
+        return this.componentName;
+    }
+
+    public void setComponentName(String componentName) {
+        this.componentName = componentName;
+    }
+
+    public boolean getClosedByDefault() {
+        return this.closedByDefault;
+    }
+
+    public void setClosedByDefault(boolean closedByDefault) {
+        this.closedByDefault = closedByDefault;
+    }
+
+    public Voltage getCurrentVoltage() {
+        return this.currentVoltage;
+    }
+
+    public void setCurrentVoltage(Voltage currentVoltage) {
+        this.currentVoltage = currentVoltage;
     }
 
     // place a component standalone on the grid

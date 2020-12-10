@@ -20,6 +20,8 @@ public class Switch extends Device implements ICloseable, ILockable {
         this.closedByDefault = closedByDefault;
         this.closed = closedByDefault;
         this.locked = false;
+        this.setUnitWidth(2);
+        this.setUnitHeight(3);
     }
 
     public void toggleLocked() {
@@ -37,7 +39,7 @@ public class Switch extends Device implements ICloseable, ILockable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getPosition(), unitWidth, unitHeight, -0.5, -0.5);
+        icon.setBoundingRect(getPosition(), this.getUnitWidth(), this.getUnitHeight(), -0.5, -0.5);
         return icon;
     }
 

@@ -15,6 +15,8 @@ public class PowerSource extends Source {
         if (super.getOutputCount() < 1) {
             super.addOutput(output);
         }
+        this.setUnitWidth(2);
+        this.setUnitHeight(2.75);
     }
 
     @Override
@@ -25,7 +27,7 @@ public class PowerSource extends Source {
             icon.setWireEnergyState(isOutputEnergized(i), i);
         }
         icon.setComponentIconID(getId().toString());
-        icon.setBoundingRect(getPosition(), 2, 2.75, 0, 0);
+        icon.setBoundingRect(getPosition(), this.getUnitWidth(), this.getUnitHeight(), 0, 0);
         return icon;
     }
 }

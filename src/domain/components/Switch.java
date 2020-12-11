@@ -11,9 +11,6 @@ public class Switch extends Device implements ICloseable, ILockable {
     private boolean closedByDefault;
     private boolean locked;
 
-    public final double unitWidth = 2;
-    public final double unitHeight = 3;
-
 
     public Switch(String name, Point position, boolean closedByDefault) {
         super(name, position);

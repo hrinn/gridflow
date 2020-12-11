@@ -29,7 +29,7 @@ public class Cutout extends Device implements ILockable, ICloseable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getPosition(), this.getUnitWidth(), this.getUnitHeight(), -0.5, -0.5);
+        icon.setBoundingRect(getBoundingRect());
         return icon;
     }
 

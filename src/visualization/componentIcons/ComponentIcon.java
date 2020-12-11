@@ -29,20 +29,20 @@ public class ComponentIcon {
         boundingRect.setId(id);
     }
 
-    public void setBoundingRect(Point position, double unitWidth, double unitHeight, double unitWidthPadding, double unitHeightPadding) {
-        double width = unitWidth * Globals.UNIT;
-        double height = unitHeight * Globals.UNIT;
+    public void setBoundingRect(domain.geometry.Rectangle boundingRectangle) {
+        double tlx = boundingRectangle.getTopLeft().getX();
+        double tly = boundingRectangle.getTopLeft().getY();
 
-        // negative padding makes the clickable box a bit smaller than the actual unit size rectangle
-        double widthPadding = unitWidthPadding * Globals.UNIT;
-        double heightPadding = unitHeightPadding * Globals.UNIT;
+        boundingRect.setX(tlx);
+        boundingRect.setY(tly);
 
-        Point center = position.translate(0, height/2);
-        setBoundingRectParametersByCenter(center, width + widthPadding, height + heightPadding);
+        double width = Math.abs(tlx - boundingRectangle.getBottomRight().getX());
+        double height = Math.abs(tly - boundingRectangle.getBottomRight().getY());
 
-        // set text position now that we know where it should go
-        Point midRight = position.translate(width/2, height/2);
-        setComponentNamePosition(midRight);
+        boundingRect.setWidth(width);
+        boundingRect.setHeight(height);
+        boundingRect.setFill(Color.TRANSPARENT);
+        boundingRect.setStroke(Color.RED);
     }
 
     private void setComponentNamePosition(Point position) {
@@ -54,16 +54,6 @@ public class ComponentIcon {
         String tabbedName = name;//.replace(' ', '\n');
         componentName.setText(tabbedName);
         componentName.setFont(Font.font(null, 10));
-    }
-
-    protected void setBoundingRectParametersByCenter(Point center, double width, double height) {
-        Point topLeft = center.translate(-width/2, -height/2);
-        boundingRect.setX(topLeft.getX());
-        boundingRect.setY(topLeft.getY());
-        boundingRect.setWidth(width);
-        boundingRect.setHeight(height);
-        boundingRect.setFill(Color.TRANSPARENT);
-        boundingRect.setStroke(Color.RED);
     }
 
     protected void addShapesToEnergyOutlineNode(Group energyOutlineNode, Shape... shapes) {

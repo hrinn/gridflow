@@ -31,7 +31,7 @@ public class Point {
     }
 
     public Point translate(double x, double y) {
-        return new Point(this.x + (int)x, this.y + (int)y);
+        return new Point(this.x + x, this.y + y);
     }
 
     public double differenceY(Point other) {

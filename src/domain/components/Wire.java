@@ -22,6 +22,11 @@ public class Wire extends Component {
         start = p1;
         end = p2;
         energized = false;
+
+        this.setUnitWidth(start.differenceX(end) / Globals.UNIT);
+        this.setUnitHeight(start.differenceY(end) / Globals.UNIT);
+        this.setUnitWidthPadding(0.5);
+        this.setUnitHeightPadding(0.5);
     }
 
     public Wire(Point p) {
@@ -76,12 +81,23 @@ public class Wire extends Component {
         icon.setWireIconEnergyState(energized);
         icon.setComponentIconID(getId().toString());
 
-        //double unitWidth = Math.max(0.5, start.differenceX(end) / GridScene.UNIT);
-        //double unitHeight = Math.max(0.5, start.differenceY(end) / GridScene.UNIT);
-        double unitWidth = start.differenceX(end) / Globals.UNIT;
-        double unitHeight = start.differenceY(end) / Globals.UNIT;
-
-        icon.setBoundingRect(getPosition(), unitWidth, unitHeight, 0.5, 0.5);
+        icon.setBoundingRect(getBoundingRect());
         return icon;
+    }
+
+    @Override
+    public Rectangle getBoundingRect() {
+        double widthPadding = getUnitWidthPadding() * Globals.UNIT;
+        double heightPadding = getUnitHeightPadding() * Globals.UNIT;
+
+        if (isPointWire()) { // we shouldn't have to do this
+            widthPadding = -widthPadding;
+            heightPadding = -heightPadding;
+        }
+
+        Point topLeft = start.translate(-widthPadding/2, -heightPadding/2);
+        Point bottomRight = end.translate(widthPadding/2, heightPadding/2);
+
+        return new Rectangle(topLeft, bottomRight);
     }
 }

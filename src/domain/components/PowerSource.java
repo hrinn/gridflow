@@ -9,6 +9,8 @@ public class PowerSource extends Source {
 
     public PowerSource(String name, Point position, boolean on) {
         super(name, position, on);
+        this.setUnitHeightPadding(0);
+        this.setUnitWidthPadding(0);
     }
 
     public void connectWire(Wire output) {
@@ -27,7 +29,7 @@ public class PowerSource extends Source {
             icon.setWireEnergyState(isOutputEnergized(i), i);
         }
         icon.setComponentIconID(getId().toString());
-        icon.setBoundingRect(getPosition(), this.getUnitWidth(), this.getUnitHeight(), 0, 0);
+        icon.setBoundingRect(getBoundingRect());
         return icon;
     }
 }

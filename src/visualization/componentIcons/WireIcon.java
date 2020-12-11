@@ -26,15 +26,4 @@ public class WireIcon extends ComponentIcon {
     public void setWireIconEnergyState(boolean energized) {
         energyOutline.setOpacity(energized ? 1 : 0);
     }
-
-    @Override
-    public void setBoundingRect(Point position, double unitWidth, double unitHeight, double unitWidthPadding, double unitHeightPadding) {
-        double width = unitWidth * Globals.UNIT;
-        double height = unitHeight * Globals.UNIT;
-        double widthPadding = unitWidthPadding * Globals.UNIT;
-        double heightPadding = unitHeightPadding * Globals.UNIT;
-
-        setBoundingRectParametersByCenter(position, width + widthPadding, height + heightPadding);
-        getBoundingRect().setStroke(Color.BLUE);
-    }
 }

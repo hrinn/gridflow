@@ -33,7 +33,7 @@ public class DevUtils {
         Breaker dd9 = new Breaker("DD9",
                 canvasPos(-6, -4),
                 Voltage.KV12, false);
-        Wire bbus = new Wire(canvasPos(6, -4), canvasPos(-6, -4));
+        Wire bbus = new Wire(canvasPos(-6, -4), canvasPos(6, -4));
         dd3.connectInWire(bbus);
         dd5.connectInWire(bbus);
         dd7.connectInWire(bbus);
@@ -75,12 +75,12 @@ public class DevUtils {
 
         // Side route switch
         Switch dd105 = new Switch("DD-105", canvasPos(3, 9), false);
-        Wire dd105bw = new Wire(canvasPos(3, 3), canvasPos(3, 6));
+        Wire dd105bw = new Wire(canvasPos(3, 6), canvasPos(3, 3));
         dd105bw.connect(xw);
         xw.connect(dd105bw);
         dd105bw.connect(dd105);
         dd105.connectOutWire(dd105bw);
-        Wire dd105aw = new Wire(canvasPos(3, 9), canvasPos(3, 12));
+        Wire dd105aw = new Wire(canvasPos(3, 12), canvasPos(3, 9));
         dd105aw.connect(dd105);
         dd105.connectInWire(dd105aw);
 

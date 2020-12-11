@@ -15,6 +15,8 @@ public class Turbine extends Source {
         if (super.getOutputCount() < 2) {
             super.addOutput(wire);
         }
+        this.setUnitWidth(2);
+        this.setUnitHeight(4);
     }
 
     @Override
@@ -26,7 +28,7 @@ public class Turbine extends Source {
         }
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getPosition(), 2, 4, -0.5, -0.5);
+        icon.setBoundingRect(getPosition(), this.getUnitWidth(), this.getUnitHeight(), -0.5, -0.5);
         return icon;
     }
 }

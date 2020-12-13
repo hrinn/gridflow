@@ -1,5 +1,6 @@
 package application;
 
+import construction.ConstructionViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -37,6 +38,9 @@ public class GridFlowApp extends Application {
         ConstructionController constructionController = new ConstructionController();
         constructionController.initController(grid, eventManager);
         FXMLLoader constructionViewLoader = new FXMLLoader(getClass().getResource("/construction/ConstructionView.fxml"));
+        Node constructionView = constructionViewLoader.load();
+        ConstructionViewController constructionViewController = constructionViewLoader.getController();
+        constructionViewController.setConstructionController(constructionController);
 
         VisualizationController visualizationController = new VisualizationController();
         visualizationController.initController(grid, constructionController.getCanvas());
@@ -53,7 +57,7 @@ public class GridFlowApp extends Application {
         eventManager.sendEvent(Event.GridChanged); // build would do this later
 
         // Init GUI
-        initGui(primaryStage, constructionController.getCanvas(), constructionViewLoader.load(), baseUIViewLoader.load());
+        initGui(primaryStage, constructionController.getCanvas(), constructionView, baseUIViewLoader.load());
     }
 
     private void initGui(Stage primaryStage, GridCanvas canvas, Node constructionView, Node baseUIView) {

@@ -26,6 +26,8 @@ public class ConstructionViewController {
 
     private MenuState state = MenuState.MenuExpanded;
 
+    private ConstructionController constructionController;
+
     @FXML
     private Button ComponentMenuButton;
 
@@ -36,20 +38,37 @@ public class ConstructionViewController {
     private ImageView ArrowImage;
 
     @FXML
-    private VBox LeftComponentMenu;
-
-    @FXML
-    private VBox RightComponentMenu;
+    private VBox ComponentMenu;
 
     @FXML
     private void initialize() {
         // Bind the managed and visible properties for the component menus
-        RightComponentMenu.managedProperty().bind(RightComponentMenu.visibleProperty());
-        LeftComponentMenu.managedProperty().bind(RightComponentMenu.visibleProperty());
+        ComponentMenu.managedProperty().bind(ComponentMenu.visibleProperty());
+    }
+
+    public void setConstructionController(ConstructionController constructionController) {
+        this.constructionController = constructionController;
     }
 
     @FXML
     public void ConstructionViewController(){ }
+
+    @FXML
+    private void pickSelectTool() {
+        constructionController.setCurrentToolType(ToolType.SELECT);
+    }
+
+    @FXML
+    private void pickPlaceSwitchTool() {
+        constructionController.setCurrentToolType(ToolType.PLACE_DEVICE);
+        constructionController.setCurrentComponentType(ComponentType.SWITCH);
+    }
+
+    @FXML
+    private void pickPlaceBreakerTool() {
+        constructionController.setCurrentToolType(ToolType.PLACE_DEVICE);
+        constructionController.setCurrentComponentType(ComponentType.BREAKER);
+    }
 
     @FXML
     private void darkenMenuButtonOnHover(){
@@ -67,7 +86,7 @@ public class ConstructionViewController {
         Translate menuButtonTrans = new Translate();
 
         if (state == MenuState.MenuExpanded){
-            CollapseMenu(RightComponentMenu, LeftComponentMenu);
+            CollapseMenu(ComponentMenu);
             ComponentBuilderMenu.setPrefHeight(MENU_COLLAPSED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_COLLAPSED_WIDTH);
 
@@ -80,7 +99,7 @@ public class ConstructionViewController {
 
             ComponentBuilderMenu.setPrefHeight(MENU_EXPANDED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_EXPANDED_WIDTH);
-            ExpandMenu(RightComponentMenu, LeftComponentMenu);
+            ExpandMenu(ComponentMenu);
 
             state = MenuState.MenuExpanded;
         }
@@ -89,14 +108,12 @@ public class ConstructionViewController {
         ComponentBuilderMenu.getTransforms().add(menuButtonTrans);
     }
 
-    private void CollapseMenu(VBox right, VBox left){
-        right.setVisible(false);
-        left.setVisible(false);
+    private void CollapseMenu(VBox menu){
+        menu.setVisible(false);
     }
 
-    private void ExpandMenu(VBox right, VBox left){
-        right.setVisible(true);
-        left.setVisible(true);
+    private void ExpandMenu(VBox menu){
+        menu.setVisible(true);
     }
 
     private void SetMenuButtonImage(ImageView arrow){

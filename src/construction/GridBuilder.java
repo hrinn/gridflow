@@ -8,9 +8,6 @@ import domain.geometry.Point;
 public class GridBuilder {
 
     private Grid grid;
-    // should these be global variables or passed in from the controller?
-    private ToolType currentTool = ToolType.SELECT;
-    private ComponentType currentComponentType = ComponentType.JUMPER;
     private ComponentProperties properties;
 
     public GridBuilder(Grid grid) {
@@ -18,28 +15,12 @@ public class GridBuilder {
         properties = new ComponentProperties();
     }
 
-    public ToolType getCurrentTool() {
-        return currentTool;
-    }
-
-    public void setCurrentTool(ToolType currentTool) {
-        this.currentTool = currentTool;
-    }
-
-    public ComponentType getCurrentComponentType() {
-        return currentComponentType;
-    }
-
-    public void setCurrentComponentType(ComponentType currentComponentType) {
-        this.currentComponentType = currentComponentType;
-    }
-
     // place a component standalone on the grid
-    public void placeDevice(Point inputPoint) {
+    public void placeDevice(Point inputPoint, ComponentType componentType) {
         Point point = getNearestUnitCoordinate(inputPoint);
         // check for overlap conflicts! return if there is a conflict
 
-        Device device = createDevice(point);
+        Device device = createDevice(point, componentType);
         if (device == null) return;
 
         Wire inWire = new Wire(point);
@@ -55,8 +36,8 @@ public class GridBuilder {
         grid.addComponent(outWire);
     }
 
-    public Device createDevice(Point point) {
-        switch(currentComponentType) {
+    public Device createDevice(Point point, ComponentType componentType) {
+        switch(componentType) {
             case TRANSFORMER:
                 return new Transformer(properties.getName(), point);
 

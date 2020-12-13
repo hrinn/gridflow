@@ -15,12 +15,14 @@
       fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       prefHeight="600.0" prefWidth="225.0">
     <children>
-        <VBox fx:id="LeftComponentMenu" prefHeight="200.0" prefWidth="100.0"
+        <VBox fx:id="ComponentMenu" prefHeight="200.0" prefWidth="100.0"
               style="-fx-border-color: BLACK; -fx-background-color: WHITE;">
+            <children>
+                <Button fx:id="SelectTool" text="Select" onMousePressed="#pickSelectTool"/>
+                <Button fx:id="PlaceSwitchTool" text="Place Switch" onMousePressed="#pickPlaceSwitchTool"/>
+                <Button fx:id="PlaceBreakerTool" text="Place Breaker" onMousePressed="#pickPlaceBreakerTool"/>
+            </children>
         </VBox>
-
-        <VBox fx:id="RightComponentMenu" prefHeight="200.0" prefWidth="100.0"
-              style="-fx-border-color: BLACK; -fx-background-color: WHITE;"/>
         <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
               minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0"
               onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover">

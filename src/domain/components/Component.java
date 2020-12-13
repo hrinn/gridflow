@@ -3,7 +3,6 @@ package domain.components;
 import application.Globals;
 import domain.geometry.Point;
 import domain.geometry.Rectangle;
-import javafx.scene.paint.Color;
 import visualization.componentIcons.ComponentIcon;
 
 import java.util.List;

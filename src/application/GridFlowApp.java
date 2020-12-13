@@ -20,7 +20,7 @@ import construction.canvas.GridCanvas;
 public class GridFlowApp extends Application {
 
     private static final String TITLE = "GridFlow";
-    private static final String WINDOW_ICON_PATH = "/resources/iconLarge.png";
+    private static final String WINDOW_ICON_PATH = "/resources/icon.png";
     private static final int WINDOW_WIDTH = 1300;
     private static final int WINDOW_HEIGHT = 700;
 

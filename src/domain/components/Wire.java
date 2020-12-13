@@ -35,6 +35,11 @@ public class Wire extends Component {
         start = p;
         end = p;
         energized = false;
+
+        this.setUnitWidth(0);
+        this.setUnitHeight(0);
+        this.setUnitWidthPadding(0.5);
+        this.setUnitHeightPadding(0.5);
     }
 
     public void energize() {
@@ -89,11 +94,6 @@ public class Wire extends Component {
     public Rectangle getBoundingRect() {
         double widthPadding = getUnitWidthPadding() * Globals.UNIT;
         double heightPadding = getUnitHeightPadding() * Globals.UNIT;
-
-        if (isPointWire()) { // we shouldn't have to do this
-            widthPadding = -widthPadding;
-            heightPadding = -heightPadding;
-        }
 
         Point topLeft = start.translate(-widthPadding/2, -heightPadding/2);
         Point bottomRight = end.translate(widthPadding/2, heightPadding/2);

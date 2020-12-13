@@ -54,7 +54,7 @@ public class ConstructionController {
         if (event.isSecondaryButtonDown()) return;
 
         Point targetPosition = new Point(event.getX(), event.getY());
-        model.placeComponent(targetPosition);
+        model.placeDevice(targetPosition);
         eventManager.sendEvent(Event.GridChanged);
         event.consume();
     };

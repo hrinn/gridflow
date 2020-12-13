@@ -48,6 +48,12 @@
                                 <MenuItem fx:id="AboutItem" mnemonicParsing="false" text="About"/>
                             </items>
                         </Menu>
+                        <Menu fx:id="DevMenu" mnemonicParsing="false"
+                              style="-fx-text-alignment: center; -fx-font-size: 14;" text="Dev">
+                            <items>
+                                <MenuItem fx:id="BoundingRectItem" mnemonicParsing="false" text="Show Bounding Rects"/>
+                            </items>
+                        </Menu>
                     </menus>
                 </MenuBar>
             </children>

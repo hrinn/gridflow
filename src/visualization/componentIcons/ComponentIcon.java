@@ -43,11 +43,13 @@ public class ComponentIcon {
         boundingRect.setHeight(height);
         boundingRect.setFill(Color.TRANSPARENT);
         boundingRect.setStroke(Color.RED);
+        setComponentNamePosition(boundingRectangle.getMidRight());
     }
 
     private void setComponentNamePosition(Point position) {
-        componentName.setLayoutX(position.getX() - 5);
-        componentName.setLayoutY(position.getY() + componentName.prefHeight(-1)/4);
+        double labelYShift = componentName.prefHeight(-1)/4;
+        componentName.setLayoutX(position.getX());
+        componentName.setLayoutY(position.getY() + labelYShift);
     }
 
     public void setComponentName(String name) {

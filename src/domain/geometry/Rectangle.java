@@ -21,4 +21,16 @@ public class Rectangle {
     public Point getBottomRight() {
         return bottomRight;
     }
+
+    private double getWidth() {
+        return Math.abs(topLeft.getX()) - bottomRight.getX();
+    }
+
+    private double getHeight() {
+        return Math.abs(topLeft.getY()) - bottomRight.getY();
+    }
+
+    public Point getMidRight() {
+        return bottomRight.translate(0, getHeight()/2);
+    }
 }

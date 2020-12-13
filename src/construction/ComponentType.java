@@ -4,7 +4,7 @@ public enum ComponentType {
     BREAKER,
     CUTOUT,
     JUMPER,
-    POWERSOURCE,
+    POWER_SOURCE,
     SWITCH,
     TRANSFORMER,
     TURBINE,

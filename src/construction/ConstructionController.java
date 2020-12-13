@@ -17,6 +17,9 @@ public class ConstructionController {
     private EventManager eventManager;
     private GridBuilder model;
 
+    private ToolType currentToolType = ToolType.SELECT;
+    private ComponentType currentComponentType;
+
     public void initController(Grid grid, EventManager eventManager) {
         this.eventManager = eventManager;
         this.canvas = createCanvas();
@@ -42,21 +45,39 @@ public class ConstructionController {
     }
 
     private final EventHandler<MouseEvent> toggleComponentEventHandler = event -> {
+        event.consume();
+
+        if (currentToolType != ToolType.SELECT) return;
         if (event.isSecondaryButtonDown()) return;
 
         String targetId = ((Node)event.getTarget()).getId();
         model.toggleComponent(targetId);
         eventManager.sendEvent(Event.GridChanged);
-        event.consume();
     };
 
     private final EventHandler<MouseEvent> placeComponentEventHandler = event -> {
+        event.consume();
+
+        if (!placingComponent(currentToolType)) return;
         if (event.isSecondaryButtonDown()) return;
 
         Point targetPosition = new Point(event.getX(), event.getY());
-        model.placeComponent(targetPosition);
+        model.placeDevice(targetPosition, currentComponentType);
         eventManager.sendEvent(Event.GridChanged);
-        event.consume();
     };
 
+    private boolean placingComponent(ToolType toolType) {
+        return toolType == ToolType.PLACE_DEVICE
+                || toolType == ToolType.PLACE_WIRE
+                || toolType == ToolType.PLACE_SOURCE;
+    }
+
+
+    public void setCurrentToolType(ToolType currentToolType) {
+        this.currentToolType = currentToolType;
+    }
+
+    public void setCurrentComponentType(ComponentType currentComponentType) {
+        this.currentComponentType = currentComponentType;
+    }
 }

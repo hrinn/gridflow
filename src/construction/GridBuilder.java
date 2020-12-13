@@ -8,106 +8,50 @@ import domain.geometry.Point;
 public class GridBuilder {
 
     private Grid grid;
-    private ToolType currentTool = ToolType.PLACE;
-    private ComponentType currentComponentType = ComponentType.BREAKER;
-    private String componentName = "test";
-    private Voltage currentVoltage = Voltage.KV12;
-    private boolean closedByDefault = true;
+    private ComponentProperties properties;
 
     public GridBuilder(Grid grid) {
         this.grid = grid;
-    }
-
-    public ToolType getCurrentTool() {
-        return currentTool;
-    }
-
-    public void setCurrentTool(ToolType currentTool) {
-        this.currentTool = currentTool;
-    }
-
-    public ComponentType getCurrentComponentType() {
-        return currentComponentType;
-    }
-
-    public void setCurrentComponentType(ComponentType currentComponentType) {
-        this.currentComponentType = currentComponentType;
-    }
-
-    public String getComponentName() {
-        return this.componentName;
-    }
-
-    public void setComponentName(String componentName) {
-        this.componentName = componentName;
-    }
-
-    public boolean getClosedByDefault() {
-        return this.closedByDefault;
-    }
-
-    public void setClosedByDefault(boolean closedByDefault) {
-        this.closedByDefault = closedByDefault;
-    }
-
-    public Voltage getCurrentVoltage() {
-        return this.currentVoltage;
-    }
-
-    public void setCurrentVoltage(Voltage currentVoltage) {
-        this.currentVoltage = currentVoltage;
+        properties = new ComponentProperties();
     }
 
     // place a component standalone on the grid
-    public void placeComponent(Point inputPoint) {
+    public void placeDevice(Point inputPoint, ComponentType componentType) {
         Point point = getNearestUnitCoordinate(inputPoint);
         // check for overlap conflicts! return if there is a conflict
 
-        Device comp = createComponent(point);
-        if(comp == null) {
-            return;
-        }
+        Device device = createDevice(point, componentType);
+        if (device == null) return;
 
         Wire inWire = new Wire(point);
-        comp.connectInWire(inWire);
-        inWire.connect(comp);
+        device.connectInWire(inWire);
+        inWire.connect(device);
 
-        Wire outWire = new Wire(point.translate(0, comp.getUnitHeight() * Globals.UNIT));
-        comp.connectOutWire(outWire);
-        outWire.connect(comp);
+        Wire outWire = new Wire(point.translate(0, device.getUnitHeight() * Globals.UNIT));
+        device.connectOutWire(outWire);
+        outWire.connect(device);
 
-        grid.addComponent(comp);
+        grid.addComponent(device);
         grid.addComponent(inWire);
         grid.addComponent(outWire);
     }
 
-    public Device createComponent(Point point) {
-        switch(currentComponentType) {
+    public Device createDevice(Point point, ComponentType componentType) {
+        switch(componentType) {
             case TRANSFORMER:
-                return new Transformer(componentName, point);
-
-            //TODO address issue issue that non-devices do not have connectOutWire() and connectInWire()
-            case POWERSOURCE:
-                return null;
-
-            case TURBINE:
-                return null;
+                return new Transformer(properties.getName(), point);
 
             case BREAKER:
-                return new Breaker(componentName, point, currentVoltage, closedByDefault);
+                return new Breaker(properties.getName(), point, properties.getVoltage(), properties.getDefaultState());
 
             case JUMPER:
-                return new Jumper(componentName, point, closedByDefault);
+                return new Jumper(properties.getName(), point, properties.getDefaultState());
 
             case CUTOUT:
-                return new Cutout(componentName, point, closedByDefault);
-
-            //TODO address how to place wires
-            case WIRE:
-                return null;
+                return new Cutout(properties.getName(), point, properties.getDefaultState());
 
             case SWITCH:
-                return new Switch(componentName, point, closedByDefault);
+                return new Switch(properties.getName(), point, properties.getDefaultState());
 
             default:
                 return null;

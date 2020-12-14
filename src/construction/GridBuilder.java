@@ -10,9 +10,9 @@ public class GridBuilder {
     private Grid grid;
     private ComponentProperties properties;
 
-    public GridBuilder(Grid grid) {
+    public GridBuilder(Grid grid, ComponentProperties properties) {
         this.grid = grid;
-        properties = new ComponentProperties();
+        this.properties = properties;
     }
 
     // This is what runs when a component is placed on the canvas standalone
@@ -49,7 +49,8 @@ public class GridBuilder {
     public Device createDevice(Point point, ComponentType componentType) {
         return switch (componentType) {
             case TRANSFORMER -> new Transformer(properties.getName(), point);
-            case BREAKER -> new Breaker(properties.getName(), point, properties.getVoltage(), properties.getDefaultState());
+            case BREAKER_12KV -> new Breaker(properties.getName(), point, Voltage.KV12, properties.getDefaultState());
+            case BREAKER_70KV -> new Breaker(properties.getName(), point, Voltage.KV70, properties.getDefaultState());
             case JUMPER -> new Jumper(properties.getName(), point, properties.getDefaultState());
             case CUTOUT -> new Cutout(properties.getName(), point, properties.getDefaultState());
             case SWITCH -> new Switch(properties.getName(), point, properties.getDefaultState());
@@ -104,7 +105,7 @@ public class GridBuilder {
 
     private boolean isDevice(ComponentType componentType) {
         return switch (componentType) {
-            case BREAKER, CUTOUT, JUMPER, SWITCH, TRANSFORMER -> true;
+            case BREAKER_12KV, BREAKER_70KV, CUTOUT, JUMPER, SWITCH, TRANSFORMER -> true;
             default -> false;
         };
     }

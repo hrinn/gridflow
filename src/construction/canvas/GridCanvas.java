@@ -5,6 +5,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -21,12 +22,13 @@ public class GridCanvas extends Pane {
 
     private final Group components = new Group();
     private final Group energyOutlines = new Group();
+    private final Group ghostIconParent = new Group();
 
     public GridCanvas(EventHandler<MouseEvent> toggleComponentEventHandler) {
         // event handlers
         this.toggleComponentEventHandler = toggleComponentEventHandler;
 
-        getChildren().addAll(energyOutlines, components);
+        getChildren().addAll(energyOutlines, components, ghostIconParent);
         addBackgroundGrid();
 
         setPrefSize(unitWidth * Globals.UNIT, unitHeight * Globals.UNIT);
@@ -56,6 +58,14 @@ public class GridCanvas extends Pane {
 
         components.getChildren().add(componentNode);
         energyOutlines.getChildren().add(energyOutlineNodes);
+    }
+
+    public void addGhostIcon(Group ghostIcon) {
+        ghostIconParent.getChildren().add(ghostIcon);
+    }
+
+    public void removeGhostIcon() {
+        ghostIconParent.getChildren().clear();
     }
 
     public void clearComponents() {

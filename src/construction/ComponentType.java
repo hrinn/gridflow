@@ -1,7 +1,8 @@
 package construction;
 
 public enum ComponentType {
-    BREAKER,
+    BREAKER_12KV,
+    BREAKER_70KV,
     CUTOUT,
     JUMPER,
     POWER_SOURCE,

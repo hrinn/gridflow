@@ -43,9 +43,7 @@ public class GridBuilder {
         device.connectOutWire(outWire);
         outWire.connect(device);
 
-        grid.addComponent(device);
-        grid.addComponent(inWire);
-        grid.addComponent(outWire);
+        grid.addComponents(device, inWire, outWire);
     }
 
     public Device createDevice(Point point, ComponentType componentType) {
@@ -60,17 +58,31 @@ public class GridBuilder {
     }
 
     public void placeSource(Point position, ComponentType componentType) {
-        Source source = createSource(position, componentType);
-        if (source == null) return;
+        switch (componentType) {
+            case POWER_SOURCE -> {
+                PowerSource powerSource = new PowerSource(properties.getName(), position, false);
 
-    }
+                Wire outWire = new Wire(position.translate(0, powerSource.getUnitHeight() * Globals.UNIT));
+                powerSource.connectWire(outWire);
+                outWire.connect(powerSource);
 
-    public Source createSource(Point position, ComponentType componentType) {
-        return switch (componentType) {
-            case POWER_SOURCE -> new PowerSource(properties.getName(), position, false);
-            case TURBINE -> new Turbine(properties.getName(), position, false);
-            default -> null;
-        };
+                grid.addComponents(powerSource, outWire);
+            }
+            case TURBINE -> {
+                Turbine turbine = new Turbine(properties.getName(), position, false);
+
+                Wire topWire = new Wire(position);
+                turbine.connectTopOutput(topWire);
+                topWire.connect(turbine);
+
+                Wire bottomWire = new Wire(position.translate(0, turbine.getUnitHeight() * Globals.UNIT));
+                turbine.connectBottomOutput(bottomWire);
+                bottomWire.connect(turbine);
+
+                grid.addComponents(topWire, bottomWire, turbine);
+            }
+        }
+
     }
 
     public void placeWire(Point position) {

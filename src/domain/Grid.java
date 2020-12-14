@@ -5,6 +5,7 @@ import domain.components.Source;
 import domain.components.Wire;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,10 @@ public class Grid {
 
     public void addComponent(Component component) {
         components.add(component);
+    }
+
+    public void addComponents(Component... components) {
+        this.components.addAll(Arrays.asList(components));
     }
 
     public void loadComponents(List<Component> components) {

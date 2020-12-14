@@ -40,17 +40,10 @@ public class GhostManager {
         gridCanvas.addGhostIcon(ghostIcon.getComponentNode());
     }
 
-    public void updateGhostPosition(double x, double y) {
-        double coordX = roundToUnit(x);
-        double coordY = roundToUnit(y);
-        ghostIcon.getComponentNode().setTranslateX(coordX);
-        ghostIcon.getComponentNode().setTranslateY(coordY);
+    public void updateGhostPosition(Point pos) {
+        ghostIcon.getComponentNode().setTranslateX(pos.getX());
+        ghostIcon.getComponentNode().setTranslateY(pos.getY());
     }
-
-    private double roundToUnit(double num) {
-        return Math.round(num/Globals.UNIT) * Globals.UNIT;
-    }
-
     public void enableGhostIcon() {
         ghostEnabled = true;
     }

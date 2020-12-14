@@ -2,5 +2,6 @@ package construction;
 
 public enum ToolType {
     SELECT,
-    PLACE
+    PLACE,
+    WIRE
 }

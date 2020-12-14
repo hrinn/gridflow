@@ -16,16 +16,12 @@ public class GridBuilder {
     }
 
     // This is what runs when a component is placed on the canvas standalone
-    public void placeComponent(Point inputPosition, ComponentType componentType) {
-        Point position = getNearestUnitCoordinate(inputPosition);
+    public void placeComponent(Point position, ComponentType componentType) {
         if (isDevice(componentType)) {
             placeDevice(position, componentType);
         }
         else if (isSource(componentType)) {
             placeSource(position, componentType);
-        }
-        else if (componentType == ComponentType.WIRE) {
-            placeWire(position); // this might need to be different
         }
     }
 
@@ -86,8 +82,8 @@ public class GridBuilder {
 
     }
 
-    public void placeWire(Point position) {
-        Wire wire = new Wire(position);
+    public void placeWire(Point startPosition, Point endPosition) {
+        Wire wire = new Wire(startPosition, endPosition);
         grid.addComponent(wire);
     }
 
@@ -116,12 +112,6 @@ public class GridBuilder {
             case POWER_SOURCE, TURBINE -> true;
             default -> false;
         };
-    }
-
-    private Point getNearestUnitCoordinate(Point point) {
-        double x = Math.round(point.getX()/Globals.UNIT) * Globals.UNIT;
-        double y = Math.round(point.getY()/Globals.UNIT) * Globals.UNIT;
-        return new Point(x, y);
     }
 
 }

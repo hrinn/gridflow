@@ -1,10 +1,12 @@
 package construction;
 
+import application.Globals;
 import application.events.Event;
 import application.events.EventManager;
 import construction.canvas.GridCanvas;
 import construction.canvas.SceneGestures;
 import domain.Grid;
+import domain.components.Wire;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -26,8 +28,10 @@ public class ConstructionController {
     private ComponentProperties properties;
 
     private final Image errorCursorImage = new Image("/resources/error_cursor.png");
-    private final Cursor errorCursor = new ImageCursor(errorCursorImage, errorCursorImage.getWidth()/4,
-            errorCursorImage.getHeight()/4);
+    private final Cursor errorCursor = new ImageCursor(errorCursorImage, errorCursorImage.getWidth()/2,
+            errorCursorImage.getHeight()/2);
+
+    private WireExtendContext wireExtendContext = new WireExtendContext();
 
     public void initController(Grid grid, EventManager eventManager) {
         this.eventManager = eventManager;
@@ -49,11 +53,16 @@ public class ConstructionController {
 
         // canvas events
         SceneGestures sceneGestures = new SceneGestures(canvas);
+
+        // panning and scrolling
         canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getBeginPanEventHandler());
         canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+
+        // component placement
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, placeComponentEventHandler);
         canvas.addEventFilter(MouseEvent.MOUSE_MOVED, ghostMoveEventHandler);
+        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, placeWireEventHandler);
         return canvas;
     }
 
@@ -65,7 +74,7 @@ public class ConstructionController {
         this.currentToolType = currentToolType;
 
         // If Placing a component, turn on ghosts
-        if (currentToolType == ToolType.PLACE) {
+        if (currentToolType == ToolType.PLACE || currentToolType == ToolType.WIRE) {
             ghostModel.enableGhostIcon();
             canvas.setCursor(Cursor.NONE);
         } else {
@@ -78,6 +87,25 @@ public class ConstructionController {
         this.currentComponentType = componentType;
         ghostModel.setGhostIcon(componentType);
     }
+
+    // Wire logic
+
+    private final EventHandler<MouseEvent> placeWireEventHandler = event -> {
+        if (!(currentToolType == ToolType.WIRE)) return;
+        if (event.isSecondaryButtonDown()) return;
+
+        if (wireExtendContext.placing) { // end placement
+            wireExtendContext.placing = false;
+            Point endPoint = getNearestCoordinate(event.getX(), event.getY());
+            builderModel.placeWire(wireExtendContext.beginPoint, endPoint);
+            ghostModel.setGhostIcon(currentComponentType);
+            eventManager.sendEvent(Event.GridChanged);
+
+        } else { // begin placement
+            wireExtendContext.placing = true;
+            wireExtendContext.beginPoint = getNearestCoordinate(event.getX(), event.getY());
+        }
+    };
 
     // Ghost Logic
 
@@ -97,8 +125,13 @@ public class ConstructionController {
 
     private final EventHandler<MouseEvent> ghostMoveEventHandler = event -> {
         if (!ghostModel.isGhostEnabled()) return;
-        ghostModel.updateGhostPosition(event.getX(), event.getY());
-        event.consume();
+        Point coordPoint = getNearestCoordinate(event.getX(), event.getY());
+
+        if (!wireExtendContext.placing) {
+            ghostModel.updateGhostPosition(coordPoint);
+        } else {
+            ghostModel.extendGhostWire(wireExtendContext.beginPoint, coordPoint);
+        }
     };
 
     // Construction Logic
@@ -120,8 +153,20 @@ public class ConstructionController {
         if (currentToolType != ToolType.PLACE) return;
         if (event.isSecondaryButtonDown()) return;
 
-        Point targetPosition = new Point(event.getX(), event.getY());
-        builderModel.placeComponent(targetPosition, currentComponentType);
+        Point coordPoint = getNearestCoordinate(event.getX(), event.getY());
+        builderModel.placeComponent(coordPoint, currentComponentType);
         eventManager.sendEvent(Event.GridChanged); // should only send this event if place comp returns true
     };
+
+    private Point getNearestCoordinate(double x, double y) {
+        double rx = Math.round(x/ Globals.UNIT) * Globals.UNIT;
+        double ry = Math.round(y/Globals.UNIT) * Globals.UNIT;
+        return new Point(rx, ry);
+    }
+
+}
+
+class WireExtendContext {
+    boolean placing = false;
+    Point beginPoint;
 }

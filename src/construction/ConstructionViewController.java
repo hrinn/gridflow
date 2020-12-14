@@ -72,7 +72,7 @@ public class ConstructionViewController {
 
     @FXML
     private void pickWireTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
+        constructionController.setCurrentToolType(ToolType.WIRE);
         constructionController.setCurrentComponentType(ComponentType.WIRE);
     }
 

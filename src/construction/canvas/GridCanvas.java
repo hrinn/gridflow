@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import visualization.componentIcons.ComponentIcon;
+import visualization.componentIcons.WireIcon;
 
 public class GridCanvas extends Pane {
 
@@ -55,8 +56,10 @@ public class GridCanvas extends Pane {
         Group componentNode = icon.getComponentNode();
         Group energyOutlineNodes = icon.getEnergyOutlineNodes();
         componentNode.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
-        componentNode.setOnMouseEntered(enterComponentHoverEventHandler);
-        componentNode.setOnMouseExited(exitComponentHoverEventHandler);
+        if (!(icon instanceof WireIcon)) {
+            componentNode.setOnMouseEntered(enterComponentHoverEventHandler);
+            componentNode.setOnMouseExited(exitComponentHoverEventHandler);
+        }
 
         components.getChildren().add(componentNode);
         energyOutlines.getChildren().add(energyOutlineNodes);

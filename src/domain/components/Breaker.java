@@ -22,7 +22,9 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
             case KV70 -> this.setUnitHeight(3);
         }
 
-    } @Override
+    }
+
+    @Override
     protected boolean checkClosed() {
         return closed;
     }

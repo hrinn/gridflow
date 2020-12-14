@@ -7,6 +7,7 @@ import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.WireIcon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Wire extends Component {
@@ -54,8 +55,8 @@ public class Wire extends Component {
         return energized;
     }
 
-    public void connect(Component component) {
-        connections.add(component);
+    public void connect(Component... components) {
+        connections.addAll(Arrays.asList(components));
     }
 
     public void setConnections(List<Component> connections) {

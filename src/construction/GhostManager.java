@@ -6,6 +6,7 @@ import domain.geometry.Point;
 import javafx.scene.Cursor;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.WireIcon;
 
 public class GhostManager {
 
@@ -44,6 +45,15 @@ public class GhostManager {
         ghostIcon.getComponentNode().setTranslateX(pos.getX());
         ghostIcon.getComponentNode().setTranslateY(pos.getY());
     }
+
+    public void extendGhostWire(Point start, Point end) {
+        ghostEnabled = true;
+        gridCanvas.removeGhostIcon();
+        ghostIcon = ComponentIconCreator.getWireIcon(start, end);
+        ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
+        gridCanvas.addGhostIcon(ghostIcon.getComponentNode());
+    }
+
     public void enableGhostIcon() {
         ghostEnabled = true;
     }

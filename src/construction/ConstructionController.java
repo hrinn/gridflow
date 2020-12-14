@@ -62,9 +62,7 @@ public class ConstructionController {
         // component placement
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, placeComponentEventHandler);
         canvas.addEventFilter(MouseEvent.MOUSE_MOVED, ghostMoveEventHandler);
-        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, beginWireExtendEventHandler);
-        canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, onWireExtendEventHandler);
-        canvas.addEventFilter(MouseEvent.MOUSE_RELEASED, endWireExtendEventHandler);
+        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, placeWireEventHandler);
         return canvas;
     }
 
@@ -76,7 +74,7 @@ public class ConstructionController {
         this.currentToolType = currentToolType;
 
         // If Placing a component, turn on ghosts
-        if (currentToolType == ToolType.PLACE) {
+        if (currentToolType == ToolType.PLACE || currentToolType == ToolType.WIRE) {
             ghostModel.enableGhostIcon();
             canvas.setCursor(Cursor.NONE);
         } else {
@@ -92,28 +90,21 @@ public class ConstructionController {
 
     // Wire logic
 
-    private final EventHandler<MouseEvent> beginWireExtendEventHandler = event -> {
+    private final EventHandler<MouseEvent> placeWireEventHandler = event -> {
         if (!(currentToolType == ToolType.WIRE)) return;
         if (event.isSecondaryButtonDown()) return;
 
-        wireExtendContext.beginPoint = getNearestCoordinate(event.getX(), event.getY());
-        wireExtendContext.endPoint = getNearestCoordinate(event.getX(), event.getY());
-    };
+        if (wireExtendContext.placing) { // end placement
+            wireExtendContext.placing = false;
+            Point endPoint = getNearestCoordinate(event.getX(), event.getY());
+            builderModel.placeWire(wireExtendContext.beginPoint, endPoint);
+            ghostModel.setGhostIcon(currentComponentType);
+            eventManager.sendEvent(Event.GridChanged);
 
-    private final EventHandler<MouseEvent> onWireExtendEventHandler = event -> {
-        if (!(currentToolType == ToolType.WIRE)) return;
-        if (event.isSecondaryButtonDown()) return;
-
-        wireExtendContext.endPoint = getNearestCoordinate(event.getX(), event.getY());
-    };
-
-    private final EventHandler<MouseEvent> endWireExtendEventHandler = event -> {
-        if (!(currentToolType == ToolType.WIRE)) return;
-        if (event.isSecondaryButtonDown()) return;
-
-        builderModel.placeWire(wireExtendContext.beginPoint, wireExtendContext.endPoint);
-
-        eventManager.sendEvent(Event.GridChanged);
+        } else { // begin placement
+            wireExtendContext.placing = true;
+            wireExtendContext.beginPoint = getNearestCoordinate(event.getX(), event.getY());
+        }
     };
 
     // Ghost Logic
@@ -135,7 +126,12 @@ public class ConstructionController {
     private final EventHandler<MouseEvent> ghostMoveEventHandler = event -> {
         if (!ghostModel.isGhostEnabled()) return;
         Point coordPoint = getNearestCoordinate(event.getX(), event.getY());
-        ghostModel.updateGhostPosition(coordPoint);
+
+        if (!wireExtendContext.placing) {
+            ghostModel.updateGhostPosition(coordPoint);
+        } else {
+            ghostModel.extendGhostWire(wireExtendContext.beginPoint, coordPoint);
+        }
     };
 
     // Construction Logic
@@ -171,6 +167,6 @@ public class ConstructionController {
 }
 
 class WireExtendContext {
+    boolean placing = false;
     Point beginPoint;
-    Point endPoint;
 }

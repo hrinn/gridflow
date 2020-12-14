@@ -18,7 +18,7 @@
             <Button text="Place Breaker" onMousePressed="#pickPlaceBreakerTool"/>
         </VBox>
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-            <Button text="Place Wire"/>
+            <Button text="Place Wire" onMousePressed="#pickWireTool"/>
         </VBox>
     </HBox>
     <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"

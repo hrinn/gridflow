@@ -14,19 +14,21 @@ import visualization.componentIcons.ComponentIcon;
 public class GridCanvas extends Pane {
 
     private final DoubleProperty scale = new SimpleDoubleProperty(1.0);
-    private final EventHandler<MouseEvent> toggleComponentEventHandler;
 
     private final double unitWidth = 1000;
     private final double unitHeight = 500;
 
     private final Group components = new Group();
     private final Group energyOutlines = new Group();
+    private final Group ghostIconParent = new Group();
 
-    public GridCanvas(EventHandler<MouseEvent> toggleComponentEventHandler) {
-        // event handlers
-        this.toggleComponentEventHandler = toggleComponentEventHandler;
+    private EventHandler<MouseEvent> toggleComponentEventHandler;
+    private EventHandler<MouseEvent> enterComponentHoverEventHandler;
+    private EventHandler<MouseEvent> exitComponentHoverEventHandler;
 
-        getChildren().addAll(energyOutlines, components);
+    public GridCanvas() {
+
+        getChildren().addAll(energyOutlines, components, ghostIconParent);
         addBackgroundGrid();
 
         setPrefSize(unitWidth * Globals.UNIT, unitHeight * Globals.UNIT);
@@ -53,9 +55,19 @@ public class GridCanvas extends Pane {
         Group componentNode = icon.getComponentNode();
         Group energyOutlineNodes = icon.getEnergyOutlineNodes();
         componentNode.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
+        componentNode.setOnMouseEntered(enterComponentHoverEventHandler);
+        componentNode.setOnMouseExited(exitComponentHoverEventHandler);
 
         components.getChildren().add(componentNode);
         energyOutlines.getChildren().add(energyOutlineNodes);
+    }
+
+    public void addGhostIcon(Group ghostIcon) {
+        ghostIconParent.getChildren().add(ghostIcon);
+    }
+
+    public void removeGhostIcon() {
+        ghostIconParent.getChildren().clear();
     }
 
     public void clearComponents() {
@@ -85,5 +97,17 @@ public class GridCanvas extends Pane {
         getChildren().add(backgroundGrid);
         backgroundGrid.toBack();
 
+    }
+
+    public void setToggleComponentEventHandler(EventHandler<MouseEvent> toggleComponentEventHandler) {
+        this.toggleComponentEventHandler = toggleComponentEventHandler;
+    }
+
+    public void setEnterComponentHoverEventHandler(EventHandler<MouseEvent> enterComponentHoverEventHandler) {
+        this.enterComponentHoverEventHandler = enterComponentHoverEventHandler;
+    }
+
+    public void setExitComponentHoverEventHandler(EventHandler<MouseEvent> exitComponentHoverEventHandler) {
+        this.exitComponentHoverEventHandler = exitComponentHoverEventHandler;
     }
 }

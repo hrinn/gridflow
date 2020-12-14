@@ -67,7 +67,13 @@ public class ConstructionViewController {
     @FXML
     private void pickPlaceBreakerTool() {
         constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.BREAKER);
+        constructionController.setCurrentComponentType(ComponentType.BREAKER_12KV);
+    }
+
+    @FXML
+    private void pickWireTool() {
+        constructionController.setCurrentToolType(ToolType.PLACE);
+        constructionController.setCurrentComponentType(ComponentType.WIRE);
     }
 
     @FXML

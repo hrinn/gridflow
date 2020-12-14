@@ -1,49 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.image.Image?>
-<?import javafx.scene.text.Text?>
 <HBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="construction.ConstructionViewController"
       fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
       prefHeight="600.0" prefWidth="225.0">
-    <children>
-        <VBox fx:id="ComponentMenu" prefHeight="200.0" prefWidth="100.0"
-              style="-fx-border-color: BLACK; -fx-background-color: WHITE;">
-            <children>
-                <Button fx:id="SelectTool" text="Select" onMousePressed="#pickSelectTool"/>
-                <Button fx:id="PlaceSwitchTool" text="Place Switch" onMousePressed="#pickPlaceSwitchTool"/>
-                <Button fx:id="PlaceBreakerTool" text="Place Breaker" onMousePressed="#pickPlaceBreakerTool"/>
-            </children>
+    <HBox fx:id="ComponentMenu" prefHeight="200" prefWidth="200" style="-fx-background-color: WHITE; -fx-border-color: BLACK;">
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <Button text="Select" onMousePressed="#pickSelectTool"/>
+            <Button text="Place Switch" onMousePressed="#pickPlaceSwitchTool"/>
+            <Button text="Place Breaker" onMousePressed="#pickPlaceBreakerTool"/>
         </VBox>
-        <Pane fx:id="ExpandButtonPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-              minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0"
-              onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover">
-            <children>
-                <Button fx:id="ComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0"
-                        layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                        minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#toggleMenu" prefHeight="25.0"
-                        prefWidth="300.0" rotate="90.0" style="-fx-background-color: LIGHTGRAY;">
-                    <graphic>
-                        <ImageView fx:id="ArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true"
-                                   preserveRatio="true" rotate="-90.0">
-                            <image>
-                                <Image url="@../resources/ArrowLeft.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-            </children>
-            <cursor>
-                <Cursor fx:constant="DEFAULT"/>
-            </cursor>
-        </Pane>
-    </children>
+        <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
+            <Button text="Place Wire"/>
+        </VBox>
+    </HBox>
+    <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+          minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0"
+          onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover">
+        <cursor>
+            <Cursor fx:constant="DEFAULT"/>
+        </cursor>
+        <Button fx:id="ComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0"
+                layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
+                minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#toggleMenu" prefHeight="25.0"
+                prefWidth="300.0" rotate="90.0" style="-fx-background-color: LIGHTGRAY;">
+            <graphic>
+                <ImageView fx:id="ArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true"
+                           preserveRatio="true" rotate="-90.0">
+                    <Image url="@../resources/ArrowLeft.png"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </Pane>
 </HBox>

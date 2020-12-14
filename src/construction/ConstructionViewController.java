@@ -38,7 +38,7 @@ public class ConstructionViewController {
     private ImageView ArrowImage;
 
     @FXML
-    private VBox ComponentMenu;
+    private HBox ComponentMenu;
 
     @FXML
     private void initialize() {
@@ -108,11 +108,11 @@ public class ConstructionViewController {
         ComponentBuilderMenu.getTransforms().add(menuButtonTrans);
     }
 
-    private void CollapseMenu(VBox menu){
+    private void CollapseMenu(HBox menu){
         menu.setVisible(false);
     }
 
-    private void ExpandMenu(VBox menu){
+    private void ExpandMenu(HBox menu){
         menu.setVisible(true);
     }
 

@@ -60,6 +60,14 @@ public class GhostManager {
         gridCanvas.removeGhostIcon();
     }
 
+    public void hideGhostIcon() {
+        ghostIcon.getComponentNode().setOpacity(0);
+    }
+
+    public void revealGhostIcon() {
+        ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
+    }
+
     public boolean isGhostEnabled() {
         return ghostEnabled;
     }

@@ -55,8 +55,8 @@ public class GridCanvas extends Pane {
         Group componentNode = icon.getComponentNode();
         Group energyOutlineNodes = icon.getEnergyOutlineNodes();
         componentNode.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
-        componentNode.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, enterComponentHoverEventHandler);
-        componentNode.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, exitComponentHoverEventHandler);
+        componentNode.addEventHandler(MouseEvent.MOUSE_ENTERED, enterComponentHoverEventHandler);
+        componentNode.addEventHandler(MouseEvent.MOUSE_EXITED, exitComponentHoverEventHandler);
 
         components.getChildren().add(componentNode);
         energyOutlines.getChildren().add(energyOutlineNodes);

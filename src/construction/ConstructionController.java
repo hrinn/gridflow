@@ -56,13 +56,13 @@ public class ConstructionController {
     }
 
     private final EventHandler<MouseEvent> enterComponentHoverEventHandler = event -> {
-        ghostModel.disableGhostIcon();
+        ghostModel.hideGhostIcon();
         canvas.setCursor(Cursor.CLOSED_HAND);
     };
 
     private final EventHandler<MouseEvent> exitComponentHoverEventHandler = event -> {
-        //ghostModel.enableGhostIcon();
-        //canvas.setCursor(Cursor.NONE);
+        ghostModel.revealGhostIcon();
+        canvas.setCursor(Cursor.NONE);
     };
 
     private final EventHandler<MouseEvent> ghostMoveEventHandler = event -> {

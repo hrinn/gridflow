@@ -8,7 +8,9 @@ import domain.Grid;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.ImageCursor;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 
@@ -22,6 +24,10 @@ public class ConstructionController {
     private ToolType currentToolType = ToolType.SELECT;
     private ComponentType currentComponentType;
     private ComponentProperties properties;
+
+    private final Image errorCursorImage = new Image("/resources/error_cursor.png");
+    private final Cursor errorCursor = new ImageCursor(errorCursorImage, errorCursorImage.getWidth()/4,
+            errorCursorImage.getHeight()/4);
 
     public void initController(Grid grid, EventManager eventManager) {
         this.eventManager = eventManager;
@@ -55,20 +61,47 @@ public class ConstructionController {
         return canvas;
     }
 
+    public void setCurrentToolType(ToolType currentToolType) {
+        this.currentToolType = currentToolType;
+
+        // If Placing a component, turn on ghosts
+        if (currentToolType == ToolType.PLACE) {
+            ghostModel.enableGhostIcon();
+            canvas.setCursor(Cursor.NONE);
+        } else {
+            ghostModel.disableGhostIcon();
+            canvas.setCursor(Cursor.DEFAULT);
+        }
+    }
+
+    public void setCurrentComponentType(ComponentType componentType) {
+        this.currentComponentType = componentType;
+        ghostModel.setGhostIcon(componentType);
+    }
+
+    // Ghost Logic
+
     private final EventHandler<MouseEvent> enterComponentHoverEventHandler = event -> {
+        if (!ghostModel.isGhostEnabled()) return;
         ghostModel.hideGhostIcon();
-        canvas.setCursor(Cursor.CLOSED_HAND);
+        canvas.setCursor(errorCursor);
+        event.consume();
     };
 
     private final EventHandler<MouseEvent> exitComponentHoverEventHandler = event -> {
+        if (!ghostModel.isGhostEnabled()) return;
         ghostModel.revealGhostIcon();
         canvas.setCursor(Cursor.NONE);
+        event.consume();
     };
 
     private final EventHandler<MouseEvent> ghostMoveEventHandler = event -> {
         if (!ghostModel.isGhostEnabled()) return;
         ghostModel.updateGhostPosition(event.getX(), event.getY());
+        event.consume();
     };
+
+    // Construction Logic
 
     private final EventHandler<MouseEvent> toggleComponentEventHandler = event -> {
         event.consume();
@@ -91,22 +124,4 @@ public class ConstructionController {
         builderModel.placeComponent(targetPosition, currentComponentType);
         eventManager.sendEvent(Event.GridChanged); // should only send this event if place comp returns true
     };
-
-    public void setCurrentToolType(ToolType currentToolType) {
-        this.currentToolType = currentToolType;
-
-        // If Placing a component, turn on ghosts
-        if (currentToolType == ToolType.PLACE) {
-            ghostModel.enableGhostIcon();
-            canvas.setCursor(Cursor.NONE);
-        } else {
-            ghostModel.disableGhostIcon();
-            canvas.setCursor(Cursor.DEFAULT);
-        }
-    }
-
-    public void setCurrentComponentType(ComponentType componentType) {
-        this.currentComponentType = componentType;
-        ghostModel.setGhostIcon(componentType);
-    }
 }

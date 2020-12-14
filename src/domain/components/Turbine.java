@@ -9,14 +9,15 @@ public class Turbine extends Source {
 
     public Turbine(String name, Point position, boolean on) {
         super(name, position, on);
+        this.setUnitWidth(2);
+        this.setUnitHeight(4);
+        this.setMaxOutputs(2);
     }
 
     public void connectWire(Wire wire) {
-        if (super.getOutputCount() < 2) {
+        if (super.getOutputCount() < getMaxOutputs()) {
             super.addOutput(wire);
         }
-        this.setUnitWidth(2);
-        this.setUnitHeight(4);
     }
 
     @Override

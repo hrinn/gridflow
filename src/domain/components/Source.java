@@ -10,6 +10,7 @@ public class Source extends Component implements IEnergizeable {
     //private Point position;
     private boolean on;
     private List<Wire> outputs;
+    private int maxOutputs;
 
     public Source(String name, Point position, boolean on) {
         super(name, position);
@@ -19,6 +20,14 @@ public class Source extends Component implements IEnergizeable {
 
     public int getOutputCount() {
         return outputs.size();
+    }
+
+    public int getMaxOutputs() {
+        return maxOutputs;
+    }
+
+    public void setMaxOutputs(int maxOutputs) {
+        this.maxOutputs = maxOutputs;
     }
 
     public void addOutput(Wire wire) {

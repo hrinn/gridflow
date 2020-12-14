@@ -58,20 +58,13 @@ public class ConstructionController {
     private final EventHandler<MouseEvent> placeComponentEventHandler = event -> {
         event.consume();
 
-        if (!placingComponent(currentToolType)) return;
+        if (currentToolType != ToolType.PLACE) return;
         if (event.isSecondaryButtonDown()) return;
 
         Point targetPosition = new Point(event.getX(), event.getY());
-        model.placeDevice(targetPosition, currentComponentType);
-        eventManager.sendEvent(Event.GridChanged);
+        model.placeComponent(targetPosition, currentComponentType);
+        eventManager.sendEvent(Event.GridChanged); // should only send this event if place comp returns true
     };
-
-    private boolean placingComponent(ToolType toolType) {
-        return toolType == ToolType.PLACE_DEVICE
-                || toolType == ToolType.PLACE_WIRE
-                || toolType == ToolType.PLACE_SOURCE;
-    }
-
 
     public void setCurrentToolType(ToolType currentToolType) {
         this.currentToolType = currentToolType;

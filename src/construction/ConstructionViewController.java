@@ -60,13 +60,13 @@ public class ConstructionViewController {
 
     @FXML
     private void pickPlaceSwitchTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE_DEVICE);
+        constructionController.setCurrentToolType(ToolType.PLACE);
         constructionController.setCurrentComponentType(ComponentType.SWITCH);
     }
 
     @FXML
     private void pickPlaceBreakerTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE_DEVICE);
+        constructionController.setCurrentToolType(ToolType.PLACE);
         constructionController.setCurrentComponentType(ComponentType.BREAKER);
     }
 

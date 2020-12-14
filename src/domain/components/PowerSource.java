@@ -11,14 +11,15 @@ public class PowerSource extends Source {
         super(name, position, on);
         this.setUnitHeightPadding(0);
         this.setUnitWidthPadding(0);
+        this.setUnitWidth(2);
+        this.setUnitHeight(2.75);
+        this.setMaxOutputs(1);
     }
 
     public void connectWire(Wire output) {
-        if (super.getOutputCount() < 1) {
+        if (super.getOutputCount() < getMaxOutputs()) {
             super.addOutput(output);
         }
-        this.setUnitWidth(2);
-        this.setUnitHeight(2.75);
     }
 
     @Override

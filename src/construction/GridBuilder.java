@@ -15,19 +15,31 @@ public class GridBuilder {
         properties = new ComponentProperties();
     }
 
-    // place a component standalone on the grid
-    public void placeDevice(Point inputPoint, ComponentType componentType) {
-        Point point = getNearestUnitCoordinate(inputPoint);
+    // This is what runs when a component is placed on the canvas standalone
+    public void placeComponent(Point inputPosition, ComponentType componentType) {
+        Point position = getNearestUnitCoordinate(inputPosition);
+        if (isDevice(componentType)) {
+            placeDevice(position, componentType);
+        }
+        else if (isSource(componentType)) {
+            placeSource(position, componentType);
+        }
+        else if (componentType == ComponentType.WIRE) {
+            placeWire(position); // this might need to be different
+        }
+    }
+
+    public void placeDevice(Point position, ComponentType componentType) {
         // check for overlap conflicts! return if there is a conflict
 
-        Device device = createDevice(point, componentType);
+        Device device = createDevice(position, componentType);
         if (device == null) return;
 
-        Wire inWire = new Wire(point);
+        Wire inWire = new Wire(position);
         device.connectInWire(inWire);
         inWire.connect(device);
 
-        Wire outWire = new Wire(point.translate(0, device.getUnitHeight() * Globals.UNIT));
+        Wire outWire = new Wire(position.translate(0, device.getUnitHeight() * Globals.UNIT));
         device.connectOutWire(outWire);
         outWire.connect(device);
 
@@ -37,25 +49,32 @@ public class GridBuilder {
     }
 
     public Device createDevice(Point point, ComponentType componentType) {
-        switch(componentType) {
-            case TRANSFORMER:
-                return new Transformer(properties.getName(), point);
+        return switch (componentType) {
+            case TRANSFORMER -> new Transformer(properties.getName(), point);
+            case BREAKER -> new Breaker(properties.getName(), point, properties.getVoltage(), properties.getDefaultState());
+            case JUMPER -> new Jumper(properties.getName(), point, properties.getDefaultState());
+            case CUTOUT -> new Cutout(properties.getName(), point, properties.getDefaultState());
+            case SWITCH -> new Switch(properties.getName(), point, properties.getDefaultState());
+            default -> null;
+        };
+    }
 
-            case BREAKER:
-                return new Breaker(properties.getName(), point, properties.getVoltage(), properties.getDefaultState());
+    public void placeSource(Point position, ComponentType componentType) {
+        Source source = createSource(position, componentType);
+        if (source == null) return;
 
-            case JUMPER:
-                return new Jumper(properties.getName(), point, properties.getDefaultState());
+    }
 
-            case CUTOUT:
-                return new Cutout(properties.getName(), point, properties.getDefaultState());
+    public Source createSource(Point position, ComponentType componentType) {
+        return switch (componentType) {
+            case POWER_SOURCE -> new PowerSource(properties.getName(), position, false);
+            case TURBINE -> new Turbine(properties.getName(), position, false);
+            default -> null;
+        };
+    }
 
-            case SWITCH:
-                return new Switch(properties.getName(), point, properties.getDefaultState());
+    public void placeWire(Point position) {
 
-            default:
-                return null;
-        }
     }
 
     // connect a component to an existing wire
@@ -69,6 +88,20 @@ public class GridBuilder {
         if (component instanceof IToggleable) {
             ((IToggleable) component).toggle();
         }
+    }
+
+    private boolean isDevice(ComponentType componentType) {
+        return switch (componentType) {
+            case BREAKER, CUTOUT, JUMPER, SWITCH, TRANSFORMER -> true;
+            default -> false;
+        };
+    }
+
+    private boolean isSource(ComponentType componentType) {
+        return switch (componentType) {
+            case POWER_SOURCE, TURBINE -> true;
+            default -> false;
+        };
     }
 
     private Point getNearestUnitCoordinate(Point point) {

@@ -110,6 +110,7 @@ public class ConstructionViewController {
 
     private void CollapseMenu(HBox menu){
         menu.setVisible(false);
+        constructionController.setCurrentToolType(ToolType.SELECT);
     }
 
     private void ExpandMenu(HBox menu){

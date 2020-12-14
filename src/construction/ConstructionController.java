@@ -27,9 +27,10 @@ public class ConstructionController {
     private ComponentType currentComponentType;
     private ComponentProperties properties;
 
-    private final Image errorCursorImage = new Image("/resources/error_cursor.png");
-    private final Cursor errorCursor = new ImageCursor(errorCursorImage, errorCursorImage.getWidth()/2,
+    private static final Image errorCursorImage = new Image("/resources/error_cursor.png");
+    private static final Cursor ERROR_CURSOR = new ImageCursor(errorCursorImage, errorCursorImage.getWidth()/2,
             errorCursorImage.getHeight()/2);
+    private static final Cursor PLACE_CURSOR = Cursor.CROSSHAIR;
 
     private WireExtendContext wireExtendContext = new WireExtendContext();
 
@@ -76,7 +77,7 @@ public class ConstructionController {
         // If Placing a component, turn on ghosts
         if (currentToolType == ToolType.PLACE || currentToolType == ToolType.WIRE) {
             ghostModel.enableGhostIcon();
-            canvas.setCursor(Cursor.NONE);
+            canvas.setCursor(PLACE_CURSOR);
         } else {
             ghostModel.disableGhostIcon();
             canvas.setCursor(Cursor.DEFAULT);
@@ -97,7 +98,8 @@ public class ConstructionController {
         if (wireExtendContext.placing) { // end placement
             wireExtendContext.placing = false;
             Point endPoint = getNearestCoordinate(event.getX(), event.getY());
-            builderModel.placeWire(wireExtendContext.beginPoint, endPoint);
+            Point lockedEndPoint = getPerpendicularPosition(wireExtendContext.beginPoint, endPoint);
+            builderModel.placeWire(wireExtendContext.beginPoint, lockedEndPoint);
             ghostModel.setGhostIcon(currentComponentType);
             eventManager.sendEvent(Event.GridChanged);
 
@@ -107,19 +109,27 @@ public class ConstructionController {
         }
     };
 
+    private Point getPerpendicularPosition(Point start, Point end) {
+        if (start.differenceX(end) > start.differenceY(end)) {
+            return new Point(end.getX(), start.getY());
+        } else {
+            return new Point(start.getX(), end.getY());
+        }
+    }
+
     // Ghost Logic
 
     private final EventHandler<MouseEvent> enterComponentHoverEventHandler = event -> {
         if (!ghostModel.isGhostEnabled()) return;
         ghostModel.hideGhostIcon();
-        canvas.setCursor(errorCursor);
+        canvas.setCursor(ERROR_CURSOR);
         event.consume();
     };
 
     private final EventHandler<MouseEvent> exitComponentHoverEventHandler = event -> {
         if (!ghostModel.isGhostEnabled()) return;
         ghostModel.revealGhostIcon();
-        canvas.setCursor(Cursor.NONE);
+        canvas.setCursor(PLACE_CURSOR);
         event.consume();
     };
 
@@ -130,7 +140,8 @@ public class ConstructionController {
         if (!wireExtendContext.placing) {
             ghostModel.updateGhostPosition(coordPoint);
         } else {
-            ghostModel.extendGhostWire(wireExtendContext.beginPoint, coordPoint);
+            Point lockedCoordPoint = getPerpendicularPosition(wireExtendContext.beginPoint, coordPoint);
+            ghostModel.extendGhostWire(wireExtendContext.beginPoint, lockedCoordPoint);
         }
     };
 

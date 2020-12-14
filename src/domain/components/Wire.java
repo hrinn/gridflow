@@ -23,11 +23,7 @@ public class Wire extends Component {
         start = p1;
         end = p2;
         energized = false;
-
-        this.setUnitWidth(start.differenceX(end) / Globals.UNIT);
-        this.setUnitHeight(start.differenceY(end) / Globals.UNIT);
-        this.setUnitWidthPadding(0.5);
-        this.setUnitHeightPadding(0.5);
+        setDimensions();
     }
 
     public Wire(Point p) {
@@ -36,9 +32,12 @@ public class Wire extends Component {
         start = p;
         end = p;
         energized = false;
+        setDimensions();
+    }
 
-        this.setUnitWidth(0);
-        this.setUnitHeight(0);
+    private void setDimensions() {
+        this.setUnitWidth(start.differenceX(end) / Globals.UNIT);
+        this.setUnitHeight(start.differenceY(end) / Globals.UNIT);
         this.setUnitWidthPadding(0.5);
         this.setUnitHeightPadding(0.5);
     }
@@ -93,11 +92,17 @@ public class Wire extends Component {
 
     @Override
     public Rectangle getBoundingRect() {
+        double width = getUnitWidth() * Globals.UNIT;
+        double height = getUnitHeight() * Globals.UNIT;
+
         double widthPadding = getUnitWidthPadding() * Globals.UNIT;
         double heightPadding = getUnitHeightPadding() * Globals.UNIT;
 
-        Point topLeft = start.translate(-widthPadding/2, -heightPadding/2);
-        Point bottomRight = end.translate(widthPadding/2, heightPadding/2);
+        double aWidth = width + widthPadding;
+        double aHeight = height + heightPadding;
+
+        Point topLeft = getPosition().translate(-aWidth/2, -aHeight/2);
+        Point bottomRight = getPosition().translate(aWidth/2, aHeight/2);
 
         return new Rectangle(topLeft, bottomRight);
     }

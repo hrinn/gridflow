@@ -42,7 +42,8 @@ public class ComponentIcon {
         boundingRect.setWidth(width);
         boundingRect.setHeight(height);
         boundingRect.setFill(Color.TRANSPARENT);
-        boundingRect.setStroke(Color.TRANSPARENT);
+        boundingRect.setStroke(Color.BLUE);
+        boundingRect.setOpacity(0.5);
         setComponentNamePosition(boundingRectangle.getMidRight());
     }
 

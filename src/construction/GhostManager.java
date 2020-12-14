@@ -56,7 +56,6 @@ public class GhostManager {
     }
 
     public void disableGhostIcon() {
-        ghostIcon = null;
         ghostEnabled = false;
         gridCanvas.removeGhostIcon();
     }

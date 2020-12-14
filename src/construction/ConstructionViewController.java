@@ -71,6 +71,12 @@ public class ConstructionViewController {
     }
 
     @FXML
+    private void pickWireTool() {
+        constructionController.setCurrentToolType(ToolType.PLACE);
+        constructionController.setCurrentComponentType(ComponentType.WIRE);
+    }
+
+    @FXML
     private void darkenMenuButtonOnHover(){
         ComponentMenuButton.setStyle("-fx-background-color: #737373");
     }

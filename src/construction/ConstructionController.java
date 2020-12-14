@@ -11,7 +11,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import visualization.componentIcons.ComponentIcon;
 
 public class ConstructionController {
 
@@ -33,23 +32,38 @@ public class ConstructionController {
     }
 
     private GridCanvas createCanvas() {
-        GridCanvas canvas = new GridCanvas(toggleComponentEventHandler);
+        GridCanvas canvas = new GridCanvas();
         canvas.setTranslateX(-5350); // get this from application settings?
         canvas.setTranslateY(-2650);
 
+        // component events
+        canvas.setToggleComponentEventHandler(toggleComponentEventHandler);
+        canvas.setEnterComponentHoverEventHandler(enterComponentHoverEventHandler);
+        canvas.setExitComponentHoverEventHandler(exitComponentHoverEventHandler);
+
+        // canvas events
         SceneGestures sceneGestures = new SceneGestures(canvas);
         canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getBeginPanEventHandler());
         canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, placeComponentEventHandler);
         canvas.addEventFilter(MouseEvent.MOUSE_MOVED, ghostMoveEventHandler);
-
         return canvas;
     }
 
     public GridCanvas getCanvas() {
         return canvas;
     }
+
+    private final EventHandler<MouseEvent> enterComponentHoverEventHandler = event -> {
+        ghostModel.disableGhostIcon();
+        canvas.setCursor(Cursor.CLOSED_HAND);
+    };
+
+    private final EventHandler<MouseEvent> exitComponentHoverEventHandler = event -> {
+        //ghostModel.enableGhostIcon();
+        //canvas.setCursor(Cursor.NONE);
+    };
 
     private final EventHandler<MouseEvent> ghostMoveEventHandler = event -> {
         if (!ghostModel.isGhostEnabled()) return;

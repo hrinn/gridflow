@@ -5,7 +5,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -15,7 +14,6 @@ import visualization.componentIcons.ComponentIcon;
 public class GridCanvas extends Pane {
 
     private final DoubleProperty scale = new SimpleDoubleProperty(1.0);
-    private final EventHandler<MouseEvent> toggleComponentEventHandler;
 
     private final double unitWidth = 1000;
     private final double unitHeight = 500;
@@ -24,9 +22,11 @@ public class GridCanvas extends Pane {
     private final Group energyOutlines = new Group();
     private final Group ghostIconParent = new Group();
 
-    public GridCanvas(EventHandler<MouseEvent> toggleComponentEventHandler) {
-        // event handlers
-        this.toggleComponentEventHandler = toggleComponentEventHandler;
+    private EventHandler<MouseEvent> toggleComponentEventHandler;
+    private EventHandler<MouseEvent> enterComponentHoverEventHandler;
+    private EventHandler<MouseEvent> exitComponentHoverEventHandler;
+
+    public GridCanvas() {
 
         getChildren().addAll(energyOutlines, components, ghostIconParent);
         addBackgroundGrid();
@@ -55,6 +55,8 @@ public class GridCanvas extends Pane {
         Group componentNode = icon.getComponentNode();
         Group energyOutlineNodes = icon.getEnergyOutlineNodes();
         componentNode.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
+        componentNode.addEventHandler(MouseEvent.MOUSE_ENTERED_TARGET, enterComponentHoverEventHandler);
+        componentNode.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, exitComponentHoverEventHandler);
 
         components.getChildren().add(componentNode);
         energyOutlines.getChildren().add(energyOutlineNodes);
@@ -95,5 +97,17 @@ public class GridCanvas extends Pane {
         getChildren().add(backgroundGrid);
         backgroundGrid.toBack();
 
+    }
+
+    public void setToggleComponentEventHandler(EventHandler<MouseEvent> toggleComponentEventHandler) {
+        this.toggleComponentEventHandler = toggleComponentEventHandler;
+    }
+
+    public void setEnterComponentHoverEventHandler(EventHandler<MouseEvent> enterComponentHoverEventHandler) {
+        this.enterComponentHoverEventHandler = enterComponentHoverEventHandler;
+    }
+
+    public void setExitComponentHoverEventHandler(EventHandler<MouseEvent> exitComponentHoverEventHandler) {
+        this.exitComponentHoverEventHandler = exitComponentHoverEventHandler;
     }
 }

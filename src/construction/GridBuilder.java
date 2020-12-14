@@ -87,7 +87,8 @@ public class GridBuilder {
     }
 
     public void placeWire(Point position) {
-
+        Wire wire = new Wire(position);
+        grid.addComponent(wire);
     }
 
     // connect a component to an existing wire

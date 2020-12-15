@@ -95,6 +95,7 @@ public class ConstructionController {
         if (!(currentToolType == ToolType.WIRE)) return;
         if (event.isSecondaryButtonDown()) return;
 
+        // for implementing connecting/extending, try and reuse existing code
         if (wireExtendContext.placing) { // end placement
             wireExtendContext.placing = false;
             Point endPoint = getNearestCoordinate(event.getX(), event.getY());

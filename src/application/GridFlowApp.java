@@ -1,6 +1,6 @@
 package application;
 
-import construction.ConstructionViewController;
+import construction.BuildMenuViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -37,10 +37,10 @@ public class GridFlowApp extends Application {
         // Init modules
         ConstructionController constructionController = new ConstructionController();
         constructionController.initController(grid, eventManager);
-        FXMLLoader constructionViewLoader = new FXMLLoader(getClass().getResource("/construction/ConstructionView.fxml"));
-        Node constructionView = constructionViewLoader.load();
-        ConstructionViewController constructionViewController = constructionViewLoader.getController();
-        constructionViewController.setConstructionController(constructionController);
+        FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
+        Node buildMenuView = buildMenuViewLoader.load();
+        BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
+        buildMenuViewController.setConstructionController(constructionController);
 
         VisualizationController visualizationController = new VisualizationController();
         visualizationController.initController(grid, constructionController.getCanvas());
@@ -57,14 +57,14 @@ public class GridFlowApp extends Application {
         eventManager.sendEvent(Event.GridChanged); // build would do this later
 
         // Init GUI
-        initGui(primaryStage, constructionController.getCanvas(), constructionView, baseUIViewLoader.load());
+        initGui(primaryStage, constructionController.getCanvas(), buildMenuView, baseUIViewLoader.load());
     }
 
-    private void initGui(Stage primaryStage, GridCanvas canvas, Node constructionView, Node baseUIView) {
+    private void initGui(Stage primaryStage, GridCanvas canvas, Node buildMenuView, Node baseUIView) {
         Group root = new Group();
 
         BorderPane ui = new BorderPane();
-        ui.setLeft(constructionView);
+        ui.setLeft(buildMenuView);
         ui.setTop(baseUIView);
         ui.setPickOnBounds(false);
 

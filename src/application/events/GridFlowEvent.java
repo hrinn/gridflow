@@ -1,5 +1,5 @@
 package application.events;
 
-public enum Event {
+public enum GridFlowEvent {
     GridChanged, GridEnergized, WirePlaced
 }

@@ -1,7 +1,7 @@
 package construction.ghosts;
 
-import application.events.Event;
-import application.events.IEventListener;
+import application.events.GridFlowEvent;
+import application.events.GridFlowEventListener;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
@@ -11,7 +11,7 @@ import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
-public class GhostManagerController implements IEventListener {
+public class GhostManagerController implements GridFlowEventListener {
 
     private GhostManager model;
     private GridCanvasFacade canvasFacade;
@@ -29,8 +29,8 @@ public class GhostManagerController implements IEventListener {
         this.canvasFacade = canvasFacade;
     }
 
-    public void handleEvent(Event event) {
-        if (event == Event.WirePlaced) {
+    public void handleEvent(GridFlowEvent gridFlowEvent) {
+        if (gridFlowEvent == gridFlowEvent.WirePlaced) {
             model.setGhostIcon(ComponentType.WIRE);
         }
     }

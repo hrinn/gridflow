@@ -1,6 +1,6 @@
 package construction;
 
-import application.events.EventManager;
+import application.events.GridFlowEventManager;
 import construction.builder.GridBuilderController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
@@ -11,7 +11,7 @@ import javafx.scene.input.MouseEvent;
 public class ConstructionController {
 
     private final GridCanvasFacade canvasFacade;
-    private EventManager eventManager;
+    private GridFlowEventManager gridFlowEventManager;
 
     // Sub Controllers
     private GridBuilderController gridBuilderController;
@@ -24,17 +24,17 @@ public class ConstructionController {
     // Wire Placing
     private WireExtendContext wireExtendContext = new WireExtendContext();
 
-    public ConstructionController(Grid grid, EventManager eventManager) {
+    public ConstructionController(Grid grid, GridFlowEventManager gridFlowEventManager) {
         // shared objects
-        this.eventManager = eventManager;
+        this.gridFlowEventManager = gridFlowEventManager;
         this.canvasFacade = new GridCanvasFacade();
         this.properties = new PropertiesData(); // will be moved later
 
         // controllers
-        gridBuilderController = new GridBuilderController(grid, properties, eventManager, wireExtendContext);
+        gridBuilderController = new GridBuilderController(grid, properties, gridFlowEventManager, wireExtendContext);
         ghostManagerController = new GhostManagerController(canvasFacade, properties, wireExtendContext);
         selectionManagerController = new SelectionManagerController();
-        eventManager.addListener(ghostManagerController);
+        gridFlowEventManager.addListener(ghostManagerController);
 
         installEventHandlers();
         setBuildMenuData(ToolType.INTERACT, ComponentType.NONE);

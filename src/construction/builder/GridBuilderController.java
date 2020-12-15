@@ -1,7 +1,7 @@
 package construction.builder;
 
-import application.events.Event;
-import application.events.EventManager;
+import application.events.GridFlowEvent;
+import application.events.GridFlowEventManager;
 import construction.*;
 import domain.Grid;
 import domain.geometry.Point;
@@ -12,14 +12,14 @@ import javafx.scene.input.MouseEvent;
 public class GridBuilderController {
 
     private GridBuilder model;
-    private EventManager eventManager;
+    private GridFlowEventManager gridFlowEventManager;
     private WireExtendContext wireExtendContext;
     private BuildMenuData buildData;
 
-    public GridBuilderController(Grid grid, PropertiesData properties, EventManager eventManager,
+    public GridBuilderController(Grid grid, PropertiesData properties, GridFlowEventManager gridFlowEventManager,
                                  WireExtendContext wireExtendContext) {
         this.model = new GridBuilder(grid, properties);
-        this.eventManager = eventManager;
+        this.gridFlowEventManager = gridFlowEventManager;
         this.wireExtendContext = wireExtendContext;
     }
 
@@ -37,8 +37,8 @@ public class GridBuilderController {
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
             Point lockedEndPoint = endPoint.clampPerpendicular(wireExtendContext.beginPoint);
             model.placeWire(wireExtendContext.beginPoint, lockedEndPoint);
-            eventManager.sendEvent(Event.WirePlaced);
-            eventManager.sendEvent(Event.GridChanged);
+            gridFlowEventManager.sendEvent(GridFlowEvent.WirePlaced);
+            gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
 
         } else { // begin placement
             wireExtendContext.placing = true;
@@ -54,7 +54,7 @@ public class GridBuilderController {
 
         String targetId = ((Node)event.getTarget()).getId();
         model.toggleComponent(targetId);
-        eventManager.sendEvent(Event.GridChanged);
+        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
     };
 
     private final EventHandler<MouseEvent> placeComponentEventHandler = event -> {
@@ -65,7 +65,7 @@ public class GridBuilderController {
 
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
         model.placeComponent(coordPoint, buildData.componentType);
-        eventManager.sendEvent(Event.GridChanged); // should only send this event if place comp returns true
+        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged); // should only send this event if place comp returns true
     };
 
     public EventHandler<MouseEvent> getPlaceWireEventHandler() {

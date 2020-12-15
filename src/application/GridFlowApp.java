@@ -29,29 +29,29 @@ public class GridFlowApp extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         // Custom event manager for our events
-        EventManager eventManager = new EventManager();
+        GridFlowEventManager gridFlowEventManager = new GridFlowEventManager();
 
         // Create empty grid
         Grid grid = new Grid();
 
         // Init modules
-        ConstructionController constructionController = new ConstructionController(grid, eventManager);
+        ConstructionController constructionController = new ConstructionController(grid, gridFlowEventManager);
         FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
         Node buildMenuView = buildMenuViewLoader.load();
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
         buildMenuViewController.setConstructionController(constructionController);
 
         VisualizationController visualizationController = new VisualizationController(grid, constructionController.getCanvasFacade());
-        eventManager.addListener(visualizationController);
+        gridFlowEventManager.addListener(visualizationController);
 
-        SimulationController simulationController = new SimulationController(grid, eventManager);
-        eventManager.addListener(simulationController);
+        SimulationController simulationController = new SimulationController(grid, gridFlowEventManager);
+        gridFlowEventManager.addListener(simulationController);
 
         FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/baseui/BaseUIView.fxml"));
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
-        eventManager.sendEvent(Event.GridChanged); // build would do this later
+        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged); // build would do this later
 
         // Init GUI
         initGui(primaryStage, constructionController.getCanvasFacade().getCanvas(), buildMenuView, baseUIViewLoader.load());

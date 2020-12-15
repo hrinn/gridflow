@@ -43,7 +43,7 @@ public class GridFlowApp extends Application {
         buildMenuViewController.setConstructionController(constructionController);
 
         VisualizationController visualizationController = new VisualizationController();
-        visualizationController.initController(grid, constructionController.getCanvas());
+        visualizationController.initController(grid, constructionController.getCanvasMaster());
         eventManager.addListener(visualizationController);
 
         SimulationController simulationController = new SimulationController();
@@ -57,7 +57,7 @@ public class GridFlowApp extends Application {
         eventManager.sendEvent(Event.GridChanged); // build would do this later
 
         // Init GUI
-        initGui(primaryStage, constructionController.getCanvas(), buildMenuView, baseUIViewLoader.load());
+        initGui(primaryStage, constructionController.getCanvasMaster().getCanvas(), buildMenuView, baseUIViewLoader.load());
     }
 
     private void initGui(Stage primaryStage, GridCanvas canvas, Node buildMenuView, Node baseUIView) {

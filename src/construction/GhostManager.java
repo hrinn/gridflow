@@ -1,30 +1,28 @@
 package construction;
 
-import application.Globals;
 import construction.canvas.GridCanvas;
+import construction.canvas.GridCanvasMaster;
 import domain.geometry.Point;
-import javafx.scene.Cursor;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
-import visualization.componentIcons.WireIcon;
 
 public class GhostManager {
 
     private final static double GHOST_OPACITY = 0.5;
 
-    private GridCanvas gridCanvas;
+    private GridCanvasMaster canvasMaster;
     private ComponentIcon ghostIcon;
     private ComponentProperties properties;
     private boolean ghostEnabled;
 
-    public GhostManager(GridCanvas gridCanvas, ComponentProperties properties) {
-        this.gridCanvas = gridCanvas;
+    public GhostManager(GridCanvasMaster canvasMaster, ComponentProperties properties) {
+        this.canvasMaster = canvasMaster;
         this.properties = properties;
     }
 
     public void setGhostIcon(ComponentType componentType) {
         ghostEnabled = true;
-        gridCanvas.removeGhostIcon();
+        canvasMaster.removeGhostIcon();
         Point origin = Point.origin();
         this.ghostIcon = switch (componentType) {
             case BREAKER_12KV -> ComponentIconCreator.get12KVBreakerIcon(origin, properties.getDefaultState(), properties.getDefaultState());
@@ -38,7 +36,7 @@ public class GhostManager {
             case WIRE -> ComponentIconCreator.getWireIcon(origin, origin);
         };
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
-        gridCanvas.addGhostIcon(ghostIcon.getComponentNode());
+        canvasMaster.addGhostIcon(ghostIcon);
     }
 
     public void updateGhostPosition(Point pos) {
@@ -48,10 +46,10 @@ public class GhostManager {
 
     public void extendGhostWire(Point start, Point end) {
         ghostEnabled = true;
-        gridCanvas.removeGhostIcon();
+        canvasMaster.removeGhostIcon();
         ghostIcon = ComponentIconCreator.getWireIcon(start, end);
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
-        gridCanvas.addGhostIcon(ghostIcon.getComponentNode());
+        canvasMaster.addGhostIcon(ghostIcon);
     }
 
     public void enableGhostIcon() {
@@ -60,7 +58,7 @@ public class GhostManager {
 
     public void disableGhostIcon() {
         ghostEnabled = false;
-        gridCanvas.removeGhostIcon();
+        canvasMaster.removeGhostIcon();
     }
 
     public void hideGhostIcon() {

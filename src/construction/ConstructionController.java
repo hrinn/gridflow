@@ -4,6 +4,7 @@ import application.Globals;
 import application.events.Event;
 import application.events.EventManager;
 import construction.canvas.GridCanvas;
+import construction.canvas.GridCanvasMaster;
 import construction.canvas.SceneGestures;
 import domain.Grid;
 import domain.components.Wire;
@@ -18,57 +19,52 @@ import javafx.scene.input.ScrollEvent;
 
 public class ConstructionController {
 
-    private GridCanvas canvas;
+    private GridCanvasMaster canvasMaster;
     private EventManager eventManager;
+
+    // Models
     private GridBuilder builderModel;
     private GhostManager ghostModel;
+    private SelectionManager selectionModel;
 
-    private ToolType currentToolType = ToolType.SELECT;
+    // Current tool, component, and properties
+    private ToolType currentToolType = ToolType.INTERACT;
     private ComponentType currentComponentType;
     private ComponentProperties properties;
 
+    // Cursors
     private static final Image errorCursorImage = new Image("/resources/error_cursor.png");
     private static final Cursor ERROR_CURSOR = new ImageCursor(errorCursorImage, errorCursorImage.getWidth()/2,
             errorCursorImage.getHeight()/2);
     private static final Cursor PLACE_CURSOR = Cursor.CROSSHAIR;
 
+    // Wire Placing
     private WireExtendContext wireExtendContext = new WireExtendContext();
 
     public void initController(Grid grid, EventManager eventManager) {
         this.eventManager = eventManager;
-        this.canvas = createCanvas();
+        this.canvasMaster = new GridCanvasMaster();
+        installEventHandlers();
         this.properties = new ComponentProperties();
         this.builderModel = new GridBuilder(grid, properties);
-        this.ghostModel = new GhostManager(canvas, properties);
+        this.ghostModel = new GhostManager(canvasMaster, properties);
+        this.selectionModel = new SelectionManager();
     }
 
-    private GridCanvas createCanvas() {
-        GridCanvas canvas = new GridCanvas();
-        canvas.setTranslateX(-5350); // get this from application settings?
-        canvas.setTranslateY(-2650);
+    private void installEventHandlers() {
+        // Component events
+        canvasMaster.setEnterComponentHoverEventHandler(enterComponentHoverEventHandler);
+        canvasMaster.setExitComponentHoverEventHandler(exitComponentHoverEventHandler);
+        canvasMaster.setToggleComponentEventHandler(toggleComponentEventHandler);
 
-        // component events
-        canvas.setToggleComponentEventHandler(toggleComponentEventHandler);
-        canvas.setEnterComponentHoverEventHandler(enterComponentHoverEventHandler);
-        canvas.setExitComponentHoverEventHandler(exitComponentHoverEventHandler);
-
-        // canvas events
-        SceneGestures sceneGestures = new SceneGestures(canvas);
-
-        // panning and scrolling
-        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getBeginPanEventHandler());
-        canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
-        canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-
-        // component placement
-        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, placeComponentEventHandler);
-        canvas.addEventFilter(MouseEvent.MOUSE_MOVED, ghostMoveEventHandler);
-        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, placeWireEventHandler);
-        return canvas;
+        // Canvas events
+        canvasMaster.addCanvasEventHandler(MouseEvent.MOUSE_PRESSED, placeComponentEventHandler);
+        canvasMaster.addCanvasEventFilter(MouseEvent.MOUSE_MOVED, ghostMoveEventHandler);
+        canvasMaster.addCanvasEventFilter(MouseEvent.MOUSE_PRESSED, placeWireEventHandler);
     }
 
-    public GridCanvas getCanvas() {
-        return canvas;
+    public GridCanvasMaster getCanvasMaster() {
+        return canvasMaster;
     }
 
     public void setCurrentToolType(ToolType currentToolType) {
@@ -77,10 +73,10 @@ public class ConstructionController {
         // If Placing a component, turn on ghosts
         if (currentToolType == ToolType.PLACE || currentToolType == ToolType.WIRE) {
             ghostModel.enableGhostIcon();
-            canvas.setCursor(PLACE_CURSOR);
+            canvasMaster.setCanvasCursor(PLACE_CURSOR);
         } else {
             ghostModel.disableGhostIcon();
-            canvas.setCursor(Cursor.DEFAULT);
+            canvasMaster.setCanvasCursor(Cursor.DEFAULT);
         }
     }
 
@@ -89,10 +85,20 @@ public class ConstructionController {
         ghostModel.setGhostIcon(componentType);
     }
 
+    // Select logic
+
+    private final EventHandler<MouseEvent> onSelectEventHandler = event -> {
+        if (currentToolType != ToolType.SELECT) return;
+        if (event.isSecondaryButtonDown()) return;
+
+        String targetId = ((Node)event.getTarget()).getId();
+        selectionModel.select(targetId);
+    };
+
     // Wire logic
 
     private final EventHandler<MouseEvent> placeWireEventHandler = event -> {
-        if (!(currentToolType == ToolType.WIRE)) return;
+        if (currentToolType != ToolType.WIRE) return;
         if (event.isSecondaryButtonDown()) return;
 
         // for implementing connecting/extending, try and reuse existing code
@@ -123,14 +129,14 @@ public class ConstructionController {
     private final EventHandler<MouseEvent> enterComponentHoverEventHandler = event -> {
         if (!ghostModel.isGhostEnabled()) return;
         ghostModel.hideGhostIcon();
-        canvas.setCursor(ERROR_CURSOR);
+        canvasMaster.setCanvasCursor(ERROR_CURSOR);
         event.consume();
     };
 
     private final EventHandler<MouseEvent> exitComponentHoverEventHandler = event -> {
         if (!ghostModel.isGhostEnabled()) return;
         ghostModel.revealGhostIcon();
-        canvas.setCursor(PLACE_CURSOR);
+        canvasMaster.setCanvasCursor(PLACE_CURSOR);
         event.consume();
     };
 
@@ -151,7 +157,7 @@ public class ConstructionController {
     private final EventHandler<MouseEvent> toggleComponentEventHandler = event -> {
         event.consume();
 
-        if (currentToolType != ToolType.SELECT) return;
+        if (currentToolType != ToolType.INTERACT) return;
         if (event.isSecondaryButtonDown()) return;
 
         String targetId = ((Node)event.getTarget()).getId();
@@ -175,7 +181,6 @@ public class ConstructionController {
         double ry = Math.round(y/Globals.UNIT) * Globals.UNIT;
         return new Point(rx, ry);
     }
-
 }
 
 class WireExtendContext {

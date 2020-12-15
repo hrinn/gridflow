@@ -29,6 +29,10 @@ public class ComponentIcon {
         boundingRect.setId(id);
     }
 
+    public String getID() {
+        return boundingRect.getId();
+    }
+
     public void setBoundingRect(domain.geometry.Rectangle boundingRectangle) {
         double tlx = boundingRectangle.getTopLeft().getX();
         double tly = boundingRectangle.getTopLeft().getY();
@@ -42,9 +46,17 @@ public class ComponentIcon {
         boundingRect.setWidth(width);
         boundingRect.setHeight(height);
         boundingRect.setFill(Color.TRANSPARENT);
-        boundingRect.setStroke(Color.BLUE);
+        boundingRect.setStroke(Color.TRANSPARENT);
         boundingRect.setOpacity(0.5);
         setComponentNamePosition(boundingRectangle.getMidRight());
+    }
+
+    public void selectComponent() {
+        boundingRect.setStroke(Color.BLUE);
+    }
+
+    public void deSelectComponent() {
+        boundingRect.setStroke(Color.TRANSPARENT);
     }
 
     private void setComponentNamePosition(Point position) {
@@ -87,9 +99,5 @@ public class ComponentIcon {
 
     public Group getEnergyOutlineNodes() {
         return energyOutlineNodes;
-    }
-
-    protected Rectangle getBoundingRect() {
-        return boundingRect;
     }
 }

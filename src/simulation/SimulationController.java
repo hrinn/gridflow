@@ -7,10 +7,10 @@ import domain.Grid;
 
 public class SimulationController implements IEventListener {
 
-    private EnergySimulator model;
-    private EventManager eventManager;
+    private final EnergySimulator model;
+    private final EventManager eventManager;
 
-    public void initController(Grid grid, EventManager eventManager) {
+    public SimulationController(Grid grid, EventManager eventManager) {
         this.model = new EnergySimulator(grid);
         this.eventManager = eventManager;
     }

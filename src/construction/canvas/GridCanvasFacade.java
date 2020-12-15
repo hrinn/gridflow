@@ -12,7 +12,7 @@ import visualization.componentIcons.WireIcon;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GridCanvasMaster {
+public class GridCanvasFacade {
 
     // this is the master's baby. it adds nodes to and removes nodes from the canvas.
     private GridCanvas canvas;
@@ -24,7 +24,7 @@ public class GridCanvasMaster {
     private EventHandler<MouseEvent> enterComponentHoverEventHandler;
     private EventHandler<MouseEvent> exitComponentHoverEventHandler;
 
-    public GridCanvasMaster() {
+    public GridCanvasFacade() {
         createCanvas();
     }
 

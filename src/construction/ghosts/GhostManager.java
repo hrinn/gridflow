@@ -1,7 +1,8 @@
-package construction;
+package construction.ghosts;
 
-import construction.canvas.GridCanvas;
-import construction.canvas.GridCanvasMaster;
+import construction.PropertiesData;
+import construction.ComponentType;
+import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
@@ -10,12 +11,12 @@ public class GhostManager {
 
     private final static double GHOST_OPACITY = 0.5;
 
-    private GridCanvasMaster canvasMaster;
+    private GridCanvasFacade canvasMaster;
     private ComponentIcon ghostIcon;
-    private ComponentProperties properties;
+    private PropertiesData properties;
     private boolean ghostEnabled;
 
-    public GhostManager(GridCanvasMaster canvasMaster, ComponentProperties properties) {
+    public GhostManager(GridCanvasFacade canvasMaster, PropertiesData properties) {
         this.canvasMaster = canvasMaster;
         this.properties = properties;
     }
@@ -34,7 +35,9 @@ public class GhostManager {
             case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(origin);
             case TURBINE -> ComponentIconCreator.getTurbineIcon(origin);
             case WIRE -> ComponentIconCreator.getWireIcon(origin, origin);
+            default -> null;
         };
+        if (ghostIcon == null) return;
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
         canvasMaster.addGhostIcon(ghostIcon);
     }

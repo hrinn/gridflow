@@ -1,16 +1,19 @@
 package visualization;
 
-import construction.canvas.GridCanvas;
 import application.events.Event;
 import application.events.IEventListener;
-import construction.canvas.GridCanvasMaster;
+import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 
 public class VisualizationController implements IEventListener {
 
-   private GridVisualizer model;
+    private GridVisualizer model;
 
-    public void initController(Grid grid, GridCanvasMaster canvasMaster) {
+    public VisualizationController(Grid grid, GridCanvasFacade canvasFacade) {
+        this.model = new GridVisualizer(grid, canvasFacade);
+    }
+
+    public void initController(Grid grid, GridCanvasFacade canvasMaster) {
         this.model = new GridVisualizer(grid, canvasMaster);
     }
 

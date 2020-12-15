@@ -1,4 +1,4 @@
-package construction;
+package construction.selector;
 
 import javafx.scene.shape.Rectangle;
 

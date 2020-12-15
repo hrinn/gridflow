@@ -9,5 +9,6 @@ public enum ComponentType {
     SWITCH,
     TRANSFORMER,
     TURBINE,
-    WIRE
+    WIRE,
+    NONE
 }

@@ -1,16 +1,15 @@
 package visualization;
 
-import construction.canvas.GridCanvas;
-import construction.canvas.GridCanvasMaster;
+import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.components.*;
 
 public class GridVisualizer {
 
     private final Grid grid;
-    private final GridCanvasMaster canvasMaster;
+    private final GridCanvasFacade canvasMaster;
 
-    public GridVisualizer(Grid grid, GridCanvasMaster canvasMaster) {
+    public GridVisualizer(Grid grid, GridCanvasFacade canvasMaster) {
         this.grid = grid;
         this.canvasMaster = canvasMaster;
     }

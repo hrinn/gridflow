@@ -51,11 +51,11 @@ public class ComponentIcon {
         setComponentNamePosition(boundingRectangle.getMidRight());
     }
 
-    public void selectComponent() {
+    public void select() {
         boundingRect.setStroke(Color.BLUE);
     }
 
-    public void deSelectComponent() {
+    public void deSelect() {
         boundingRect.setStroke(Color.TRANSPARENT);
     }
 
@@ -99,5 +99,9 @@ public class ComponentIcon {
 
     public Group getEnergyOutlineNodes() {
         return energyOutlineNodes;
+    }
+
+    public Rectangle getBoundingRect() {
+        return boundingRect;
     }
 }

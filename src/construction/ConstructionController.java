@@ -33,7 +33,7 @@ public class ConstructionController {
         // controllers
         gridBuilderController = new GridBuilderController(grid, properties, gridFlowEventManager, wireExtendContext);
         ghostManagerController = new GhostManagerController(canvasFacade, properties, wireExtendContext);
-        selectionManagerController = new SelectionManagerController();
+        selectionManagerController = new SelectionManagerController(canvasFacade);
         gridFlowEventManager.addListener(ghostManagerController);
 
         installEventHandlers();
@@ -51,6 +51,7 @@ public class ConstructionController {
 
         gridBuilderController.updateBuildMenuData(buildData);
         ghostManagerController.updateBuildMenuData(buildData);
+        selectionManagerController.updateBuildMenuData(buildData);
     }
 
     private void installEventHandlers() {
@@ -65,5 +66,10 @@ public class ConstructionController {
         canvasFacade.setEnterComponentHoverEventHandler(ghostManagerController.getEnterComponentHoverEventHandler());
         canvasFacade.setExitComponentHoverEventHandler(ghostManagerController.getExitComponentHoverEventHandler());
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_MOVED, ghostManagerController.getGhostMoveEventHandler());
+
+        // selection events
+        canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_PRESSED, selectionManagerController.getStartSelectionEventHandler());
+        canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_DRAGGED, selectionManagerController.getExpandSelectionEventHandler());
+        canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_RELEASED, selectionManagerController.getEndSelectionEventHandler());
     }
 }

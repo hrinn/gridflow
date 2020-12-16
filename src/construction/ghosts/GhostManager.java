@@ -23,7 +23,7 @@ public class GhostManager {
 
     public void setGhostIcon(ComponentType componentType) {
         ghostEnabled = true;
-        canvasMaster.removeGhostIcon();
+        canvasMaster.clearOverlay();
         Point origin = Point.origin();
         this.ghostIcon = switch (componentType) {
             case BREAKER_12KV -> ComponentIconCreator.get12KVBreakerIcon(origin, properties.getDefaultState(), properties.getDefaultState());
@@ -39,7 +39,7 @@ public class GhostManager {
         };
         if (ghostIcon == null) return;
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
-        canvasMaster.addGhostIcon(ghostIcon);
+        canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
     }
 
     public void updateGhostPosition(Point pos) {
@@ -49,10 +49,10 @@ public class GhostManager {
 
     public void extendGhostWire(Point start, Point end) {
         ghostEnabled = true;
-        canvasMaster.removeGhostIcon();
+        canvasMaster.clearOverlay();
         ghostIcon = ComponentIconCreator.getWireIcon(start, end);
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
-        canvasMaster.addGhostIcon(ghostIcon);
+        canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
     }
 
     public void enableGhostIcon() {
@@ -61,7 +61,7 @@ public class GhostManager {
 
     public void disableGhostIcon() {
         ghostEnabled = false;
-        canvasMaster.removeGhostIcon();
+        canvasMaster.clearOverlay();
     }
 
     public void hideGhostIcon() {

@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import visualization.componentIcons.ComponentIcon;
@@ -11,6 +12,7 @@ import visualization.componentIcons.WireIcon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GridCanvasFacade {
 
@@ -56,12 +58,12 @@ public class GridCanvasFacade {
         componentIcons.add(icon);
     }
 
-    public void addGhostIcon(ComponentIcon ghostIcon) {
-        canvas.ghostGroup.getChildren().add(ghostIcon.getComponentNode());
+    public void addOverlayNode(Node overlayNode) {
+        canvas.overlayGroup.getChildren().add(overlayNode);
     }
 
-    public void removeGhostIcon() {
-        canvas.ghostGroup.getChildren().clear();
+    public void clearOverlay() {
+        canvas.overlayGroup.getChildren().clear();
     }
 
     public void clearComponentGroups() {
@@ -81,12 +83,22 @@ public class GridCanvasFacade {
         canvas.addEventFilter(eventType, eventHandler);
     }
 
-    public void getComponentIconByID(String ID) {
+    public void selectComponent(String ID) {
         componentIcons.forEach(icon -> {
-            if (icon.getID().equals(ID)) {
-                icon.selectComponent();
+            if (icon.getID() == ID) {
+                icon.select();
             }
         });
+    }
+
+    public void deSelectAll() {
+        componentIcons.forEach(icon -> {
+            icon.deSelect();
+        });
+    }
+
+    public List<javafx.scene.shape.Rectangle> getAllBoundingRects() {
+        return componentIcons.stream().map(icon -> icon.getBoundingRect()).collect(Collectors.toList());
     }
 
     public GridCanvas getCanvas() {

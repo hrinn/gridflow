@@ -4,7 +4,6 @@ import application.Globals;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -18,10 +17,10 @@ public class GridCanvas extends Pane {
 
     public final Group componentGroup = new Group();
     public final Group energyOutlineGroup = new Group();
-    public final Group ghostGroup = new Group();
+    public final Group overlayGroup = new Group();
 
     public GridCanvas() {
-        getChildren().addAll(energyOutlineGroup, componentGroup, ghostGroup);
+        getChildren().addAll(energyOutlineGroup, componentGroup, overlayGroup);
         addBackgroundGrid();
 
         setPrefSize(unitWidth * Globals.UNIT, unitHeight * Globals.UNIT);

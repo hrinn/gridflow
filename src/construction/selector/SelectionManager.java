@@ -22,14 +22,22 @@ public class SelectionManager {
 
         selectionBox.setFill(Color.TRANSPARENT);
         selectionBox.setStroke(Color.BLACK);
-        //selectionBox.setStrokeDashOffset(40);
         selectionBox.getStrokeDashArray().add(10.0);
+    }
+
+    public void deSelectAll() {
+        selectedComponentIDs.clear();
+        canvasFacade.deSelectAll();
+    }
+
+    public void pointSelection(String ID) {
+        canvasFacade.selectComponent(ID);
+        selectedComponentIDs.add(ID);
     }
 
     public void beginSelection(double x, double y) {
         mouseDownPoint = new Point(x, y);
-        selectedComponentIDs.clear();
-        canvasFacade.deSelectAll();
+        deSelectAll();
 
         selectionBox.setX(mouseDownPoint.getX());
         selectionBox.setX(mouseDownPoint.getY());
@@ -50,14 +58,15 @@ public class SelectionManager {
         // detect selection box overlap
         getSelectedNodeIDs().forEach(id -> {
             canvasFacade.selectComponent(id);
+            selectedComponentIDs.add(id);
         });
         canvasFacade.clearOverlay();
     }
 
     private List<String> getSelectedNodeIDs() {
         List<String> IDList = new ArrayList<>();
-
         List<Rectangle> existingBoundingRects = canvasFacade.getAllBoundingRects();
+
         for (Rectangle boundingRect : existingBoundingRects) {
             if (rectsOverlap(boundingRect, selectionBox)) {
                 IDList.add(boundingRect.getId());

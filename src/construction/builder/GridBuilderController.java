@@ -47,25 +47,26 @@ public class GridBuilderController {
     };
 
     private final EventHandler<MouseEvent> toggleComponentEventHandler = event -> {
-        event.consume();
-
         if (buildData.toolType != ToolType.INTERACT) return;
         if (event.isSecondaryButtonDown()) return;
 
         String targetId = ((Node)event.getTarget()).getId();
         model.toggleComponent(targetId);
         gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+
+        event.consume();
+
     };
 
     private final EventHandler<MouseEvent> placeComponentEventHandler = event -> {
-        event.consume();
-
         if (buildData.toolType != ToolType.PLACE) return;
         if (event.isSecondaryButtonDown()) return;
 
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
         model.placeComponent(coordPoint, buildData.componentType);
         gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged); // should only send this event if place comp returns true
+
+        event.consume();
     };
 
     public EventHandler<MouseEvent> getPlaceWireEventHandler() {

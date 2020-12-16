@@ -4,6 +4,7 @@ import construction.BuildMenuData;
 import construction.ToolType;
 import construction.canvas.GridCanvasFacade;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
 public class SelectionManagerController {
@@ -17,6 +18,7 @@ public class SelectionManagerController {
 
     public void updateBuildMenuData(BuildMenuData buildMenuData) {
         this.buildMenuData = buildMenuData;
+        model.deSelectAll();
     }
 
     private final EventHandler<MouseEvent> startSelectionEventHandler = event -> {
@@ -43,6 +45,16 @@ public class SelectionManagerController {
         event.consume();
     };
 
+    private final EventHandler<MouseEvent> selectSingleComponentHandler = event -> {
+        if (event.isSecondaryButtonDown()) return;
+        if (buildMenuData.toolType != ToolType.SELECT) return;
+
+        String targetID = ((Node)event.getTarget()).getId();
+        model.pointSelection(targetID);
+
+        event.consume();
+     };
+
     public EventHandler<MouseEvent> getStartSelectionEventHandler() {
         return startSelectionEventHandler;
     }
@@ -53,5 +65,9 @@ public class SelectionManagerController {
 
     public EventHandler<MouseEvent> getEndSelectionEventHandler() {
         return endSelectionEventHandler;
+    }
+
+    public EventHandler<MouseEvent> getSelectSingleComponentHandler() {
+        return selectSingleComponentHandler;
     }
 }

@@ -25,6 +25,7 @@ public class GridCanvasFacade {
     private EventHandler<MouseEvent> toggleComponentEventHandler;
     private EventHandler<MouseEvent> enterComponentHoverEventHandler;
     private EventHandler<MouseEvent> exitComponentHoverEventHandler;
+    private EventHandler<MouseEvent> selectSingleComponentHandler;
 
     public GridCanvasFacade() {
         createCanvas();
@@ -48,6 +49,7 @@ public class GridCanvasFacade {
         Group componentNode = icon.getComponentNode();
         Group energyOutlineNodes = icon.getEnergyOutlineNodes();
         componentNode.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
+        componentNode.addEventHandler(MouseEvent.MOUSE_PRESSED, selectSingleComponentHandler);
         if (!(icon instanceof WireIcon)) {
             componentNode.setOnMouseEntered(enterComponentHoverEventHandler);
             componentNode.setOnMouseExited(exitComponentHoverEventHandler);
@@ -115,5 +117,9 @@ public class GridCanvasFacade {
 
     public void setExitComponentHoverEventHandler(EventHandler<MouseEvent> eventHandler) {
         this.exitComponentHoverEventHandler = eventHandler;
+    }
+
+    public void setSelectSingleComponentHandler(EventHandler<MouseEvent> selectSingleComponentHandler) {
+        this.selectSingleComponentHandler = selectSingleComponentHandler;
     }
 }

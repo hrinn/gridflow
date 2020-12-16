@@ -20,7 +20,7 @@ public class PowerSource extends Source {
         this.setUnitHeightPadding(0);
         this.setUnitWidthPadding(0);
         this.setUnitWidth(2);
-        this.setUnitHeight(2.75);
+        this.setUnitHeight(3);
     }
 
     public void connectWire(Wire outWire) {

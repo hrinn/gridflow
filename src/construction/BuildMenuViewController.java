@@ -57,66 +57,57 @@ public class BuildMenuViewController {
 
     @FXML
     private void pickInteractTool() {
-        constructionController.setCurrentToolType(ToolType.INTERACT);
+        constructionController.setBuildMenuData(ToolType.INTERACT, ComponentType.NONE);
     }
 
     @FXML
     private void pickSelectTool() {
-        constructionController.setCurrentToolType(ToolType.SELECT);
+        constructionController.setBuildMenuData(ToolType.SELECT, ComponentType.NONE);
     }
 
     @FXML
     private void pickWireTool() {
-        constructionController.setCurrentToolType(ToolType.WIRE);
-        constructionController.setCurrentComponentType(ComponentType.WIRE);
+        constructionController.setBuildMenuData(ToolType.WIRE, ComponentType.WIRE);
     }
 
     @FXML
     private void pickPlacePowerSourceTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.POWER_SOURCE);
+        constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.POWER_SOURCE);
     }
 
     @FXML
     private void pickPlaceTurbineTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.TURBINE);
+        constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.TURBINE);
     }
 
     @FXML
     private void pickPlaceSwitchTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.SWITCH);
+        constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.SWITCH);
     }
 
     @FXML
     private void pickPlaceBreaker70KVTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.BREAKER_70KV);
+        constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.BREAKER_70KV);
     }
 
     @FXML
     private void pickPlaceBreaker12KVTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.BREAKER_12KV);
+        constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.BREAKER_12KV);
     }
 
     @FXML
     private void pickPlaceTransformerTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.TRANSFORMER);
+        constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.TRANSFORMER);
     }
 
     @FXML
     private void pickPlaceJumperTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.JUMPER);
+        constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.JUMPER);
     }
 
     @FXML
     private void pickPlaceCutoutTool() {
-        constructionController.setCurrentToolType(ToolType.PLACE);
-        constructionController.setCurrentComponentType(ComponentType.CUTOUT);
+        constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.CUTOUT);
     }
 
     // UI Control
@@ -161,7 +152,7 @@ public class BuildMenuViewController {
 
     private void CollapseMenu(HBox menu){
         menu.setVisible(false);
-        constructionController.setCurrentToolType(ToolType.SELECT);
+        constructionController.setBuildMenuData(ToolType.INTERACT, ComponentType.NONE);
     }
 
     private void ExpandMenu(HBox menu){

@@ -1,20 +1,24 @@
 package visualization;
 
-import construction.canvas.GridCanvas;
-import application.events.Event;
-import application.events.IEventListener;
+import application.events.GridFlowEvent;
+import application.events.GridFlowEventListener;
+import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 
-public class VisualizationController implements IEventListener {
+public class VisualizationController implements GridFlowEventListener {
 
-   private GridVisualizer model;
+    private GridVisualizer model;
 
-    public void initController(Grid grid, GridCanvas canvas) {
-        this.model = new GridVisualizer(grid, canvas);
+    public VisualizationController(Grid grid, GridCanvasFacade canvasFacade) {
+        this.model = new GridVisualizer(grid, canvasFacade);
     }
 
-    public void handleEvent(Event event) {
-        if (event == Event.GridEnergized) {
+    public void initController(Grid grid, GridCanvasFacade canvasMaster) {
+        this.model = new GridVisualizer(grid, canvasMaster);
+    }
+
+    public void handleEvent(GridFlowEvent gridFlowEvent) {
+        if (gridFlowEvent == gridFlowEvent.GridEnergized) {
             model.displayGrid();
         }
     }

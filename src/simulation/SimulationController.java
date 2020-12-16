@@ -1,24 +1,24 @@
 package simulation;
 
-import application.events.Event;
-import application.events.EventManager;
-import application.events.IEventListener;
+import application.events.GridFlowEvent;
+import application.events.GridFlowEventManager;
+import application.events.GridFlowEventListener;
 import domain.Grid;
 
-public class SimulationController implements IEventListener {
+public class SimulationController implements GridFlowEventListener {
 
-    private EnergySimulator model;
-    private EventManager eventManager;
+    private final EnergySimulator model;
+    private final GridFlowEventManager gridFlowEventManager;
 
-    public void initController(Grid grid, EventManager eventManager) {
+    public SimulationController(Grid grid, GridFlowEventManager gridFlowEventManager) {
         this.model = new EnergySimulator(grid);
-        this.eventManager = eventManager;
+        this.gridFlowEventManager = gridFlowEventManager;
     }
 
-    public void handleEvent(Event event) {
-        if (event == Event.GridChanged) {
+    public void handleEvent(GridFlowEvent gridFlowEvent) {
+        if (gridFlowEvent == gridFlowEvent.GridChanged) {
             model.energyDFS();
-            eventManager.sendEvent(Event.GridEnergized);
+            gridFlowEventManager.sendEvent(gridFlowEvent.GridEnergized);
         }
     }
 }

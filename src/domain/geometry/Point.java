@@ -1,5 +1,7 @@
 package domain.geometry;
 
+import application.Globals;
+
 public class Point {
 
     private double x;
@@ -16,6 +18,20 @@ public class Point {
 
     public static Point midpoint(Point p1, Point p2) {
         return new Point((p1.x + p2.x)/2, (p1.y + p2.y)/2);
+    }
+
+    public static Point nearestCoordinate(double x, double y) {
+        double rx = Math.round(x / Globals.UNIT) * Globals.UNIT;
+        double ry = Math.round(y / Globals.UNIT) * Globals.UNIT;
+        return new Point(rx, ry);
+    }
+
+    public Point clampPerpendicular(Point clampPoint) {
+        if (clampPoint.differenceX(this) > clampPoint.differenceY(this)) {
+            return new Point(x, clampPoint.getY());
+        } else {
+            return new Point(clampPoint.getX(), y);
+        }
     }
 
     public double getX() {

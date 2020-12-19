@@ -37,7 +37,7 @@ public class GridBuilder {
         device.connectInWire(inWire);
         inWire.connect(device);
 
-        Wire outWire = new Wire(position.translate(0, device.getUnitHeight() * Globals.UNIT));
+        Wire outWire = new Wire(position.translate(0, device.getDimensions().getHeight()));
         device.connectOutWire(outWire);
         outWire.connect(device);
 
@@ -61,7 +61,7 @@ public class GridBuilder {
             case POWER_SOURCE -> {
                 PowerSource powerSource = new PowerSource(properties.getName(), position, false);
 
-                Wire outWire = new Wire(position.translate(0, powerSource.getUnitHeight() * Globals.UNIT));
+                Wire outWire = new Wire(position.translate(0, powerSource.getDimensions().getHeight()));
                 powerSource.connectWire(outWire);
                 outWire.connect(powerSource);
 
@@ -74,7 +74,7 @@ public class GridBuilder {
                 turbine.connectTopOutput(topWire);
                 topWire.connect(turbine);
 
-                Wire bottomWire = new Wire(position.translate(0, turbine.getUnitHeight() * Globals.UNIT));
+                Wire bottomWire = new Wire(position.translate(0, turbine.getDimensions().getHeight()));
                 turbine.connectBottomOutput(bottomWire);
                 bottomWire.connect(turbine);
 

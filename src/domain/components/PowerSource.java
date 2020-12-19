@@ -17,10 +17,10 @@ public class PowerSource extends Source {
     }
 
     private void setDimensions() {
-        this.setUnitHeightPadding(0);
-        this.setUnitWidthPadding(0);
-        this.setUnitWidth(2);
-        this.setUnitHeight(3);
+        this.getDimensions().unitHeightPadding = 0;
+        this.getDimensions().unitWidthPadding = 0;
+        this.getDimensions().unitWidth = 2;
+        this.getDimensions().unitHeight = 3;
     }
 
     public void connectWire(Wire outWire) {
@@ -38,7 +38,7 @@ public class PowerSource extends Source {
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(outWire.isEnergized(), 0);
         icon.setComponentIconID(getId().toString());
-        icon.setBoundingRect(getBoundingRect());
+        icon.setBoundingRect(getDimensions(), getPosition());
         return icon;
     }
 }

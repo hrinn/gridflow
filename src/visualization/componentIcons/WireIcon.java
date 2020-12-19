@@ -1,6 +1,8 @@
 package visualization.componentIcons;
 
 import application.Globals;
+import domain.components.Dimensions;
+import domain.geometry.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import domain.geometry.Point;
@@ -25,5 +27,14 @@ public class WireIcon extends ComponentIcon {
 
     public void setWireIconEnergyState(boolean energized) {
         energyOutline.setOpacity(energized ? 1 : 0);
+    }
+
+    @Override
+    public void setBoundingRect(Dimensions dimensions, Point position) {
+        Point topLeft = position.translate(-dimensions.getAdjustedWidth()/2, -dimensions.getAdjustedHeight()/2);
+        getBoundingRect().setX(topLeft.getX());
+        getBoundingRect().setY(topLeft.getY());
+        getBoundingRect().setWidth(dimensions.getAdjustedWidth());
+        getBoundingRect().setHeight(dimensions.getAdjustedHeight());
     }
 }

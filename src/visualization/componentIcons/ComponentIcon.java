@@ -1,6 +1,7 @@
 package visualization.componentIcons;
 
 import application.Globals;
+import domain.components.Dimensions;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -19,10 +20,16 @@ public class ComponentIcon {
     private final Group componentNode = new Group(iconNode, componentName, boundingRect);
     private final Group energyOutlineNodes = new Group();
 
+    private final static Color SELECT_COLOR = Color.BLUE;
+    private final static Color DEFAULT_BORDER_COLOR = Color.TRANSPARENT;
+
     public ComponentIcon() {
         iconNode.setMouseTransparent(true);
         energyOutlineNodes.setMouseTransparent(true);
         componentName.setMouseTransparent(true);
+        boundingRect.setFill(Color.TRANSPARENT);
+        boundingRect.setStroke(DEFAULT_BORDER_COLOR);
+        boundingRect.setOpacity(0.5);
     }
 
     public void setComponentIconID(String id) {
@@ -33,30 +40,24 @@ public class ComponentIcon {
         return boundingRect.getId();
     }
 
-    public void setBoundingRect(domain.geometry.Rectangle boundingRectangle) {
-        double tlx = boundingRectangle.getTopLeft().getX();
-        double tly = boundingRectangle.getTopLeft().getY();
+    public void setBoundingRect(Dimensions dimensions, Point position) {
+        Point topLeft = position.translate(-dimensions.getAdjustedWidth()/2, -dimensions.getTopPadding());
+        boundingRect.setX(topLeft.getX());
+        boundingRect.setY(topLeft.getY());
 
-        boundingRect.setX(tlx);
-        boundingRect.setY(tly);
+        boundingRect.setWidth(dimensions.getAdjustedWidth());
+        boundingRect.setHeight(dimensions.getAdjustedHeight());
 
-        double width = Math.abs(tlx - boundingRectangle.getBottomRight().getX());
-        double height = Math.abs(tly - boundingRectangle.getBottomRight().getY());
-
-        boundingRect.setWidth(width);
-        boundingRect.setHeight(height);
-        boundingRect.setFill(Color.TRANSPARENT);
-        boundingRect.setStroke(Color.TRANSPARENT);
-        boundingRect.setOpacity(0.5);
-        setComponentNamePosition(boundingRectangle.getMidRight());
+        Point midRight = position.translate(dimensions.getAdjustedWidth()/2, dimensions.getAdjustedHeight()/2);
+        setComponentNamePosition(midRight);
     }
 
     public void select() {
-        boundingRect.setStroke(Color.BLUE);
+        boundingRect.setStroke(SELECT_COLOR);
     }
 
     public void deSelect() {
-        boundingRect.setStroke(Color.TRANSPARENT);
+        boundingRect.setStroke(DEFAULT_BORDER_COLOR);
     }
 
     private void setComponentNamePosition(Point position) {

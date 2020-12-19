@@ -9,8 +9,8 @@ public class Transformer extends Device {
 
     public Transformer(String name, Point position) {
         super(name, position);
-        this.setUnitWidth(3);
-        this.setUnitHeight(3);
+        this.getDimensions().setWidth(3);
+        this.getDimensions().setHeight(3);
     }
 
     @Override
@@ -19,7 +19,7 @@ public class Transformer extends Device {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getBoundingRect());
+        icon.setBoundingRect(getDimensions(), getPosition());
         return icon;
     }
 }

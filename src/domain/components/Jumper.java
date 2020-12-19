@@ -14,8 +14,8 @@ public class Jumper extends Device implements ICloseable {
         super(name, position);
         this.closedByDefault = closedByDefault;
         this.closed = closedByDefault;
-        this.setUnitWidth(2);
-        this.setUnitHeight(3);
+        this.getDimensions().setWidth(2);
+        this.getDimensions().setHeight(3);
     }
 
     @Override
@@ -24,7 +24,7 @@ public class Jumper extends Device implements ICloseable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getBoundingRect());
+        icon.setBoundingRect(getDimensions(), getPosition());
         return icon;
     }
 

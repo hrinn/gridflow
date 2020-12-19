@@ -18,8 +18,8 @@ public class Turbine extends Source {
     }
 
     private void setDimensions() {
-        this.setUnitWidth(2);
-        this.setUnitHeight(4);
+        this.getDimensions().setWidth(2);
+        this.getDimensions().setHeight(4);
     }
 
     public void connectTopOutput(Wire output) {
@@ -43,7 +43,7 @@ public class Turbine extends Source {
         icon.setWireEnergyState(outWire2.isEnergized(), 1);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getBoundingRect());
+        icon.setBoundingRect(getDimensions(), getPosition());
         return icon;
     }
 }

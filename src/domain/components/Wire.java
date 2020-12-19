@@ -36,10 +36,9 @@ public class Wire extends Component {
     }
 
     private void setDimensions() {
-        this.setUnitWidth(start.differenceX(end) / Globals.UNIT);
-        this.setUnitHeight(start.differenceY(end) / Globals.UNIT);
-        this.setUnitWidthPadding(0.5);
-        this.setUnitHeightPadding(0.5);
+        this.getDimensions().setWidth(start.differenceX(end) / Globals.UNIT);
+        this.getDimensions().setHeight(start.differenceY(end) / Globals.UNIT);
+        this.getDimensions().setPadding(0.25);
     }
 
     public void energize() {
@@ -86,24 +85,7 @@ public class Wire extends Component {
         icon.setWireIconEnergyState(energized);
         icon.setComponentIconID(getId().toString());
 
-        icon.setBoundingRect(getBoundingRect());
+        icon.setBoundingRect(getDimensions(), getPosition());
         return icon;
-    }
-
-    @Override
-    public Rectangle getBoundingRect() {
-        double width = getUnitWidth() * Globals.UNIT;
-        double height = getUnitHeight() * Globals.UNIT;
-
-        double widthPadding = getUnitWidthPadding() * Globals.UNIT;
-        double heightPadding = getUnitHeightPadding() * Globals.UNIT;
-
-        double aWidth = width + widthPadding;
-        double aHeight = height + heightPadding;
-
-        Point topLeft = getPosition().translate(-aWidth/2, -aHeight/2);
-        Point bottomRight = getPosition().translate(aWidth/2, aHeight/2);
-
-        return new Rectangle(topLeft, bottomRight);
     }
 }

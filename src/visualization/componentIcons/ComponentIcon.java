@@ -41,7 +41,7 @@ public class ComponentIcon {
     }
 
     public void setBoundingRect(Dimensions dimensions, Point position) {
-        Point topLeft = position.translate(-dimensions.getAdjustedWidth()/2, -dimensions.getHeightPadding()/2);
+        Point topLeft = position.translate(-dimensions.getAdjustedWidth()/2, -dimensions.getTopPadding());
         boundingRect.setX(topLeft.getX());
         boundingRect.setY(topLeft.getY());
 

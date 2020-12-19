@@ -16,10 +16,10 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
         this.voltage = voltage;
         this.closed = closedByDefault;
         this.closedByDefault = closedByDefault;
-        this.getDimensions().unitWidth = 2;
+        this.getDimensions().setWidth(2);
         switch (voltage) {
-            case KV12 -> this.getDimensions().unitHeight = 4;
-            case KV70 -> this.getDimensions().unitHeight = 3;
+            case KV12 -> this.getDimensions().setHeight(4);
+            case KV70 -> this.getDimensions().setHeight(3);
         }
 
     }

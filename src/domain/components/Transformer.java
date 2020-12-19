@@ -9,8 +9,8 @@ public class Transformer extends Device {
 
     public Transformer(String name, Point position) {
         super(name, position);
-        this.getDimensions().unitWidth = 3;
-        this.getDimensions().unitHeight = 3;
+        this.getDimensions().setWidth(3);
+        this.getDimensions().setHeight(3);
     }
 
     @Override

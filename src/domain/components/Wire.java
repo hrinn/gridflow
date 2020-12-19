@@ -36,10 +36,9 @@ public class Wire extends Component {
     }
 
     private void setDimensions() {
-        this.getDimensions().unitWidth = start.differenceX(end) / Globals.UNIT;
-        this.getDimensions().unitHeight = start.differenceY(end) / Globals.UNIT;
-        this.getDimensions().unitWidthPadding = 0.5;
-        this.getDimensions().unitHeightPadding = 0.5;
+        this.getDimensions().setWidth(start.differenceX(end) / Globals.UNIT);
+        this.getDimensions().setHeight(start.differenceY(end) / Globals.UNIT);
+        this.getDimensions().setPadding(0.25);
     }
 
     public void energize() {

@@ -15,8 +15,8 @@ public class Cutout extends Device implements ILockable, ICloseable {
         super(name, position);
         this.closedByDefault = closedByDefault;
         this.closed = closedByDefault;
-        this.getDimensions().unitWidth = 2;
-        this.getDimensions().unitHeight = 3;
+        this.getDimensions().setWidth(2);
+        this.getDimensions().setHeight(3);
     }
 
     public void toggleLocked() {

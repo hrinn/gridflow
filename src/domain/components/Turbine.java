@@ -18,8 +18,8 @@ public class Turbine extends Source {
     }
 
     private void setDimensions() {
-        this.getDimensions().unitWidth = 2;
-        this.getDimensions().unitHeight = 4;
+        this.getDimensions().setWidth(2);
+        this.getDimensions().setHeight(4);
     }
 
     public void connectTopOutput(Wire output) {

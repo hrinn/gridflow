@@ -17,8 +17,8 @@ public class Switch extends Device implements ICloseable, ILockable {
         this.closedByDefault = closedByDefault;
         this.closed = closedByDefault;
         this.locked = false;
-        this.getDimensions().unitWidth = 2;
-        this.getDimensions().unitHeight = 3;
+        this.getDimensions().setWidth(2);
+        this.getDimensions().setHeight(3);
     }
 
     public void toggleLocked() {

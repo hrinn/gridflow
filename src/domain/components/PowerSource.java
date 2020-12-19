@@ -17,10 +17,10 @@ public class PowerSource extends Source {
     }
 
     private void setDimensions() {
-        this.getDimensions().unitHeightPadding = 0;
-        this.getDimensions().unitWidthPadding = 0;
-        this.getDimensions().unitWidth = 2;
-        this.getDimensions().unitHeight = 3;
+        this.getDimensions().setPadding(0);
+        this.getDimensions().setBottomPadding(-0.25);
+        this.getDimensions().setWidth(2);
+        this.getDimensions().setHeight(3);
     }
 
     public void connectWire(Wire outWire) {

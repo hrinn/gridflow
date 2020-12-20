@@ -13,6 +13,7 @@ public class Component {
     private UUID id;
     private String name;
     private Point position;
+    private double angle;
     private Dimensions dimensions;
 
     public Component(String name, Point position) {
@@ -20,6 +21,7 @@ public class Component {
         this.name = name;
         this.position = position;
         this.dimensions = new Dimensions();
+        this.angle = 0;
     }
 
     public UUID getId() {
@@ -32,6 +34,15 @@ public class Component {
 
     public Point getPosition() {
         return position;
+    }
+
+    public double getAngle() {
+        return angle;
+    }
+
+    public void setAngle(double angle) {
+        if (angle % 90 != 0) return;
+        this.angle = angle;
     }
 
     public ComponentIcon getComponentIcon() {

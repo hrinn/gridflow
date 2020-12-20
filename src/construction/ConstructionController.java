@@ -18,8 +18,9 @@ public class ConstructionController {
     private GhostManagerController ghostManagerController;
     private SelectionManagerController selectionManagerController;
 
-    // User input data
-    private PropertiesData properties;
+    // UI Data
+    private BuildMenuData buildMenuData;
+    private PropertiesData propertiesData;
 
     // Wire Placing
     private WireExtendContext wireExtendContext = new WireExtendContext();
@@ -28,16 +29,19 @@ public class ConstructionController {
         // shared objects
         this.gridFlowEventManager = gridFlowEventManager;
         this.canvasFacade = new GridCanvasFacade();
-        this.properties = new PropertiesData(); // will be moved later
+        this.buildMenuData = new BuildMenuData();
+        this.propertiesData = new PropertiesData();
 
         // controllers
-        gridBuilderController = new GridBuilderController(grid, properties, gridFlowEventManager, wireExtendContext);
-        ghostManagerController = new GhostManagerController(canvasFacade, properties, wireExtendContext);
-        selectionManagerController = new SelectionManagerController(canvasFacade);
+        gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, wireExtendContext, buildMenuData, propertiesData);
+        ghostManagerController = new GhostManagerController(canvasFacade, wireExtendContext, buildMenuData, propertiesData);
+        selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData);
         gridFlowEventManager.addListener(ghostManagerController);
 
+        setPropertiesData(90);
+        setBuildMenuData(ToolType.INTERACT, null);
+
         installEventHandlers();
-        setBuildMenuData(ToolType.INTERACT, ComponentType.NONE);
     }
 
     public GridCanvasFacade getCanvasFacade() {
@@ -45,13 +49,19 @@ public class ConstructionController {
     }
 
     public void setBuildMenuData(ToolType toolType, ComponentType componentType) {
-        BuildMenuData buildData = new BuildMenuData();
-        buildData.toolType = toolType;
-        buildData.componentType = componentType;
+        if (toolType != null) buildMenuData.toolType = toolType;
+        if (componentType != null) buildMenuData.componentType = componentType;
 
-        gridBuilderController.updateBuildMenuData(buildData);
-        ghostManagerController.updateBuildMenuData(buildData);
-        selectionManagerController.updateBuildMenuData(buildData);
+        // these run if the controllers need to react to build data changing
+        ghostManagerController.updateBuildMenuData();
+        selectionManagerController.updateBuildMenuData();
+    }
+
+    public void setPropertiesData(double rotation) {
+        propertiesData.setRotation(rotation);
+
+        gridBuilderController.updatePropertiesData();
+        ghostManagerController.updatePropertiesData();
     }
 
     private void installEventHandlers() {

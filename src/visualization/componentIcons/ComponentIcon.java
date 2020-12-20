@@ -11,6 +11,8 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import domain.geometry.Point;
+import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
 
 public class ComponentIcon {
 
@@ -70,6 +72,15 @@ public class ComponentIcon {
         String tabbedName = name;//.replace(' ', '\n');
         componentName.setText(tabbedName);
         componentName.setFont(Font.font(null, 10));
+    }
+
+    public void setAngle(double angle, Point position) {
+        Rotate rotateTransform = new Rotate();
+        rotateTransform.setPivotX(position.getX());
+        rotateTransform.setPivotY(position.getY());
+        rotateTransform.setAngle(angle);
+        componentNode.getTransforms().add(rotateTransform);
+        energyOutlineNodes.getTransforms().add(rotateTransform);
     }
 
     protected void addShapesToEnergyOutlineNode(Group energyOutlineNode, Shape... shapes) {

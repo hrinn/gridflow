@@ -39,6 +39,7 @@ public class GhostManager {
         };
         if (ghostIcon == null) return;
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
+        ghostIcon.setAngle(properties.getRotation(), origin);
         canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
     }
 

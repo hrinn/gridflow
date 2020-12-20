@@ -57,12 +57,12 @@ public class BuildMenuViewController {
 
     @FXML
     private void pickInteractTool() {
-        constructionController.setBuildMenuData(ToolType.INTERACT, ComponentType.NONE);
+        constructionController.setBuildMenuData(ToolType.INTERACT, null);
     }
 
     @FXML
     private void pickSelectTool() {
-        constructionController.setBuildMenuData(ToolType.SELECT, ComponentType.NONE);
+        constructionController.setBuildMenuData(ToolType.SELECT, null);
     }
 
     @FXML
@@ -152,7 +152,7 @@ public class BuildMenuViewController {
 
     private void CollapseMenu(HBox menu){
         menu.setVisible(false);
-        constructionController.setBuildMenuData(ToolType.INTERACT, ComponentType.NONE);
+        constructionController.setBuildMenuData(ToolType.INTERACT, null);
     }
 
     private void ExpandMenu(HBox menu){

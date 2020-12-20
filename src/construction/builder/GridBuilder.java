@@ -37,7 +37,8 @@ public class GridBuilder {
         device.connectInWire(inWire);
         inWire.connect(device);
 
-        Wire outWire = new Wire(position.translate(0, device.getDimensions().getHeight()));
+        Point outPoint = position.translate(0, device.getDimensions().getHeight());
+        Wire outWire = new Wire(outPoint.rotate(properties.getRotation(), position));
         device.connectOutWire(outWire);
         outWire.connect(device);
         device.setAngle(properties.getRotation());
@@ -58,12 +59,14 @@ public class GridBuilder {
     }
 
     public void placeSource(Point position, ComponentType componentType) {
+
         switch (componentType) {
             case POWER_SOURCE -> {
                 PowerSource powerSource = new PowerSource(properties.getName(), position, false);
                 powerSource.setAngle(properties.getRotation());
 
-                Wire outWire = new Wire(position.translate(0, powerSource.getDimensions().getHeight()));
+                Wire outWire = new Wire(position.translate(0, powerSource.getDimensions().getHeight())
+                    .rotate(powerSource.getAngle(), position));
                 powerSource.connectWire(outWire);
                 outWire.connect(powerSource);
 
@@ -77,7 +80,8 @@ public class GridBuilder {
                 turbine.connectTopOutput(topWire);
                 topWire.connect(turbine);
 
-                Wire bottomWire = new Wire(position.translate(0, turbine.getDimensions().getHeight()));
+                Wire bottomWire = new Wire(position.translate(0, turbine.getDimensions().getHeight())
+                        .rotate(turbine.getAngle(), position));
                 turbine.connectBottomOutput(bottomWire);
                 bottomWire.connect(turbine);
 

@@ -53,15 +53,15 @@ public class ConstructionController {
         if (componentType != null) buildMenuData.componentType = componentType;
 
         // these run if the controllers need to react to build data changing
-        ghostManagerController.updateBuildMenuData();
-        selectionManagerController.updateBuildMenuData();
+        ghostManagerController.buildMenuDataChanged();
+        selectionManagerController.buildMenuDataChanged();
     }
 
     public void setPropertiesData(double rotation) {
         propertiesData.setRotation(rotation);
 
-        gridBuilderController.updatePropertiesData();
-        ghostManagerController.updatePropertiesData();
+        gridBuilderController.propertiesDataChanged();
+        ghostManagerController.propertiesDataChanged();
     }
 
     private void installEventHandlers() {

@@ -18,7 +18,7 @@ public class SelectionManagerController {
         this.buildMenuData = buildMenuData;
     }
 
-    public void updateBuildMenuData() {
+    public void buildMenuDataChanged() {
         model.deSelectAll();
     }
 

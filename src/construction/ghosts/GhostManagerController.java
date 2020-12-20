@@ -38,7 +38,7 @@ public class GhostManagerController implements GridFlowEventListener {
         }
     }
 
-    public void updateBuildMenuData() {
+    public void buildMenuDataChanged() {
         if (buildData.toolType == ToolType.PLACE || buildData.toolType == ToolType.WIRE) {
             model.enableGhostIcon();
             model.setGhostIcon(buildData.componentType);
@@ -47,7 +47,7 @@ public class GhostManagerController implements GridFlowEventListener {
         }
     }
 
-    public void updatePropertiesData() {
+    public void propertiesDataChanged() {
     }
 
     private final EventHandler<MouseEvent> enterComponentHoverEventHandler = event -> {

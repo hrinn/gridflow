@@ -26,7 +26,7 @@ public class GridBuilderController {
         this.propertiesData = propertiesData;
     }
 
-    public void updatePropertiesData() {
+    public void propertiesDataChanged() {
     }
 
     private final EventHandler<MouseEvent> placeWireEventHandler = event -> {

@@ -73,7 +73,14 @@ public class ConstructionController {
     private final EventHandler<KeyEvent> handleRotationKey = event -> {
         if (event.getCode() != KeyCode.R) return;
 
-        double rotation = (propertiesData.getRotation() == 270) ? 0 : propertiesData.getRotation() + 90;
+        double rotation;
+
+        if (event.isShiftDown()) {
+            rotation = (propertiesData.getRotation() == 0) ? 270 : propertiesData.getRotation() - 90;
+        } else {
+            rotation = (propertiesData.getRotation() == 270) ? 0 : propertiesData.getRotation() + 90;
+        }
+
         setPropertiesData(rotation);
         event.consume();
     };

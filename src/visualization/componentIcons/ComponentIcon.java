@@ -12,7 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import domain.geometry.Point;
 import javafx.scene.transform.Rotate;
-import javafx.scene.transform.Transform;
 
 public class ComponentIcon {
 
@@ -23,7 +22,7 @@ public class ComponentIcon {
     private final Group energyOutlineNodes = new Group();
 
     private final static Color SELECT_COLOR = Color.BLUE;
-    private final static Color DEFAULT_BORDER_COLOR = Color.RED;
+    private final static Color DEFAULT_BORDER_COLOR = Color.TRANSPARENT;
 
     public ComponentIcon() {
         iconNode.setMouseTransparent(true);

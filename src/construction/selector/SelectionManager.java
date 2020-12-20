@@ -48,8 +48,14 @@ public class SelectionManager {
         canvasFacade.deSelectAll();
     }
 
-    public void pointSelection(String ID) {
+    public void continuousPointSelection(String ID) {
         if (selectedComponentIDs.contains(ID)) return;
+        canvasFacade.selectComponent(ID);
+        selectedComponentIDs.add(ID);
+    }
+
+    public void pointSelection(String ID) {
+        deSelectAll();
         canvasFacade.selectComponent(ID);
         selectedComponentIDs.add(ID);
     }

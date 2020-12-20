@@ -59,7 +59,11 @@ public class SelectionManagerController {
         if (buildMenuData.toolType != ToolType.SELECT) return;
 
         String targetID = ((Node)event.getTarget()).getId();
-        model.pointSelection(targetID);
+        if (event.isControlDown()) {
+            model.continuousPointSelection(targetID);
+        } else {
+            model.pointSelection(targetID);
+        }
 
         event.consume();
      };

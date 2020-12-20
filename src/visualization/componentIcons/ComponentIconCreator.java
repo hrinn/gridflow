@@ -146,10 +146,10 @@ public class ComponentIconCreator {
                 p.translate(-1 * Globals.UNIT, 1.1 * Globals.UNIT));
         Line inEdgeR = createLine(p.translate(1 * Globals.UNIT, 0.9 * Globals.UNIT),
                 p.translate(1 * Globals.UNIT, 1.1 * Globals.UNIT));
-        Arc arcIn1 = createHalfArc(p.translate(-0.75 * Globals.UNIT, 1.1 * Globals.UNIT), 0.25 * Globals.UNIT, Orientation.DOWN);
-        Arc arcIn2 = createHalfArc(p.translate(-0.25 * Globals.UNIT, 1.1 * Globals.UNIT), 0.25 * Globals.UNIT, Orientation.DOWN);
-        Arc arcIn3 = createHalfArc(p.translate(0.25 * Globals.UNIT, 1.1 * Globals.UNIT), 0.25 * Globals.UNIT, Orientation.DOWN);
-        Arc arcIn4 = createHalfArc(p.translate(0.75 * Globals.UNIT, 1.1 * Globals.UNIT), 0.25 * Globals.UNIT, Orientation.DOWN);
+        Arc arcIn1 = createHalfArc(p.translate(-0.75 * Globals.UNIT, 1.1 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.DOWN);
+        Arc arcIn2 = createHalfArc(p.translate(-0.25 * Globals.UNIT, 1.1 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.DOWN);
+        Arc arcIn3 = createHalfArc(p.translate(0.25 * Globals.UNIT, 1.1 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.DOWN);
+        Arc arcIn4 = createHalfArc(p.translate(0.75 * Globals.UNIT, 1.1 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.DOWN);
         transformerIcon.addInNodeShapes(inLine, inEdgeL, inEdgeR, arcIn1, arcIn2, arcIn3, arcIn4);
 
         Line outLine = createLine(p.translate(0, 1.9 * Globals.UNIT), p.translate(0, 3 * Globals.UNIT));
@@ -157,10 +157,10 @@ public class ComponentIconCreator {
                 p.translate(-1 * Globals.UNIT, 2.1 * Globals.UNIT));
         Line outEdgeR = createLine(p.translate(1 * Globals.UNIT, 1.9 * Globals.UNIT),
                 p.translate(1 * Globals.UNIT, 2.1 * Globals.UNIT));
-        Arc arcOut1 = createHalfArc(p.translate(-0.75 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, Orientation.UP);
-        Arc arcOut2 = createHalfArc(p.translate(-0.25 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, Orientation.UP);
-        Arc arcOut3 = createHalfArc(p.translate(0.25 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, Orientation.UP);
-        Arc arcOut4 = createHalfArc(p.translate(0.75 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, Orientation.UP);
+        Arc arcOut1 = createHalfArc(p.translate(-0.75 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.UP);
+        Arc arcOut2 = createHalfArc(p.translate(-0.25 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.UP);
+        Arc arcOut3 = createHalfArc(p.translate(0.25 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.UP);
+        Arc arcOut4 = createHalfArc(p.translate(0.75 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.UP);
         transformerIcon.addOutNodeShapes(outLine, outEdgeL, outEdgeR, arcOut1, arcOut2, arcOut3, arcOut4);
 
         return transformerIcon;
@@ -173,7 +173,7 @@ public class ComponentIconCreator {
         jumperIcon.addInNodeShapes(inLine);
 
         Line outLine = createLine(p.translate(0, 2 * Globals.UNIT), p.translate(0, 3 * Globals.UNIT));
-        Arc jumper = createHalfArc(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT, Orientation.RIGHT);
+        Arc jumper = createHalfArc(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT, ArcOrientation.RIGHT);
         // transforms must be applied prior to adding the node
         if (!closed) rotateNode(jumper, p.translate(0, 2 * Globals.UNIT), 45);
 
@@ -190,7 +190,7 @@ public class ComponentIconCreator {
 
         Line outLine = createLine(p.translate(0, 2 * Globals.UNIT), p.translate(0, 3 * Globals.UNIT));
         // these shapes get rotated together
-        Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * Globals.UNIT), 0.15 * Globals.UNIT, Orientation.UP);
+        Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * Globals.UNIT), 0.15 * Globals.UNIT, ArcOrientation.UP);
         Circle cutoutDot = createCircle(p.translate(0, 1.125 * Globals.UNIT), 0.5, Color.TRANSPARENT, Color.BLACK);
         Line cutoutLineL = createRoundedLine(p.translate(0, 2 * Globals.UNIT), p.translate(-0.15 * Globals.UNIT, 1.125 * Globals.UNIT));
         Line cutoutLineR = createRoundedLine(p.translate(0, 2 * Globals.UNIT), p.translate(0.15 * Globals.UNIT, 1.125 * Globals.UNIT));
@@ -292,7 +292,7 @@ public class ComponentIconCreator {
         return rectangle;
     }
 
-    private static Arc createHalfArc(Point center, double radius, Orientation orientation) {
+    private static Arc createHalfArc(Point center, double radius, ArcOrientation arcOrientation) {
         Arc arc = new Arc();
         arc.setStrokeWidth(Globals.STROKE_WIDTH);
         arc.setStroke(Color.BLACK);
@@ -305,13 +305,13 @@ public class ComponentIconCreator {
         arc.setRadiusX(radius);
         arc.setRadiusY(radius);
         arc.setLength(180);
-        arc.setStartAngle(getArcStartAngle(orientation));
+        arc.setStartAngle(getArcStartAngle(arcOrientation));
 
         return arc;
     }
 
-    private static double getArcStartAngle(Orientation orientation) {
-        switch (orientation) {
+    private static double getArcStartAngle(ArcOrientation arcOrientation) {
+        switch (arcOrientation) {
             case UP:
                 return 0;
             case DOWN:
@@ -357,6 +357,6 @@ public class ComponentIconCreator {
     }
 }
 
-enum Orientation {
+enum ArcOrientation {
     UP, DOWN, LEFT, RIGHT
 }

@@ -39,6 +39,7 @@ public class PowerSource extends Source {
         icon.setWireEnergyState(outWire.isEnergized(), 0);
         icon.setComponentIconID(getId().toString());
         icon.setBoundingRect(getDimensions(), getPosition());
+        icon.setAngle(getAngle(), getPosition());
         return icon;
     }
 }

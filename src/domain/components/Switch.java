@@ -37,6 +37,7 @@ public class Switch extends Device implements ICloseable, ILockable {
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
         icon.setBoundingRect(getDimensions(), getPosition());
+        icon.setAngle(getAngle(), getPosition());
         return icon;
     }
 

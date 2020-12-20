@@ -17,16 +17,19 @@ public class GhostManagerController implements GridFlowEventListener {
     private GridCanvasFacade canvasFacade;
     private WireExtendContext wireExtendContext;
     private BuildMenuData buildData;
+    private PropertiesData propertiesData;
 
     private static final Image errorCursorImage = new Image("/resources/error_cursor.png");
     public static final Cursor ERROR_CURSOR = new ImageCursor(errorCursorImage, errorCursorImage.getWidth()/2,
             errorCursorImage.getHeight()/2);
 
-    public GhostManagerController(GridCanvasFacade canvasFacade, PropertiesData properties,
-                                  WireExtendContext wireExtendContext) {
-        this.model = new GhostManager(canvasFacade, properties);
+    public GhostManagerController(GridCanvasFacade canvasFacade, WireExtendContext wireExtendContext,
+                                  BuildMenuData buildMenuData, PropertiesData propertiesData) {
+        this.model = new GhostManager(canvasFacade, propertiesData);
         this.wireExtendContext = wireExtendContext;
         this.canvasFacade = canvasFacade;
+        this.buildData = buildMenuData;
+        this.propertiesData = propertiesData;
     }
 
     public void handleEvent(GridFlowEvent gridFlowEvent) {
@@ -35,13 +38,18 @@ public class GhostManagerController implements GridFlowEventListener {
         }
     }
 
-    public void updateBuildMenuData(BuildMenuData buildData) {
-        this.buildData = buildData;
+    public void buildMenuDataChanged() {
         if (buildData.toolType == ToolType.PLACE || buildData.toolType == ToolType.WIRE) {
             model.enableGhostIcon();
             model.setGhostIcon(buildData.componentType);
         } else {
             model.disableGhostIcon();
+        }
+    }
+
+    public void propertiesDataChanged() {
+        if (buildData.toolType == ToolType.PLACE) {
+            model.rotateGhostIcon();
         }
     }
 

@@ -15,16 +15,18 @@ public class GridBuilderController {
     private GridFlowEventManager gridFlowEventManager;
     private WireExtendContext wireExtendContext;
     private BuildMenuData buildData;
+    private PropertiesData propertiesData;
 
-    public GridBuilderController(Grid grid, PropertiesData properties, GridFlowEventManager gridFlowEventManager,
-                                 WireExtendContext wireExtendContext) {
-        this.model = new GridBuilder(grid, properties);
+    public GridBuilderController(Grid grid, GridFlowEventManager gridFlowEventManager,
+                                 WireExtendContext wireExtendContext, BuildMenuData buildMenuData, PropertiesData propertiesData) {
+        this.model = new GridBuilder(grid, propertiesData);
         this.gridFlowEventManager = gridFlowEventManager;
         this.wireExtendContext = wireExtendContext;
+        this.buildData = buildMenuData;
+        this.propertiesData = propertiesData;
     }
 
-    public void updateBuildMenuData(BuildMenuData buildData) {
-        this.buildData = buildData;
+    public void propertiesDataChanged() {
     }
 
     private final EventHandler<MouseEvent> placeWireEventHandler = event -> {

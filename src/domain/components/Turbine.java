@@ -44,6 +44,7 @@ public class Turbine extends Source {
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
         icon.setBoundingRect(getDimensions(), getPosition());
+        icon.setAngle(getAngle(), getPosition());
         return icon;
     }
 }

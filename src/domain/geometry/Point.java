@@ -50,6 +50,15 @@ public class Point {
         return new Point(this.x + x, this.y + y);
     }
 
+    public Point rotate(double angle, Point pivot) {
+        double theta = Math.toRadians(angle);
+
+        double rx = pivot.getX() + Math.cos(theta) * (x - pivot.getX()) - Math.sin(theta) * (y - pivot.getY());
+        double ry = pivot.getY() + Math.sin(theta) * (x - pivot.getX()) + Math.cos(theta) * (y - pivot.getY());
+
+        return new Point(rx, ry);
+    }
+
     public double differenceY(Point other) {
         return Math.abs(this.y - other.y);
     }

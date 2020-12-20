@@ -1,6 +1,7 @@
 package construction.selector;
 
 import construction.BuildMenuData;
+import construction.PropertiesData;
 import construction.ToolType;
 import construction.canvas.GridCanvasFacade;
 import javafx.event.EventHandler;
@@ -12,12 +13,12 @@ public class SelectionManagerController {
     private SelectionManager model;
     private BuildMenuData buildMenuData;
 
-    public SelectionManagerController(GridCanvasFacade canvasFacade) {
+    public SelectionManagerController(GridCanvasFacade canvasFacade, BuildMenuData buildMenuData) {
         this.model = new SelectionManager(canvasFacade);
+        this.buildMenuData = buildMenuData;
     }
 
-    public void updateBuildMenuData(BuildMenuData buildMenuData) {
-        this.buildMenuData = buildMenuData;
+    public void buildMenuDataChanged() {
         model.deSelectAll();
     }
 

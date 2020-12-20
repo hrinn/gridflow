@@ -30,6 +30,7 @@ public class Cutout extends Device implements ILockable, ICloseable {
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
         icon.setBoundingRect(getDimensions(), getPosition());
+        icon.setAngle(getAngle(), getPosition());
         return icon;
     }
 

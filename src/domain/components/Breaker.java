@@ -43,6 +43,7 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
         }
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
+        icon.setAngle(getAngle(), getPosition());
         return icon;
     }
 

@@ -9,6 +9,7 @@ import visualization.componentIcons.WireIcon;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 public class Wire extends Component {
 
@@ -57,12 +58,13 @@ public class Wire extends Component {
         connections.addAll(Arrays.asList(components));
     }
 
-    public void setConnections(List<Component> connections) {
-        this.connections = connections;
-    }
-
+    @Override
     public List<Component> getConnections() {
         return connections;
+    }
+
+    public void disconnect(UUID componentID) {
+        connections.removeIf(connection -> connection.getId().equals(componentID));
     }
 
     public boolean isPointWire() {
@@ -71,6 +73,13 @@ public class Wire extends Component {
 
     public boolean isVerticalWire() {
         return start.getX() == end.getX() && start.getY() != end.getY();
+    }
+
+    @Override
+    public void delete() {
+        if (!connections.isEmpty()) {
+            throw new UnsupportedOperationException();
+        }
     }
 
     @Override

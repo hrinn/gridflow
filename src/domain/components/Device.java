@@ -3,6 +3,7 @@ package domain.components;
 import domain.geometry.Point;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Device extends Component {
 
@@ -48,6 +49,17 @@ public class Device extends Component {
             }
         }
         return List.of();
+    }
+
+    @Override
+    public List<Component> getConnections() {
+        return List.of(inWire, outWire);
+    }
+
+    @Override
+    public void delete() {
+        inWire.disconnect(getId());
+        outWire.disconnect(getId());
     }
 
 

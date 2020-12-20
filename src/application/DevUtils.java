@@ -49,7 +49,7 @@ public class DevUtils {
         w7.connect(dd7);
         w8.connect(dd8);
         w9.connect(dd9);
-        bbus.setConnections(List.of(dd3, dd5, dd7, dd8, dd9));
+        bbus.connect(dd3, dd5, dd7, dd8, dd9);
 
         // DD1main
         Breaker dd1main = new Breaker("DD1 Main", canvasPos(0, 0), Voltage.KV12, true);
@@ -96,7 +96,7 @@ public class DevUtils {
         dd103.connectOutWire(dd1w);
         Wire nrw = new Wire(canvasPos(0, 12), canvasPos(3, 12));
         dd103.connectInWire(nrw);
-        nrw.setConnections(List.of(dd103, dd105aw));
+        nrw.connect(dd103, dd105aw);
         dd105aw.connect(nrw);
 
         // power source

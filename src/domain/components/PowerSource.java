@@ -6,6 +6,7 @@ import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.SourceIcon;
 
 import java.util.List;
+import java.util.UUID;
 
 public class PowerSource extends Source {
 
@@ -28,7 +29,12 @@ public class PowerSource extends Source {
     }
 
     @Override
-    public List<Component> getOutputs() {
+    public void delete() {
+        outWire.disconnect(getId());
+    }
+
+    @Override
+    public List<Component> getConnections() {
         return List.of(outWire);
     }
 

@@ -55,6 +55,7 @@ public class DevUtils {
         Breaker dd1main = new Breaker("DD1 Main", canvasPos(0, 0), Voltage.KV12, true);
         Wire dd1mw = new Wire(canvasPos(0,0));
         dd1main.connectOutWire(bbus);
+        bbus.connect(dd1main);
         dd1main.connectInWire(dd1mw);
         dd1mw.connect(dd1main);
 

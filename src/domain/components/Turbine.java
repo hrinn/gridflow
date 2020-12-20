@@ -6,6 +6,7 @@ import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.SourceIcon;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Turbine extends Source {
 
@@ -31,8 +32,14 @@ public class Turbine extends Source {
     }
 
     @Override
-    public List<Component> getOutputs() {
+    public List<Component> getConnections() {
         return List.of(outWire1, outWire2);
+    }
+
+    @Override
+    public void delete() {
+        outWire1.disconnect(getId());
+        outWire2.disconnect(getId());
     }
 
     @Override

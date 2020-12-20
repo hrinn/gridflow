@@ -71,6 +71,7 @@ public class GridCanvasFacade {
     }
 
     public void clearComponentGroups() {
+        componentIcons.clear();
         canvas.componentGroup.getChildren().clear();
         canvas.energyOutlineGroup.getChildren().clear();
     }

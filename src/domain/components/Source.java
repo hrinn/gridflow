@@ -21,13 +21,9 @@ public class Source extends Component implements IEnergizeable {
         on = !on;
     }
 
-    public List<Component> getOutputs() {
-        return List.of();
-    }
-
     @Override
     public List<Component> getAccessibleConnections() {
-        if (isOn()) return this.getOutputs();
+        if (isOn()) return this.getConnections();
         return List.of();
     }
 }

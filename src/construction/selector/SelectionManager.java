@@ -1,11 +1,15 @@
 package construction.selector;
 
 import construction.canvas.GridCanvasFacade;
+import domain.Grid;
+import domain.components.Wire;
 import domain.geometry.Point;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class SelectionManager {
@@ -13,16 +17,30 @@ public class SelectionManager {
     private List<String> selectedComponentIDs;
     private Rectangle selectionBox;
     private GridCanvasFacade canvasFacade;
+    private Grid grid;
     private Point mouseDownPoint;
 
-    public SelectionManager(GridCanvasFacade canvasFacade) {
+    public SelectionManager(GridCanvasFacade canvasFacade, Grid grid) {
         selectedComponentIDs = new ArrayList<>();
         selectionBox = new Rectangle();
         this.canvasFacade = canvasFacade;
+        this.grid = grid;
 
         selectionBox.setFill(Color.TRANSPARENT);
         selectionBox.setStroke(Color.BLACK);
         selectionBox.getStrokeDashArray().add(10.0);
+    }
+
+
+    // list of component icons is bad, causing issues
+
+    public void deleteSelectedComponents() {
+        // Wires cannot be deleted if they are connected to a device or source, so delete the selected devices first
+        sortWiresToBack();
+        for (String ID : selectedComponentIDs) {
+            grid.deleteComponent(ID);
+        }
+        selectedComponentIDs.clear();
     }
 
     public void deSelectAll() {
@@ -31,6 +49,7 @@ public class SelectionManager {
     }
 
     public void pointSelection(String ID) {
+        if (selectedComponentIDs.contains(ID)) return;
         canvasFacade.selectComponent(ID);
         selectedComponentIDs.add(ID);
     }
@@ -57,8 +76,10 @@ public class SelectionManager {
     public void endSelection() {
         // detect selection box overlap
         getSelectedNodeIDs().forEach(id -> {
-            canvasFacade.selectComponent(id);
-            selectedComponentIDs.add(id);
+            if (!selectedComponentIDs.contains(id)) {
+                canvasFacade.selectComponent(id);
+                selectedComponentIDs.add(id);
+            }
         });
         canvasFacade.clearOverlay();
     }
@@ -81,5 +102,29 @@ public class SelectionManager {
                 && r1.getX() + r1.getWidth() > r2.getX()
                 && r1.getY() < r2.getY() + r2.getHeight()
                 && r1.getY() + r1.getHeight() > r2.getY();
+    }
+
+
+
+    private void sortWiresToBack() {
+        selectedComponentIDs.sort((ID1, ID2) -> {
+            if (grid.getComponent(ID1) instanceof Wire) {
+                if (grid.getComponent(ID2) instanceof Wire) {
+                    // comp1 and comp2 are wires
+                    return 0;
+                } else {
+                    // comp1 is wire, comp2 is not wire
+                    return 1;
+                }
+            } else {
+                if (grid.getComponent(ID2) instanceof Wire) {
+                    // comp1 is not wire, comp2 is wire
+                    return -1;
+                } else {
+                    // comp1 and comp2 are not wires
+                    return 0;
+                }
+            }
+        });
     }
 }

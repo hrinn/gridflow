@@ -29,6 +29,19 @@ public class Grid {
         this.components.addAll(Arrays.asList(components));
     }
 
+    public void deleteComponent(String ID) {
+        Component component = getComponent(ID);
+        if (component == null) return;
+        if (component.getId().toString().equals(ID)) {
+            try {
+                component.delete();
+                components.remove(component);
+            } catch (UnsupportedOperationException e) {
+                System.out.println("Cannot delete Wire: " + component.getId());
+            }
+        }
+    }
+
     public void loadComponents(List<Component> components) {
         for (Component component : components) addComponent(component);
     }

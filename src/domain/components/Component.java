@@ -53,6 +53,13 @@ public class Component {
         return List.of();
     }
 
+    public List<Component> getConnections() {
+        return List.of();
+    }
+
+    public void delete() {
+    }
+
     public Dimensions getDimensions() {
         return dimensions;
     }

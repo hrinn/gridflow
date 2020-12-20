@@ -30,15 +30,14 @@ public class Grid {
     }
 
     public void deleteComponent(String ID) {
-        for (Component component : components) {
-            if (component.getId().toString().equals(ID)) {
-                try {
-                    component.delete();
-                    components.remove(component);
-                } catch (UnsupportedOperationException e) {
-                    System.out.println("Cannot delete Wire: " + component.getId());
-                }
-                return;
+        Component component = getComponent(ID);
+        if (component == null) return;
+        if (component.getId().toString().equals(ID)) {
+            try {
+                component.delete();
+                components.remove(component);
+            } catch (UnsupportedOperationException e) {
+                System.out.println("Cannot delete Wire: " + component.getId());
             }
         }
     }

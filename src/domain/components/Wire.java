@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class Wire extends Component {
 
@@ -75,10 +76,20 @@ public class Wire extends Component {
         return start.getX() == end.getX() && start.getY() != end.getY();
     }
 
+    private List<Wire> getConnectedWires() {
+        return connections.stream().filter(connection -> connection instanceof Wire)
+                .map(connection -> (Wire)connection).collect(Collectors.toList());
+    }
+
     @Override
     public void delete() {
-        if (!connections.isEmpty()) {
+        List<Wire> connectedWires = getConnectedWires();
+        if (connections.size() > connectedWires.size()) {
+            // there are connected non-wires, so the wire cannot be deleted
             throw new UnsupportedOperationException();
+        }
+        for (Wire connectedWire : connectedWires) {
+            connectedWire.disconnect(getId());
         }
     }
 

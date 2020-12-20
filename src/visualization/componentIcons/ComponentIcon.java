@@ -23,7 +23,7 @@ public class ComponentIcon {
     private final Group energyOutlineNodes = new Group();
 
     private final static Color SELECT_COLOR = Color.BLUE;
-    private final static Color DEFAULT_BORDER_COLOR = Color.TRANSPARENT;
+    private final static Color DEFAULT_BORDER_COLOR = Color.RED;
 
     public ComponentIcon() {
         iconNode.setMouseTransparent(true);

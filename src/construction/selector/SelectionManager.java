@@ -31,11 +31,15 @@ public class SelectionManager {
         selectionBox.getStrokeDashArray().add(10.0);
     }
 
+
+    // list of component icons is bad, causing issues
+
     public void deleteSelectedComponents() {
         sortWiresToBack();
         for (String ID : selectedComponentIDs) {
             grid.deleteComponent(ID);
         }
+        selectedComponentIDs.clear();
     }
 
     public void deSelectAll() {
@@ -44,6 +48,7 @@ public class SelectionManager {
     }
 
     public void pointSelection(String ID) {
+        if (selectedComponentIDs.contains(ID)) return;
         canvasFacade.selectComponent(ID);
         selectedComponentIDs.add(ID);
     }
@@ -70,8 +75,10 @@ public class SelectionManager {
     public void endSelection() {
         // detect selection box overlap
         getSelectedNodeIDs().forEach(id -> {
-            canvasFacade.selectComponent(id);
-            selectedComponentIDs.add(id);
+            if (!selectedComponentIDs.contains(id)) {
+                canvasFacade.selectComponent(id);
+                selectedComponentIDs.add(id);
+            }
         });
         canvasFacade.clearOverlay();
     }

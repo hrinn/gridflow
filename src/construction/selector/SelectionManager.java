@@ -35,6 +35,7 @@ public class SelectionManager {
     // list of component icons is bad, causing issues
 
     public void deleteSelectedComponents() {
+        // Wires cannot be deleted if they are connected to a device or source, so delete the selected devices first
         sortWiresToBack();
         for (String ID : selectedComponentIDs) {
             grid.deleteComponent(ID);

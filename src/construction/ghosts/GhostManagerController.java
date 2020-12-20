@@ -48,6 +48,9 @@ public class GhostManagerController implements GridFlowEventListener {
     }
 
     public void propertiesDataChanged() {
+        if (buildData.toolType == ToolType.PLACE) {
+            model.rotateGhostIcon();
+        }
     }
 
     private final EventHandler<MouseEvent> enterComponentHoverEventHandler = event -> {

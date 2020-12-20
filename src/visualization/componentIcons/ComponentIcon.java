@@ -74,6 +74,11 @@ public class ComponentIcon {
         componentName.setFont(Font.font(null, 10));
     }
 
+    public void resetAngle() {
+        componentNode.getTransforms().clear();
+        energyOutlineNodes.getTransforms().clear();
+    }
+
     public void setAngle(double angle, Point position) {
         Rotate rotateTransform = new Rotate();
         rotateTransform.setPivotX(position.getX());

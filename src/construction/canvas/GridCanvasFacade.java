@@ -5,8 +5,10 @@ import javafx.event.EventType;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.stage.Stage;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.WireIcon;
 

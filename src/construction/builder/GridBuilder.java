@@ -43,7 +43,7 @@ public class GridBuilder {
         outWire.connect(device);
         device.setAngle(properties.getRotation());
 
-        grid.addComponents(device, inWire, outWire);
+        grid.addComponent(device, inWire, outWire);
     }
 
     public Device createDevice(Point point, ComponentType componentType) {
@@ -70,7 +70,7 @@ public class GridBuilder {
                 powerSource.connectWire(outWire);
                 outWire.connect(powerSource);
 
-                grid.addComponents(powerSource, outWire);
+                grid.addComponent(powerSource, outWire);
             }
             case TURBINE -> {
                 Turbine turbine = new Turbine(properties.getName(), position, false);
@@ -85,7 +85,7 @@ public class GridBuilder {
                 turbine.connectBottomOutput(bottomWire);
                 bottomWire.connect(turbine);
 
-                grid.addComponents(topWire, bottomWire, turbine);
+                grid.addComponent(topWire, bottomWire, turbine);
             }
         }
 

@@ -6,12 +6,13 @@ import domain.components.Wire;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class Grid {
 
-    private final List<Component> components;
+    private List<Component> components;
 
     public Grid() {
         components = new ArrayList<>();
@@ -21,11 +22,7 @@ public class Grid {
         return components;
     }
 
-    public void addComponent(Component component) {
-        components.add(component);
-    }
-
-    public void addComponents(Component... components) {
+    public void addComponent(Component... components) {
         this.components.addAll(Arrays.asList(components));
     }
 
@@ -40,10 +37,6 @@ public class Grid {
                 System.out.println("Cannot delete Wire: " + component.getId());
             }
         }
-    }
-
-    public void loadComponents(List<Component> components) {
-        for (Component component : components) addComponent(component);
     }
 
     public List<Wire> getWires() {
@@ -66,4 +59,30 @@ public class Grid {
                 .findFirst().orElse(null);
     }
 
+    public GridSnapshot save() {
+        return new GridSnapshot(components);
+    }
+
+    public void restore(Snapshot snapshot) {
+        this.components = ((GridSnapshot)snapshot).getComponents();
+    }
+
+}
+
+// memento
+class GridSnapshot implements Snapshot {
+    private final List<Component> components = new ArrayList<>();
+
+    public GridSnapshot(List<Component> components) {
+        this.components.addAll(components);
+    }
+
+    public List<Component> getComponents() {
+        return components;
+    }
+
+    @Override
+    public int getComponentCount() {
+        return components.size();
+    }
 }

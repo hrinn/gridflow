@@ -1,6 +1,7 @@
 package application;
 
 import construction.BuildMenuViewController;
+import domain.components.Component;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -50,7 +51,9 @@ public class GridFlowApp extends Application {
         FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/baseui/BaseUIView.fxml"));
 
         // Load components into grid
-        grid.loadComponents(DevUtils.createTestComponents());
+        for (Component component : DevUtils.createTestComponents()) {
+            grid.addComponent(component);
+        }
         gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged); // build would do this later
 
         // Init GUI

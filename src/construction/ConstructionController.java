@@ -5,6 +5,7 @@ import construction.builder.GridBuilderController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.selector.SelectionManagerController;
+import construction.state.StateManagerController;
 import domain.Grid;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -22,6 +23,7 @@ public class ConstructionController {
     private GridBuilderController gridBuilderController;
     private GhostManagerController ghostManagerController;
     private SelectionManagerController selectionManagerController;
+    private StateManagerController stateManagerController;
 
     // UI Data
     private BuildMenuData buildMenuData;
@@ -42,7 +44,9 @@ public class ConstructionController {
         gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, wireExtendContext, buildMenuData, propertiesData);
         ghostManagerController = new GhostManagerController(canvasFacade, wireExtendContext, buildMenuData, propertiesData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
+        stateManagerController = new StateManagerController(grid, gridFlowEventManager);
         gridFlowEventManager.addListener(ghostManagerController);
+        gridFlowEventManager.addListener(stateManagerController);
 
         setPropertiesData(0);
         setBuildMenuData(ToolType.INTERACT, null);
@@ -107,5 +111,8 @@ public class ConstructionController {
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_RELEASED, selectionManagerController.getEndSelectionEventHandler());
         canvasFacade.setSelectSingleComponentHandler(selectionManagerController.getSelectSingleComponentHandler());
         stage.addEventFilter(KeyEvent.KEY_PRESSED, selectionManagerController.getDeleteHandler());
+
+        // state events
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, stateManagerController.getUndoRedoEventHandler());
     }
 }

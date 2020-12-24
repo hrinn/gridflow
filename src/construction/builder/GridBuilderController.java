@@ -3,6 +3,7 @@ package construction.builder;
 import application.events.GridFlowEvent;
 import application.events.GridFlowEventManager;
 import construction.*;
+import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
@@ -18,8 +19,9 @@ public class GridBuilderController {
     private PropertiesData propertiesData;
 
     public GridBuilderController(Grid grid, GridFlowEventManager gridFlowEventManager,
-                                 WireExtendContext wireExtendContext, BuildMenuData buildMenuData, PropertiesData propertiesData) {
-        this.model = new GridBuilder(grid, propertiesData);
+                                 WireExtendContext wireExtendContext, BuildMenuData buildMenuData,
+                                 PropertiesData propertiesData, GridCanvasFacade canvasFacade) {
+        this.model = new GridBuilder(grid, propertiesData, canvasFacade);
         this.gridFlowEventManager = gridFlowEventManager;
         this.wireExtendContext = wireExtendContext;
         this.buildData = buildMenuData;

@@ -95,22 +95,13 @@ public class SelectionManager {
         List<Rectangle> existingBoundingRects = canvasFacade.getAllBoundingRects();
 
         for (Rectangle boundingRect : existingBoundingRects) {
-            if (rectsOverlap(boundingRect, selectionBox)) {
+            if (selectionBox.getBoundsInParent().intersects(boundingRect.getBoundsInParent())) {
                 IDList.add(boundingRect.getId());
             }
         }
 
         return IDList;
     }
-
-    private boolean rectsOverlap(Rectangle r1, Rectangle r2) {
-        return r1.getX() < r2.getX() + r2.getWidth()
-                && r1.getX() + r1.getWidth() > r2.getX()
-                && r1.getY() < r2.getY() + r2.getHeight()
-                && r1.getY() + r1.getHeight() > r2.getY();
-    }
-
-
 
     private void sortWiresToBack() {
         selectedComponentIDs.sort((ID1, ID2) -> {

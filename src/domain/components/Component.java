@@ -63,4 +63,5 @@ public class Component {
     public Dimensions getDimensions() {
         return dimensions;
     }
+
 }

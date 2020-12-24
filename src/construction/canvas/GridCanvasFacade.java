@@ -106,6 +106,10 @@ public class GridCanvasFacade {
         return componentIcons.stream().map(icon -> icon.getBoundingRect()).collect(Collectors.toList());
     }
 
+    public List<javafx.scene.shape.Rectangle> getNonWireBoundingRects() {
+        return componentIcons.stream().filter(icon -> !(icon instanceof WireIcon)).map(icon -> icon.getBoundingRect()).collect(Collectors.toList());
+    }
+
     public GridCanvas getCanvas() {
         return canvas;
     }

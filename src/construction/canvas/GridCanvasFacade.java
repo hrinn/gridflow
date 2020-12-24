@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.WireIcon;
@@ -50,15 +51,17 @@ public class GridCanvasFacade {
     public void addComponentIcon(ComponentIcon icon) {
         Group componentNode = icon.getComponentNode();
         Group energyOutlineNodes = icon.getEnergyOutlineNodes();
-        componentNode.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
-        componentNode.addEventHandler(MouseEvent.MOUSE_PRESSED, selectSingleComponentHandler);
+        Rectangle boundingRect = icon.getBoundingRect();
+        boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
+        boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, selectSingleComponentHandler);
         if (!(icon instanceof WireIcon)) {
-            componentNode.setOnMouseEntered(enterComponentHoverEventHandler);
-            componentNode.setOnMouseExited(exitComponentHoverEventHandler);
+            boundingRect.setOnMouseEntered(enterComponentHoverEventHandler);
+            boundingRect.setOnMouseExited(exitComponentHoverEventHandler);
         }
 
         canvas.componentGroup.getChildren().add(componentNode);
         canvas.energyOutlineGroup.getChildren().add(energyOutlineNodes);
+        canvas.boundingRectGroup.getChildren().add(boundingRect);
         componentIcons.add(icon);
     }
 
@@ -74,6 +77,7 @@ public class GridCanvasFacade {
         componentIcons.clear();
         canvas.componentGroup.getChildren().clear();
         canvas.energyOutlineGroup.getChildren().clear();
+        canvas.boundingRectGroup.getChildren().clear();
     }
 
     public void setCanvasCursor(Cursor cursor) {

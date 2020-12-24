@@ -133,7 +133,6 @@ public class GridBuilder {
     public boolean verifyPlacement(Component component) {
         // returns true if placement is valid, false if placement is invalid
         Rectangle currentComponentRect = component.getComponentIcon().getBoundingRect();
-        currentComponentRect.getTransforms().addAll(currentComponentRect.getParent().getTransforms());
         List<Rectangle> existingBoundingRects = canvasFacade.getAllBoundingRects();
 
         for(Rectangle gridRect : existingBoundingRects) {

@@ -18,16 +18,15 @@ public class ComponentIcon {
     private final Rectangle boundingRect = new Rectangle();
     private final Group iconNode = new Group();
     private final Text componentName = new Text();
-    private final Group componentNode = new Group(iconNode, componentName, boundingRect);
+    private final Group componentNode = new Group(iconNode, componentName);
     private final Group energyOutlineNodes = new Group();
 
     private final static Color SELECT_COLOR = Color.BLUE;
     private final static Color DEFAULT_BORDER_COLOR = Color.RED;
 
     public ComponentIcon() {
-        iconNode.setMouseTransparent(true);
         energyOutlineNodes.setMouseTransparent(true);
-        componentName.setMouseTransparent(true);
+        componentNode.setMouseTransparent(true);
         boundingRect.setFill(Color.TRANSPARENT);
         boundingRect.setStroke(DEFAULT_BORDER_COLOR);
         boundingRect.setOpacity(0.5);
@@ -76,6 +75,7 @@ public class ComponentIcon {
     public void resetAngle() {
         componentNode.getTransforms().clear();
         energyOutlineNodes.getTransforms().clear();
+        boundingRect.getTransforms().clear();
     }
 
     public void setAngle(double angle, Point position) {
@@ -84,6 +84,7 @@ public class ComponentIcon {
         rotateTransform.setPivotY(position.getY());
         rotateTransform.setAngle(angle);
         componentNode.getTransforms().add(rotateTransform);
+        boundingRect.getTransforms().add(rotateTransform);
         energyOutlineNodes.getTransforms().add(rotateTransform);
     }
 

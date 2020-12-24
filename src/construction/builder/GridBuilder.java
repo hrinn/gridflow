@@ -118,6 +118,10 @@ public class GridBuilder {
 
     public void placeWire(Point startPosition, Point endPosition) {
         Wire wire = new Wire(startPosition, endPosition);
+        if (!verifyPlacement(wire))  {
+            System.out.println("cannot place");
+            return;
+        }
         grid.addComponent(wire);
     }
 
@@ -128,7 +132,8 @@ public class GridBuilder {
 
     public boolean verifyPlacement(Component component) {
         // returns true if placement is valid, false if placement is invalid
-        Node currentComponentRect = component.getComponentIcon().getComponentNode();
+        Rectangle currentComponentRect = component.getComponentIcon().getBoundingRect();
+        currentComponentRect.getTransforms().addAll(currentComponentRect.getParent().getTransforms());
         List<Rectangle> existingBoundingRects = canvasFacade.getAllBoundingRects();
 
         for(Rectangle gridRect : existingBoundingRects) {

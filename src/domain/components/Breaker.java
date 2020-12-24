@@ -5,6 +5,8 @@ import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
+import java.util.UUID;
+
 public class Breaker extends Device implements ICloseable, ICloneable, IPairable {
 
     private Voltage voltage;
@@ -16,12 +18,23 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
         this.voltage = voltage;
         this.closed = closedByDefault;
         this.closedByDefault = closedByDefault;
+        setDimensions();
+    }
+
+    public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault, UUID id, double angle, Wire inWire, Wire outWire, boolean closed) {
+        super(name, position, id, angle, inWire, outWire);
+        this.voltage = voltage;
+        this.closedByDefault = closedByDefault;
+        this.closed = closed;
+        setDimensions();
+    }
+
+    private void setDimensions() {
         this.getDimensions().setWidth(2);
         switch (voltage) {
             case KV12 -> this.getDimensions().setHeight(4);
             case KV70 -> this.getDimensions().setHeight(3);
         }
-
     }
 
     @Override
@@ -64,5 +77,10 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
     @Override
     public void toggle() {
         closed = !closed;
+    }
+
+    @Override
+    public Component copy() {
+        return new Breaker(getName(), getPosition(), voltage, closedByDefault, getId(), getAngle(), getInWire(), getOutWire(), closed);
     }
 }

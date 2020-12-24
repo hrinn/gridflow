@@ -18,6 +18,13 @@ public class Turbine extends Source {
         setDimensions();
     }
 
+    public Turbine(String name, Point position, boolean on, UUID id, double angle, Wire outWire1, Wire outWire2) {
+        super(name, position, on, id, angle);
+        setDimensions();
+        this.outWire1 = outWire1;
+        this.outWire2 = outWire2;
+    }
+
     private void setDimensions() {
         this.getDimensions().setWidth(2);
         this.getDimensions().setHeight(4);
@@ -53,5 +60,10 @@ public class Turbine extends Source {
         icon.setBoundingRect(getDimensions(), getPosition());
         icon.setAngle(getAngle(), getPosition());
         return icon;
+    }
+
+    @Override
+    public Component copy() {
+        return new Turbine(getName(), getPosition(), isOn(), getId(), getAngle(), (Wire)outWire1.copy(), (Wire)outWire2.copy());
     }
 }

@@ -37,6 +37,15 @@ public class Wire extends Component {
         setDimensions();
     }
 
+    public Wire(Point p1, Point p2, String name, UUID id, double angle, List<Component> connections) {
+        super(name, Point.midpoint(p1, p2), id, angle);
+        start = p1;
+        end = p2;
+        energized = false;
+        this.connections = connections;
+        setDimensions();
+    }
+
     private void setDimensions() {
         this.getDimensions().setWidth(start.differenceX(end) / Globals.UNIT);
         this.getDimensions().setHeight(start.differenceY(end) / Globals.UNIT);
@@ -107,5 +116,11 @@ public class Wire extends Component {
 
         icon.setBoundingRect(getDimensions(), getPosition());
         return icon;
+    }
+
+    @Override
+    public Component copy() {
+        List<Component> connectionsCopy = connections.stream().map(connection -> connection.copy()).collect(Collectors.toList());
+        return new Wire(start, end, getName(), getId(), getAngle(), connectionsCopy);
     }
 }

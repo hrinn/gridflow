@@ -17,6 +17,20 @@ public class Device extends Component {
         this.outWire = null;
     }
 
+    public Device(String name, Point position, UUID id, double angle, Wire inWire, Wire outWire) {
+        super(name, position, id, angle);
+        this.inWire = inWire;
+        this.outWire = outWire;
+    }
+
+    public Wire getInWire() {
+        return inWire;
+    }
+
+    public Wire getOutWire() {
+        return outWire;
+    }
+
     public void connectInWire(Wire inWire) {
         this.inWire = inWire;
     }
@@ -60,6 +74,11 @@ public class Device extends Component {
     public void delete() {
         inWire.disconnect(getId());
         outWire.disconnect(getId());
+    }
+
+    @Override
+    public Component copy() {
+        return new Device(getName(), getPosition(), getId(), getAngle(), (Wire)getInWire().copy(), (Wire)getOutWire().copy());
     }
 
 

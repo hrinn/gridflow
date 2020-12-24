@@ -17,6 +17,12 @@ public class PowerSource extends Source {
         setDimensions();
     }
 
+    public PowerSource(String name, Point position, boolean on, UUID id, double angle, Wire outWire) {
+        super(name, position, on, id, angle);
+        this.outWire = outWire;
+        setDimensions();
+    }
+
     private void setDimensions() {
         this.getDimensions().setPadding(0);
         this.getDimensions().setBottomPadding(-0.25);
@@ -47,5 +53,10 @@ public class PowerSource extends Source {
         icon.setBoundingRect(getDimensions(), getPosition());
         icon.setAngle(getAngle(), getPosition());
         return icon;
+    }
+
+    @Override
+    public Component copy() {
+        return new PowerSource(getName(), getPosition(), isOn(), getId(), getAngle(), (Wire)outWire.copy());
     }
 }

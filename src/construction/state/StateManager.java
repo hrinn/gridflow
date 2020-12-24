@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public class StateManager {
 
     private final LinkedList<Snapshot> stateHistory;
-    private int statePointer = 0;
+    private int statePointer;
     private static final int CAPACITY = 5;
 
     public StateManager() {
@@ -16,12 +16,25 @@ public class StateManager {
     }
 
     public void loadGridState(Grid grid) {
+        removeUndone();
+        statePointer = 0;
         stateHistory.addFirst(grid.save());
+        removeExtra();
         printHistory();
     }
 
+    private void removeUndone() {
+        if (statePointer == 0) return;
+        stateHistory.subList(0, statePointer).clear();
+    }
+
+    private void removeExtra() {
+        if (stateHistory.size() < CAPACITY) return;
+        stateHistory.subList(CAPACITY - 1, stateHistory.size() - 1).clear();
+    }
+
     public Snapshot stepBack() {
-        if (statePointer >= stateHistory.size() - 1) return null;
+        if (statePointer >= CAPACITY - 1) return null;
         statePointer = statePointer + 1;
         printHistory();
         return stateHistory.get(statePointer);

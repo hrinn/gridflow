@@ -5,6 +5,8 @@ import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
+import java.util.UUID;
+
 public class Cutout extends Device implements ILockable, ICloseable {
 
     private boolean locked;
@@ -15,6 +17,18 @@ public class Cutout extends Device implements ILockable, ICloseable {
         super(name, position);
         this.closedByDefault = closedByDefault;
         this.closed = closedByDefault;
+        setDimensions();
+    }
+
+    public Cutout(String name, Point position, boolean closedByDefault, UUID id, double angle, Wire inWire, Wire outWire, boolean locked, boolean closed) {
+        super(name, position, id, angle, inWire, outWire);
+        this.closedByDefault = closedByDefault;
+        this.locked = locked;
+        this.closed = closed;
+        setDimensions();
+    }
+
+    public void setDimensions() {
         this.getDimensions().setWidth(2);
         this.getDimensions().setHeight(3);
     }
@@ -44,5 +58,10 @@ public class Cutout extends Device implements ILockable, ICloseable {
 
     public void toggle() {
         closed = !closed;
+    }
+
+    @Override
+    public Component copy() {
+        return new Cutout(getName(), getPosition(), closedByDefault, getId(), getAngle(), getInWire(), getOutWire(), locked, closed);
     }
 }

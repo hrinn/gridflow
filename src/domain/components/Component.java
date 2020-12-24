@@ -1,8 +1,6 @@
 package domain.components;
 
-import application.Globals;
 import domain.geometry.Point;
-import domain.geometry.Rectangle;
 import visualization.componentIcons.ComponentIcon;
 
 import java.util.List;
@@ -22,6 +20,14 @@ public class Component {
         this.position = position;
         this.dimensions = new Dimensions();
         this.angle = 0;
+    }
+
+    public Component(String name, Point position, UUID id, double angle) {
+        this.name = name;
+        this.position = position;
+        this.id = id;
+        this.angle = angle;
+        this.dimensions = new Dimensions();
     }
 
     public UUID getId() {
@@ -58,6 +64,11 @@ public class Component {
     }
 
     public void delete() {
+    }
+
+    // copies the component by value
+    public Component copy() {
+        return new Component(name, position, id, angle);
     }
 
     public Dimensions getDimensions() {

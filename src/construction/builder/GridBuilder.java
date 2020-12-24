@@ -7,6 +7,7 @@ import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
+import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
 import org.w3c.dom.css.Rect;
 import visualization.componentIcons.ComponentIcon;
@@ -127,8 +128,7 @@ public class GridBuilder {
 
     public boolean verifyPlacement(Component component) {
         // returns true if placement is valid, false if placement is invalid
-        Rectangle currentComponentRect = component.getComponentIcon().getBoundingRect();
-        canvasFacade.getCanvas().getChildren().add(currentComponentRect);
+        Node currentComponentRect = component.getComponentIcon().getComponentNode();
         List<Rectangle> existingBoundingRects = canvasFacade.getAllBoundingRects();
 
         for(Rectangle gridRect : existingBoundingRects) {

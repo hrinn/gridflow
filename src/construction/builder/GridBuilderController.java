@@ -1,9 +1,7 @@
 package construction.builder;
 
-import application.events.GridFlowEvent;
-import application.events.GridFlowEventManager;
+import application.events.*;
 import construction.*;
-import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
@@ -42,11 +40,11 @@ public class GridBuilderController {
             Point lockedEndPoint = endPoint.clampPerpendicular(wireExtendContext.beginPoint);
             boolean res = model.placeWire(wireExtendContext.beginPoint, lockedEndPoint);
             if (res) {
-                gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+                gridFlowEventManager.sendEvent(new GridChangedEvent());
             } else {
-                gridFlowEventManager.sendEvent(GridFlowEvent.PlacementError);
+                gridFlowEventManager.sendEvent(new PlacementFailedEvent());
             }
-            gridFlowEventManager.sendEvent(GridFlowEvent.WirePlaced);
+            gridFlowEventManager.sendEvent(new WirePlacedEvent());
 
         } else { // begin placement
             wireExtendContext.placing = true;
@@ -60,7 +58,7 @@ public class GridBuilderController {
 
         String targetId = ((Node)event.getTarget()).getId();
         model.toggleComponent(targetId);
-        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
 
         event.consume();
 
@@ -73,9 +71,9 @@ public class GridBuilderController {
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
         boolean res = model.placeComponent(coordPoint, buildData.componentType);
         if (res) {
-            gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+            gridFlowEventManager.sendEvent(new GridChangedEvent());
         } else {
-            gridFlowEventManager.sendEvent(GridFlowEvent.PlacementError);
+            gridFlowEventManager.sendEvent(new PlacementFailedEvent());
         }
 
         event.consume();

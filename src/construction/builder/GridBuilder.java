@@ -105,7 +105,7 @@ public class GridBuilder {
 
     public boolean placeWire(Point startPosition, Point endPosition) {
         Wire wire = new Wire(startPosition, endPosition);
-        if (!verifyPlacement(wire))  return false;
+        if (!verifyPlacement(wire)) return false;
         grid.addComponent(wire);
         return true;
     }

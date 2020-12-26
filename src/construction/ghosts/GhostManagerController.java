@@ -1,14 +1,13 @@
 package construction.ghosts;
 
+import application.events.PlacementFailedEvent;
 import application.events.GridFlowEvent;
 import application.events.GridFlowEventListener;
+import application.events.WirePlacedEvent;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
-import javafx.scene.Cursor;
-import javafx.scene.ImageCursor;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
 public class GhostManagerController implements GridFlowEventListener {
@@ -27,9 +26,9 @@ public class GhostManagerController implements GridFlowEventListener {
     }
 
     public void handleEvent(GridFlowEvent gridFlowEvent) {
-        if (gridFlowEvent == GridFlowEvent.WirePlaced) {
+        if (gridFlowEvent instanceof WirePlacedEvent) {
             model.setGhostIcon(ComponentType.WIRE);
-        } else if (gridFlowEvent == GridFlowEvent.PlacementError) {
+        } else if (gridFlowEvent instanceof PlacementFailedEvent) {
             handlePlacementError();
         }
     }

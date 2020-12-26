@@ -1,8 +1,6 @@
 package simulation;
 
-import application.events.GridFlowEvent;
-import application.events.GridFlowEventManager;
-import application.events.GridFlowEventListener;
+import application.events.*;
 import domain.Grid;
 
 public class SimulationController implements GridFlowEventListener {
@@ -16,9 +14,9 @@ public class SimulationController implements GridFlowEventListener {
     }
 
     public void handleEvent(GridFlowEvent gridFlowEvent) {
-        if (gridFlowEvent == gridFlowEvent.GridChanged) {
+        if (gridFlowEvent instanceof GridChangedEvent) {
             model.energyDFS();
-            gridFlowEventManager.sendEvent(gridFlowEvent.GridEnergized);
+            gridFlowEventManager.sendEvent(new GridEnergizedEvent());
         }
     }
 }

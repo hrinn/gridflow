@@ -10,27 +10,30 @@ public class Cutout extends Device implements ILockable, ICloseable {
     private boolean locked;
     private boolean closed;
     private boolean closedByDefault;
+    private DeviceIcon icon;
 
     public Cutout(String name, Point position, boolean closedByDefault) {
         super(name, position);
         this.closedByDefault = closedByDefault;
         this.closed = closedByDefault;
-        this.getDimensions().setWidth(2);
-        this.getDimensions().setHeight(3);
+        createComponentIcon();
     }
 
     public void toggleLocked() {
         locked = !locked;
     }
 
-    @Override
-    public ComponentIcon getComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getCutoutIcon(getPosition(), closed);
-        icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+    private void createComponentIcon() {
+        icon = ComponentIconCreator.getCutoutIcon(getPosition(), closed);
+        icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getDimensions(), getPosition());
         icon.setAngle(getAngle(), getPosition());
+    }
+
+    @Override
+    public ComponentIcon getComponentIcon() {
+        icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         return icon;
     }
 
@@ -44,5 +47,6 @@ public class Cutout extends Device implements ILockable, ICloseable {
 
     public void toggle() {
         closed = !closed;
+        createComponentIcon();
     }
 }

@@ -1,11 +1,15 @@
 package construction.builder;
 
-import application.Globals;
 import construction.PropertiesData;
 import construction.ComponentType;
+import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
+import javafx.scene.shape.Rectangle;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class GridBuilder {
 
@@ -32,16 +36,21 @@ public class GridBuilder {
 
         Device device = createDevice(position, componentType);
         if (device == null) return;
+        device.setAngle(properties.getRotation());
 
         Wire inWire = new Wire(position);
         device.connectInWire(inWire);
         inWire.connect(device);
 
-        Point outPoint = position.translate(0, device.getDimensions().getHeight());
+        Point outPoint = position.translate(0, device.getComponentIcon().getHeight());
         Wire outWire = new Wire(outPoint.rotate(properties.getRotation(), position));
         device.connectOutWire(outWire);
         outWire.connect(device);
-        device.setAngle(properties.getRotation());
+
+        if(!verifyPlacement(device)) {
+            System.out.println("Failure to place Device");
+            return;
+        }
 
         grid.addComponents(device, inWire, outWire);
     }
@@ -65,10 +74,15 @@ public class GridBuilder {
                 PowerSource powerSource = new PowerSource(properties.getName(), position, false);
                 powerSource.setAngle(properties.getRotation());
 
-                Wire outWire = new Wire(position.translate(0, powerSource.getDimensions().getHeight())
+                Wire outWire = new Wire(position.translate(0, powerSource.getComponentIcon().getHeight())
                     .rotate(powerSource.getAngle(), position));
                 powerSource.connectWire(outWire);
                 outWire.connect(powerSource);
+
+                if(!verifyPlacement(powerSource)) {
+                    System.out.println("Failure to place PowerSource");
+                    return;
+                }
 
                 grid.addComponents(powerSource, outWire);
             }
@@ -80,10 +94,15 @@ public class GridBuilder {
                 turbine.connectTopOutput(topWire);
                 topWire.connect(turbine);
 
-                Wire bottomWire = new Wire(position.translate(0, turbine.getDimensions().getHeight())
+                Wire bottomWire = new Wire(position.translate(0, turbine.getComponentIcon().getHeight())
                         .rotate(turbine.getAngle(), position));
                 turbine.connectBottomOutput(bottomWire);
                 bottomWire.connect(turbine);
+
+                if(!verifyPlacement(turbine)) {
+                    System.out.println("Failure to place Turbine");
+                    return;
+                }
 
                 grid.addComponents(topWire, bottomWire, turbine);
             }
@@ -93,12 +112,30 @@ public class GridBuilder {
 
     public void placeWire(Point startPosition, Point endPosition) {
         Wire wire = new Wire(startPosition, endPosition);
+        if (!verifyPlacement(wire))  {
+            System.out.println("cannot place");
+            return;
+        }
         grid.addComponent(wire);
     }
 
     // connect a component to an existing wire
     public void connectComponent() {
 
+    }
+
+    public boolean verifyPlacement(Component component) {
+        // returns true if placement is valid, false if placement is invalid
+        Rectangle currentComponentRect = component.getComponentIcon().getBoundingRect();
+        List<Rectangle> existingBoundingRects = grid.getComponents().stream()
+                .map(comp -> comp.getComponentIcon().getBoundingRect()).collect(Collectors.toList());
+
+        for(Rectangle gridRect : existingBoundingRects) {
+            if (currentComponentRect.getBoundsInParent().intersects(gridRect.getBoundsInParent())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void toggleComponent(String componentId) {
@@ -108,6 +145,7 @@ public class GridBuilder {
             ((IToggleable) component).toggle();
         }
     }
+
 
     private boolean isDevice(ComponentType componentType) {
         return switch (componentType) {

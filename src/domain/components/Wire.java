@@ -18,6 +18,7 @@ public class Wire extends Component {
     private Point start;
     private Point end;
     private boolean energized;
+    private WireIcon icon;
 
     public Wire(Point p1, Point p2) {
         super("", Point.midpoint(p1, p2));
@@ -25,7 +26,7 @@ public class Wire extends Component {
         start = p1;
         end = p2;
         energized = false;
-        setDimensions();
+        createComponentIcon();
     }
 
     public Wire(Point p) {
@@ -34,13 +35,7 @@ public class Wire extends Component {
         start = p;
         end = p;
         energized = false;
-        setDimensions();
-    }
-
-    private void setDimensions() {
-        this.getDimensions().setWidth(start.differenceX(end) / Globals.UNIT);
-        this.getDimensions().setHeight(start.differenceY(end) / Globals.UNIT);
-        this.getDimensions().setPadding(0.25);
+        createComponentIcon();
     }
 
     public void energize() {
@@ -99,13 +94,15 @@ public class Wire extends Component {
         return connections;
     }
 
+    private void createComponentIcon() {
+        icon = ComponentIconCreator.getWireIcon(start, end);
+        icon.setWireIconEnergyState(false);
+        icon.setComponentIconID(getId().toString());
+    }
+
     @Override
     public ComponentIcon getComponentIcon() {
-        WireIcon icon = ComponentIconCreator.getWireIcon(start, end);
         icon.setWireIconEnergyState(energized);
-        icon.setComponentIconID(getId().toString());
-
-        icon.setBoundingRect(getDimensions(), getPosition());
         return icon;
     }
 }

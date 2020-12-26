@@ -1,26 +1,22 @@
 package domain.components;
 
-import application.Globals;
 import domain.geometry.Point;
-import domain.geometry.Rectangle;
 import visualization.componentIcons.ComponentIcon;
 
 import java.util.List;
 import java.util.UUID;
 
-public class Component {
+public abstract class Component {
 
     private UUID id;
     private String name;
     private Point position;
     private double angle;
-    private Dimensions dimensions;
 
     public Component(String name, Point position) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.position = position;
-        this.dimensions = new Dimensions();
         this.angle = 0;
     }
 
@@ -43,24 +39,15 @@ public class Component {
     public void setAngle(double angle) {
         if (angle % 90 != 0) return;
         this.angle = angle;
+        getComponentIcon().setAngle(angle, getPosition());
     }
 
-    public ComponentIcon getComponentIcon() {
-        throw new UnsupportedOperationException();
-    }
+    public abstract ComponentIcon getComponentIcon();
 
-    public List<Component> getAccessibleConnections() {
-        return List.of();
-    }
+    public abstract List<Component> getAccessibleConnections();
 
-    public List<Component> getConnections() {
-        return List.of();
-    }
+    public abstract List<Component> getConnections();
 
-    public void delete() {
-    }
+    public abstract void delete();
 
-    public Dimensions getDimensions() {
-        return dimensions;
-    }
 }

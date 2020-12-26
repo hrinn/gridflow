@@ -4,7 +4,7 @@ import domain.geometry.Point;
 
 import java.util.List;
 
-public class Source extends Component implements IEnergizeable {
+public abstract class Source extends Component implements IEnergizeable {
 
     private boolean on;
 
@@ -17,9 +17,11 @@ public class Source extends Component implements IEnergizeable {
         return on;
     }
 
-    public void toggle() {
-        on = !on;
+    protected void setOn(boolean on) {
+        this.on = on;
     }
+
+    public abstract void toggle();
 
     @Override
     public List<Component> getAccessibleConnections() {

@@ -7,20 +7,24 @@ import visualization.componentIcons.DeviceIcon;
 
 public class Transformer extends Device {
 
+    private DeviceIcon icon;
+
     public Transformer(String name, Point position) {
         super(name, position);
-        this.getDimensions().setWidth(3);
-        this.getDimensions().setHeight(3);
+        createComponentIcon();
+    }
+
+    private void createComponentIcon() {
+        icon = ComponentIconCreator.getTransformerIcon(getPosition());
+        icon.setDeviceEnergyStates(false, false);
+        icon.setComponentIconID(getId().toString());
+        icon.setComponentName(getName());
+        icon.setAngle(getAngle(), getPosition());
     }
 
     @Override
     public ComponentIcon getComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getTransformerIcon(getPosition());
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
-        icon.setComponentIconID(getId().toString());
-        icon.setComponentName(getName());
-        icon.setBoundingRect(getDimensions(), getPosition());
-        icon.setAngle(getAngle(), getPosition());
         return icon;
     }
 }

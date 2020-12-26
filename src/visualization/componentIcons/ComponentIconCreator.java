@@ -50,6 +50,9 @@ public class ComponentIconCreator {
             }
         }
 
+        switchIcon.setBoundingRect(new Dimensions(), p);
+        switchIcon.setFittingRect(new Dimensions(2, 3, -1, -1, -0.5, -0.5), p);
+
         return switchIcon;
     }
 
@@ -83,7 +86,8 @@ public class ComponentIconCreator {
                 box.setFill(Color.LIME);
             }
         }
-
+        breakerIcon.setBoundingRect(new Dimensions(), p);
+        breakerIcon.setFittingRect(new Dimensions(2, 3, -1, -1, -0.5, -0.5), p);
         return breakerIcon;
     }
 
@@ -132,7 +136,8 @@ public class ComponentIconCreator {
                 box.setFill(Color.LIME);
             }
         }
-
+        breakerIcon.setBoundingRect(new Dimensions(2, 4), p);
+        breakerIcon.setFittingRect(new Dimensions(2, 4, -0.75, -0.75, -0.5, -0.5), p);
         return breakerIcon;
     }
 
@@ -163,6 +168,8 @@ public class ComponentIconCreator {
         Arc arcOut4 = createHalfArc(p.translate(0.75 * Globals.UNIT, 1.9 * Globals.UNIT), 0.25 * Globals.UNIT, ArcOrientation.UP);
         transformerIcon.addOutNodeShapes(outLine, outEdgeL, outEdgeR, arcOut1, arcOut2, arcOut3, arcOut4);
 
+        transformerIcon.setBoundingRect(new Dimensions(3, 3), p);
+        transformerIcon.setFittingRect(new Dimensions(3, 3, -0.75, -0.75, -0.5, -0.5), p);
         return transformerIcon;
     }
 
@@ -178,7 +185,8 @@ public class ComponentIconCreator {
         if (!closed) rotateNode(jumper, p.translate(0, 2 * Globals.UNIT), 45);
 
         jumperIcon.addOutNodeShapes(outLine, jumper);
-
+        jumperIcon.setBoundingRect(new Dimensions(2, 3, -0.25, -0.25, -0.75, 0), p);
+        jumperIcon.setFittingRect(new Dimensions(2, 3, -1, -0.75, -1, 0), p);
         return jumperIcon;
     }
 
@@ -206,6 +214,8 @@ public class ComponentIconCreator {
             rotateNode(cutoutDot, pivot, angle);
         }
         cutoutIcon.addOutNodeShapes(outLine, cutoutArc, cutoutDot, cutoutLineL, cutoutLineR);
+        cutoutIcon.setBoundingRect(new Dimensions(), p);
+        cutoutIcon.setFittingRect(new Dimensions(2, 3, -1, -0.25, -0.75, -0.25), p);
 
         return cutoutIcon;
     }
@@ -225,6 +235,8 @@ public class ComponentIconCreator {
         Text text = createText(center, name, Color.BLACK, 12);
         powerSourceIcon.addStaticNodeShapes(text);
 
+        powerSourceIcon.setBoundingRect(new Dimensions(2, 3, 0, -0.25, 0, 0), p);
+        powerSourceIcon.setFittingRect(new Dimensions(2, 3, 0, -1, 0, 0), p);
         return powerSourceIcon;
     }
 
@@ -240,6 +252,8 @@ public class ComponentIconCreator {
         Line outLine2 = createLine(p.translate(0, 3 * Globals.UNIT), p.translate(0, 4 * Globals.UNIT));
         turbineIcon.addOutputLine(outLine2);
 
+        turbineIcon.setBoundingRect(new Dimensions(3, 4), p);
+        turbineIcon.setFittingRect(new Dimensions(3, 4, -1, -1, -0.5, -0.5), p);
         return turbineIcon;
     }
 
@@ -253,6 +267,12 @@ public class ComponentIconCreator {
             Line wireLine = createLine(p1, p2);
             wireIcon.addWireShape(wireLine);
         }
+
+        Dimensions dim = new Dimensions(p1.differenceX(p2)/Globals.UNIT, p1.differenceY(p2)/Globals.UNIT, 0.25);
+
+        Point mid = Point.midpoint(p1, p2);
+        wireIcon.setBoundingRect(dim, mid);
+        wireIcon.setFittingRect(dim, mid);
 
         return wireIcon;
     }

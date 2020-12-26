@@ -12,15 +12,11 @@ public class Turbine extends Source {
 
     private Wire outWire1; // this is on the top of the source when oriented up
     private Wire outWire2; // this is on the bottom of the source when oriented up
+    private SourceIcon icon;
 
     public Turbine(String name, Point position, boolean on) {
         super(name, position, on);
-        setDimensions();
-    }
-
-    private void setDimensions() {
-        this.getDimensions().setWidth(2);
-        this.getDimensions().setHeight(4);
+        createComponentIcon();
     }
 
     public void connectTopOutput(Wire output) {
@@ -43,15 +39,35 @@ public class Turbine extends Source {
     }
 
     @Override
-    public ComponentIcon getComponentIcon() {
-        SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition());
+    public void toggle() {
+        setOn(!isOn());
+        createComponentIcon();
+    }
+
+    private boolean isOutWire1Energized() {
+        if (outWire1 == null) return false;
+        return outWire1.isEnergized();
+    }
+
+    private boolean isOutWire2Energized() {
+        if (outWire2 == null) return false;
+        return outWire2.isEnergized();
+    }
+
+    private void createComponentIcon() {
+        icon = ComponentIconCreator.getTurbineIcon(getPosition());
         icon.setSourceNodeEnergyState(isOn());
-        icon.setWireEnergyState(outWire1.isEnergized(), 0);
-        icon.setWireEnergyState(outWire2.isEnergized(), 1);
+        icon.setWireEnergyState(false, 0);
+        icon.setWireEnergyState(false, 1);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getDimensions(), getPosition());
         icon.setAngle(getAngle(), getPosition());
+    }
+
+    @Override
+    public ComponentIcon getComponentIcon() {
+        icon.setWireEnergyState(isOutWire1Energized(), 0);
+        icon.setWireEnergyState(isOutWire2Energized(), 1);
         return icon;
     }
 }

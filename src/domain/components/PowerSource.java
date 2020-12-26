@@ -20,6 +20,11 @@ public class PowerSource extends Source {
         this.outWire = outWire;
     }
 
+    private boolean isOutWireEnergized() {
+        if (outWire == null) return false;
+        return outWire.isEnergized();
+    }
+
     @Override
     public void delete() {
         outWire.disconnect(getId());
@@ -34,7 +39,7 @@ public class PowerSource extends Source {
     public ComponentIcon getComponentIcon() {
         SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn());
         icon.setSourceNodeEnergyState(isOn());
-        icon.setWireEnergyState(outWire.isEnergized(), 0);
+        icon.setWireEnergyState(isOutWireEnergized(), 0);
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
         return icon;

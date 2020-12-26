@@ -5,7 +5,7 @@ import domain.geometry.Point;
 import java.util.List;
 import java.util.UUID;
 
-public class Device extends Component {
+public abstract class Device extends Component {
 
     //private Point position;
     private Wire inWire;
@@ -26,11 +26,13 @@ public class Device extends Component {
     }
 
     public boolean isInWireEnergized() {
-        return this.inWire.isEnergized();
+        if (inWire == null) return false;
+        return inWire.isEnergized();
     }
 
     public boolean isOutWireEnergized() {
-        return this.outWire.isEnergized();
+        if (outWire == null) return false;
+        return outWire.isEnergized();
     }
 
     protected boolean checkClosed() {

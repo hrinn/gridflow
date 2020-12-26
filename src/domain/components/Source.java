@@ -4,7 +4,7 @@ import domain.geometry.Point;
 
 import java.util.List;
 
-public class Source extends Component implements IEnergizeable {
+public abstract class Source extends Component implements IEnergizeable {
 
     private boolean on;
 

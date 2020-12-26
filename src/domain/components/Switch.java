@@ -10,6 +10,7 @@ public class Switch extends Device implements ICloseable, ILockable {
     private boolean closed;
     private boolean closedByDefault;
     private boolean locked;
+    private DeviceIcon icon;
 
 
     public Switch(String name, Point position, boolean closedByDefault) {
@@ -26,6 +27,10 @@ public class Switch extends Device implements ICloseable, ILockable {
     @Override
     protected boolean checkClosed() {
         return closed;
+    }
+
+    private void createComponentIcon() {
+        this.icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
     }
 
     @Override

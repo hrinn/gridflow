@@ -249,7 +249,7 @@ public class ComponentIconCreator {
         Line outLine2 = createLine(p.translate(0, 3 * Globals.UNIT), p.translate(0, 4 * Globals.UNIT));
         turbineIcon.addOutputLine(outLine2);
 
-        turbineIcon.setBoundingRect(new Dimensions(2, 4), p);
+        turbineIcon.setBoundingRect(new Dimensions(3, 4), p);
 
         return turbineIcon;
     }

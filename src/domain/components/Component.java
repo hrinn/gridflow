@@ -6,7 +6,7 @@ import visualization.componentIcons.ComponentIcon;
 import java.util.List;
 import java.util.UUID;
 
-public class Component {
+public abstract class Component {
 
     private UUID id;
     private String name;
@@ -41,19 +41,12 @@ public class Component {
         this.angle = angle;
     }
 
-    public ComponentIcon getComponentIcon() {
-        throw new UnsupportedOperationException();
-    }
+    public abstract ComponentIcon getComponentIcon();
 
-    public List<Component> getAccessibleConnections() {
-        return List.of();
-    }
+    public abstract List<Component> getAccessibleConnections();
 
-    public List<Component> getConnections() {
-        return List.of();
-    }
+    public abstract List<Component> getConnections();
 
-    public void delete() {
-    }
+    public abstract void delete();
 
 }

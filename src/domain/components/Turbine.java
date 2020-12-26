@@ -36,12 +36,22 @@ public class Turbine extends Source {
         outWire2.disconnect(getId());
     }
 
+    private boolean isOutWire1Energized() {
+        if (outWire1 == null) return false;
+        return outWire1.isEnergized();
+    }
+
+    private boolean isOutWire2Energized() {
+        if (outWire2 == null) return false;
+        return outWire2.isEnergized();
+    }
+
     @Override
     public ComponentIcon getComponentIcon() {
         SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition());
         icon.setSourceNodeEnergyState(isOn());
-        icon.setWireEnergyState(outWire1.isEnergized(), 0);
-        icon.setWireEnergyState(outWire2.isEnergized(), 1);
+        icon.setWireEnergyState(isOutWire1Energized(), 0);
+        icon.setWireEnergyState(isOutWire2Energized(), 1);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
         icon.setAngle(getAngle(), getPosition());

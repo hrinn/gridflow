@@ -1,18 +1,13 @@
 package construction.builder;
 
-import application.Globals;
 import construction.PropertiesData;
 import construction.ComponentType;
 import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
-import javafx.scene.Node;
 import javafx.scene.shape.Rectangle;
-import org.w3c.dom.css.Rect;
-import visualization.componentIcons.ComponentIcon;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class GridBuilder {
@@ -48,7 +43,7 @@ public class GridBuilder {
         device.connectInWire(inWire);
         inWire.connect(device);
 
-        Point outPoint = position.translate(0, device.getDimensions().getHeight());
+        Point outPoint = position.translate(0, device.getComponentIcon().getHeight());
         Wire outWire = new Wire(outPoint.rotate(properties.getRotation(), position));
         device.connectOutWire(outWire);
         outWire.connect(device);
@@ -80,7 +75,7 @@ public class GridBuilder {
                 PowerSource powerSource = new PowerSource(properties.getName(), position, false);
                 powerSource.setAngle(properties.getRotation());
 
-                Wire outWire = new Wire(position.translate(0, powerSource.getDimensions().getHeight())
+                Wire outWire = new Wire(position.translate(0, powerSource.getComponentIcon().getHeight())
                     .rotate(powerSource.getAngle(), position));
                 powerSource.connectWire(outWire);
                 outWire.connect(powerSource);
@@ -100,7 +95,7 @@ public class GridBuilder {
                 turbine.connectTopOutput(topWire);
                 topWire.connect(turbine);
 
-                Wire bottomWire = new Wire(position.translate(0, turbine.getDimensions().getHeight())
+                Wire bottomWire = new Wire(position.translate(0, turbine.getComponentIcon().getHeight())
                         .rotate(turbine.getAngle(), position));
                 turbine.connectBottomOutput(bottomWire);
                 bottomWire.connect(turbine);

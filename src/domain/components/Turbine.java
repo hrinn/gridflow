@@ -15,12 +15,6 @@ public class Turbine extends Source {
 
     public Turbine(String name, Point position, boolean on) {
         super(name, position, on);
-        setDimensions();
-    }
-
-    private void setDimensions() {
-        this.getDimensions().setWidth(2);
-        this.getDimensions().setHeight(4);
     }
 
     public void connectTopOutput(Wire output) {
@@ -50,7 +44,6 @@ public class Turbine extends Source {
         icon.setWireEnergyState(outWire2.isEnergized(), 1);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getDimensions(), getPosition());
         icon.setAngle(getAngle(), getPosition());
         return icon;
     }

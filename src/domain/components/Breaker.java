@@ -16,12 +16,6 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
         this.voltage = voltage;
         this.closed = closedByDefault;
         this.closedByDefault = closedByDefault;
-        this.getDimensions().setWidth(2);
-        switch (voltage) {
-            case KV12 -> this.getDimensions().setHeight(4);
-            case KV70 -> this.getDimensions().setHeight(3);
-        }
-
     }
 
     @Override
@@ -34,12 +28,8 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
         DeviceIcon icon;
         if (voltage == Voltage.KV12) {
             icon = ComponentIconCreator.get12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
-            icon.setComponentName(getName());
-            icon.setBoundingRect(getDimensions(), getPosition());
         } else {
             icon = ComponentIconCreator.get70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
-            icon.setComponentName(getName());
-            icon.setBoundingRect(getDimensions(), getPosition());
         }
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());

@@ -1,4 +1,4 @@
-package domain.components;
+package visualization.componentIcons;
 
 import application.Globals;
 
@@ -13,6 +13,17 @@ public class Dimensions {
     private double bottomPadding = DEFAULT_UNIT_PADDING * Globals.UNIT;
     private double rightPadding = DEFAULT_UNIT_PADDING * Globals.UNIT;
     private double leftPadding = DEFAULT_UNIT_PADDING * Globals.UNIT;
+
+    // most common dimensions
+    public Dimensions() {
+        this.width = 2 * Globals.UNIT;
+        this.height = 3 * Globals.UNIT;
+    }
+
+    public Dimensions(double unitWidth, double unitHeight) {
+        this.width = unitWidth * Globals.UNIT;
+        this.height = unitHeight * Globals.UNIT;
+    }
 
     public double getAdjustedWidth() {
         return width + leftPadding + rightPadding;

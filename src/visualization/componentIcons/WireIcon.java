@@ -1,8 +1,6 @@
 package visualization.componentIcons;
 
 import application.Globals;
-import domain.components.Dimensions;
-import domain.geometry.Rectangle;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Shape;
 import domain.geometry.Point;

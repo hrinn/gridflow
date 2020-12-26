@@ -14,14 +14,6 @@ public class PowerSource extends Source {
 
     public PowerSource(String name, Point position, boolean on) {
         super(name, position, on);
-        setDimensions();
-    }
-
-    private void setDimensions() {
-        this.getDimensions().setPadding(0);
-        this.getDimensions().setBottomPadding(-0.25);
-        this.getDimensions().setWidth(2);
-        this.getDimensions().setHeight(3);
     }
 
     public void connectWire(Wire outWire) {
@@ -44,7 +36,6 @@ public class PowerSource extends Source {
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(outWire.isEnergized(), 0);
         icon.setComponentIconID(getId().toString());
-        icon.setBoundingRect(getDimensions(), getPosition());
         icon.setAngle(getAngle(), getPosition());
         return icon;
     }

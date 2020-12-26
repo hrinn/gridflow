@@ -15,8 +15,6 @@ public class Cutout extends Device implements ILockable, ICloseable {
         super(name, position);
         this.closedByDefault = closedByDefault;
         this.closed = closedByDefault;
-        this.getDimensions().setWidth(2);
-        this.getDimensions().setHeight(3);
     }
 
     public void toggleLocked() {
@@ -29,7 +27,6 @@ public class Cutout extends Device implements ILockable, ICloseable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
-        icon.setBoundingRect(getDimensions(), getPosition());
         icon.setAngle(getAngle(), getPosition());
         return icon;
     }

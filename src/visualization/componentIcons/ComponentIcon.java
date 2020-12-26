@@ -1,7 +1,6 @@
 package visualization.componentIcons;
 
 import application.Globals;
-import domain.components.Dimensions;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -20,6 +19,7 @@ public class ComponentIcon {
     private final Text componentName = new Text();
     private final Group componentNode = new Group(iconNode, componentName);
     private final Group energyOutlineNodes = new Group();
+    private double height;
 
     private final static Color SELECT_COLOR = Color.BLUE;
     private final static Color DEFAULT_BORDER_COLOR = Color.RED;
@@ -41,6 +41,7 @@ public class ComponentIcon {
     }
 
     public void setBoundingRect(Dimensions dimensions, Point position) {
+        this.height = dimensions.getHeight();
         Point topLeft = position.translate(-dimensions.getAdjustedWidth()/2, -dimensions.getTopPadding());
         boundingRect.setX(topLeft.getX());
         boundingRect.setY(topLeft.getY());
@@ -120,5 +121,9 @@ public class ComponentIcon {
 
     public Rectangle getBoundingRect() {
         return boundingRect;
+    }
+
+    public double getHeight() {
+        return height;
     }
 }

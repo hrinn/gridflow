@@ -53,12 +53,8 @@ public class ComponentIcon {
         setComponentNamePosition(midRight);
     }
 
-    public void select() {
-        boundingRect.setStroke(SELECT_COLOR);
-    }
-
-    public void deSelect() {
-        boundingRect.setStroke(DEFAULT_BORDER_COLOR);
+    public void setSelect(boolean select) {
+        boundingRect.setStroke(select ? SELECT_COLOR : DEFAULT_BORDER_COLOR);
     }
 
     private void setComponentNamePosition(Point position) {

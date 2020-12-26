@@ -9,17 +9,16 @@ import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class GridBuilder {
 
     private Grid grid;
     private PropertiesData properties;
-    private GridCanvasFacade canvasFacade;
 
-    public GridBuilder(Grid grid, PropertiesData properties, GridCanvasFacade canvasFacade) {
+    public GridBuilder(Grid grid, PropertiesData properties) {
         this.grid = grid;
         this.properties = properties;
-        this.canvasFacade = canvasFacade;
     }
 
     // This is what runs when a component is placed on the canvas standalone
@@ -128,7 +127,8 @@ public class GridBuilder {
     public boolean verifyPlacement(Component component) {
         // returns true if placement is valid, false if placement is invalid
         Rectangle currentComponentRect = component.getComponentIcon().getBoundingRect();
-        List<Rectangle> existingBoundingRects = canvasFacade.getAllBoundingRects();
+        List<Rectangle> existingBoundingRects = grid.getComponents().stream()
+                .map(comp -> comp.getComponentIcon().getBoundingRect()).collect(Collectors.toList());
 
         for(Rectangle gridRect : existingBoundingRects) {
             if (currentComponentRect.getBoundsInParent().intersects(gridRect.getBoundsInParent())) {

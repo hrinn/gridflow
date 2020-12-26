@@ -20,8 +20,8 @@ public class GridBuilderController {
 
     public GridBuilderController(Grid grid, GridFlowEventManager gridFlowEventManager,
                                  WireExtendContext wireExtendContext, BuildMenuData buildMenuData,
-                                 PropertiesData propertiesData, GridCanvasFacade canvasFacade) {
-        this.model = new GridBuilder(grid, propertiesData, canvasFacade);
+                                 PropertiesData propertiesData) {
+        this.model = new GridBuilder(grid, propertiesData);
         this.gridFlowEventManager = gridFlowEventManager;
         this.wireExtendContext = wireExtendContext;
         this.buildData = buildMenuData;

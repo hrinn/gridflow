@@ -97,8 +97,6 @@ public class ConstructionController {
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceWireEventHandler());
 
         // ghost manager events
-        canvasFacade.setEnterComponentHoverEventHandler(ghostManagerController.getEnterComponentHoverEventHandler());
-        canvasFacade.setExitComponentHoverEventHandler(ghostManagerController.getExitComponentHoverEventHandler());
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_MOVED, ghostManagerController.getGhostMoveEventHandler());
 
         // selection events

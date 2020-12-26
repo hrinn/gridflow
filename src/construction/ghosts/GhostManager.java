@@ -4,6 +4,9 @@ import construction.PropertiesData;
 import construction.ComponentType;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
+import javafx.animation.StrokeTransition;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 
@@ -41,6 +44,7 @@ public class GhostManager {
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
         ghostIcon.setAngle(properties.getRotation(), origin);
         canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
+        canvasMaster.addOverlayNode(ghostIcon.getBoundingRect());
     }
 
     public void rotateGhostIcon() {
@@ -49,8 +53,7 @@ public class GhostManager {
     }
 
     public void updateGhostPosition(Point pos) {
-        ghostIcon.getComponentNode().setTranslateX(pos.getX());
-        ghostIcon.getComponentNode().setTranslateY(pos.getY());
+        ghostIcon.setTranslate(pos.getX(), pos.getY());
     }
 
     public void extendGhostWire(Point start, Point end) {
@@ -61,6 +64,12 @@ public class GhostManager {
         canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
     }
 
+    public void showGhostError() {
+        StrokeTransition st = new StrokeTransition(Duration.millis(1000), ghostIcon.getBoundingRect(), Color.RED, ComponentIcon.DEFAULT_BOUNDING_COLOR);
+        st.setCycleCount(1);
+        st.play();
+    }
+
     public void enableGhostIcon() {
         ghostEnabled = true;
     }
@@ -68,14 +77,6 @@ public class GhostManager {
     public void disableGhostIcon() {
         ghostEnabled = false;
         canvasMaster.clearOverlay();
-    }
-
-    public void hideGhostIcon() {
-        ghostIcon.getComponentNode().setOpacity(0);
-    }
-
-    public void revealGhostIcon() {
-        ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
     }
 
     public boolean isGhostEnabled() {

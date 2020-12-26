@@ -23,8 +23,8 @@ public class ComponentIcon {
     private double height;
 
     private final static Color SELECT_COLOR = Color.BLUE;
-    private final static Color DEFAULT_BOUNDING_COLOR = Color.RED;
-    private final static Color DEFAULT_FITTING_COLOR = Color.PURPLE;
+    public final static Color DEFAULT_BOUNDING_COLOR = Color.TRANSPARENT;
+    private final static Color DEFAULT_FITTING_COLOR = Color.TRANSPARENT;
 
     public ComponentIcon() {
         energyOutlineNodes.setMouseTransparent(true);
@@ -101,6 +101,13 @@ public class ComponentIcon {
         boundingRect.getTransforms().add(rotateTransform);
         energyOutlineNodes.getTransforms().add(rotateTransform);
         fittingRect.getTransforms().add(rotateTransform);
+    }
+
+    public void setTranslate(double x, double y) {
+        componentNode.setTranslateX(x);
+        componentNode.setTranslateY(y);
+        boundingRect.setTranslateX(x);
+        boundingRect.setTranslateY(y);
     }
 
     protected void addShapesToEnergyOutlineNode(Group energyOutlineNode, Shape... shapes) {

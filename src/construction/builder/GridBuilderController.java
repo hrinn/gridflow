@@ -40,9 +40,13 @@ public class GridBuilderController {
             wireExtendContext.placing = false;
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
             Point lockedEndPoint = endPoint.clampPerpendicular(wireExtendContext.beginPoint);
-            model.placeWire(wireExtendContext.beginPoint, lockedEndPoint);
+            boolean res = model.placeWire(wireExtendContext.beginPoint, lockedEndPoint);
+            if (res) {
+                gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+            } else {
+                gridFlowEventManager.sendEvent(GridFlowEvent.PlacementError);
+            }
             gridFlowEventManager.sendEvent(GridFlowEvent.WirePlaced);
-            gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
 
         } else { // begin placement
             wireExtendContext.placing = true;
@@ -67,8 +71,12 @@ public class GridBuilderController {
         if (event.isSecondaryButtonDown()) return;
 
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
-        model.placeComponent(coordPoint, buildData.componentType);
-        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged); // should only send this event if place comp returns true
+        boolean res = model.placeComponent(coordPoint, buildData.componentType);
+        if (res) {
+            gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+        } else {
+            gridFlowEventManager.sendEvent(GridFlowEvent.PlacementError);
+        }
 
         event.consume();
     };

@@ -22,20 +22,21 @@ public class GridBuilder {
     }
 
     // This is what runs when a component is placed on the canvas standalone
-    public void placeComponent(Point position, ComponentType componentType) {
+    public boolean placeComponent(Point position, ComponentType componentType) {
         if (isDevice(componentType)) {
-            placeDevice(position, componentType);
+            return placeDevice(position, componentType);
         }
         else if (isSource(componentType)) {
-            placeSource(position, componentType);
+            return placeSource(position, componentType);
         }
+        return false;
     }
 
-    public void placeDevice(Point position, ComponentType componentType) {
+    public boolean placeDevice(Point position, ComponentType componentType) {
         // check for overlap conflicts! return if there is a conflict
 
         Device device = createDevice(position, componentType);
-        if (device == null) return;
+        if (device == null) return false;
         device.setAngle(properties.getRotation());
 
         Wire inWire = new Wire(position);
@@ -47,12 +48,10 @@ public class GridBuilder {
         device.connectOutWire(outWire);
         outWire.connect(device);
 
-        if(!verifyPlacement(device)) {
-            System.out.println("Failure to place Device");
-            return;
-        }
+        if(!verifyPlacement(device)) return false;
 
         grid.addComponents(device, inWire, outWire);
+        return true;
     }
 
     public Device createDevice(Point point, ComponentType componentType) {
@@ -67,7 +66,7 @@ public class GridBuilder {
         };
     }
 
-    public void placeSource(Point position, ComponentType componentType) {
+    public boolean placeSource(Point position, ComponentType componentType) {
 
         switch (componentType) {
             case POWER_SOURCE -> {
@@ -79,10 +78,7 @@ public class GridBuilder {
                 powerSource.connectWire(outWire);
                 outWire.connect(powerSource);
 
-                if(!verifyPlacement(powerSource)) {
-                    System.out.println("Failure to place PowerSource");
-                    return;
-                }
+                if(!verifyPlacement(powerSource)) return false;
 
                 grid.addComponents(powerSource, outWire);
             }
@@ -99,24 +95,19 @@ public class GridBuilder {
                 turbine.connectBottomOutput(bottomWire);
                 bottomWire.connect(turbine);
 
-                if(!verifyPlacement(turbine)) {
-                    System.out.println("Failure to place Turbine");
-                    return;
-                }
+                if(!verifyPlacement(turbine)) return false;
 
                 grid.addComponents(topWire, bottomWire, turbine);
             }
         }
-
+        return true;
     }
 
-    public void placeWire(Point startPosition, Point endPosition) {
+    public boolean placeWire(Point startPosition, Point endPosition) {
         Wire wire = new Wire(startPosition, endPosition);
-        if (!verifyPlacement(wire))  {
-            System.out.println("cannot place");
-            return;
-        }
+        if (!verifyPlacement(wire))  return false;
         grid.addComponent(wire);
+        return true;
     }
 
     // connect a component to an existing wire

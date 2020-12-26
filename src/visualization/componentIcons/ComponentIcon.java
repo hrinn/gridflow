@@ -15,6 +15,7 @@ import javafx.scene.transform.Rotate;
 public class ComponentIcon {
 
     private final Rectangle boundingRect = new Rectangle();
+    private final Rectangle fittingRect = new Rectangle();
     private final Group iconNode = new Group();
     private final Text componentName = new Text();
     private final Group componentNode = new Group(iconNode, componentName);
@@ -22,14 +23,21 @@ public class ComponentIcon {
     private double height;
 
     private final static Color SELECT_COLOR = Color.BLUE;
-    private final static Color DEFAULT_BORDER_COLOR = Color.RED;
+    private final static Color DEFAULT_BOUNDING_COLOR = Color.RED;
+    private final static Color DEFAULT_FITTING_COLOR = Color.PURPLE;
 
     public ComponentIcon() {
         energyOutlineNodes.setMouseTransparent(true);
         componentNode.setMouseTransparent(true);
+        fittingRect.setMouseTransparent(true);
+
         boundingRect.setFill(Color.TRANSPARENT);
-        boundingRect.setStroke(DEFAULT_BORDER_COLOR);
+        boundingRect.setStroke(DEFAULT_BOUNDING_COLOR);
         boundingRect.setOpacity(0.5);
+
+        fittingRect.setFill(Color.TRANSPARENT);
+        fittingRect.setStroke(DEFAULT_FITTING_COLOR);
+        fittingRect.setOpacity(0.5);
     }
 
     public void setComponentIconID(String id) {
@@ -42,19 +50,28 @@ public class ComponentIcon {
 
     public void setBoundingRect(Dimensions dimensions, Point position) {
         this.height = dimensions.getHeight();
-        Point topLeft = position.translate(-dimensions.getAdjustedWidth()/2, -dimensions.getTopPadding());
-        boundingRect.setX(topLeft.getX());
-        boundingRect.setY(topLeft.getY());
-
-        boundingRect.setWidth(dimensions.getAdjustedWidth());
-        boundingRect.setHeight(dimensions.getAdjustedHeight());
+        setRectByDimensions(boundingRect, dimensions, position);
 
         Point midRight = position.translate(dimensions.getAdjustedWidth()/2, dimensions.getAdjustedHeight()/2);
         setComponentNamePosition(midRight);
     }
 
+    public void setFittingRect(Dimensions dimensions, Point position) {
+        setRectByDimensions(fittingRect, dimensions, position);
+    }
+
+    private void setRectByDimensions(Rectangle rect, Dimensions dimensions, Point position) {
+        double leftWidth = dimensions.getWidth()/2 + dimensions.getLeftPadding();
+        Point topLeft = position.translate(-leftWidth, -dimensions.getTopPadding());
+        rect.setX(topLeft.getX());
+        rect.setY(topLeft.getY());
+
+        rect.setWidth(dimensions.getAdjustedWidth());
+        rect.setHeight(dimensions.getAdjustedHeight());
+    }
+
     public void setSelect(boolean select) {
-        boundingRect.setStroke(select ? SELECT_COLOR : DEFAULT_BORDER_COLOR);
+        boundingRect.setStroke(select ? SELECT_COLOR : DEFAULT_BOUNDING_COLOR);
     }
 
     private void setComponentNamePosition(Point position) {
@@ -64,8 +81,7 @@ public class ComponentIcon {
     }
 
     public void setComponentName(String name) {
-        String tabbedName = name;//.replace(' ', '\n');
-        componentName.setText(tabbedName);
+        componentName.setText(name);
         componentName.setFont(Font.font(null, 10));
     }
 
@@ -73,6 +89,7 @@ public class ComponentIcon {
         componentNode.getTransforms().clear();
         energyOutlineNodes.getTransforms().clear();
         boundingRect.getTransforms().clear();
+        fittingRect.getTransforms().clear();
     }
 
     public void setAngle(double angle, Point position) {
@@ -83,6 +100,7 @@ public class ComponentIcon {
         componentNode.getTransforms().add(rotateTransform);
         boundingRect.getTransforms().add(rotateTransform);
         energyOutlineNodes.getTransforms().add(rotateTransform);
+        fittingRect.getTransforms().add(rotateTransform);
     }
 
     protected void addShapesToEnergyOutlineNode(Group energyOutlineNode, Shape... shapes) {
@@ -117,6 +135,10 @@ public class ComponentIcon {
 
     public Rectangle getBoundingRect() {
         return boundingRect;
+    }
+
+    public Rectangle getFittingRect() {
+        return fittingRect;
     }
 
     public double getHeight() {

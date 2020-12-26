@@ -39,6 +39,7 @@ public abstract class Component {
     public void setAngle(double angle) {
         if (angle % 90 != 0) return;
         this.angle = angle;
+        getComponentIcon().setAngle(angle, getPosition());
     }
 
     public abstract ComponentIcon getComponentIcon();

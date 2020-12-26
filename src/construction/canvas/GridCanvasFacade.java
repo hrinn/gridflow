@@ -54,6 +54,7 @@ public class GridCanvasFacade {
         canvas.componentGroup.getChildren().add(componentNode);
         canvas.energyOutlineGroup.getChildren().add(energyOutlineNodes);
         canvas.boundingRectGroup.getChildren().add(boundingRect);
+        canvas.boundingRectGroup.getChildren().add(icon.getFittingRect());
     }
 
     public void addOverlayNode(Node overlayNode) {

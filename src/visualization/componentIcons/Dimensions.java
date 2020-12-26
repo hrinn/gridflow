@@ -25,6 +25,24 @@ public class Dimensions {
         this.height = unitHeight * Globals.UNIT;
     }
 
+    public Dimensions(double unitWidth, double unitHeight, double unitPadding) {
+        this.width = unitWidth * Globals.UNIT;
+        this.height = unitHeight * Globals.UNIT;
+        this.topPadding = unitPadding * Globals.UNIT;
+        this.bottomPadding = unitPadding * Globals.UNIT;
+        this.rightPadding = unitPadding * Globals.UNIT;
+        this.leftPadding = unitPadding * Globals.UNIT;
+    }
+
+    public Dimensions(double unitWidth, double unitHeight, double unitTopPadding, double unitBottomPadding, double unitLeftPadding, double unitRightPadding) {
+        this.width = unitWidth * Globals.UNIT;
+        this.height = unitHeight * Globals.UNIT;
+        this.topPadding = unitTopPadding * Globals.UNIT;
+        this.bottomPadding = unitBottomPadding * Globals.UNIT;
+        this.rightPadding = unitRightPadding * Globals.UNIT;
+        this.leftPadding = unitLeftPadding * Globals.UNIT;
+    }
+
     public double getAdjustedWidth() {
         return width + leftPadding + rightPadding;
     }
@@ -37,38 +55,15 @@ public class Dimensions {
         return topPadding;
     }
 
+    public double getLeftPadding() {
+        return leftPadding;
+    }
+
     public double getHeight() {
         return height;
     }
 
-    public void setWidth(double unitWidth) {
-        this.width = unitWidth * Globals.UNIT;
-    }
-
-    public void setHeight(double unitHeight) {
-        this.height = unitHeight * Globals.UNIT;
-    }
-
-    public void setPadding(double unitPadding) {
-        this.topPadding = unitPadding * Globals.UNIT;
-        this.bottomPadding = unitPadding * Globals.UNIT;
-        this.rightPadding = unitPadding * Globals.UNIT;
-        this.leftPadding = unitPadding * Globals.UNIT;
-    }
-
-    public void setTopPadding(double unitTopPadding) {
-        this.topPadding = unitTopPadding * Globals.UNIT;
-    }
-
-    public void setBottomPadding(double unitBottomPadding) {
-        this.bottomPadding = unitBottomPadding * Globals.UNIT;
-    }
-
-    public void setRightPadding(double unitRightPadding) {
-        this.rightPadding = unitRightPadding * Globals.UNIT;
-    }
-
-    public void setLeftPadding(double unitLeftPadding) {
-        this.leftPadding = unitLeftPadding * Globals.UNIT;
+    public double getWidth() {
+        return width;
     }
 }

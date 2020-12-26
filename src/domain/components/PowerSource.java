@@ -11,9 +11,11 @@ import java.util.UUID;
 public class PowerSource extends Source {
 
     private Wire outWire; // this is on the bottom of the source when oriented up
+    private SourceIcon icon;
 
     public PowerSource(String name, Point position, boolean on) {
         super(name, position, on);
+        createComponentIcon();
     }
 
     public void connectWire(Wire outWire) {
@@ -26,6 +28,12 @@ public class PowerSource extends Source {
     }
 
     @Override
+    public void toggle() {
+        setOn(!isOn());
+        createComponentIcon();
+    }
+
+    @Override
     public void delete() {
         outWire.disconnect(getId());
     }
@@ -35,13 +43,17 @@ public class PowerSource extends Source {
         return List.of(outWire);
     }
 
-    @Override
-    public ComponentIcon getComponentIcon() {
-        SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn());
+    private void createComponentIcon() {
+        icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn());
         icon.setSourceNodeEnergyState(isOn());
-        icon.setWireEnergyState(isOutWireEnergized(), 0);
+        icon.setWireEnergyState(false, 0);
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
+    }
+
+    @Override
+    public ComponentIcon getComponentIcon() {
+        icon.setWireEnergyState(isOutWireEnergized(), 0);
         return icon;
     }
 }

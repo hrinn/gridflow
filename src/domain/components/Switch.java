@@ -18,6 +18,7 @@ public class Switch extends Device implements ICloseable, ILockable {
         this.closedByDefault = closedByDefault;
         this.closed = closedByDefault;
         this.locked = false;
+        createComponentIcon();
     }
 
     public void toggleLocked() {
@@ -30,16 +31,16 @@ public class Switch extends Device implements ICloseable, ILockable {
     }
 
     private void createComponentIcon() {
-        this.icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
+        icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
+        icon.setDeviceEnergyStates(false, false);
+        icon.setComponentIconID(getId().toString());
+        icon.setComponentName(getName());
+        icon.setAngle(getAngle(), getPosition());
     }
 
     @Override
     public ComponentIcon getComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
-        icon.setComponentIconID(getId().toString());
-        icon.setComponentName(getName());
-        icon.setAngle(getAngle(), getPosition());
         return icon;
     }
 
@@ -56,5 +57,6 @@ public class Switch extends Device implements ICloseable, ILockable {
     @Override
     public void toggle() {
         closed = !closed;
+        createComponentIcon();
     }
 }

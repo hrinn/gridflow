@@ -1,9 +1,7 @@
 package construction.builder;
 
-import application.events.GridFlowEvent;
-import application.events.GridFlowEventManager;
+import application.events.*;
 import construction.*;
-import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
@@ -40,9 +38,13 @@ public class GridBuilderController {
             wireExtendContext.placing = false;
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
             Point lockedEndPoint = endPoint.clampPerpendicular(wireExtendContext.beginPoint);
-            model.placeWire(wireExtendContext.beginPoint, lockedEndPoint);
-            gridFlowEventManager.sendEvent(GridFlowEvent.WirePlaced);
-            gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+            boolean res = model.placeWire(wireExtendContext.beginPoint, lockedEndPoint);
+            if (res) {
+                gridFlowEventManager.sendEvent(new GridChangedEvent());
+            } else {
+                gridFlowEventManager.sendEvent(new PlacementFailedEvent());
+            }
+            gridFlowEventManager.sendEvent(new WirePlacedEvent());
 
         } else { // begin placement
             wireExtendContext.placing = true;
@@ -56,7 +58,7 @@ public class GridBuilderController {
 
         String targetId = ((Node)event.getTarget()).getId();
         model.toggleComponent(targetId);
-        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
 
         event.consume();
 
@@ -67,8 +69,12 @@ public class GridBuilderController {
         if (event.isSecondaryButtonDown()) return;
 
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
-        model.placeComponent(coordPoint, buildData.componentType);
-        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged); // should only send this event if place comp returns true
+        boolean res = model.placeComponent(coordPoint, buildData.componentType);
+        if (res) {
+            gridFlowEventManager.sendEvent(new GridChangedEvent());
+        } else {
+            gridFlowEventManager.sendEvent(new PlacementFailedEvent());
+        }
 
         event.consume();
     };

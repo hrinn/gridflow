@@ -18,8 +18,6 @@ public class GridCanvasFacade {
 
     // Component Event Handlers
     private EventHandler<MouseEvent> toggleComponentEventHandler;
-    private EventHandler<MouseEvent> enterComponentHoverEventHandler;
-    private EventHandler<MouseEvent> exitComponentHoverEventHandler;
     private EventHandler<MouseEvent> selectSingleComponentHandler;
 
     public GridCanvasFacade() {
@@ -46,10 +44,6 @@ public class GridCanvasFacade {
         Rectangle boundingRect = icon.getBoundingRect();
         boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
         boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, selectSingleComponentHandler);
-        if (!(icon instanceof WireIcon)) {
-            boundingRect.setOnMouseEntered(enterComponentHoverEventHandler);
-            boundingRect.setOnMouseExited(exitComponentHoverEventHandler);
-        }
 
         canvas.componentGroup.getChildren().add(componentNode);
         canvas.energyOutlineGroup.getChildren().add(energyOutlineNodes);
@@ -71,10 +65,6 @@ public class GridCanvasFacade {
         canvas.boundingRectGroup.getChildren().clear();
     }
 
-    public void setCanvasCursor(Cursor cursor) {
-        canvas.setCursor(cursor);
-    }
-
     public void addCanvasEventHandler(EventType eventType, EventHandler eventHandler) {
         canvas.addEventHandler(eventType, eventHandler);
     }
@@ -89,14 +79,6 @@ public class GridCanvasFacade {
 
     public void setToggleComponentEventHandler(EventHandler<MouseEvent> eventHandler) {
         this.toggleComponentEventHandler = eventHandler;
-    }
-
-    public void setEnterComponentHoverEventHandler(EventHandler<MouseEvent> eventHandler) {
-        this.enterComponentHoverEventHandler = eventHandler;
-    }
-
-    public void setExitComponentHoverEventHandler(EventHandler<MouseEvent> eventHandler) {
-        this.exitComponentHoverEventHandler = eventHandler;
     }
 
     public void setSelectSingleComponentHandler(EventHandler<MouseEvent> selectSingleComponentHandler) {

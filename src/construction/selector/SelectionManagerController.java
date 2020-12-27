@@ -1,5 +1,6 @@
 package construction.selector;
 
+import application.events.GridChangedEvent;
 import application.events.GridFlowEvent;
 import application.events.GridFlowEventManager;
 import construction.BuildMenuData;
@@ -72,7 +73,7 @@ public class SelectionManagerController {
         if (event.getCode() != KeyCode.DELETE) return;
 
         model.deleteSelectedComponents();
-        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged);
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
         event.consume();
     };
 

@@ -51,7 +51,7 @@ public class GridFlowApp extends Application {
 
         // Load components into grid
         grid.loadComponents(DevUtils.createTestComponents());
-        gridFlowEventManager.sendEvent(GridFlowEvent.GridChanged); // build would do this later
+        gridFlowEventManager.sendEvent(new GridChangedEvent()); // build would do this later
 
         // Init GUI
         initGui(primaryStage, constructionController.getCanvasFacade().getCanvas(), buildMenuView, baseUIViewLoader.load());

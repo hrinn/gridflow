@@ -5,6 +5,7 @@ import construction.*;
 import domain.Grid;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
+import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
@@ -69,6 +70,7 @@ public class GridBuilderController {
         if (event.isSecondaryButtonDown()) return;
 
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
+
         boolean res = model.placeComponent(coordPoint, buildData.componentType);
         if (res) {
             gridFlowEventManager.sendEvent(new GridChangedEvent());

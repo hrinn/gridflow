@@ -66,6 +66,9 @@ public class ComponentIcon {
     private void setRectByDimensions(Rectangle rect, Dimensions dimensions, Point position) {
         double leftWidth = dimensions.getWidth()/2 + dimensions.getLeftPadding();
         Point topLeft = position.translate(-leftWidth, -dimensions.getTopPadding());
+        if(dimensions.isFlipped()) {
+            topLeft = position.translate(-leftWidth,  - (dimensions.getHeight() + dimensions.getTopPadding()));
+        }
         rect.setX(topLeft.getX());
         rect.setY(topLeft.getY());
 

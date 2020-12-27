@@ -2,7 +2,6 @@ package construction.builder;
 
 import construction.PropertiesData;
 import construction.ComponentType;
-import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
@@ -34,25 +33,52 @@ public class GridBuilder {
         return false;
     }
 
+
     public boolean placeDevice(Point position, ComponentType componentType) {
-        // check for overlap conflicts! return if there is a conflict
 
         Device device = createDevice(position, componentType);
         if (device == null) return false;
         device.setAngle(properties.getRotation());
 
+        if(!verifyPlacement(device)) return false;
+
         Wire inWire = new Wire(position);
-        device.connectInWire(inWire);
-        inWire.connect(device);
+        Component conflictComponent = verifySingleWirePosition(inWire);
+        if(conflictComponent == null) { // use new wire
+            device.connectInWire(inWire);
+            inWire.connect(device);
+            grid.addComponent(inWire);
+        }
+        else if (conflictComponent instanceof Wire){
+            inWire = (Wire) conflictComponent;
+            device.connectInWire(inWire);
+            inWire.connect(device);
+        }
+        else{
+            conflictComponent.getComponentIcon().showError();
+            return false;
+        }
+
 
         Point outPoint = position.translate(0, device.getComponentIcon().getHeight());
         Wire outWire = new Wire(outPoint.rotate(properties.getRotation(), position));
-        device.connectOutWire(outWire);
-        outWire.connect(device);
+        conflictComponent = verifySingleWirePosition(outWire);
+        if(conflictComponent == null) { // use new wire
+            device.connectOutWire(outWire);
+            outWire.connect(device);
+            grid.addComponent(outWire);
+        }
+        else if (conflictComponent instanceof Wire){ // there is a wire conflict, connect this wire
+            outWire = (Wire) conflictComponent;
+            device.connectOutWire(outWire);
+            outWire.connect(device);
+        }
+        else{
+            conflictComponent.getComponentIcon().showError();
+            return false;
+        }
 
-        if(!verifyPlacement(device)) return false;
-
-        grid.addComponents(device, inWire, outWire);
+        grid.addComponent(device);
         return true;
     }
 
@@ -74,32 +100,71 @@ public class GridBuilder {
             case POWER_SOURCE -> {
                 PowerSource powerSource = new PowerSource(properties.getName(), position, false);
                 powerSource.setAngle(properties.getRotation());
-
-                Wire outWire = new Wire(position.translate(0, powerSource.getComponentIcon().getHeight())
-                    .rotate(powerSource.getAngle(), position));
-                powerSource.connectWire(outWire);
-                outWire.connect(powerSource);
-
                 if(!verifyPlacement(powerSource)) return false;
 
-                grid.addComponents(powerSource, outWire);
+                Wire outWire = new Wire(position);
+                Component conflictComponent = verifySingleWirePosition(outWire);
+                if(conflictComponent == null) { // use new wire
+                    powerSource.connectWire(outWire);
+                    outWire.connect(powerSource);
+                    grid.addComponent(outWire);
+                }
+                else if (conflictComponent instanceof Wire){ // there is a wire conflict, connect this wire
+                    outWire = (Wire) conflictComponent;
+                    powerSource.connectWire(outWire);
+                    outWire.connect(powerSource);
+                }
+                else{
+                    conflictComponent.getComponentIcon().showError();
+                    return false;
+                }
+
+
+                grid.addComponents(powerSource);
             }
             case TURBINE -> {
                 Turbine turbine = new Turbine(properties.getName(), position, false);
                 turbine.setAngle(properties.getRotation());
-
-                Wire topWire = new Wire(position);
-                turbine.connectTopOutput(topWire);
-                topWire.connect(turbine);
-
-                Wire bottomWire = new Wire(position.translate(0, turbine.getComponentIcon().getHeight())
-                        .rotate(turbine.getAngle(), position));
-                turbine.connectBottomOutput(bottomWire);
-                bottomWire.connect(turbine);
-
                 if(!verifyPlacement(turbine)) return false;
 
-                grid.addComponents(topWire, bottomWire, turbine);
+                Wire topWire = new Wire(position);
+                Component conflictComponent = verifySingleWirePosition(topWire);
+                if(conflictComponent == null) { // use new wire
+                    turbine.connectTopOutput(topWire);
+                    topWire.connect(turbine);
+                    grid.addComponent(topWire);
+                }
+                else if (conflictComponent instanceof Wire){
+                    topWire = (Wire) conflictComponent;
+                    turbine.connectTopOutput(topWire);
+                    topWire.connect(turbine);
+                }
+                else{
+                    conflictComponent.getComponentIcon().showError();
+                    return false;
+                }
+
+                Point bottomPoint = position.translate(0, turbine.getComponentIcon().getHeight())
+                        .rotate(turbine.getAngle(), position);
+                Wire bottomWire = new Wire(bottomPoint);
+                conflictComponent = verifySingleWirePosition(bottomWire);
+                if(conflictComponent == null) { // use new wire
+                    turbine.connectBottomOutput(bottomWire);
+                    bottomWire.connect(turbine);
+                    grid.addComponent(bottomWire);
+                }
+                else if (conflictComponent instanceof Wire){ // there is a wire conflict, connect this wire
+                    bottomWire = (Wire) conflictComponent;
+                    turbine.connectBottomOutput(bottomWire);
+                    bottomWire.connect(turbine);
+                }
+                else{
+                    conflictComponent.getComponentIcon().showError();
+                    return false;
+                }
+
+
+                grid.addComponents(turbine);
             }
         }
         return true;
@@ -107,31 +172,84 @@ public class GridBuilder {
 
     public boolean placeWire(Point startPosition, Point endPosition) {
         Wire wire = new Wire(startPosition, endPosition);
-        if (!verifyPlacement(wire)) return false;
-        grid.addComponent(wire);
+        ArrayList<Component> wireConflicts = new ArrayList<>();
+        wireConflicts.addAll(verifyWirePlacement(wire));
+        if(wireConflicts.size() == 0) {
+            grid.addComponent(wire);
+        }
+        else if(!(wireConflicts.get(0) instanceof Wire)) { // a nonWire component is returned
+            return false;
+        }
+        else {
+            for(Component conflictingComponent : wireConflicts) {
+                if(conflictingComponent instanceof Wire)
+                    ((Wire) conflictingComponent).connect(wire);
+                    wire.connect(conflictingComponent);
+            }
+            grid.addComponent(wire);
+        }
         return true;
     }
 
-    // connect a component to an existing wire
-    public void connectComponent() {
 
+    public List<Component> verifyWirePlacement(Component component) {
+        // returns true if placement is valid, false if placement is invalid
+        ArrayList<Component> wireConflicts = new ArrayList<>();
+        ArrayList<Component> nonWireConflicts = new ArrayList<>();
+
+        Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();
+
+        List<ComponentIcon> existingComponents = grid.getComponents().stream()
+                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
+
+        for(ComponentIcon comp : existingComponents) {
+            if (currentComponentRect.getBoundsInParent().intersects(comp.getFittingRect().getBoundsInParent())) {
+                Component conflictingComponent = grid.getComponent(comp.getID());
+                if(conflictingComponent instanceof Wire) {
+                    wireConflicts.add(conflictingComponent);
+                }
+                else {
+                    comp.showError();
+                    nonWireConflicts.add(conflictingComponent);
+                    return nonWireConflicts;
+                }
+            }
+        }
+        return wireConflicts;
     }
 
     public boolean verifyPlacement(Component component) {
         // returns true if placement is valid, false if placement is invalid
         int conflicts = 0;
 
-        Rectangle currentComponentRect = component.getComponentIcon().getBoundingRect();
+        Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();
+
         List<ComponentIcon> existingComponents = grid.getComponents().stream()
                 .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
 
         for(ComponentIcon comp : existingComponents) {
-            if (currentComponentRect.getBoundsInParent().intersects(comp.getBoundingRect().getBoundsInParent())) {
+            if (currentComponentRect.getBoundsInParent().intersects(comp.getFittingRect().getBoundsInParent())) {
                 comp.showError();
                 conflicts = conflicts + 1;
             }
         }
         return conflicts == 0;
+    }
+
+
+    public Component verifySingleWirePosition(Component component) {
+        Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();
+
+        List<ComponentIcon> existingComponents = grid.getComponents().stream()
+                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
+
+        for(ComponentIcon comp : existingComponents) {
+            if (currentComponentRect.getBoundsInParent().intersects(comp.getFittingRect().getBoundsInParent())) {
+                Component conflictingComponent = grid.getComponent(comp.getID());
+                return conflictingComponent;
+            }
+        }
+        return null;
     }
 
     public void toggleComponent(String componentId) {

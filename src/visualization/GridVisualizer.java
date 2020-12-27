@@ -18,7 +18,7 @@ public class GridVisualizer {
         canvasMaster.clearComponentGroups();
         // maybe set up the complicated component icon display stuff in here instead of component class
         for (Component component : grid.getComponents()) {
-            canvasMaster.addComponentIcon(component.getComponentIcon());
+            canvasMaster.addComponentIcon(component.getUpdatedComponentIcon());
         }
     }
 

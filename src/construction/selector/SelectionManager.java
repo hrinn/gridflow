@@ -9,8 +9,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -47,7 +45,7 @@ public class SelectionManager {
 
     private void setSelect(String ID, boolean select) {
         Component comp = grid.getComponent(ID);
-        if (comp != null) comp.getComponentIcon().setSelect(select);
+        if (comp != null) comp.getUpdatedComponentIcon().setSelect(select);
     }
 
     public void deSelectAll() {
@@ -100,7 +98,7 @@ public class SelectionManager {
     private List<String> getSelectedNodeIDs() {
         List<String> IDList = new ArrayList<>();
         List<Rectangle> existingBoundingRects = grid.getComponents().stream().map(comp ->
-            comp.getComponentIcon().getBoundingRect()
+            comp.getUpdatedComponentIcon().getBoundingRect()
         ).collect(Collectors.toList());
 
         for (Rectangle boundingRect : existingBoundingRects) {

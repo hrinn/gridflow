@@ -9,7 +9,6 @@ public class Jumper extends Device implements ICloseable {
 
     private boolean closed;
     private boolean closedByDefault;
-    private DeviceIcon icon;
 
     public Jumper(String name, Point position, boolean closedByDefault) {
         super(name, position);
@@ -19,15 +18,17 @@ public class Jumper extends Device implements ICloseable {
     }
 
     private void createComponentIcon() {
-        icon = ComponentIconCreator.getJumperIcon(getPosition(), isClosed());
+        DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), isClosed());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
         icon.setAngle(getAngle(), getPosition());
+        setComponentIcon(icon);
     }
 
     @Override
-    public ComponentIcon getComponentIcon() {
+    public ComponentIcon getUpdatedComponentIcon() {
+        DeviceIcon icon = (DeviceIcon) getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         return icon;
     }

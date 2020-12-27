@@ -18,7 +18,6 @@ public class Wire extends Component {
     private Point start;
     private Point end;
     private boolean energized;
-    private WireIcon icon;
 
     public Wire(Point p1, Point p2) {
         super("", Point.midpoint(p1, p2));
@@ -95,13 +94,15 @@ public class Wire extends Component {
     }
 
     private void createComponentIcon() {
-        icon = ComponentIconCreator.getWireIcon(start, end);
+        WireIcon icon = ComponentIconCreator.getWireIcon(start, end);
         icon.setWireIconEnergyState(false);
         icon.setComponentIconID(getId().toString());
+        setComponentIcon(icon);
     }
 
     @Override
-    public ComponentIcon getComponentIcon() {
+    public ComponentIcon getUpdatedComponentIcon() {
+        WireIcon icon = (WireIcon) getComponentIcon();
         icon.setWireIconEnergyState(energized);
         return icon;
     }

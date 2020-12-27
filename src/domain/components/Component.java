@@ -12,6 +12,8 @@ public abstract class Component {
     private String name;
     private Point position;
     private double angle;
+    private ComponentIcon icon;
+
 
     public Component(String name, Point position) {
         this.id = UUID.randomUUID();
@@ -39,10 +41,18 @@ public abstract class Component {
     public void setAngle(double angle) {
         if (angle % 90 != 0) return;
         this.angle = angle;
-        getComponentIcon().setAngle(angle, getPosition());
+        getUpdatedComponentIcon().setAngle(angle, getPosition());
     }
 
-    public abstract ComponentIcon getComponentIcon();
+    public abstract ComponentIcon getUpdatedComponentIcon();
+
+    public ComponentIcon getComponentIcon() {
+        return icon;
+    }
+
+    protected void setComponentIcon(ComponentIcon icon) {
+        this.icon = icon;
+    }
 
     public abstract List<Component> getAccessibleConnections();
 

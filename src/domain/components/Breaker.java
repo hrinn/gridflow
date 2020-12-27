@@ -10,7 +10,6 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
     private Voltage voltage;
     private boolean closed;
     private boolean closedByDefault;
-    private DeviceIcon icon;
 
     public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault) {
         super(name, position);
@@ -21,6 +20,7 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
     }
 
     private void createComponentIcon() {
+        DeviceIcon icon;
         if (voltage == Voltage.KV12) {
             icon = ComponentIconCreator.get12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
         } else {
@@ -30,6 +30,7 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
+        setComponentIcon(icon);
     }
 
     @Override
@@ -38,7 +39,8 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
     }
 
     @Override
-    public ComponentIcon getComponentIcon() {
+    public ComponentIcon getUpdatedComponentIcon() {
+        DeviceIcon icon = (DeviceIcon)getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
         return icon;
     }

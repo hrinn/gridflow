@@ -44,15 +44,17 @@ public class PowerSource extends Source {
     }
 
     private void createComponentIcon() {
-        icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn());
+        SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
+        setComponentIcon(icon);
     }
 
     @Override
-    public ComponentIcon getComponentIcon() {
+    public ComponentIcon getUpdatedComponentIcon() {
+        SourceIcon icon = (SourceIcon) getComponentIcon();
         icon.setWireEnergyState(isOutWireEnergized(), 0);
         return icon;
     }

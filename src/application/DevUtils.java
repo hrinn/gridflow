@@ -101,7 +101,7 @@ public class DevUtils {
         dd105aw.connect(nrw);
 
         // power source
-        PowerSource source = new PowerSource("A", canvasPos(0, 15), true);
+        PowerSource source = new PowerSource("A", canvasPos(0, 12), true);
         source.connectWire(nrw);
 
         return List.of(w3, w5, w7, w8, w9, dd3, dd5, dd7, dd8, dd9, bbus, dd1main, dd1mw, xdd1, xw, dd101w,

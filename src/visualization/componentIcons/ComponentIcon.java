@@ -26,7 +26,7 @@ public class ComponentIcon {
     private final StrokeTransition errorTransition = new StrokeTransition(Duration.millis(1000), getBoundingRect(), Color.RED, DEFAULT_BOUNDING_COLOR);
 
     private final static Color SELECT_COLOR = Color.BLUE;
-    public final static Color DEFAULT_BOUNDING_COLOR = Color.TRANSPARENT;
+    public final static Color DEFAULT_BOUNDING_COLOR = Color.RED;
     private final static Color DEFAULT_FITTING_COLOR = Color.TRANSPARENT;
 
     public ComponentIcon() {
@@ -66,6 +66,9 @@ public class ComponentIcon {
     private void setRectByDimensions(Rectangle rect, Dimensions dimensions, Point position) {
         double leftWidth = dimensions.getWidth()/2 + dimensions.getLeftPadding();
         Point topLeft = position.translate(-leftWidth, -dimensions.getTopPadding());
+        if(dimensions.isFlipped()) {
+            topLeft = position.translate(-leftWidth,  - (dimensions.getHeight() + dimensions.getTopPadding()));
+        }
         rect.setX(topLeft.getX());
         rect.setY(topLeft.getY());
 

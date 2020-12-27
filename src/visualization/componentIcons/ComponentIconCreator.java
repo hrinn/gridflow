@@ -223,20 +223,20 @@ public class ComponentIconCreator {
     public static SourceIcon getPowerSourceIcon(Point p, String name, boolean isOn) {
         SourceIcon powerSourceIcon = new SourceIcon();
 
-        Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, 0),
-                p.translate(Globals.UNIT, 2 * Globals.UNIT), Color.RED, Color.BLACK);
+        Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
+                p.translate(Globals.UNIT, -Globals.UNIT), Color.RED, Color.BLACK);
         powerSourceIcon.addSourceNodeShapes(sourceBox);
 
-        Line outLine = createLine(p.translate(0, 2 * Globals.UNIT), p.translate(0, 3 * Globals.UNIT));
+        Line outLine = createLine(p.translate(0, 0), p.translate(0, -Globals.UNIT));
         powerSourceIcon.addOutputLine(outLine);
 
         if (!isOn) sourceBox.setFill(Color.LIME);
-        Point center = p.translate(0, Globals.UNIT);
+        Point center = p.translate(0, -2 * Globals.UNIT);
         Text text = createText(center, name, Color.BLACK, 12);
         powerSourceIcon.addStaticNodeShapes(text);
 
-        powerSourceIcon.setBoundingRect(new Dimensions(2, 3, 0, -0.25, 0, 0), p);
-        powerSourceIcon.setFittingRect(new Dimensions(2, 3, 0, -1, 0, 0), p);
+        powerSourceIcon.setBoundingRect(new Dimensions(2, 3, 0, -0.25, 0, 0, true), p);
+        powerSourceIcon.setFittingRect(new Dimensions(2, 3, 0, -1, 0, 0, true), p);
         return powerSourceIcon;
     }
 

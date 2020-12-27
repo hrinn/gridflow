@@ -93,6 +93,7 @@ public class ConstructionController {
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());
+//        canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceComponentEventHandler());
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceWireEventHandler());
 

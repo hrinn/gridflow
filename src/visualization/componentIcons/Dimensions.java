@@ -13,6 +13,7 @@ public class Dimensions {
     private double bottomPadding = DEFAULT_UNIT_PADDING * Globals.UNIT;
     private double rightPadding = DEFAULT_UNIT_PADDING * Globals.UNIT;
     private double leftPadding = DEFAULT_UNIT_PADDING * Globals.UNIT;
+    private boolean flip = false;
 
     // most common dimensions
     public Dimensions() {
@@ -43,6 +44,20 @@ public class Dimensions {
         this.leftPadding = unitLeftPadding * Globals.UNIT;
     }
 
+    public Dimensions(double unitWidth, double unitHeight, double unitTopPadding, double unitBottomPadding, double unitLeftPadding, double unitRightPadding, boolean flip) {
+        this.width = unitWidth * Globals.UNIT;
+        this.height = unitHeight * Globals.UNIT;
+        this.topPadding = unitTopPadding * Globals.UNIT;
+        this.bottomPadding = unitBottomPadding * Globals.UNIT;
+        this.rightPadding = unitRightPadding * Globals.UNIT;
+        this.leftPadding = unitLeftPadding * Globals.UNIT;
+        this.flip = flip;
+    }
+
+    public boolean isFlipped() {
+        return flip;
+    }
+
     public double getAdjustedWidth() {
         return width + leftPadding + rightPadding;
     }
@@ -53,6 +68,10 @@ public class Dimensions {
 
     public double getTopPadding() {
         return topPadding;
+    }
+
+    public double getBottomPadding() {
+        return bottomPadding;
     }
 
     public double getLeftPadding() {

@@ -19,9 +19,10 @@ public class GridCanvas extends Pane {
     public final Group energyOutlineGroup = new Group();
     public final Group boundingRectGroup = new Group();
     public final Group overlayGroup = new Group();
+    public final Group backgroundGrid = new Group();
 
     public GridCanvas() {
-        getChildren().addAll(energyOutlineGroup, componentGroup, boundingRectGroup, overlayGroup);
+        getChildren().addAll(backgroundGrid, energyOutlineGroup, componentGroup, boundingRectGroup, overlayGroup);
         addBackgroundGrid();
 
         setPrefSize(unitWidth * Globals.UNIT, unitHeight * Globals.UNIT);
@@ -45,7 +46,6 @@ public class GridCanvas extends Pane {
     }
 
     private void addBackgroundGrid() {
-        Group backgroundGrid = new Group();
         double width = unitWidth * Globals.UNIT;
         double height = unitHeight * Globals.UNIT;
         // vertical lines
@@ -63,7 +63,5 @@ public class GridCanvas extends Pane {
             gridLine.setOpacity(0.5);
             backgroundGrid.getChildren().add(gridLine);
         }
-        getChildren().add(backgroundGrid);
-        backgroundGrid.toBack();
     }
 }

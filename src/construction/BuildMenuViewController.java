@@ -153,10 +153,12 @@ public class BuildMenuViewController {
     private void CollapseMenu(HBox menu){
         menu.setVisible(false);
         constructionController.setBuildMenuData(ToolType.INTERACT, null);
+        constructionController.getCanvasFacade().showBackgroundGrid(false);
     }
 
     private void ExpandMenu(HBox menu){
         menu.setVisible(true);
+        constructionController.getCanvasFacade().showBackgroundGrid(true);
     }
 
     private void SetMenuButtonImage(ImageView arrow){

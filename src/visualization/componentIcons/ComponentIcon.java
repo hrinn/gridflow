@@ -26,7 +26,7 @@ public class ComponentIcon {
     private final StrokeTransition errorTransition = new StrokeTransition(Duration.millis(1000), getBoundingRect(), Color.RED, DEFAULT_BOUNDING_COLOR);
 
     private final static Color SELECT_COLOR = Color.BLUE;
-    public final static Color DEFAULT_BOUNDING_COLOR = Color.MEDIUMAQUAMARINE;
+    public final static Color DEFAULT_BOUNDING_COLOR = Color.TRANSPARENT;
     private final static Color DEFAULT_FITTING_COLOR = Color.TRANSPARENT;
 
     public ComponentIcon() {

@@ -65,6 +65,14 @@ public class GridCanvasFacade {
         canvas.boundingRectGroup.getChildren().clear();
     }
 
+    public void showBackgroundGrid(boolean show) {
+        if (show) {
+            canvas.backgroundGrid.setOpacity(1);
+        } else {
+            canvas.backgroundGrid.setOpacity(0);
+        }
+    }
+
     public void addCanvasEventHandler(EventType eventType, EventHandler eventHandler) {
         canvas.addEventHandler(eventType, eventHandler);
     }

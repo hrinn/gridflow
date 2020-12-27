@@ -24,6 +24,7 @@ public class WireIcon extends ComponentIcon {
     }
 
     public void setWireIconEnergyState(boolean energized) {
+        if (energyOutline == null) return;
         energyOutline.setOpacity(energized ? 1 : 0);
     }
 

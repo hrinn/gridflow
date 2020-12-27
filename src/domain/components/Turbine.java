@@ -65,10 +65,9 @@ public class Turbine extends Source {
     }
 
     @Override
-    public ComponentIcon getUpdatedComponentIcon() {
+    public void updateComponentIcon() {
         SourceIcon icon = (SourceIcon)getComponentIcon();
         icon.setWireEnergyState(isOutWire1Energized(), 0);
         icon.setWireEnergyState(isOutWire2Energized(), 1);
-        return icon;
     }
 }

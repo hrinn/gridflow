@@ -32,10 +32,9 @@ public class Cutout extends Device implements ILockable, ICloseable {
     }
 
     @Override
-    public ComponentIcon getUpdatedComponentIcon() {
+    public void updateComponentIcon() {
         DeviceIcon icon = (DeviceIcon) getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
-        return icon;
     }
 
     public boolean isClosed() {

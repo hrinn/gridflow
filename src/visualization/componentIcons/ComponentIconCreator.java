@@ -278,6 +278,20 @@ public class ComponentIconCreator {
         return wireIcon;
     }
 
+    public static WireIcon getBlankWireIcon(Point p1, Point p2) {
+
+        WireIcon wireIcon = new WireIcon();
+
+        Dimensions dim = new Dimensions(p1.differenceX(p2)/Globals.UNIT, p1.differenceY(p2)/Globals.UNIT, 0.25);
+        Dimensions dim2 = new Dimensions(p1.differenceX(p2)/Globals.UNIT, p1.differenceY(p2)/Globals.UNIT, 0.1);
+
+        Point mid = Point.midpoint(p1, p2);
+        wireIcon.setBoundingRect(dim, mid);
+        wireIcon.setFittingRect(dim2, mid);
+
+        return wireIcon;
+    }
+
     private static Line createLine(Point p1, Point p2) {
         Line line = new Line();
         line.setStrokeWidth(Globals.STROKE_WIDTH);

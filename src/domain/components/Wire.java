@@ -51,6 +51,7 @@ public class Wire extends Component {
 
     public void connect(Component... components) {
         connections.addAll(Arrays.asList(components));
+        createComponentIcon();
     }
 
     @Override
@@ -94,16 +95,22 @@ public class Wire extends Component {
     }
 
     private void createComponentIcon() {
-        WireIcon icon = ComponentIconCreator.getWireIcon(start, end);
+        WireIcon icon;
+        if (isPointWire() && connections.size() > 1)
+        {
+            icon = ComponentIconCreator.getBlankWireIcon(start, end);
+        } else {
+            icon = ComponentIconCreator.getWireIcon(start, end);
+        }
         icon.setWireIconEnergyState(false);
         icon.setComponentIconID(getId().toString());
         setComponentIcon(icon);
     }
 
     @Override
-    public ComponentIcon getUpdatedComponentIcon() {
+    public void updateComponentIcon() {
         WireIcon icon = (WireIcon) getComponentIcon();
+        if (icon == null) return;
         icon.setWireIconEnergyState(energized);
-        return icon;
     }
 }

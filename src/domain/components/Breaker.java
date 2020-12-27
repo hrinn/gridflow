@@ -39,10 +39,9 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
     }
 
     @Override
-    public ComponentIcon getUpdatedComponentIcon() {
+    public void updateComponentIcon() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
-        return icon;
     }
 
     public Voltage getVoltage() {

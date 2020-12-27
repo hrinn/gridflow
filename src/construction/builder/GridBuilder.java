@@ -55,12 +55,12 @@ public class GridBuilder {
             inWire.connect(device);
         }
         else{
-            conflictComponent.getUpdatedComponentIcon().showError();
+            conflictComponent.getComponentIcon().showError();
             return false;
         }
 
 
-        Point outPoint = position.translate(0, device.getUpdatedComponentIcon().getHeight());
+        Point outPoint = position.translate(0, device.getComponentIcon().getHeight());
         Wire outWire = new Wire(outPoint.rotate(properties.getRotation(), position));
         conflictComponent = verifySingleWirePosition(outWire);
         if(conflictComponent == null) { // use new wire
@@ -74,7 +74,7 @@ public class GridBuilder {
             outWire.connect(device);
         }
         else{
-            conflictComponent.getUpdatedComponentIcon().showError();
+            conflictComponent.getComponentIcon().showError();
             return false;
         }
 
@@ -115,7 +115,7 @@ public class GridBuilder {
                     outWire.connect(powerSource);
                 }
                 else{
-                    conflictComponent.getUpdatedComponentIcon().showError();
+                    conflictComponent.getComponentIcon().showError();
                     return false;
                 }
 
@@ -140,11 +140,11 @@ public class GridBuilder {
                     topWire.connect(turbine);
                 }
                 else{
-                    conflictComponent.getUpdatedComponentIcon().showError();
+                    conflictComponent.getComponentIcon().showError();
                     return false;
                 }
 
-                Point bottomPoint = position.translate(0, turbine.getUpdatedComponentIcon().getHeight())
+                Point bottomPoint = position.translate(0, turbine.getComponentIcon().getHeight())
                         .rotate(turbine.getAngle(), position);
                 Wire bottomWire = new Wire(bottomPoint);
                 conflictComponent = verifySingleWirePosition(bottomWire);
@@ -159,7 +159,7 @@ public class GridBuilder {
                     bottomWire.connect(turbine);
                 }
                 else{
-                    conflictComponent.getUpdatedComponentIcon().showError();
+                    conflictComponent.getComponentIcon().showError();
                     return false;
                 }
 
@@ -197,10 +197,10 @@ public class GridBuilder {
         ArrayList<Component> wireConflicts = new ArrayList<>();
         ArrayList<Component> nonWireConflicts = new ArrayList<>();
 
-        Rectangle currentComponentRect = component.getUpdatedComponentIcon().getFittingRect();
+        Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();
 
         List<ComponentIcon> existingComponents = grid.getComponents().stream()
-                .map(comp -> comp.getUpdatedComponentIcon()).collect(Collectors.toList());
+                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
 
         for(ComponentIcon comp : existingComponents) {
             if (currentComponentRect.getBoundsInParent().intersects(comp.getFittingRect().getBoundsInParent())) {
@@ -222,10 +222,10 @@ public class GridBuilder {
         // returns true if placement is valid, false if placement is invalid
         int conflicts = 0;
 
-        Rectangle currentComponentRect = component.getUpdatedComponentIcon().getFittingRect();
+        Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();
 
         List<ComponentIcon> existingComponents = grid.getComponents().stream()
-                .map(comp -> comp.getUpdatedComponentIcon()).collect(Collectors.toList());
+                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
 
         for(ComponentIcon comp : existingComponents) {
             if (currentComponentRect.getBoundsInParent().intersects(comp.getFittingRect().getBoundsInParent())) {
@@ -238,10 +238,10 @@ public class GridBuilder {
 
 
     public Component verifySingleWirePosition(Component component) {
-        Rectangle currentComponentRect = component.getUpdatedComponentIcon().getFittingRect();
+        Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();
 
         List<ComponentIcon> existingComponents = grid.getComponents().stream()
-                .map(comp -> comp.getUpdatedComponentIcon()).collect(Collectors.toList());
+                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
 
         for(ComponentIcon compIcon : existingComponents) {
             if (currentComponentRect.getBoundsInParent().intersects(compIcon.getFittingRect().getBoundsInParent())) {

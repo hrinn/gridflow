@@ -44,7 +44,12 @@ public abstract class Component {
         getUpdatedComponentIcon().setAngle(angle, getPosition());
     }
 
-    public abstract ComponentIcon getUpdatedComponentIcon();
+    public abstract void updateComponentIcon();
+
+    public ComponentIcon getUpdatedComponentIcon() {
+        updateComponentIcon();
+        return getComponentIcon();
+    }
 
     public ComponentIcon getComponentIcon() {
         return icon;

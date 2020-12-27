@@ -3,6 +3,7 @@ package visualization;
 import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.components.*;
+import visualization.componentIcons.ComponentIcon;
 
 public class GridVisualizer {
 

@@ -53,9 +53,8 @@ public class PowerSource extends Source {
     }
 
     @Override
-    public ComponentIcon getUpdatedComponentIcon() {
+    public void updateComponentIcon() {
         SourceIcon icon = (SourceIcon) getComponentIcon();
         icon.setWireEnergyState(isOutWireEnergized(), 0);
-        return icon;
     }
 }

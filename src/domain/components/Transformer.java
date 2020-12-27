@@ -25,9 +25,8 @@ public class Transformer extends Device {
     }
 
     @Override
-    public ComponentIcon getUpdatedComponentIcon() {
+    public void updateComponentIcon() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
-        return icon;
     }
 }

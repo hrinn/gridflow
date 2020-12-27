@@ -69,17 +69,9 @@ public class GridBuilderController {
         if (buildData.toolType != ToolType.PLACE) return;
         if (event.isSecondaryButtonDown()) return;
 
-        boolean res = false;
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
 
-        String targetId = ((Node)event.getTarget()).getId();
-        if(targetId == null) { // canvas clicked
-            res = model.placeComponent(coordPoint, buildData.componentType);
-        }
-        else { // component clicked
-            res = model.placeConnectedComponent(coordPoint, buildData.componentType, targetId);
-        }
-
+        boolean res = model.placeComponent(coordPoint, buildData.componentType);
         if (res) {
             gridFlowEventManager.sendEvent(new GridChangedEvent());
         } else {

@@ -3,6 +3,7 @@ package domain;
 import domain.components.Component;
 import domain.components.Source;
 import domain.components.Wire;
+import domain.geometry.Point;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -18,7 +18,6 @@ public class GridCanvasFacade {
 
     // Component Event Handlers
     private EventHandler<MouseEvent> toggleComponentEventHandler;
-//    private EventHandler<MouseEvent> toggleComponentEventHandler;
     private EventHandler<MouseEvent> selectSingleComponentHandler;
 
     public GridCanvasFacade() {
@@ -45,10 +44,6 @@ public class GridCanvasFacade {
         Rectangle boundingRect = icon.getBoundingRect();
         boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
         boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, selectSingleComponentHandler);
-
-//        if(icon instanceof WireIcon) {
-//            boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
-//        }
 
         canvas.componentGroup.getChildren().add(componentNode);
         canvas.energyOutlineGroup.getChildren().add(energyOutlineNodes);

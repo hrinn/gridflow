@@ -269,10 +269,11 @@ public class ComponentIconCreator {
         }
 
         Dimensions dim = new Dimensions(p1.differenceX(p2)/Globals.UNIT, p1.differenceY(p2)/Globals.UNIT, 0.25);
+        Dimensions dim2 = new Dimensions(p1.differenceX(p2)/Globals.UNIT, p1.differenceY(p2)/Globals.UNIT, 0.1);
 
         Point mid = Point.midpoint(p1, p2);
         wireIcon.setBoundingRect(dim, mid);
-        wireIcon.setFittingRect(dim, mid);
+        wireIcon.setFittingRect(dim2, mid);
 
         return wireIcon;
     }

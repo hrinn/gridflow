@@ -42,12 +42,12 @@ public class SelectionManager {
         for (String ID : selectedComponentIDs) {
             grid.deleteComponent(ID);
         }
-        selectedComponentIDs.clear();
+        deSelectAll();
     }
 
     private void setSelect(String ID, boolean select) {
         Component comp = grid.getComponent(ID);
-        comp.getComponentIcon().setSelect(select);
+        if (comp != null) comp.getComponentIcon().setSelect(select);
     }
 
     public void deSelectAll() {

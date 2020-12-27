@@ -1,6 +1,7 @@
 package visualization.componentIcons;
 
 import application.Globals;
+import javafx.animation.StrokeTransition;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -11,6 +12,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import domain.geometry.Point;
 import javafx.scene.transform.Rotate;
+import javafx.util.Duration;
 
 public class ComponentIcon {
 
@@ -21,6 +23,7 @@ public class ComponentIcon {
     private final Group componentNode = new Group(iconNode, componentName);
     private final Group energyOutlineNodes = new Group();
     private double height;
+    private final StrokeTransition errorTransition = new StrokeTransition(Duration.millis(1000), getBoundingRect(), Color.RED, DEFAULT_BOUNDING_COLOR);
 
     private final static Color SELECT_COLOR = Color.BLUE;
     public final static Color DEFAULT_BOUNDING_COLOR = Color.TRANSPARENT;
@@ -108,6 +111,10 @@ public class ComponentIcon {
         componentNode.setTranslateY(y);
         boundingRect.setTranslateX(x);
         boundingRect.setTranslateY(y);
+    }
+
+    public void showError() {
+        errorTransition.play();
     }
 
     protected void addShapesToEnergyOutlineNode(Group energyOutlineNode, Shape... shapes) {

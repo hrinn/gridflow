@@ -65,9 +65,7 @@ public class GhostManager {
     }
 
     public void showGhostError() {
-        StrokeTransition st = new StrokeTransition(Duration.millis(1000), ghostIcon.getBoundingRect(), Color.RED, ComponentIcon.DEFAULT_BOUNDING_COLOR);
-        st.setCycleCount(1);
-        st.play();
+        ghostIcon.showError();
     }
 
     public void enableGhostIcon() {

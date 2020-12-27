@@ -7,7 +7,9 @@ import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
+import visualization.componentIcons.ComponentIcon;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -117,16 +119,19 @@ public class GridBuilder {
 
     public boolean verifyPlacement(Component component) {
         // returns true if placement is valid, false if placement is invalid
-        Rectangle currentComponentRect = component.getComponentIcon().getBoundingRect();
-        List<Rectangle> existingBoundingRects = grid.getComponents().stream()
-                .map(comp -> comp.getComponentIcon().getBoundingRect()).collect(Collectors.toList());
+        int conflicts = 0;
 
-        for(Rectangle gridRect : existingBoundingRects) {
-            if (currentComponentRect.getBoundsInParent().intersects(gridRect.getBoundsInParent())) {
-                return false;
+        Rectangle currentComponentRect = component.getComponentIcon().getBoundingRect();
+        List<ComponentIcon> existingComponents = grid.getComponents().stream()
+                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
+
+        for(ComponentIcon comp : existingComponents) {
+            if (currentComponentRect.getBoundsInParent().intersects(comp.getBoundingRect().getBoundsInParent())) {
+                comp.showError();
+                conflicts = conflicts + 1;
             }
         }
-        return true;
+        return conflicts == 0;
     }
 
     public void toggleComponent(String componentId) {

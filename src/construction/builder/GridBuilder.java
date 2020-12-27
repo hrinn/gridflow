@@ -8,6 +8,7 @@ import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
 import visualization.componentIcons.ComponentIcon;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -171,11 +172,51 @@ public class GridBuilder {
 
     public boolean placeWire(Point startPosition, Point endPosition) {
         Wire wire = new Wire(startPosition, endPosition);
-        if (!verifyPlacement(wire)) return false;
-        grid.addComponent(wire);
+        ArrayList<Component> wireConflicts = new ArrayList<>();
+        wireConflicts.addAll(verifyWirePlacement(wire));
+        if(wireConflicts.size() == 0) {
+            grid.addComponent(wire);
+        }
+        else if(!(wireConflicts.get(0) instanceof Wire)) { // a nonWire component is returned
+            return false;
+        }
+        else {
+            for(Component conflictingComponent : wireConflicts) {
+                if(conflictingComponent instanceof Wire)
+                    ((Wire) conflictingComponent).connect(wire);
+                    wire.connect(conflictingComponent);
+            }
+            grid.addComponent(wire);
+        }
         return true;
     }
 
+
+    public List<Component> verifyWirePlacement(Component component) {
+        // returns true if placement is valid, false if placement is invalid
+        ArrayList<Component> wireConflicts = new ArrayList<>();
+        ArrayList<Component> nonWireConflicts = new ArrayList<>();
+
+        Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();
+
+        List<ComponentIcon> existingComponents = grid.getComponents().stream()
+                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
+
+        for(ComponentIcon comp : existingComponents) {
+            if (currentComponentRect.getBoundsInParent().intersects(comp.getFittingRect().getBoundsInParent())) {
+                Component conflictingComponent = grid.getComponent(comp.getID());
+                if(conflictingComponent instanceof Wire) {
+                    wireConflicts.add(conflictingComponent);
+                }
+                else {
+                    comp.showError();
+                    nonWireConflicts.add(conflictingComponent);
+                    return nonWireConflicts;
+                }
+            }
+        }
+        return wireConflicts;
+    }
 
     public boolean verifyPlacement(Component component) {
         // returns true if placement is valid, false if placement is invalid
@@ -194,6 +235,7 @@ public class GridBuilder {
         }
         return conflicts == 0;
     }
+
 
     public Component verifySingleWirePosition(Component component) {
         Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();

@@ -71,26 +71,37 @@ public class ConstructionController {
         ghostManagerController.propertiesDataChanged();
     }
 
-    private final EventHandler<KeyEvent> handleRotationKey = event -> {
+    private final EventHandler<KeyEvent> handleRKeyRotation = event -> {
         if (event.getCode() != KeyCode.R) return;
+        rotate(event.isControlDown());
+        event.consume();
+    };
 
+    private final EventHandler<MouseEvent> handleMiddleMouseRotation = event -> {
+        if (!event.isMiddleButtonDown()) return;
+        rotate(false);
+        event.consume();
+
+    };
+
+    private void rotate(boolean ccw) {
         double rotation;
 
-        if (event.isShiftDown()) {
+        if (ccw) {
             rotation = (propertiesData.getRotation() == 0) ? 270 : propertiesData.getRotation() - 90;
         } else {
             rotation = (propertiesData.getRotation() == 270) ? 0 : propertiesData.getRotation() + 90;
         }
 
         setPropertiesData(rotation);
-        event.consume();
-    };
+    }
 
     private void installEventHandlers() {
         // gets event handlers from the 3 sub controllers and installed them into the canvasFacade
 
         // construction controller events
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRotationKey);
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
+        stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());

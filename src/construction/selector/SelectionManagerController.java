@@ -32,7 +32,7 @@ public class SelectionManagerController {
     }
 
     private final EventHandler<MouseEvent> startSelectionEventHandler = event -> {
-        if (event.isSecondaryButtonDown()) return;
+        if (!event.isPrimaryButtonDown()) return;
         if (buildMenuData.toolType != ToolType.SELECT) return;
 
         model.beginSelection(event.getX(), event.getY());
@@ -40,7 +40,7 @@ public class SelectionManagerController {
     };
 
     private final EventHandler<MouseEvent> expandSelectionEventHandler = event -> {
-        if (event.isSecondaryButtonDown()) return;
+        if (!event.isPrimaryButtonDown()) return;
         if (buildMenuData.toolType != ToolType.SELECT) return;
 
         model.expandSelection(event.getX(), event.getY());
@@ -48,7 +48,7 @@ public class SelectionManagerController {
     };
 
     private final EventHandler<MouseEvent> endSelectionEventHandler = event -> {
-        if (event.isSecondaryButtonDown()) return;
+        if (!event.isPrimaryButtonDown()) return;
         if (buildMenuData.toolType != ToolType.SELECT) return;
 
         model.endSelection();
@@ -56,7 +56,7 @@ public class SelectionManagerController {
     };
 
     private final EventHandler<MouseEvent> selectSingleComponentHandler = event -> {
-        if (event.isSecondaryButtonDown()) return;
+        if (!event.isPrimaryButtonDown()) return;
         if (buildMenuData.toolType != ToolType.SELECT) return;
 
         String targetID = ((Node)event.getTarget()).getId();

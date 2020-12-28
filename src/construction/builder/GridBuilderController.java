@@ -36,7 +36,7 @@ public class GridBuilderController {
 
     private final EventHandler<MouseEvent> placeWireEventHandler = event -> {
         if (buildData.toolType != ToolType.WIRE) return;
-        if (event.isSecondaryButtonDown()) return;
+        if (!event.isPrimaryButtonDown()) return;
 
         // for implementing connecting/extending, try and reuse existing code
         if (wireExtendContext.placing) { // end placement
@@ -59,7 +59,7 @@ public class GridBuilderController {
 
     private final EventHandler<MouseEvent> toggleComponentEventHandler = event -> {
         if (buildData.toolType != ToolType.INTERACT) return;
-        if (event.isSecondaryButtonDown()) return;
+        if (!event.isPrimaryButtonDown()) return;
 
         String targetId = ((Node)event.getTarget()).getId();
         model.toggleComponent(targetId);
@@ -71,7 +71,7 @@ public class GridBuilderController {
 
     private final EventHandler<MouseEvent> placeComponentEventHandler = event -> {
         if (buildData.toolType != ToolType.PLACE) return;
-        if (event.isSecondaryButtonDown()) return;
+        if (!event.isPrimaryButtonDown()) return;
 
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
 

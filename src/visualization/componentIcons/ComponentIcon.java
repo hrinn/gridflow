@@ -116,6 +116,10 @@ public class ComponentIcon {
         boundingRect.setTranslateY(y);
     }
 
+    public Point getTranslate() {
+        return new Point(componentNode.getTranslateX(), componentNode.getTranslateY());
+    }
+
     public void showError() {
         errorTransition.play();
     }

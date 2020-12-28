@@ -44,7 +44,7 @@ public class ConstructionController {
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridFlowEventManager.addListener(ghostManagerController);
 
-        setPropertiesData(0);
+        setPropertiesData(0, true);
         setBuildMenuData(ToolType.INTERACT, null);
 
         installEventHandlers();
@@ -64,11 +64,15 @@ public class ConstructionController {
         gridBuilderController.buildDataChanged();
     }
 
-    public void setPropertiesData(double rotation) {
+    public void setPropertiesData(double rotation, boolean defaultState) {
+        boolean rotationChanged = rotation != propertiesData.getRotation();
+        boolean defaultStateChanged = defaultState != propertiesData.getDefaultState();
+
         propertiesData.setRotation(rotation);
+        propertiesData.setDefaultState(defaultState);
 
         gridBuilderController.propertiesDataChanged();
-        ghostManagerController.propertiesDataChanged();
+        ghostManagerController.propertiesDataChanged(rotationChanged, defaultStateChanged);
     }
 
     private final EventHandler<KeyEvent> handleRKeyRotation = event -> {
@@ -81,7 +85,13 @@ public class ConstructionController {
         if (!event.isMiddleButtonDown()) return;
         rotate(false);
         event.consume();
+    };
 
+    private final EventHandler<KeyEvent> handleToggleDefaultState = event -> {
+        if (event.getCode() != KeyCode.E) return;
+        if (buildMenuData.toolType != ToolType.PLACE) return;
+        setPropertiesData(propertiesData.getRotation(), !propertiesData.getDefaultState());
+        event.consume();
     };
 
     private void rotate(boolean ccw) {
@@ -93,7 +103,7 @@ public class ConstructionController {
             rotation = (propertiesData.getRotation() == 270) ? 0 : propertiesData.getRotation() + 90;
         }
 
-        setPropertiesData(rotation);
+        setPropertiesData(rotation, propertiesData.getDefaultState());
     }
 
     private void installEventHandlers() {
@@ -102,6 +112,7 @@ public class ConstructionController {
         // construction controller events
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleToggleDefaultState);
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());

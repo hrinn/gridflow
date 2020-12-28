@@ -4,9 +4,6 @@ import construction.PropertiesData;
 import construction.ComponentType;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
-import javafx.animation.StrokeTransition;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 
@@ -27,24 +24,42 @@ public class GhostManager {
     public void setGhostIcon(ComponentType componentType) {
         ghostEnabled = true;
         canvasMaster.clearOverlay();
-        Point origin = Point.origin();
-        this.ghostIcon = switch (componentType) {
-            case BREAKER_12KV -> ComponentIconCreator.get12KVBreakerIcon(origin, properties.getDefaultState(), properties.getDefaultState());
-            case BREAKER_70KV -> ComponentIconCreator.get70KVBreakerIcon(origin, properties.getDefaultState(), properties.getDefaultState());
-            case CUTOUT -> ComponentIconCreator.getCutoutIcon(origin, properties.getDefaultState());
-            case JUMPER -> ComponentIconCreator.getJumperIcon(origin, properties.getDefaultState());
-            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(origin, properties.getName(), false);
-            case SWITCH -> ComponentIconCreator.getSwitchIcon(origin, properties.getDefaultState(), properties.getDefaultState());
-            case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(origin);
-            case TURBINE -> ComponentIconCreator.getTurbineIcon(origin, false);
-            case WIRE -> ComponentIconCreator.getWireIcon(origin, origin);
-            default -> null;
-        };
+
+        this.ghostIcon = ghostIconCreator(componentType, Point.origin());
         if (ghostIcon == null) return;
+
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
-        ghostIcon.setAngle(properties.getRotation(), origin);
+        ghostIcon.setAngle(properties.getRotation(), Point.origin());
         canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
         canvasMaster.addOverlayNode(ghostIcon.getBoundingRect());
+    }
+
+    public void updateGhostIcon(ComponentType componentType) {
+        canvasMaster.clearOverlay();
+        Point pos = ghostIcon.getTranslate();
+        this.ghostIcon = ghostIconCreator(componentType, Point.origin());
+        if (ghostIcon == null) return;
+
+        ghostIcon.setTranslate(pos.getX(), pos.getY());
+        ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
+        ghostIcon.setAngle(properties.getRotation(), Point.origin());
+
+        canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
+        canvasMaster.addOverlayNode(ghostIcon.getBoundingRect());
+    }
+
+    private ComponentIcon ghostIconCreator(ComponentType componentType, Point pos) {
+        return switch (componentType) {
+            case BREAKER_12KV -> ComponentIconCreator.get12KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case BREAKER_70KV -> ComponentIconCreator.get70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case CUTOUT -> ComponentIconCreator.getCutoutIcon(pos, properties.getDefaultState());
+            case JUMPER -> ComponentIconCreator.getJumperIcon(pos, properties.getDefaultState());
+            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, properties.getName(), properties.getDefaultState());
+            case SWITCH -> ComponentIconCreator.getSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(pos);
+            case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, properties.getDefaultState());
+            case WIRE -> ComponentIconCreator.getWireIcon(pos, pos);
+        };
     }
 
     public void rotateGhostIcon() {

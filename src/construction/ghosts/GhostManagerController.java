@@ -47,9 +47,10 @@ public class GhostManagerController implements GridFlowEventListener {
         }
     }
 
-    public void propertiesDataChanged() {
+    public void propertiesDataChanged(boolean rotationChanged, boolean defaultStateChanged) {
         if (buildData.toolType == ToolType.PLACE) {
-            model.rotateGhostIcon();
+            if (rotationChanged) model.rotateGhostIcon();
+            if (defaultStateChanged) model.updateGhostIcon(buildData.componentType);
         }
     }
 

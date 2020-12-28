@@ -61,6 +61,7 @@ public class ConstructionController {
         // these run if the controllers need to react to build data changing
         ghostManagerController.buildMenuDataChanged();
         selectionManagerController.buildMenuDataChanged();
+        gridBuilderController.buildDataChanged();
     }
 
     public void setPropertiesData(double rotation) {

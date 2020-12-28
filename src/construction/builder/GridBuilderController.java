@@ -27,6 +27,10 @@ public class GridBuilderController {
         this.propertiesData = propertiesData;
     }
 
+    public void buildDataChanged() {
+        wireExtendContext.placing = false;
+    }
+
     public void propertiesDataChanged() {
     }
 

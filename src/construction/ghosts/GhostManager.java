@@ -36,7 +36,7 @@ public class GhostManager {
             case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(origin, properties.getName(), false);
             case SWITCH -> ComponentIconCreator.getSwitchIcon(origin, properties.getDefaultState(), properties.getDefaultState());
             case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(origin);
-            case TURBINE -> ComponentIconCreator.getTurbineIcon(origin);
+            case TURBINE -> ComponentIconCreator.getTurbineIcon(origin, false);
             case WIRE -> ComponentIconCreator.getWireIcon(origin, origin);
             default -> null;
         };

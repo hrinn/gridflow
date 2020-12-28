@@ -240,7 +240,7 @@ public class ComponentIconCreator {
         return powerSourceIcon;
     }
 
-    public static SourceIcon getTurbineIcon(Point p) {
+    public static SourceIcon getTurbineIcon(Point p, boolean isOn) {
         SourceIcon turbineIcon = new SourceIcon();
 
         Circle turbineCircle = createCircle(p.translate(0, 2 * Globals.UNIT), Globals.UNIT, Color.RED, Color.BLACK);
@@ -251,6 +251,8 @@ public class ComponentIconCreator {
 
         Line outLine2 = createLine(p.translate(0, 3 * Globals.UNIT), p.translate(0, 4 * Globals.UNIT));
         turbineIcon.addOutputLine(outLine2);
+
+        if (!isOn) turbineCircle.setFill(Color.LIME);
 
         turbineIcon.setBoundingRect(new Dimensions(3, 4), p);
         turbineIcon.setFittingRect(new Dimensions(3, 4, -1, -1, -0.5, -0.5), p);

@@ -11,7 +11,6 @@ import java.util.UUID;
 public class PowerSource extends Source {
 
     private Wire outWire; // this is on the bottom of the source when oriented up
-    private SourceIcon icon;
 
     public PowerSource(String name, Point position, boolean on) {
         super(name, position, on);

@@ -61,6 +61,7 @@ public class Wire extends Component {
 
     public void disconnect(UUID componentID) {
         connections.removeIf(connection -> connection.getId().equals(componentID));
+        createComponentIcon();
     }
 
     public boolean isPointWire() {

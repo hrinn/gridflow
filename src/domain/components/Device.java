@@ -35,22 +35,18 @@ public abstract class Device extends Component {
         return outWire.isEnergized();
     }
 
-    protected boolean checkClosed() {
-        return true;
-    }
-
     @Override
     public List<Component> getAccessibleConnections() {
-        if(this.checkClosed()) {
-            if(inWire.isEnergized()) {
-                return List.of(outWire);
-            }
-
-            else{
-                return List.of(inWire);
-            }
+        if (this instanceof ICloseable && !((ICloseable)this).isClosed()) {
+            // If a closeable is open, there are no accessible connections
+            return List.of();
         }
-        return List.of();
+
+        if (isInWireEnergized()) {
+            return List.of(outWire);
+        } else {
+            return List.of(inWire);
+        }
     }
 
     @Override

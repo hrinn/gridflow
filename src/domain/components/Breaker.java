@@ -34,11 +34,6 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
     }
 
     @Override
-    protected boolean checkClosed() {
-        return closed;
-    }
-
-    @Override
     public void updateComponentIcon() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());

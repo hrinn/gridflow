@@ -25,11 +25,6 @@ public class Switch extends Device implements ICloseable, ILockable {
         locked = !locked;
     }
 
-    @Override
-    protected boolean checkClosed() {
-        return closed;
-    }
-
     private void createComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
         icon.setDeviceEnergyStates(false, false);

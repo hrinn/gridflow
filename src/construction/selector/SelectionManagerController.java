@@ -48,7 +48,6 @@ public class SelectionManagerController {
     };
 
     private final EventHandler<MouseEvent> endSelectionEventHandler = event -> {
-        if (!event.isPrimaryButtonDown()) return;
         if (buildMenuData.toolType != ToolType.SELECT) return;
 
         model.endSelection();

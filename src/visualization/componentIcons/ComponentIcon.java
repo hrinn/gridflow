@@ -121,6 +121,7 @@ public class ComponentIcon {
     }
 
     public void showError() {
+        errorTransition.stop();
         errorTransition.play();
     }
 

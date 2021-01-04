@@ -65,6 +65,7 @@ public class DevUtils {
         xdd1.connectInWire(xw);
         xdd1.connectOutWire(dd1mw);
         xw.connect(xdd1);
+        dd1mw.connect(xdd1);
 
         // S switch
         Switch dd101 = new Switch("DD-101", canvasPos(0, 6), true);
@@ -88,6 +89,7 @@ public class DevUtils {
         // dd1
         Breaker dd1 = new Breaker("DD-1", canvasPos(0, 9), Voltage.KV70, true);
         dd1.connectOutWire(dd101w);
+        dd101w.connect(dd1);
         Wire dd1w = new Wire(canvasPos(0, 9));
         dd1.connectInWire(dd1w);
         dd1w.connect(dd1);
@@ -95,6 +97,7 @@ public class DevUtils {
         // dd103
         Switch dd103 = new Switch("DD-103", canvasPos(0, 12), true);
         dd103.connectOutWire(dd1w);
+        dd1w.connect(dd103);
         Wire nrw = new Wire(canvasPos(0, 12), canvasPos(3, 12));
         dd103.connectInWire(nrw);
         nrw.connect(dd103, dd105aw);

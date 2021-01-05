@@ -19,6 +19,7 @@ public class SelectionManagerController {
     private SelectionManager model;
     private BuildMenuData buildMenuData;
     private GridFlowEventManager gridFlowEventManager;
+    private boolean dragSelecting = false;
 
     public SelectionManagerController(GridCanvasFacade canvasFacade, BuildMenuData buildMenuData, Grid grid,
                                       GridFlowEventManager gridFlowEventManager) {
@@ -35,6 +36,7 @@ public class SelectionManagerController {
         if (!event.isPrimaryButtonDown()) return;
         if (buildMenuData.toolType != ToolType.SELECT) return;
 
+        dragSelecting = true;
         model.beginSelection(event.getX(), event.getY());
         event.consume();
     };
@@ -42,6 +44,7 @@ public class SelectionManagerController {
     private final EventHandler<MouseEvent> expandSelectionEventHandler = event -> {
         if (!event.isPrimaryButtonDown()) return;
         if (buildMenuData.toolType != ToolType.SELECT) return;
+        if (!dragSelecting) return;
 
         model.expandSelection(event.getX(), event.getY());
         event.consume();
@@ -49,7 +52,9 @@ public class SelectionManagerController {
 
     private final EventHandler<MouseEvent> endSelectionEventHandler = event -> {
         if (buildMenuData.toolType != ToolType.SELECT) return;
+        if (!dragSelecting) return;
 
+        dragSelecting = false;
         model.endSelection();
         event.consume();
     };

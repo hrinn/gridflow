@@ -8,6 +8,7 @@ public class SceneGestures {
 
     private static final double MAX_SCALE = 5.0d;
     private static final double MIN_SCALE = 0.1d;
+    private boolean panning = false;
 
     private final DragContext sceneDragContext = new DragContext();
 
@@ -22,17 +23,22 @@ public class SceneGestures {
     }
 
     public EventHandler<MouseEvent> getOnPanEventHandler() {
-        return OnPanEventHandler;
+        return onPanEventHandler;
     }
 
     public EventHandler<ScrollEvent> getOnScrollEventHandler() {
         return onScrollEventHandler;
     }
 
+    public EventHandler<MouseEvent> getEndPanEventHandler() {
+        return endPanEventHandler;
+    }
+
     private final EventHandler<MouseEvent> beginPanEventHandler = event -> {
             // right mouse button => panning
             if(!event.isSecondaryButtonDown())
                 return;
+            panning = true;
 
             sceneDragContext.mouseAnchorX = event.getSceneX();
             sceneDragContext.mouseAnchorY = event.getSceneY();
@@ -42,7 +48,7 @@ public class SceneGestures {
 
     };
 
-    private final EventHandler<MouseEvent> OnPanEventHandler = event -> {
+    private final EventHandler<MouseEvent> onPanEventHandler = event -> {
             // right mouse button => panning
             if(!event.isSecondaryButtonDown())
                 return;
@@ -53,7 +59,14 @@ public class SceneGestures {
             event.consume();
     };
 
+    private final EventHandler<MouseEvent> endPanEventHandler = event -> {
+        if (!panning) return;
+        panning = false;
+        event.consume();
+    };
+
     private final EventHandler<ScrollEvent> onScrollEventHandler = event -> {
+            if (panning) return;
 
             double delta = 1.2;
 
@@ -90,4 +103,6 @@ public class SceneGestures {
 
         return value;
     }
+
+
 }

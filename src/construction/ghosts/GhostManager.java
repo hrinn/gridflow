@@ -7,6 +7,8 @@ import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 
+import java.util.List;
+
 public class GhostManager {
 
     private final static double GHOST_OPACITY = 0.5;
@@ -58,7 +60,7 @@ public class GhostManager {
             case SWITCH -> ComponentIconCreator.getSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState());
             case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(pos);
             case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, false);
-            case WIRE -> ComponentIconCreator.getWireIcon(pos, pos);
+            case WIRE -> ComponentIconCreator.getWireIcon(pos, pos, List.of());
         };
     }
 
@@ -74,7 +76,7 @@ public class GhostManager {
     public void extendGhostWire(Point start, Point end) {
         ghostEnabled = true;
         canvasMaster.clearOverlay();
-        ghostIcon = ComponentIconCreator.getWireIcon(start, end);
+        ghostIcon = ComponentIconCreator.getWireIcon(start, end, List.of());
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
         canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
     }

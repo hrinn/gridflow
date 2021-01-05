@@ -8,7 +8,12 @@ import javafx.scene.text.*;
 import javafx.scene.transform.Rotate;
 import domain.geometry.Point;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ComponentIconCreator {
+
+    private static final double BRIDGE_GAP = 10;
 
     public static DeviceIcon getSwitchIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon switchIcon = new DeviceIcon();
@@ -259,15 +264,41 @@ public class ComponentIconCreator {
         return turbineIcon;
     }
 
-    public static WireIcon getWireIcon(Point p1, Point p2) {
+    public static WireIcon getWireIcon(Point p1, Point p2, List<Point> bridgePoints) {
         WireIcon wireIcon = new WireIcon();
 
         if (p1.equals(p2)) {
             Circle wireDot = createCircle(p1, 1, Color.BLACK, Color.BLACK);
             wireIcon.addWireShape(wireDot);
-        } else {
+        } else if (bridgePoints.isEmpty()) {
             Line wireLine = createLine(p1, p2);
             wireIcon.addWireShape(wireLine);
+        } else { // create a line with gaps
+            boolean vertical = p1.differenceX(p2) == 0;
+            List<Point> wirePoints = new ArrayList<>();
+
+            // create the dashed start and end points
+            wirePoints.add(p1);
+            bridgePoints.forEach(bp -> {
+                Point bpl;
+                Point bpr;
+                if (vertical) {
+                    bpl = new Point(bp.getX(), bp.getY() - BRIDGE_GAP/2);
+                    bpr = new Point(bp.getX(), bp.getY() + BRIDGE_GAP/2);
+                } else {
+                    bpl = new Point(bp.getX() - BRIDGE_GAP/2, bp.getY());
+                    bpr = new Point(bp.getX() + BRIDGE_GAP/2, bp.getY());
+                }
+                wirePoints.add(bpl);
+                wirePoints.add(bpr);
+            });
+            wirePoints.add(p2);
+            for (int i = 0; i < wirePoints.size(); i += 2) {
+                Point firstPoint = wirePoints.get(i);
+                Point secondPoint = wirePoints.get(i + 1);
+                Line segment = createLine(firstPoint, secondPoint);
+                wireIcon.addWireShape(segment);
+            }
         }
 
         Dimensions dim = new Dimensions(p1.differenceX(p2)/Globals.UNIT, p1.differenceY(p2)/Globals.UNIT, 0.25);

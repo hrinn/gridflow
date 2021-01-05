@@ -21,6 +21,7 @@ public class Wire extends Component {
     private Point start;
     private Point end;
     private boolean energized = false;
+    private List<Point> bridgePoints = new ArrayList<>();
 
     public Wire(Point p1, Point p2) {
         super("", Point.midpoint(p1, p2));
@@ -128,7 +129,7 @@ public class Wire extends Component {
         {
             icon = ComponentIconCreator.getBlankWireIcon(start, end);
         } else {
-            icon = ComponentIconCreator.getWireIcon(start, end);
+            icon = ComponentIconCreator.getWireIcon(start, end, bridgePoints);
         }
         icon.setWireIconEnergyState(false);
         icon.setComponentIconID(getId().toString());
@@ -140,5 +141,16 @@ public class Wire extends Component {
         WireIcon icon = (WireIcon) getComponentIcon();
         if (icon == null) return;
         icon.setWireIconEnergyState(energized);
+    }
+
+    public void addBridgePoint(Point bridgePoint) {
+        bridgePoints.add(bridgePoint);
+        createComponentIcon();
+    }
+
+    public void removeBridgePoint(Point bridgePoint) {
+        if (bridgePoints.remove(bridgePoint)) {
+            createComponentIcon(); // update the icon if a bridge point was removed
+        }
     }
 }

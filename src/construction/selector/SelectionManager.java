@@ -70,10 +70,8 @@ public class SelectionManager {
         deSelectAll();
 
         selectionBox.setX(mouseDownPoint.getX());
-        selectionBox.setX(mouseDownPoint.getY());
-        selectionBox.setWidth(0);
-        selectionBox.setHeight(0);
-        canvasFacade.clearOverlay();
+        selectionBox.setY(mouseDownPoint.getY());
+
         canvasFacade.addOverlayNode(selectionBox);
     }
 
@@ -92,7 +90,20 @@ public class SelectionManager {
                 selectedComponentIDs.add(id);
             }
         });
+        printSelectionBox();
+        clearSelection();
+    }
+
+    private void clearSelection() {
         canvasFacade.clearOverlay();
+        selectionBox.setX(0);
+        selectionBox.setY(0);
+        selectionBox.setHeight(0);
+        selectionBox.setWidth(0);
+    }
+
+    private void printSelectionBox() {
+        System.out.println("Width: " + selectionBox.getWidth() + " Height: " + selectionBox.getHeight());
     }
 
     private List<String> getSelectedNodeIDs() {

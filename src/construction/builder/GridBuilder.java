@@ -172,19 +172,18 @@ public class GridBuilder {
 
     public boolean placeWire(Point startPosition, Point endPosition) {
         Wire wire = new Wire(startPosition, endPosition);
-        ArrayList<Component> wireConflicts = new ArrayList<>();
-        wireConflicts.addAll(verifyWirePlacement(wire));
-        if(wireConflicts.size() == 0) {
-            grid.addComponent(wire);
-        }
-        else if(!(wireConflicts.get(0) instanceof Wire)) { // a nonWire component is returned
-            return false;
-        }
-        else {
+        List<Component> wireConflicts = verifyWirePlacement(wire);
+
+        if (wireConflicts == null) {
+            return false; // there was a non wire conflict
+        } else if (wireConflicts.size() == 0) {
+            grid.addComponent(wire); // nothing conflicted
+        } else {
+            // wires overlapped, connect to them
             for(Component conflictingComponent : wireConflicts) {
                 if(conflictingComponent instanceof Wire)
                     ((Wire) conflictingComponent).connect(wire);
-                    wire.connect(conflictingComponent);
+                wire.connect(conflictingComponent);
             }
             grid.addComponent(wire);
         }
@@ -195,7 +194,7 @@ public class GridBuilder {
     public List<Component> verifyWirePlacement(Component component) {
         // returns true if placement is valid, false if placement is invalid
         ArrayList<Component> wireConflicts = new ArrayList<>();
-        ArrayList<Component> nonWireConflicts = new ArrayList<>();
+        int nonWireConflicts = 0;
 
         Rectangle currentComponentRect = component.getComponentIcon().getFittingRect();
 
@@ -210,11 +209,11 @@ public class GridBuilder {
                 }
                 else {
                     comp.showError();
-                    nonWireConflicts.add(conflictingComponent);
-                    return nonWireConflicts;
+                    nonWireConflicts = nonWireConflicts + 1;
                 }
             }
         }
+        if (nonWireConflicts > 0) return null;
         return wireConflicts;
     }
 

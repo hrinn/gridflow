@@ -148,9 +148,13 @@ public class Wire extends Component {
         createComponentIcon();
     }
 
-    public void removeBridgePoint(Point bridgePoint) {
-        if (bridgePoints.remove(bridgePoint)) {
-            createComponentIcon(); // update the icon if a bridge point was removed
+    public void removeBridgePoint(Point point) {
+        for (Point bridgePoint : bridgePoints) {
+            if (bridgePoint.equals(point)) {
+                bridgePoints.remove(bridgePoint);
+                createComponentIcon();
+                return;
+            }
         }
     }
 }

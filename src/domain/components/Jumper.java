@@ -5,15 +5,11 @@ import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
-public class Jumper extends Device implements ICloseable {
+public class Jumper extends Closeable {
 
-    private boolean closed;
-    private boolean closedByDefault;
 
     public Jumper(String name, Point position, boolean closedByDefault) {
-        super(name, position);
-        this.closedByDefault = closedByDefault;
-        this.closed = closedByDefault;
+        super(name, position, closedByDefault);
         createComponentIcon();
     }
 
@@ -32,16 +28,9 @@ public class Jumper extends Device implements ICloseable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
     }
 
-    public boolean isClosed() {
-        return closed;
-    }
-
-    public boolean isClosedByDefault() {
-        return closedByDefault;
-    }
 
     public void toggle() {
-        closed = !closed;
+        toggleClosed();
         createComponentIcon();
     }
 }

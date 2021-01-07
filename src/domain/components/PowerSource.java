@@ -1,5 +1,7 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
@@ -40,6 +42,13 @@ public class PowerSource extends Source {
     @Override
     public List<Component> getConnections() {
         return List.of(outWire);
+    }
+
+    @Override
+    public ObjectNode getJSONObject(ObjectMapper mapper) {
+        ObjectNode powerSource = super.getJSONObject(mapper);
+        powerSource.put("outWire", outWire.getId().toString());
+        return powerSource;
     }
 
     private void createComponentIcon() {

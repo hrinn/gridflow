@@ -1,5 +1,7 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 
 import java.util.List;
@@ -15,6 +17,14 @@ public abstract class Device extends Component {
         super(name, position);
         this.inWire = null;
         this.outWire = null;
+    }
+
+    @Override
+    public ObjectNode getJSONObject(ObjectMapper mapper) {
+        ObjectNode device = super.getJSONObject(mapper);
+        device.put("inWire", inWire.getId().toString());
+        device.put("outWire", outWire.getId().toString());
+        return device;
     }
 
     public void connectInWire(Wire inWire) {
@@ -37,7 +47,7 @@ public abstract class Device extends Component {
 
     @Override
     public List<Component> getAccessibleConnections() {
-        if (this instanceof ICloseable && !((ICloseable)this).isClosed()) {
+        if (this instanceof Closeable && !((Closeable)this).isClosed()) {
             // If a closeable is open, there are no accessible connections
             return List.of();
         }

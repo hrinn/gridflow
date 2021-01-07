@@ -1,5 +1,7 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
@@ -7,8 +9,6 @@ import visualization.componentIcons.DeviceIcon;
 import visualization.componentIcons.SourceIcon;
 
 public class Transformer extends Device {
-
-    private DeviceIcon icon;
 
     public Transformer(String name, Point position) {
         super(name, position);

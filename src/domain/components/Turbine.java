@@ -1,5 +1,8 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
@@ -29,6 +32,14 @@ public class Turbine extends Source {
     @Override
     public List<Component> getConnections() {
         return List.of(outWire1, outWire2);
+    }
+
+    @Override
+    public ObjectNode getJSONObject(ObjectMapper mapper) {
+        ObjectNode turbine = super.getJSONObject(mapper);
+        turbine.put("outWire1", outWire1.getId().toString());
+        turbine.put("outWire2", outWire2.getId().toString());
+        return turbine;
     }
 
     @Override

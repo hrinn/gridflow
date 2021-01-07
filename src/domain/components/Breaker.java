@@ -1,21 +1,19 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
-public class Breaker extends Device implements ICloseable, ICloneable, IPairable {
+public class Breaker extends Closeable {
 
     private Voltage voltage;
-    private boolean closed;
-    private boolean closedByDefault;
 
     public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault) {
-        super(name, position);
+        super(name, position, closedByDefault);
         this.voltage = voltage;
-        this.closed = closedByDefault;
-        this.closedByDefault = closedByDefault;
         createComponentIcon();
     }
 
@@ -44,18 +42,15 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
     }
 
     @Override
-    public boolean isClosed() {
-        return closed;
-    }
-
-    @Override
-    public boolean isClosedByDefault() {
-        return closedByDefault;
+    public ObjectNode getJSONObject(ObjectMapper mapper) {
+        ObjectNode breaker = super.getJSONObject(mapper);
+        breaker.put("voltage", voltage.toString());
+        return breaker;
     }
 
     @Override
     public void toggle() {
-        closed = !closed;
+        toggleClosed();
         createComponentIcon();
     }
 }

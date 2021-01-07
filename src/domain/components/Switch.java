@@ -5,24 +5,12 @@ import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
-public class Switch extends Device implements ICloseable, ILockable {
-
-    private boolean closed;
-    private boolean closedByDefault;
-    private boolean locked;
-    private DeviceIcon icon;
+public class Switch extends Closeable {
 
 
     public Switch(String name, Point position, boolean closedByDefault) {
-        super(name, position);
-        this.closedByDefault = closedByDefault;
-        this.closed = closedByDefault;
-        this.locked = false;
+        super(name, position, closedByDefault);
         createComponentIcon();
-    }
-
-    public void toggleLocked() {
-        locked = !locked;
     }
 
     private void createComponentIcon() {
@@ -41,18 +29,8 @@ public class Switch extends Device implements ICloseable, ILockable {
     }
 
     @Override
-    public boolean isClosed() {
-        return closed;
-    }
-
-    @Override
-    public boolean isClosedByDefault() {
-        return closedByDefault;
-    }
-
-    @Override
     public void toggle() {
-        closed = !closed;
+        toggleClosed();
         createComponentIcon();
     }
 }

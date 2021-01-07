@@ -1,6 +1,9 @@
 package domain.components;
 
 import application.Globals;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.*;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
@@ -57,6 +60,19 @@ public class Wire extends Component {
     @Override
     public List<Component> getConnections() {
         return connections;
+    }
+
+    @Override
+    public ObjectNode getJSONObject(ObjectMapper mapper) {
+        ObjectNode wire = super.getJSONObject(mapper);
+        wire.put("start", start.toString());
+        wire.put("end", end.toString());
+
+        ArrayNode connections = mapper.createArrayNode();
+        this.connections.forEach(c -> connections.add(c.getId().toString()));
+        wire.put("connections", connections);
+
+        return wire;
     }
 
     public void disconnect(UUID componentID) {

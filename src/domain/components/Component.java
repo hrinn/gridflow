@@ -1,5 +1,7 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 
@@ -62,6 +64,15 @@ public abstract class Component {
     public abstract List<Component> getAccessibleConnections();
 
     public abstract List<Component> getConnections();
+
+    public ObjectNode getJSONObject(ObjectMapper mapper) {
+        ObjectNode component = mapper.createObjectNode();
+        component.put("id", getId().toString());
+        component.put("name", getName());
+        component.put("position", getPosition().toString());
+        component.put("angle", getAngle());
+        return component;
+    }
 
     public abstract void delete();
 

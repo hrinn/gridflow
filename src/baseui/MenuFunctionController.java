@@ -9,7 +9,6 @@ import domain.Grid;
 public class MenuFunctionController {
 
     private GridFileManager gridFileManager;
-
     private GridFlowEventManager gridFlowEventManager;
 
     public MenuFunctionController(GridFlowEventManager gridFlowEventManager) {
@@ -24,5 +23,13 @@ public class MenuFunctionController {
     public void loadDefaultGrid() {
         gridFileManager.getGrid().loadComponents(DevUtils.createTestComponents());
         gridFlowEventManager.sendEvent(new GridChangedEvent());
+    }
+
+    public void saveGrid() {
+        try {
+            gridFileManager.saveGrid("./grid.json");
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

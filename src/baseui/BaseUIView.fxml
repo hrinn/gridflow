@@ -27,7 +27,7 @@
                               style="-fx-font-size: 14; -fx-text-alignment: center;" text="File">
                             <items>
                                 <MenuItem fx:id="NewItem" mnemonicParsing="false" text="New"/>
-                                <MenuItem fx:id="SaveItem" mnemonicParsing="false" text="Save"/>
+                                <MenuItem mnemonicParsing="false" text="Save" onAction="#saveGrid"/>
                                 <MenuItem fx:id="LoadItem" mnemonicParsing="false" text="Load"/>
                                 <MenuItem fx:id="SwitchAccountItem" mnemonicParsing="false" text="Switch Account"/>
                                 <MenuItem fx:id="ExitItem" mnemonicParsing="false" text="Exit"/>

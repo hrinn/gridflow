@@ -1,5 +1,6 @@
 package application;
 
+import baseui.BaseUIViewController;
 import baseui.MenuFunctionController;
 import construction.BuildMenuViewController;
 import javafx.application.Application;
@@ -38,6 +39,10 @@ public class GridFlowApp extends Application {
         FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/baseui/BaseUIView.fxml"));
         MenuFunctionController menuFunctionController = new MenuFunctionController(gridFlowEventManager);
 
+        Node baseUIView = baseUIViewLoader.load();
+        BaseUIViewController baseUIViewController = baseUIViewLoader.getController();
+        baseUIViewController.setController(menuFunctionController);
+
         ConstructionController constructionController = new ConstructionController(menuFunctionController.getGrid(), gridFlowEventManager, primaryStage);
         FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
         Node buildMenuView = buildMenuViewLoader.load();
@@ -53,7 +58,7 @@ public class GridFlowApp extends Application {
         menuFunctionController.loadDefaultGrid();
 
         // Init GUI
-        initGui(primaryStage, constructionController.getCanvasFacade().getCanvas(), buildMenuView, baseUIViewLoader.load());
+        initGui(primaryStage, constructionController.getCanvasFacade().getCanvas(), buildMenuView, baseUIView);
     }
 
     private void initGui(Stage primaryStage, GridCanvas canvas, Node buildMenuView, Node baseUIView) {

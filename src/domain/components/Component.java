@@ -73,6 +73,8 @@ public abstract class Component {
 
     public abstract List<Component> getConnections();
 
+    public abstract void setConnections(List<Component> connections);
+
     public ObjectNode getObjectNode(ObjectMapper mapper) {
         ObjectNode component = mapper.createObjectNode();
         component.put("id", getId().toString());

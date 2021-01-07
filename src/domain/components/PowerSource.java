@@ -52,6 +52,11 @@ public class PowerSource extends Source {
     }
 
     @Override
+    public void setConnections(List<Component> connections) {
+        outWire = (Wire)connections.get(0);
+    }
+
+    @Override
     public ObjectNode getObjectNode(ObjectMapper mapper) {
         ObjectNode powerSource = super.getObjectNode(mapper);
         powerSource.put("outWire", outWire.getId().toString());

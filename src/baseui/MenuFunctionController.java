@@ -2,13 +2,15 @@ package baseui;
 
 import application.DevUtils;
 import application.events.GridChangedEvent;
-import application.events.GridFlowEvent;
 import application.events.GridFlowEventManager;
 import domain.Grid;
 
 import java.io.IOException;
 
 public class MenuFunctionController {
+
+    private static final String GRID_PATH = "./grid.json";
+    private static final String DEFAULT_GRID_PATH = "./defaultgrid.json";
 
     private GridFileManager gridFileManager;
     private GridFlowEventManager gridFlowEventManager;
@@ -23,13 +25,17 @@ public class MenuFunctionController {
     }
 
     public void loadDefaultGrid() {
-        gridFileManager.getGrid().loadComponents(DevUtils.createTestComponents());
-        gridFlowEventManager.sendEvent(new GridChangedEvent());
+        try {
+            gridFileManager.loadGrid(DEFAULT_GRID_PATH);
+            gridFlowEventManager.sendEvent(new GridChangedEvent());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void saveGrid() {
         try {
-            gridFileManager.saveGrid("./grid.json");
+            gridFileManager.saveGrid(GRID_PATH);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -37,7 +43,7 @@ public class MenuFunctionController {
 
     public void loadGrid() {
         try {
-            gridFileManager.loadGrid("./grid.json");
+            gridFileManager.loadGrid(GRID_PATH);
             gridFlowEventManager.sendEvent(new GridChangedEvent());
         } catch (IOException e) {
             e.printStackTrace();

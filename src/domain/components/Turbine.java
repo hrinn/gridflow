@@ -41,6 +41,12 @@ public class Turbine extends Source {
     }
 
     @Override
+    public void setConnections(List<Component> connections) {
+        outWire1 = (Wire)connections.get(0);
+        outWire2 = (Wire)connections.get(1);
+    }
+
+    @Override
     public ObjectNode getObjectNode(ObjectMapper mapper) {
         ObjectNode turbine = super.getObjectNode(mapper);
         turbine.put("outWire1", outWire1.getId().toString());

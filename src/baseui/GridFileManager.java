@@ -12,6 +12,8 @@ import domain.components.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GridFileManager {
     private Grid grid;
@@ -39,8 +41,10 @@ public class GridFileManager {
         parser.close();
 
         grid.clearComponents();
-        ArrayNode components = (ArrayNode) gridNode.get("components");
-        for (JsonNode componentJSON : components) {
+        ArrayNode JSONComponents = (ArrayNode) gridNode.get("components");
+
+        // create components
+        for (JsonNode componentJSON : JSONComponents) {
             Component component = switch (componentJSON.get("type").asText()) {
                 case "Breaker" -> new Breaker(componentJSON);
                 case "Cutout" -> new Cutout(componentJSON);
@@ -54,6 +58,38 @@ public class GridFileManager {
             };
             grid.addComponent(component);
         }
+
+        // connect components
+        for (int i = 0; i < grid.getComponents().size(); i++) {
+            Component component = grid.getComponents().get(i);
+            JsonNode componentJSON = JSONComponents.get(i);
+            component.setConnections(getConnectionsList(componentJSON));
+        }
+    }
+
+    private List<Component> getConnectionsList(JsonNode node) {
+        List<Component> connections = new ArrayList<>();
+        switch (node.get("type").asText()) {
+            case "Breaker", "Cutout", "Jumper", "Switch", "Transformer" -> {
+                connections.add(grid.getComponent(node.get("inWire").asText()));
+                connections.add(grid.getComponent(node.get("outWire").asText()));
+            }
+            case "PowerSource" -> {
+                connections.add(grid.getComponent(node.get("outWire").asText()));
+            }
+            case "Turbine" -> {
+                connections.add(grid.getComponent(node.get("outWire1").asText()));
+                connections.add(grid.getComponent(node.get("outWire2").asText()));
+            }
+            case "Wire" -> {
+                ArrayNode jsonConnections = (ArrayNode)node.get("connections");
+                jsonConnections.forEach(jsonConnection ->
+                    connections.add(grid.getComponent(jsonConnection.asText()))
+                );
+            }
+            default -> throw new UnsupportedOperationException();
+        }
+        return connections;
     }
 
     public Grid getGrid() {

@@ -59,6 +59,8 @@ public class Breaker extends Closeable {
         return breaker;
     }
 
+    
+
     @Override
     public void toggle() {
         toggleClosed();

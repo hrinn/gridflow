@@ -1,5 +1,6 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
@@ -27,6 +28,12 @@ public abstract class Device extends Component {
         device.put("inWire", inWire.getId().toString());
         device.put("outWire", outWire.getId().toString());
         return device;
+    }
+
+    @Override
+    public void setConnections(List<Component> connections) {
+        inWire = (Wire)connections.get(0);
+        outWire = (Wire)connections.get(1);
     }
 
     public void connectInWire(Wire inWire) {

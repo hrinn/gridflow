@@ -41,9 +41,7 @@ public class Wire extends Component {
                 new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble());
 
         start = new Point(node.get("startX").asDouble(), node.get("startY").asDouble());
-        end = new Point(node.get("endX").asDouble(), node.get("startY").asDouble());
-
-        createComponentIcon();
+        end = new Point(node.get("endX").asDouble(), node.get("endY").asDouble());
     }
 
     public void energize() {
@@ -66,6 +64,12 @@ public class Wire extends Component {
     @Override
     public List<Component> getConnections() {
         return connections;
+    }
+
+    @Override
+    public void setConnections(List<Component> connections) {
+        this.connections = connections;
+        createComponentIcon();
     }
 
     @Override

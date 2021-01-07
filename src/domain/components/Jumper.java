@@ -1,15 +1,25 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
+
+import java.util.UUID;
 
 public class Jumper extends Closeable {
 
 
     public Jumper(String name, Point position, boolean closedByDefault) {
         super(name, position, closedByDefault);
+        createComponentIcon();
+    }
+
+    public Jumper(JsonNode node) {
+        super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
+                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
+                node.get("closedByDefault").asBoolean());
         createComponentIcon();
     }
 

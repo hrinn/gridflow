@@ -26,4 +26,9 @@ public class BaseUIViewController {
     private void saveGrid() {
         controller.saveGrid();
     }
+
+    @FXML
+    private void loadGrid() {
+        controller.loadGrid();
+    }
 }

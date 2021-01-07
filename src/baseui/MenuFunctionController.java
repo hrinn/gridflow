@@ -6,6 +6,8 @@ import application.events.GridFlowEvent;
 import application.events.GridFlowEventManager;
 import domain.Grid;
 
+import java.io.IOException;
+
 public class MenuFunctionController {
 
     private GridFileManager gridFileManager;
@@ -30,6 +32,15 @@ public class MenuFunctionController {
             gridFileManager.saveGrid("./grid.json");
         } catch (Exception ex) {
             ex.printStackTrace();
+        }
+    }
+
+    public void loadGrid() {
+        try {
+            gridFileManager.loadGrid("./grid.json");
+            gridFlowEventManager.sendEvent(new GridChangedEvent());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

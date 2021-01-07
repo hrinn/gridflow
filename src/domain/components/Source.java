@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 
 import java.util.List;
+import java.util.UUID;
 
 public abstract class Source extends Component implements IToggleable {
 
@@ -12,6 +13,11 @@ public abstract class Source extends Component implements IToggleable {
 
     public Source(String name, Point position, boolean on) {
         super(name, position);
+        this.on = on;
+    }
+
+    public Source(UUID id, String name, Point position, double angle, boolean on) {
+        super(id, name, position, angle);
         this.on = on;
     }
 
@@ -32,8 +38,8 @@ public abstract class Source extends Component implements IToggleable {
     }
 
     @Override
-    public ObjectNode getJSONObject(ObjectMapper mapper) {
-        ObjectNode source = super.getJSONObject(mapper);
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode source = super.getObjectNode(mapper);
         source.put("on", on);
         return source;
     }

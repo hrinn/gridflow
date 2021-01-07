@@ -38,7 +38,6 @@ public class GridFlowApp extends Application {
         // Init modules
         FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/baseui/BaseUIView.fxml"));
         MenuFunctionController menuFunctionController = new MenuFunctionController(gridFlowEventManager);
-
         Node baseUIView = baseUIViewLoader.load();
         BaseUIViewController baseUIViewController = baseUIViewLoader.getController();
         baseUIViewController.setController(menuFunctionController);

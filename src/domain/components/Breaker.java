@@ -1,11 +1,14 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import domain.geometry.Point;
-import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
+
+import java.util.UUID;
 
 public class Breaker extends Closeable {
 
@@ -14,6 +17,14 @@ public class Breaker extends Closeable {
     public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault) {
         super(name, position, closedByDefault);
         this.voltage = voltage;
+        createComponentIcon();
+    }
+
+    public Breaker(JsonNode node) {
+        super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
+                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
+                node.get("closedByDefault").asBoolean());
+        voltage = Voltage.valueOf(node.get("voltage").asText());
         createComponentIcon();
     }
 
@@ -42,8 +53,8 @@ public class Breaker extends Closeable {
     }
 
     @Override
-    public ObjectNode getJSONObject(ObjectMapper mapper) {
-        ObjectNode breaker = super.getJSONObject(mapper);
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode breaker = super.getObjectNode(mapper);
         breaker.put("voltage", voltage.toString());
         return breaker;
     }

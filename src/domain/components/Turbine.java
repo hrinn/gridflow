@@ -1,10 +1,9 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
-import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.SourceIcon;
 
@@ -18,6 +17,13 @@ public class Turbine extends Source {
 
     public Turbine(String name, Point position, boolean on) {
         super(name, position, on);
+        createComponentIcon();
+    }
+
+    public Turbine(JsonNode node) {
+        super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
+                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
+                node.get("on").asBoolean());
         createComponentIcon();
     }
 
@@ -35,8 +41,8 @@ public class Turbine extends Source {
     }
 
     @Override
-    public ObjectNode getJSONObject(ObjectMapper mapper) {
-        ObjectNode turbine = super.getJSONObject(mapper);
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode turbine = super.getObjectNode(mapper);
         turbine.put("outWire1", outWire1.getId().toString());
         turbine.put("outWire2", outWire2.getId().toString());
         return turbine;

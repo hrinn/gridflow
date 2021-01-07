@@ -28,7 +28,7 @@
                             <items>
                                 <MenuItem fx:id="NewItem" mnemonicParsing="false" text="New"/>
                                 <MenuItem mnemonicParsing="false" text="Save" onAction="#saveGrid"/>
-                                <MenuItem fx:id="LoadItem" mnemonicParsing="false" text="Load"/>
+                                <MenuItem mnemonicParsing="false" text="Load" onAction="#loadGrid"/>
                                 <MenuItem fx:id="SwitchAccountItem" mnemonicParsing="false" text="Switch Account"/>
                                 <MenuItem fx:id="ExitItem" mnemonicParsing="false" text="Exit"/>
                             </items>

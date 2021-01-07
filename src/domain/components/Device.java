@@ -10,18 +10,20 @@ import java.util.UUID;
 public abstract class Device extends Component {
 
     //private Point position;
-    private Wire inWire;
-    private Wire outWire;
+    private Wire inWire = null;
+    private Wire outWire = null;
 
     public Device(String name, Point position) {
         super(name, position);
-        this.inWire = null;
-        this.outWire = null;
+    }
+
+    public Device(UUID id, String name, Point position, double angle) {
+        super(id, name, position, angle);
     }
 
     @Override
-    public ObjectNode getJSONObject(ObjectMapper mapper) {
-        ObjectNode device = super.getJSONObject(mapper);
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode device = super.getObjectNode(mapper);
         device.put("inWire", inWire.getId().toString());
         device.put("outWire", outWire.getId().toString());
         return device;

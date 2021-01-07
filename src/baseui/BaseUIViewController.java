@@ -15,4 +15,20 @@ import javafx.scene.transform.Translate;
 
 public class BaseUIViewController {
 
+    private MenuFunctionController controller;
+
+
+    public void setController(MenuFunctionController controller) {
+        this.controller = controller;
+    }
+
+    @FXML
+    private void saveGrid() {
+        controller.saveGrid();
+    }
+
+    @FXML
+    private void loadGrid() {
+        controller.loadGrid();
+    }
 }

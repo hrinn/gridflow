@@ -1,21 +1,30 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import domain.geometry.Point;
-import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
-public class Breaker extends Device implements ICloseable, ICloneable, IPairable {
+import java.util.UUID;
+
+public class Breaker extends Closeable {
 
     private Voltage voltage;
-    private boolean closed;
-    private boolean closedByDefault;
 
     public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault) {
-        super(name, position);
+        super(name, position, closedByDefault);
         this.voltage = voltage;
-        this.closed = closedByDefault;
-        this.closedByDefault = closedByDefault;
+        createComponentIcon();
+    }
+
+    public Breaker(JsonNode node) {
+        super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
+                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
+                node.get("closedByDefault").asBoolean());
+        voltage = Voltage.valueOf(node.get("voltage").asText());
         createComponentIcon();
     }
 
@@ -44,18 +53,17 @@ public class Breaker extends Device implements ICloseable, ICloneable, IPairable
     }
 
     @Override
-    public boolean isClosed() {
-        return closed;
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode breaker = super.getObjectNode(mapper);
+        breaker.put("voltage", voltage.toString());
+        return breaker;
     }
 
-    @Override
-    public boolean isClosedByDefault() {
-        return closedByDefault;
-    }
+    
 
     @Override
     public void toggle() {
-        closed = !closed;
+        toggleClosed();
         createComponentIcon();
     }
 }

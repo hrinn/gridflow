@@ -1,8 +1,11 @@
 package domain.components;
 
-import application.Globals;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import domain.geometry.*;
-import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.WireIcon;
 
@@ -14,27 +17,31 @@ import java.util.stream.Collectors;
 
 public class Wire extends Component {
 
-    private List<Component> connections;
+    private List<Component> connections = new ArrayList<>();
     private Point start;
     private Point end;
-    private boolean energized;
+    private boolean energized = false;
 
     public Wire(Point p1, Point p2) {
         super("", Point.midpoint(p1, p2));
-        this.connections = new ArrayList<>();
         start = p1;
         end = p2;
-        energized = false;
         createComponentIcon();
     }
 
     public Wire(Point p) {
         super("", p);
-        this.connections = new ArrayList<>();
         start = p;
         end = p;
-        energized = false;
         createComponentIcon();
+    }
+
+    public Wire(JsonNode node) {
+        super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
+                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble());
+
+        start = new Point(node.get("startX").asDouble(), node.get("startY").asDouble());
+        end = new Point(node.get("endX").asDouble(), node.get("endY").asDouble());
     }
 
     public void energize() {
@@ -57,6 +64,27 @@ public class Wire extends Component {
     @Override
     public List<Component> getConnections() {
         return connections;
+    }
+
+    @Override
+    public void setConnections(List<Component> connections) {
+        this.connections = connections;
+        createComponentIcon();
+    }
+
+    @Override
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode wire = super.getObjectNode(mapper);
+        wire.put("startX", start.getX());
+        wire.put("startY", start.getY());
+        wire.put("endX", end.getX());
+        wire.put("endY", end.getY());
+
+        ArrayNode connections = mapper.createArrayNode();
+        this.connections.forEach(c -> connections.add(c.getId().toString()));
+        wire.put("connections", connections);
+
+        return wire;
     }
 
     public void disconnect(UUID componentID) {

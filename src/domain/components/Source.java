@@ -1,15 +1,23 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 
 import java.util.List;
+import java.util.UUID;
 
-public abstract class Source extends Component implements IEnergizeable {
+public abstract class Source extends Component implements IToggleable {
 
     private boolean on;
 
     public Source(String name, Point position, boolean on) {
         super(name, position);
+        this.on = on;
+    }
+
+    public Source(UUID id, String name, Point position, double angle, boolean on) {
+        super(id, name, position, angle);
         this.on = on;
     }
 
@@ -27,5 +35,12 @@ public abstract class Source extends Component implements IEnergizeable {
     public List<Component> getAccessibleConnections() {
         if (isOn()) return this.getConnections();
         return List.of();
+    }
+
+    @Override
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode source = super.getObjectNode(mapper);
+        source.put("on", on);
+        return source;
     }
 }

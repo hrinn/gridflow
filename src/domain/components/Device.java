@@ -1,5 +1,8 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 
 import java.util.List;
@@ -8,13 +11,29 @@ import java.util.UUID;
 public abstract class Device extends Component {
 
     //private Point position;
-    private Wire inWire;
-    private Wire outWire;
+    private Wire inWire = null;
+    private Wire outWire = null;
 
     public Device(String name, Point position) {
         super(name, position);
-        this.inWire = null;
-        this.outWire = null;
+    }
+
+    public Device(UUID id, String name, Point position, double angle) {
+        super(id, name, position, angle);
+    }
+
+    @Override
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode device = super.getObjectNode(mapper);
+        device.put("inWire", inWire.getId().toString());
+        device.put("outWire", outWire.getId().toString());
+        return device;
+    }
+
+    @Override
+    public void setConnections(List<Component> connections) {
+        inWire = (Wire)connections.get(0);
+        outWire = (Wire)connections.get(1);
     }
 
     public void connectInWire(Wire inWire) {
@@ -37,7 +56,7 @@ public abstract class Device extends Component {
 
     @Override
     public List<Component> getAccessibleConnections() {
-        if (this instanceof ICloseable && !((ICloseable)this).isClosed()) {
+        if (this instanceof Closeable && !((Closeable)this).isClosed()) {
             // If a closeable is open, there are no accessible connections
             return List.of();
         }

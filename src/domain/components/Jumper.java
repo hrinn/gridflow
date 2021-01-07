@@ -1,19 +1,25 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
-public class Jumper extends Device implements ICloseable {
+import java.util.UUID;
 
-    private boolean closed;
-    private boolean closedByDefault;
+public class Jumper extends Closeable {
+
 
     public Jumper(String name, Point position, boolean closedByDefault) {
-        super(name, position);
-        this.closedByDefault = closedByDefault;
-        this.closed = closedByDefault;
+        super(name, position, closedByDefault);
+        createComponentIcon();
+    }
+
+    public Jumper(JsonNode node) {
+        super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
+                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
+                node.get("closedByDefault").asBoolean());
         createComponentIcon();
     }
 
@@ -32,16 +38,9 @@ public class Jumper extends Device implements ICloseable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
     }
 
-    public boolean isClosed() {
-        return closed;
-    }
-
-    public boolean isClosedByDefault() {
-        return closedByDefault;
-    }
 
     public void toggle() {
-        closed = !closed;
+        toggleClosed();
         createComponentIcon();
     }
 }

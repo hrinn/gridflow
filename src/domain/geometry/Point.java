@@ -2,6 +2,9 @@ package domain.geometry;
 
 import application.Globals;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class Point {
 
     private double x;
@@ -73,6 +76,6 @@ public class Point {
 
     @Override
     public String toString() {
-        return this.x + ", " + this.y;
+        return "(" + x + "," + y + ")";
     }
 }

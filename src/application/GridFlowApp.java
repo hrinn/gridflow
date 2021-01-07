@@ -1,5 +1,7 @@
 package application;
 
+import baseui.BaseUIViewController;
+import baseui.MenuFunctionController;
 import construction.BuildMenuViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +20,8 @@ import visualization.VisualizationController;
 import construction.ConstructionController;
 import construction.canvas.GridCanvas;
 
+import java.awt.*;
+
 public class GridFlowApp extends Application {
 
     private static final String TITLE = "GridFlow";
@@ -31,30 +35,29 @@ public class GridFlowApp extends Application {
         // Custom event manager for our events
         GridFlowEventManager gridFlowEventManager = new GridFlowEventManager();
 
-        // Create empty grid
-        Grid grid = new Grid();
-
         // Init modules
-        ConstructionController constructionController = new ConstructionController(grid, gridFlowEventManager, primaryStage);
+        FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/baseui/BaseUIView.fxml"));
+        MenuFunctionController menuFunctionController = new MenuFunctionController(gridFlowEventManager);
+        Node baseUIView = baseUIViewLoader.load();
+        BaseUIViewController baseUIViewController = baseUIViewLoader.getController();
+        baseUIViewController.setController(menuFunctionController);
+
+        ConstructionController constructionController = new ConstructionController(menuFunctionController.getGrid(), gridFlowEventManager, primaryStage);
         FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
         Node buildMenuView = buildMenuViewLoader.load();
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
         buildMenuViewController.setConstructionController(constructionController);
 
-        VisualizationController visualizationController = new VisualizationController(grid, constructionController.getCanvasFacade());
+        VisualizationController visualizationController = new VisualizationController(menuFunctionController.getGrid(), constructionController.getCanvasFacade());
         gridFlowEventManager.addListener(visualizationController);
 
-        SimulationController simulationController = new SimulationController(grid, gridFlowEventManager);
+        SimulationController simulationController = new SimulationController(menuFunctionController.getGrid(), gridFlowEventManager);
         gridFlowEventManager.addListener(simulationController);
 
-        FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/baseui/BaseUIView.fxml"));
-
-        // Load components into grid
-        grid.loadComponents(DevUtils.createTestComponents());
-        gridFlowEventManager.sendEvent(new GridChangedEvent()); // build would do this later
+        menuFunctionController.loadDefaultGrid();
 
         // Init GUI
-        initGui(primaryStage, constructionController.getCanvasFacade().getCanvas(), buildMenuView, baseUIViewLoader.load());
+        initGui(primaryStage, constructionController.getCanvasFacade().getCanvas(), buildMenuView, baseUIView);
     }
 
     private void initGui(Stage primaryStage, GridCanvas canvas, Node buildMenuView, Node baseUIView) {

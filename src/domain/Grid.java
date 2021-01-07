@@ -47,6 +47,10 @@ public class Grid {
         for (Component component : components) addComponent(component);
     }
 
+    public void clearComponents() {
+        components.clear();
+    }
+
     public List<Wire> getWires() {
         return components.stream()
                 .filter(component -> component instanceof Wire)

@@ -1,29 +1,29 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
-public class Cutout extends Device implements ILockable, ICloseable {
+import java.util.UUID;
 
-    private boolean locked;
-    private boolean closed;
-    private boolean closedByDefault;
+public class Cutout extends Closeable{
 
     public Cutout(String name, Point position, boolean closedByDefault) {
-        super(name, position);
-        this.closedByDefault = closedByDefault;
-        this.closed = closedByDefault;
+        super(name, position, closedByDefault);
         createComponentIcon();
     }
 
-    public void toggleLocked() {
-        locked = !locked;
+    public Cutout(JsonNode node) {
+        super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
+                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
+                node.get("closedByDefault").asBoolean());
+        createComponentIcon();
     }
 
     private void createComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getCutoutIcon(getPosition(), closed);
+        DeviceIcon icon = ComponentIconCreator.getCutoutIcon(getPosition(), isClosed());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
@@ -37,16 +37,9 @@ public class Cutout extends Device implements ILockable, ICloseable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
     }
 
-    public boolean isClosed() {
-        return closed;
-    }
-
-    public boolean isClosedByDefault() {
-        return closedByDefault;
-    }
-
+    @Override
     public void toggle() {
-        closed = !closed;
+        toggleClosed();
         createComponentIcon();
     }
 }

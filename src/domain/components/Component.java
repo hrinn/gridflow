@@ -1,5 +1,8 @@
 package domain.components;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 
@@ -20,6 +23,13 @@ public abstract class Component {
         this.name = name;
         this.position = position;
         this.angle = 0;
+    }
+
+    public Component (UUID id, String name, Point position, double angle) {
+        this.id = id;
+        this.name = name;
+        this.position = position;
+        this.angle = angle;
     }
 
     public UUID getId() {
@@ -62,6 +72,19 @@ public abstract class Component {
     public abstract List<Component> getAccessibleConnections();
 
     public abstract List<Component> getConnections();
+
+    public abstract void setConnections(List<Component> connections);
+
+    public ObjectNode getObjectNode(ObjectMapper mapper) {
+        ObjectNode component = mapper.createObjectNode();
+        component.put("id", getId().toString());
+        component.put("type", this.getClass().getSimpleName());
+        component.put("name", getName());
+        component.put("x", getPosition().getX());
+        component.put("y", getPosition().getY());
+        component.put("angle", getAngle());
+        return component;
+    }
 
     public abstract void delete();
 

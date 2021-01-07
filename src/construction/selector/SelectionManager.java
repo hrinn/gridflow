@@ -90,7 +90,6 @@ public class SelectionManager {
                 selectedComponentIDs.add(id);
             }
         });
-        printSelectionBox();
         clearSelection();
     }
 

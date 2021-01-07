@@ -12,15 +12,13 @@ import domain.components.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.lang.reflect.Array;
 
 public class GridFileManager {
     private Grid grid;
     private ObjectMapper mapper;
 
     public GridFileManager() {
-        newGrid();
+        grid = new Grid();
         mapper = new ObjectMapper();
     }
 
@@ -40,7 +38,7 @@ public class GridFileManager {
         ObjectNode gridNode = mapper.readTree(parser);
         parser.close();
 
-        grid = new Grid();
+        grid.clearComponents();
         ArrayNode components = (ArrayNode) gridNode.get("components");
         for (JsonNode componentJSON : components) {
             Component component = switch (componentJSON.get("type").asText()) {
@@ -56,11 +54,6 @@ public class GridFileManager {
             };
             grid.addComponent(component);
         }
-        System.out.println(grid.getComponents().size());
-    }
-
-    public void newGrid() { //newgrid, returns new grid
-        this.grid = new Grid();
     }
 
     public Grid getGrid() {

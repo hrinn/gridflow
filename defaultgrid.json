@@ -6,15 +6,7 @@
     "angle" : 0.0,
     "start" : "5840.0,2760.0",
     "end" : "5840.0,2760.0",
-    "connections" : [ "44df755f-cafc-4a53-af6a-a1f4082c1e65", "9ec12f7c-3aa3-46b2-a84e-f328b925fad8", "b086f03e-c50f-4a6b-81ed-2e383f62af54" ]
-  }, {
-    "id" : "44df755f-cafc-4a53-af6a-a1f4082c1e65",
-    "type" : "PowerSource",
-    "name" : "",
-    "pos" : "5840.0,2760.0",
-    "angle" : 0.0,
-    "on" : true,
-    "outWire" : "5fdbb6ff-6c13-40d6-affc-6aadb9fd2c91"
+    "connections" : [ "9ec12f7c-3aa3-46b2-a84e-f328b925fad8", "b086f03e-c50f-4a6b-81ed-2e383f62af54", "1cd2c21b-d372-4f22-95a4-1df54faecd24" ]
   }, {
     "id" : "9df80bb1-0ff9-45ad-be71-a73717029857",
     "type" : "Wire",
@@ -107,7 +99,7 @@
     "angle" : 0.0,
     "start" : "5840.0,2760.0",
     "end" : "5900.0,2760.0",
-    "connections" : [ "5fdbb6ff-6c13-40d6-affc-6aadb9fd2c91", "feb21b34-049d-4d17-9576-9ec92333c294" ]
+    "connections" : [ "5fdbb6ff-6c13-40d6-affc-6aadb9fd2c91", "feb21b34-049d-4d17-9576-9ec92333c294", "1cd2c21b-d372-4f22-95a4-1df54faecd24" ]
   }, {
     "id" : "feb21b34-049d-4d17-9576-9ec92333c294",
     "type" : "Wire",
@@ -207,7 +199,7 @@
     "angle" : 0.0,
     "start" : "5720.0,3020.0",
     "end" : "5720.0,3020.0",
-    "connections" : [ "671cd948-0260-4c3e-bd1b-630c1571dfc2", "50c28fea-927d-4441-be00-accc2d327e8b" ]
+    "connections" : [ "671cd948-0260-4c3e-bd1b-630c1571dfc2", "50c28fea-927d-4441-be00-accc2d327e8b", "384d9a81-14f9-4bb6-8446-0d76afdb8aec" ]
   }, {
     "id" : "ed655bfb-8642-46ba-a7e2-9e5d23d0b1d6",
     "type" : "Wire",
@@ -291,6 +283,1406 @@
     "angle" : 0.0,
     "start" : "5720.0,3020.0",
     "end" : "5960.0,3020.0",
-    "connections" : [ "f97134ac-ce03-46f8-afbe-a272325ba0f9", "e1701ec5-8f45-4505-8ff1-33ce65352058", "6ea13132-7a3a-43e7-92da-590fa3c69093", "a7c1b773-4992-4d6c-adbb-f175cf3691ba", "2a94c4f9-6775-4ebe-811f-9b65a471785f" ]
+    "connections" : [ "f97134ac-ce03-46f8-afbe-a272325ba0f9", "e1701ec5-8f45-4505-8ff1-33ce65352058", "6ea13132-7a3a-43e7-92da-590fa3c69093", "a7c1b773-4992-4d6c-adbb-f175cf3691ba", "2a94c4f9-6775-4ebe-811f-9b65a471785f", "384d9a81-14f9-4bb6-8446-0d76afdb8aec" ]
+  }, {
+    "id" : "1cd2c21b-d372-4f22-95a4-1df54faecd24",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5840.0,2760.0",
+    "end" : "5840.0,2700.0",
+    "connections" : [ "5fdbb6ff-6c13-40d6-affc-6aadb9fd2c91", "b086f03e-c50f-4a6b-81ed-2e383f62af54", "b227b00a-2e27-4b58-a5d0-17a5788f6952", "eac2bb96-4960-4a9d-bd4c-6c6f14a95173" ]
+  }, {
+    "id" : "b227b00a-2e27-4b58-a5d0-17a5788f6952",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5840.0,2700.0",
+    "end" : "5740.0,2700.0",
+    "connections" : [ "1cd2c21b-d372-4f22-95a4-1df54faecd24", "eac2bb96-4960-4a9d-bd4c-6c6f14a95173", "f5326317-a5d1-4134-b627-44d132149da1", "26327e53-19d1-4929-bbb2-b5ebe43e6f99" ]
+  }, {
+    "id" : "eac2bb96-4960-4a9d-bd4c-6c6f14a95173",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5840.0,2700.0",
+    "end" : "5940.0,2700.0",
+    "connections" : [ "1cd2c21b-d372-4f22-95a4-1df54faecd24", "b227b00a-2e27-4b58-a5d0-17a5788f6952", "15f84ecd-5d83-4287-a448-648c77683af3", "27ae3c79-697b-405c-99d2-2d2360cbaa05" ]
+  }, {
+    "id" : "a65a428b-d7ff-423c-988a-ce38bf35376c",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5680.0,2700.0",
+    "end" : "5680.0,2700.0",
+    "connections" : [ "f5326317-a5d1-4134-b627-44d132149da1", "985e5c78-66ee-433d-8273-d342b16720c9" ]
+  }, {
+    "id" : "f5326317-a5d1-4134-b627-44d132149da1",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "5740.0,2700.0",
+    "angle" : 90.0,
+    "inWire" : "b227b00a-2e27-4b58-a5d0-17a5788f6952",
+    "outWire" : "a65a428b-d7ff-423c-988a-ce38bf35376c",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "eb5e4153-ebc0-4501-928c-379de995af2a",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5680.0,2640.0",
+    "end" : "5680.0,2640.0",
+    "connections" : [ "e99e9d66-ae5a-4d3b-819f-b9ed617b0e0d", "429c9a1f-9b0c-433d-8426-8e5133729e58" ]
+  }, {
+    "id" : "4dfde9f5-f4ea-44b8-9d41-ee4391e14395",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5620.0,2640.0",
+    "end" : "5620.0,2640.0",
+    "connections" : [ "e99e9d66-ae5a-4d3b-819f-b9ed617b0e0d", "57f5f082-9387-4d3a-a9ad-ae58c44e92f2" ]
+  }, {
+    "id" : "e99e9d66-ae5a-4d3b-819f-b9ed617b0e0d",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "5680.0,2640.0",
+    "angle" : 90.0,
+    "inWire" : "eb5e4153-ebc0-4501-928c-379de995af2a",
+    "outWire" : "4dfde9f5-f4ea-44b8-9d41-ee4391e14395",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false
+  }, {
+    "id" : "fa37af64-48d6-4194-b4b2-83531800c0df",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5620.0,2700.0",
+    "end" : "5620.0,2700.0",
+    "connections" : [ "dc09881e-259a-4d6d-b792-7f640b350475", "985e5c78-66ee-433d-8273-d342b16720c9" ]
+  }, {
+    "id" : "9a5ee375-3d36-4760-8ac8-bc266da2cb0f",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5560.0,2700.0",
+    "end" : "5560.0,2700.0",
+    "connections" : [ "dc09881e-259a-4d6d-b792-7f640b350475", "6249b67d-c411-43a6-a540-84fd949f36e7", "907bc6bc-b682-4442-ade4-be2095f40921" ]
+  }, {
+    "id" : "dc09881e-259a-4d6d-b792-7f640b350475",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "5620.0,2700.0",
+    "angle" : 90.0,
+    "inWire" : "fa37af64-48d6-4194-b4b2-83531800c0df",
+    "outWire" : "9a5ee375-3d36-4760-8ac8-bc266da2cb0f",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "5d8ee116-2106-4e9a-8dbd-ef71d6971769",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6000.0,2700.0",
+    "end" : "6000.0,2700.0",
+    "connections" : [ "15f84ecd-5d83-4287-a448-648c77683af3", "02b9b71f-0a80-43a6-8984-b2dd6853c6c7" ]
+  }, {
+    "id" : "15f84ecd-5d83-4287-a448-648c77683af3",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6000.0,2700.0",
+    "angle" : 90.0,
+    "inWire" : "5d8ee116-2106-4e9a-8dbd-ef71d6971769",
+    "outWire" : "eac2bb96-4960-4a9d-bd4c-6c6f14a95173",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "e4136a76-46e9-4e96-a6b5-68604201501d",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6060.0,2640.0",
+    "end" : "6060.0,2640.0",
+    "connections" : [ "f0f5e6e7-2930-48db-bd01-bf8b48c51545", "b44e6c51-1761-4cf0-9334-367f4179c1b7" ]
+  }, {
+    "id" : "29a49929-49d9-4469-b5f3-ebb3f9342fd5",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6000.0,2640.0",
+    "end" : "6000.0,2640.0",
+    "connections" : [ "f0f5e6e7-2930-48db-bd01-bf8b48c51545", "0ea2d53f-898c-466b-83ca-0d5415b93a28" ]
+  }, {
+    "id" : "9557f042-9da7-4557-a97e-0550f86c0aae",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6120.0,2700.0",
+    "end" : "6120.0,2700.0",
+    "connections" : [ "008b8254-254a-4d84-8789-760cb6002d38", "fdcfe8e7-1bc3-4346-9f4a-5891a903e578", "08a7f96b-2965-4f21-a306-7fa642add1d3" ]
+  }, {
+    "id" : "3fb3f347-e01b-4b68-9539-952981f401ef",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6060.0,2700.0",
+    "end" : "6060.0,2700.0",
+    "connections" : [ "008b8254-254a-4d84-8789-760cb6002d38", "02b9b71f-0a80-43a6-8984-b2dd6853c6c7" ]
+  }, {
+    "id" : "008b8254-254a-4d84-8789-760cb6002d38",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6120.0,2700.0",
+    "angle" : 90.0,
+    "inWire" : "9557f042-9da7-4557-a97e-0550f86c0aae",
+    "outWire" : "3fb3f347-e01b-4b68-9539-952981f401ef",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "f0f5e6e7-2930-48db-bd01-bf8b48c51545",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6060.0,2640.0",
+    "angle" : 90.0,
+    "inWire" : "e4136a76-46e9-4e96-a6b5-68604201501d",
+    "outWire" : "29a49929-49d9-4469-b5f3-ebb3f9342fd5",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false
+  }, {
+    "id" : "985e5c78-66ee-433d-8273-d342b16720c9",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "5680.0,2700.0",
+    "angle" : 90.0,
+    "inWire" : "a65a428b-d7ff-423c-988a-ce38bf35376c",
+    "outWire" : "fa37af64-48d6-4194-b4b2-83531800c0df",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV70"
+  }, {
+    "id" : "02b9b71f-0a80-43a6-8984-b2dd6853c6c7",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6060.0,2700.0",
+    "angle" : 90.0,
+    "inWire" : "3fb3f347-e01b-4b68-9539-952981f401ef",
+    "outWire" : "5d8ee116-2106-4e9a-8dbd-ef71d6971769",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV70"
+  }, {
+    "id" : "6249b67d-c411-43a6-a540-84fd949f36e7",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5560.0,2700.0",
+    "end" : "5560.0,2640.0",
+    "connections" : [ "9a5ee375-3d36-4760-8ac8-bc266da2cb0f", "57f5f082-9387-4d3a-a9ad-ae58c44e92f2", "907bc6bc-b682-4442-ade4-be2095f40921" ]
+  }, {
+    "id" : "57f5f082-9387-4d3a-a9ad-ae58c44e92f2",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5560.0,2640.0",
+    "end" : "5620.0,2640.0",
+    "connections" : [ "4dfde9f5-f4ea-44b8-9d41-ee4391e14395", "6249b67d-c411-43a6-a540-84fd949f36e7" ]
+  }, {
+    "id" : "429c9a1f-9b0c-433d-8426-8e5133729e58",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5680.0,2640.0",
+    "end" : "5740.0,2640.0",
+    "connections" : [ "eb5e4153-ebc0-4501-928c-379de995af2a", "26327e53-19d1-4929-bbb2-b5ebe43e6f99" ]
+  }, {
+    "id" : "26327e53-19d1-4929-bbb2-b5ebe43e6f99",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5740.0,2640.0",
+    "end" : "5740.0,2700.0",
+    "connections" : [ "b227b00a-2e27-4b58-a5d0-17a5788f6952", "429c9a1f-9b0c-433d-8426-8e5133729e58" ]
+  }, {
+    "id" : "27ae3c79-697b-405c-99d2-2d2360cbaa05",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5940.0,2700.0",
+    "end" : "5940.0,2640.0",
+    "connections" : [ "eac2bb96-4960-4a9d-bd4c-6c6f14a95173", "0ea2d53f-898c-466b-83ca-0d5415b93a28" ]
+  }, {
+    "id" : "0ea2d53f-898c-466b-83ca-0d5415b93a28",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5940.0,2640.0",
+    "end" : "6000.0,2640.0",
+    "connections" : [ "29a49929-49d9-4469-b5f3-ebb3f9342fd5", "27ae3c79-697b-405c-99d2-2d2360cbaa05" ]
+  }, {
+    "id" : "b44e6c51-1761-4cf0-9334-367f4179c1b7",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6060.0,2640.0",
+    "end" : "6120.0,2640.0",
+    "connections" : [ "e4136a76-46e9-4e96-a6b5-68604201501d", "fdcfe8e7-1bc3-4346-9f4a-5891a903e578" ]
+  }, {
+    "id" : "fdcfe8e7-1bc3-4346-9f4a-5891a903e578",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6120.0,2640.0",
+    "end" : "6120.0,2700.0",
+    "connections" : [ "9557f042-9da7-4557-a97e-0550f86c0aae", "b44e6c51-1761-4cf0-9334-367f4179c1b7", "08a7f96b-2965-4f21-a306-7fa642add1d3" ]
+  }, {
+    "id" : "16ca5a09-10fa-4d37-b973-4432750894a5",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5660.0,3100.0",
+    "end" : "5660.0,3100.0",
+    "connections" : [ "34fe1d72-9ac2-4fa9-93ab-b8e5aa8614f7" ]
+  }, {
+    "id" : "ad88c366-53e1-420e-9c64-23ad59648373",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5660.0,3020.0",
+    "end" : "5660.0,3020.0",
+    "connections" : [ "34fe1d72-9ac2-4fa9-93ab-b8e5aa8614f7", "384d9a81-14f9-4bb6-8446-0d76afdb8aec" ]
+  }, {
+    "id" : "34fe1d72-9ac2-4fa9-93ab-b8e5aa8614f7",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "5660.0,3100.0",
+    "angle" : 180.0,
+    "inWire" : "16ca5a09-10fa-4d37-b973-4432750894a5",
+    "outWire" : "ad88c366-53e1-420e-9c64-23ad59648373",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "51335c75-b6fb-408e-af9e-70a56587e6d8",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5600.0,3100.0",
+    "end" : "5600.0,3100.0",
+    "connections" : [ "1ff7e5fb-0871-488f-86e2-55a75c97ca08" ]
+  }, {
+    "id" : "eb6911e5-9b20-4dbd-9efc-be313b5d0a24",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5600.0,3020.0",
+    "end" : "5600.0,3020.0",
+    "connections" : [ "1ff7e5fb-0871-488f-86e2-55a75c97ca08", "384d9a81-14f9-4bb6-8446-0d76afdb8aec" ]
+  }, {
+    "id" : "1ff7e5fb-0871-488f-86e2-55a75c97ca08",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "5600.0,3100.0",
+    "angle" : 180.0,
+    "inWire" : "51335c75-b6fb-408e-af9e-70a56587e6d8",
+    "outWire" : "eb6911e5-9b20-4dbd-9efc-be313b5d0a24",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "c55be859-d267-4e68-9254-b1e2d7a58e4e",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5540.0,3100.0",
+    "end" : "5540.0,3100.0",
+    "connections" : [ "0601b394-f3c2-41e7-9794-cc5bde08ef30" ]
+  }, {
+    "id" : "37a8e310-eb1f-4c09-af78-3704df3d6ffb",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5540.0,3020.0",
+    "end" : "5540.0,3020.0",
+    "connections" : [ "0601b394-f3c2-41e7-9794-cc5bde08ef30", "384d9a81-14f9-4bb6-8446-0d76afdb8aec" ]
+  }, {
+    "id" : "0601b394-f3c2-41e7-9794-cc5bde08ef30",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "5540.0,3100.0",
+    "angle" : 180.0,
+    "inWire" : "c55be859-d267-4e68-9254-b1e2d7a58e4e",
+    "outWire" : "37a8e310-eb1f-4c09-af78-3704df3d6ffb",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "384d9a81-14f9-4bb6-8446-0d76afdb8aec",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5540.0,3020.0",
+    "end" : "5720.0,3020.0",
+    "connections" : [ "6ea13132-7a3a-43e7-92da-590fa3c69093", "50c28fea-927d-4441-be00-accc2d327e8b", "ad88c366-53e1-420e-9c64-23ad59648373", "eb6911e5-9b20-4dbd-9efc-be313b5d0a24", "37a8e310-eb1f-4c09-af78-3704df3d6ffb" ]
+  }, {
+    "id" : "907bc6bc-b682-4442-ade4-be2095f40921",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5560.0,2700.0",
+    "end" : "5440.0,2700.0",
+    "connections" : [ "9a5ee375-3d36-4760-8ac8-bc266da2cb0f", "6249b67d-c411-43a6-a540-84fd949f36e7", "63691d5f-1f72-4c1e-a442-394d5482f55f" ]
+  }, {
+    "id" : "63691d5f-1f72-4c1e-a442-394d5482f55f",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "5440.0,2700.0",
+    "end" : "5440.0,2640.0",
+    "connections" : [ "907bc6bc-b682-4442-ade4-be2095f40921", "1c92ab77-1262-4964-b4f7-997b2fc79fec" ]
+  }, {
+    "id" : "1c92ab77-1262-4964-b4f7-997b2fc79fec",
+    "type" : "PowerSource",
+    "name" : "",
+    "pos" : "5440.0,2640.0",
+    "angle" : 0.0,
+    "on" : true,
+    "outWire" : "63691d5f-1f72-4c1e-a442-394d5482f55f"
+  }, {
+    "id" : "08a7f96b-2965-4f21-a306-7fa642add1d3",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6120.0,2700.0",
+    "end" : "6300.0,2700.0",
+    "connections" : [ "9557f042-9da7-4557-a97e-0550f86c0aae", "fdcfe8e7-1bc3-4346-9f4a-5891a903e578", "9bd5bbe0-9a15-4eca-8c92-aef02e63edd4" ]
+  }, {
+    "id" : "9bd5bbe0-9a15-4eca-8c92-aef02e63edd4",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,2700.0",
+    "end" : "6300.0,2760.0",
+    "connections" : [ "08a7f96b-2965-4f21-a306-7fa642add1d3", "b4eb24bf-29c4-4273-9245-c925cc1b6f7f", "c9be72c8-19ed-4734-9ece-1fae5f0cb366" ]
+  }, {
+    "id" : "f3f5d1ce-0e84-4e3d-8da2-89310e86d444",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,2820.0",
+    "end" : "6300.0,2820.0",
+    "connections" : [ "b4eb24bf-29c4-4273-9245-c925cc1b6f7f", "20143e18-1d84-43b7-a99c-e7fc5977addf" ]
+  }, {
+    "id" : "b4eb24bf-29c4-4273-9245-c925cc1b6f7f",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6300.0,2760.0",
+    "angle" : 0.0,
+    "inWire" : "9bd5bbe0-9a15-4eca-8c92-aef02e63edd4",
+    "outWire" : "f3f5d1ce-0e84-4e3d-8da2-89310e86d444",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "7ce957df-da5e-4d87-af93-645329446a37",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6360.0,2820.0",
+    "end" : "6360.0,2820.0",
+    "connections" : [ "5204e7c8-4a89-4936-affe-d7826ab392dd", "9ba3a9ee-65fd-4344-965e-64149eae2dbd" ]
+  }, {
+    "id" : "0658d2d4-7919-424b-babd-7d6f68ec3ef4",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6360.0,2880.0",
+    "end" : "6360.0,2880.0",
+    "connections" : [ "5204e7c8-4a89-4936-affe-d7826ab392dd", "c2387c2f-7d06-4917-b167-8ae7a1af4c40" ]
+  }, {
+    "id" : "5204e7c8-4a89-4936-affe-d7826ab392dd",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6360.0,2820.0",
+    "angle" : 0.0,
+    "inWire" : "7ce957df-da5e-4d87-af93-645329446a37",
+    "outWire" : "0658d2d4-7919-424b-babd-7d6f68ec3ef4",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false
+  }, {
+    "id" : "61525913-7e15-4108-9654-8a6a73a38333",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,2880.0",
+    "end" : "6300.0,2880.0",
+    "connections" : [ "81eafbd4-9c4b-48cf-abdb-76d72be6ef1e", "20143e18-1d84-43b7-a99c-e7fc5977addf" ]
+  }, {
+    "id" : "eadc2cfa-b8cc-457f-82b8-8345d452753e",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,2940.0",
+    "end" : "6300.0,2940.0",
+    "connections" : [ "81eafbd4-9c4b-48cf-abdb-76d72be6ef1e", "dab58d16-5d53-4c60-bee1-02beda6728cf", "7bcfe661-a482-4ad3-a934-ccf045cc8f6a" ]
+  }, {
+    "id" : "81eafbd4-9c4b-48cf-abdb-76d72be6ef1e",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6300.0,2880.0",
+    "angle" : 0.0,
+    "inWire" : "61525913-7e15-4108-9654-8a6a73a38333",
+    "outWire" : "eadc2cfa-b8cc-457f-82b8-8345d452753e",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "20143e18-1d84-43b7-a99c-e7fc5977addf",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6300.0,2820.0",
+    "angle" : 0.0,
+    "inWire" : "f3f5d1ce-0e84-4e3d-8da2-89310e86d444",
+    "outWire" : "61525913-7e15-4108-9654-8a6a73a38333",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV70"
+  }, {
+    "id" : "c9be72c8-19ed-4734-9ece-1fae5f0cb366",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,2760.0",
+    "end" : "6360.0,2760.0",
+    "connections" : [ "9bd5bbe0-9a15-4eca-8c92-aef02e63edd4", "9ba3a9ee-65fd-4344-965e-64149eae2dbd" ]
+  }, {
+    "id" : "9ba3a9ee-65fd-4344-965e-64149eae2dbd",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6360.0,2760.0",
+    "end" : "6360.0,2820.0",
+    "connections" : [ "7ce957df-da5e-4d87-af93-645329446a37", "c9be72c8-19ed-4734-9ece-1fae5f0cb366" ]
+  }, {
+    "id" : "c2387c2f-7d06-4917-b167-8ae7a1af4c40",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6360.0,2880.0",
+    "end" : "6360.0,2940.0",
+    "connections" : [ "0658d2d4-7919-424b-babd-7d6f68ec3ef4", "dab58d16-5d53-4c60-bee1-02beda6728cf" ]
+  }, {
+    "id" : "dab58d16-5d53-4c60-bee1-02beda6728cf",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6360.0,2940.0",
+    "end" : "6300.0,2940.0",
+    "connections" : [ "eadc2cfa-b8cc-457f-82b8-8345d452753e", "c2387c2f-7d06-4917-b167-8ae7a1af4c40", "7bcfe661-a482-4ad3-a934-ccf045cc8f6a" ]
+  }, {
+    "id" : "7bcfe661-a482-4ad3-a934-ccf045cc8f6a",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,2940.0",
+    "end" : "6300.0,3000.0",
+    "connections" : [ "eadc2cfa-b8cc-457f-82b8-8345d452753e", "dab58d16-5d53-4c60-bee1-02beda6728cf", "39bd6776-418c-4e1b-9b5d-e0b4d58065de", "63cf32c3-b4f0-41da-a587-61ae9ef8d180" ]
+  }, {
+    "id" : "39bd6776-418c-4e1b-9b5d-e0b4d58065de",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,3000.0",
+    "end" : "6460.0,3000.0",
+    "connections" : [ "7bcfe661-a482-4ad3-a934-ccf045cc8f6a", "7c8dd815-a9b5-4548-85a7-549746ec5697", "fa7503f2-3793-4e80-b03d-b10c38ee3058" ]
+  }, {
+    "id" : "c97c299a-6e28-4cf0-8075-253e3f956e32",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6520.0,3000.0",
+    "end" : "6520.0,3000.0",
+    "connections" : [ "7c8dd815-a9b5-4548-85a7-549746ec5697", "feaf4dfb-0188-4626-b657-9bbbfa995b5e" ]
+  }, {
+    "id" : "7c8dd815-a9b5-4548-85a7-549746ec5697",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6520.0,3000.0",
+    "angle" : 90.0,
+    "inWire" : "c97c299a-6e28-4cf0-8075-253e3f956e32",
+    "outWire" : "39bd6776-418c-4e1b-9b5d-e0b4d58065de",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "6491623c-47fa-4430-83ae-5ad4e6003aa5",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6640.0,3000.0",
+    "end" : "6640.0,3000.0",
+    "connections" : [ "73fa4735-e63d-4403-aa82-2dd06aab51ce", "8c8d92ae-d85b-433d-bb7d-8cdffae633d8", "10ef34d3-52b0-4b3b-a5df-661b4c108404" ]
+  }, {
+    "id" : "6b0cb7a0-bf48-4f18-aa6f-c6690227b0dd",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6580.0,3000.0",
+    "end" : "6580.0,3000.0",
+    "connections" : [ "73fa4735-e63d-4403-aa82-2dd06aab51ce", "feaf4dfb-0188-4626-b657-9bbbfa995b5e" ]
+  }, {
+    "id" : "73fa4735-e63d-4403-aa82-2dd06aab51ce",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6640.0,3000.0",
+    "angle" : 90.0,
+    "inWire" : "6491623c-47fa-4430-83ae-5ad4e6003aa5",
+    "outWire" : "6b0cb7a0-bf48-4f18-aa6f-c6690227b0dd",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "6bc6da5c-5b28-4e19-ab82-88a2a018f293",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6580.0,2940.0",
+    "end" : "6580.0,2940.0",
+    "connections" : [ "c2ae3dfa-bd18-43f6-97c6-1f59dbbe1f34", "3e915a13-463b-45a9-aa7f-c87685c0b3d1" ]
+  }, {
+    "id" : "10ea548d-40fa-4ebc-b9ca-129c56a4cd9d",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6520.0,2940.0",
+    "end" : "6520.0,2940.0",
+    "connections" : [ "c2ae3dfa-bd18-43f6-97c6-1f59dbbe1f34", "fef39354-1527-4482-bb1b-7a1d2f77ac1f" ]
+  }, {
+    "id" : "c2ae3dfa-bd18-43f6-97c6-1f59dbbe1f34",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6580.0,2940.0",
+    "angle" : 90.0,
+    "inWire" : "6bc6da5c-5b28-4e19-ab82-88a2a018f293",
+    "outWire" : "10ea548d-40fa-4ebc-b9ca-129c56a4cd9d",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false
+  }, {
+    "id" : "feaf4dfb-0188-4626-b657-9bbbfa995b5e",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6580.0,3000.0",
+    "angle" : 90.0,
+    "inWire" : "6b0cb7a0-bf48-4f18-aa6f-c6690227b0dd",
+    "outWire" : "c97c299a-6e28-4cf0-8075-253e3f956e32",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV70"
+  }, {
+    "id" : "fa7503f2-3793-4e80-b03d-b10c38ee3058",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6460.0,3000.0",
+    "end" : "6460.0,2940.0",
+    "connections" : [ "39bd6776-418c-4e1b-9b5d-e0b4d58065de", "fef39354-1527-4482-bb1b-7a1d2f77ac1f" ]
+  }, {
+    "id" : "fef39354-1527-4482-bb1b-7a1d2f77ac1f",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6460.0,2940.0",
+    "end" : "6520.0,2940.0",
+    "connections" : [ "10ea548d-40fa-4ebc-b9ca-129c56a4cd9d", "fa7503f2-3793-4e80-b03d-b10c38ee3058" ]
+  }, {
+    "id" : "3e915a13-463b-45a9-aa7f-c87685c0b3d1",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6580.0,2940.0",
+    "end" : "6640.0,2940.0",
+    "connections" : [ "6bc6da5c-5b28-4e19-ab82-88a2a018f293", "8c8d92ae-d85b-433d-bb7d-8cdffae633d8" ]
+  }, {
+    "id" : "8c8d92ae-d85b-433d-bb7d-8cdffae633d8",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6640.0,2940.0",
+    "end" : "6640.0,3000.0",
+    "connections" : [ "6491623c-47fa-4430-83ae-5ad4e6003aa5", "3e915a13-463b-45a9-aa7f-c87685c0b3d1", "10ef34d3-52b0-4b3b-a5df-661b4c108404" ]
+  }, {
+    "id" : "10ef34d3-52b0-4b3b-a5df-661b4c108404",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6640.0,3000.0",
+    "end" : "6800.0,3000.0",
+    "connections" : [ "6491623c-47fa-4430-83ae-5ad4e6003aa5", "8c8d92ae-d85b-433d-bb7d-8cdffae633d8", "e0e391c3-e1fb-439b-acdb-ddd87b275dd9", "f3cf5368-aec9-495d-9854-e8607de52d07" ]
+  }, {
+    "id" : "e0e391c3-e1fb-439b-acdb-ddd87b275dd9",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,3000.0",
+    "end" : "6800.0,2940.0",
+    "connections" : [ "10ef34d3-52b0-4b3b-a5df-661b4c108404", "ba99f726-0569-4658-9596-3d3435ac240f", "4161752c-2571-466b-a7fc-865d3824d3b3" ]
+  }, {
+    "id" : "c2e93f5a-0149-4383-857a-2d1a3be54ba7",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2880.0",
+    "end" : "6800.0,2880.0",
+    "connections" : [ "ba99f726-0569-4658-9596-3d3435ac240f", "7942b088-f76f-4e42-b75a-19cb45754645" ]
+  }, {
+    "id" : "ba99f726-0569-4658-9596-3d3435ac240f",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6800.0,2940.0",
+    "angle" : 180.0,
+    "inWire" : "e0e391c3-e1fb-439b-acdb-ddd87b275dd9",
+    "outWire" : "c2e93f5a-0149-4383-857a-2d1a3be54ba7",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "8dc4b21a-100f-408d-b01a-0402befe6716",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6740.0,2880.0",
+    "end" : "6740.0,2880.0",
+    "connections" : [ "33de2ea5-116b-4817-a54f-5bd1c5525fab", "1881780e-2766-4cd7-926d-747bf3e8ce1c" ]
+  }, {
+    "id" : "5c8483e7-d64c-4343-a953-f980cac38425",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6740.0,2820.0",
+    "end" : "6740.0,2820.0",
+    "connections" : [ "33de2ea5-116b-4817-a54f-5bd1c5525fab", "b0a56195-db40-42fe-8004-63d5050d3cce" ]
+  }, {
+    "id" : "33de2ea5-116b-4817-a54f-5bd1c5525fab",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6740.0,2880.0",
+    "angle" : 180.0,
+    "inWire" : "8dc4b21a-100f-408d-b01a-0402befe6716",
+    "outWire" : "5c8483e7-d64c-4343-a953-f980cac38425",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false
+  }, {
+    "id" : "dd6673da-a3da-4506-9a63-204fb0265c39",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2820.0",
+    "end" : "6800.0,2820.0",
+    "connections" : [ "54169e10-a2d3-419d-9c6f-17ed9f487c68", "7942b088-f76f-4e42-b75a-19cb45754645" ]
+  }, {
+    "id" : "916576f0-7207-46ed-b9dc-1103bc947b59",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2760.0",
+    "end" : "6800.0,2760.0",
+    "connections" : [ "54169e10-a2d3-419d-9c6f-17ed9f487c68", "acb90569-3903-41f6-84c3-db3e2a705d88", "1a41f9b6-d57b-42c0-ac77-3b353ed5c200" ]
+  }, {
+    "id" : "54169e10-a2d3-419d-9c6f-17ed9f487c68",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6800.0,2820.0",
+    "angle" : 180.0,
+    "inWire" : "dd6673da-a3da-4506-9a63-204fb0265c39",
+    "outWire" : "916576f0-7207-46ed-b9dc-1103bc947b59",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "7942b088-f76f-4e42-b75a-19cb45754645",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6800.0,2880.0",
+    "angle" : 180.0,
+    "inWire" : "c2e93f5a-0149-4383-857a-2d1a3be54ba7",
+    "outWire" : "dd6673da-a3da-4506-9a63-204fb0265c39",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV70"
+  }, {
+    "id" : "4161752c-2571-466b-a7fc-865d3824d3b3",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2940.0",
+    "end" : "6740.0,2940.0",
+    "connections" : [ "e0e391c3-e1fb-439b-acdb-ddd87b275dd9", "1881780e-2766-4cd7-926d-747bf3e8ce1c" ]
+  }, {
+    "id" : "1881780e-2766-4cd7-926d-747bf3e8ce1c",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6740.0,2940.0",
+    "end" : "6740.0,2880.0",
+    "connections" : [ "8dc4b21a-100f-408d-b01a-0402befe6716", "4161752c-2571-466b-a7fc-865d3824d3b3" ]
+  }, {
+    "id" : "b0a56195-db40-42fe-8004-63d5050d3cce",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6740.0,2820.0",
+    "end" : "6740.0,2760.0",
+    "connections" : [ "5c8483e7-d64c-4343-a953-f980cac38425", "acb90569-3903-41f6-84c3-db3e2a705d88" ]
+  }, {
+    "id" : "acb90569-3903-41f6-84c3-db3e2a705d88",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6740.0,2760.0",
+    "end" : "6800.0,2760.0",
+    "connections" : [ "916576f0-7207-46ed-b9dc-1103bc947b59", "b0a56195-db40-42fe-8004-63d5050d3cce", "1a41f9b6-d57b-42c0-ac77-3b353ed5c200" ]
+  }, {
+    "id" : "7e35f4b8-e31f-4875-b838-c7c8c45a85b4",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,3060.0",
+    "end" : "6300.0,3060.0",
+    "connections" : [ "63cf32c3-b4f0-41da-a587-61ae9ef8d180", "f75bcf82-ee95-4ba0-9f7f-9c413b645400" ]
+  }, {
+    "id" : "63cf32c3-b4f0-41da-a587-61ae9ef8d180",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6300.0,3060.0",
+    "angle" : 180.0,
+    "inWire" : "7e35f4b8-e31f-4875-b838-c7c8c45a85b4",
+    "outWire" : "7bcfe661-a482-4ad3-a934-ccf045cc8f6a",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "1a30141c-b5dd-4f43-b3a9-1f6e457c29d1",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,3060.0",
+    "end" : "6800.0,3060.0",
+    "connections" : [ "f3cf5368-aec9-495d-9854-e8607de52d07", "0a8fd2e9-d4fd-4ac4-8036-901404b3f6d5" ]
+  }, {
+    "id" : "f3cf5368-aec9-495d-9854-e8607de52d07",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6800.0,3060.0",
+    "angle" : 180.0,
+    "inWire" : "1a30141c-b5dd-4f43-b3a9-1f6e457c29d1",
+    "outWire" : "10ef34d3-52b0-4b3b-a5df-661b4c108404",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "d9ba297c-e033-4a11-bfb8-cc83d462f16d",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,3120.0",
+    "end" : "6300.0,3120.0",
+    "connections" : [ "f75bcf82-ee95-4ba0-9f7f-9c413b645400", "8c5a6464-d2e8-4a08-81b5-846cb6971cc3" ]
+  }, {
+    "id" : "f75bcf82-ee95-4ba0-9f7f-9c413b645400",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6300.0,3120.0",
+    "angle" : 180.0,
+    "inWire" : "d9ba297c-e033-4a11-bfb8-cc83d462f16d",
+    "outWire" : "7e35f4b8-e31f-4875-b838-c7c8c45a85b4",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV70"
+  }, {
+    "id" : "826e8ac9-0833-4325-bd79-5bacbd836eba",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,3120.0",
+    "end" : "6800.0,3120.0",
+    "connections" : [ "0a8fd2e9-d4fd-4ac4-8036-901404b3f6d5", "6d749e91-99ce-47d1-8947-2e97bf7071b3" ]
+  }, {
+    "id" : "0a8fd2e9-d4fd-4ac4-8036-901404b3f6d5",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6800.0,3120.0",
+    "angle" : 180.0,
+    "inWire" : "826e8ac9-0833-4325-bd79-5bacbd836eba",
+    "outWire" : "1a30141c-b5dd-4f43-b3a9-1f6e457c29d1",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV70"
+  }, {
+    "id" : "a1e58db1-235b-49ff-9cb4-ff5c88089863",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,3180.0",
+    "end" : "6300.0,3180.0",
+    "connections" : [ "8c5a6464-d2e8-4a08-81b5-846cb6971cc3", "eaeeb4ac-c64f-48f0-b33f-28095ce69147" ]
+  }, {
+    "id" : "8c5a6464-d2e8-4a08-81b5-846cb6971cc3",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6300.0,3180.0",
+    "angle" : 180.0,
+    "inWire" : "a1e58db1-235b-49ff-9cb4-ff5c88089863",
+    "outWire" : "d9ba297c-e033-4a11-bfb8-cc83d462f16d",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "65793b7e-5039-4706-8d3e-eff5f19655a7",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,3180.0",
+    "end" : "6800.0,3180.0",
+    "connections" : [ "6d749e91-99ce-47d1-8947-2e97bf7071b3", "64662b2f-8e60-4a53-8d1c-bd696faad481" ]
+  }, {
+    "id" : "6d749e91-99ce-47d1-8947-2e97bf7071b3",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6800.0,3180.0",
+    "angle" : 180.0,
+    "inWire" : "65793b7e-5039-4706-8d3e-eff5f19655a7",
+    "outWire" : "826e8ac9-0833-4325-bd79-5bacbd836eba",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "a31541f3-9aca-4887-abd1-c689f245102b",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,3240.0",
+    "end" : "6300.0,3240.0",
+    "connections" : [ "eaeeb4ac-c64f-48f0-b33f-28095ce69147", "7d4940e5-0e5f-4ffc-9bfd-f61835622806" ]
+  }, {
+    "id" : "eaeeb4ac-c64f-48f0-b33f-28095ce69147",
+    "type" : "Transformer",
+    "name" : "",
+    "pos" : "6300.0,3240.0",
+    "angle" : 180.0,
+    "inWire" : "a31541f3-9aca-4887-abd1-c689f245102b",
+    "outWire" : "a1e58db1-235b-49ff-9cb4-ff5c88089863"
+  }, {
+    "id" : "eef37855-c0cb-4911-9091-f2b548808ac9",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,3240.0",
+    "end" : "6800.0,3240.0",
+    "connections" : [ "64662b2f-8e60-4a53-8d1c-bd696faad481", "277c1f25-94f2-4f39-a47d-c7f892c18e22" ]
+  }, {
+    "id" : "64662b2f-8e60-4a53-8d1c-bd696faad481",
+    "type" : "Transformer",
+    "name" : "",
+    "pos" : "6800.0,3240.0",
+    "angle" : 180.0,
+    "inWire" : "eef37855-c0cb-4911-9091-f2b548808ac9",
+    "outWire" : "65793b7e-5039-4706-8d3e-eff5f19655a7"
+  }, {
+    "id" : "fcab9ef7-9610-4f2d-8756-33dea838a598",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,3320.0",
+    "end" : "6300.0,3320.0",
+    "connections" : [ "7d4940e5-0e5f-4ffc-9bfd-f61835622806", "0e59b070-a0b0-4dc1-ad22-d5086c11457f", "ca5bb250-0cc2-48fb-b939-d0654801247e" ]
+  }, {
+    "id" : "7d4940e5-0e5f-4ffc-9bfd-f61835622806",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6300.0,3320.0",
+    "angle" : 180.0,
+    "inWire" : "fcab9ef7-9610-4f2d-8756-33dea838a598",
+    "outWire" : "a31541f3-9aca-4887-abd1-c689f245102b",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "ab165091-cb13-4fdc-a2d5-d8a8b8a06afb",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,3320.0",
+    "end" : "6800.0,3320.0",
+    "connections" : [ "277c1f25-94f2-4f39-a47d-c7f892c18e22", "563e6c36-89e2-4831-ae85-e602c363a7a3", "f7525fa1-37b3-4a24-a38b-58e8478a9f19" ]
+  }, {
+    "id" : "277c1f25-94f2-4f39-a47d-c7f892c18e22",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6800.0,3320.0",
+    "angle" : 180.0,
+    "inWire" : "ab165091-cb13-4fdc-a2d5-d8a8b8a06afb",
+    "outWire" : "eef37855-c0cb-4911-9091-f2b548808ac9",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "5d78b37e-db78-453d-b265-fc1f4de27880",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6300.0,3400.0",
+    "end" : "6300.0,3400.0",
+    "connections" : [ "0e59b070-a0b0-4dc1-ad22-d5086c11457f" ]
+  }, {
+    "id" : "0e59b070-a0b0-4dc1-ad22-d5086c11457f",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6300.0,3400.0",
+    "angle" : 180.0,
+    "inWire" : "5d78b37e-db78-453d-b265-fc1f4de27880",
+    "outWire" : "fcab9ef7-9610-4f2d-8756-33dea838a598",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "5882db76-4066-480d-bd4c-1dde965cd606",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6360.0,3400.0",
+    "end" : "6360.0,3400.0",
+    "connections" : [ "1acace97-4314-4c06-9e55-64e83f21ea24" ]
+  }, {
+    "id" : "f2cdf310-ae4c-470b-8313-8855fa57164f",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6360.0,3320.0",
+    "end" : "6360.0,3320.0",
+    "connections" : [ "1acace97-4314-4c06-9e55-64e83f21ea24", "ca5bb250-0cc2-48fb-b939-d0654801247e" ]
+  }, {
+    "id" : "1acace97-4314-4c06-9e55-64e83f21ea24",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6360.0,3400.0",
+    "angle" : 180.0,
+    "inWire" : "5882db76-4066-480d-bd4c-1dde965cd606",
+    "outWire" : "f2cdf310-ae4c-470b-8313-8855fa57164f",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "784ac609-736f-44ca-a14f-3563cfbd16f6",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6420.0,3400.0",
+    "end" : "6420.0,3400.0",
+    "connections" : [ "d2fd2814-3661-4d68-80bd-b204cc6f085f" ]
+  }, {
+    "id" : "66661c18-1bee-47c8-adb1-8466d7359a86",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6420.0,3320.0",
+    "end" : "6420.0,3320.0",
+    "connections" : [ "d2fd2814-3661-4d68-80bd-b204cc6f085f", "ca5bb250-0cc2-48fb-b939-d0654801247e" ]
+  }, {
+    "id" : "d2fd2814-3661-4d68-80bd-b204cc6f085f",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6420.0,3400.0",
+    "angle" : 180.0,
+    "inWire" : "784ac609-736f-44ca-a14f-3563cfbd16f6",
+    "outWire" : "66661c18-1bee-47c8-adb1-8466d7359a86",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "6b08062b-0420-4450-9ed3-91497ad1825f",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6440.0,3320.0",
+    "end" : "6440.0,3320.0",
+    "connections" : [ "5edfcadd-a762-4471-b1d2-f45c7cc2b6ba", "ca5bb250-0cc2-48fb-b939-d0654801247e" ]
+  }, {
+    "id" : "218921c0-ba03-473f-8f84-213af634e42a",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6520.0,3320.0",
+    "end" : "6520.0,3320.0",
+    "connections" : [ "5edfcadd-a762-4471-b1d2-f45c7cc2b6ba", "4886b6b8-e2f8-4a90-a159-9fdb7603c0d0" ]
+  }, {
+    "id" : "5edfcadd-a762-4471-b1d2-f45c7cc2b6ba",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6440.0,3320.0",
+    "angle" : 270.0,
+    "inWire" : "6b08062b-0420-4450-9ed3-91497ad1825f",
+    "outWire" : "218921c0-ba03-473f-8f84-213af634e42a",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "48d16c74-1ec5-41c3-966b-369072677069",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6540.0,3320.0",
+    "end" : "6540.0,3320.0",
+    "connections" : [ "efdbd8f0-7b6b-4db4-a308-34c75cbb352d", "4886b6b8-e2f8-4a90-a159-9fdb7603c0d0" ]
+  }, {
+    "id" : "cce34f8f-ec55-4d78-a22b-1e1a2f29eb20",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6540.0,3400.0",
+    "end" : "6540.0,3400.0",
+    "connections" : [ "efdbd8f0-7b6b-4db4-a308-34c75cbb352d", "7e1c15bc-b37a-4d86-80a5-da8fcdf8c5ae" ]
+  }, {
+    "id" : "efdbd8f0-7b6b-4db4-a308-34c75cbb352d",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6540.0,3320.0",
+    "angle" : 0.0,
+    "inWire" : "48d16c74-1ec5-41c3-966b-369072677069",
+    "outWire" : "cce34f8f-ec55-4d78-a22b-1e1a2f29eb20",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "ede890e7-372c-4b27-8453-9a563a1a2db8",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6600.0,3320.0",
+    "end" : "6600.0,3320.0",
+    "connections" : [ "4a184033-8c0c-4a22-bcdf-ab3dadae21cc", "4886b6b8-e2f8-4a90-a159-9fdb7603c0d0" ]
+  }, {
+    "id" : "3d41617d-fd1d-40f2-9b9d-1f9eea78feed",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6600.0,3400.0",
+    "end" : "6600.0,3400.0",
+    "connections" : [ "4a184033-8c0c-4a22-bcdf-ab3dadae21cc" ]
+  }, {
+    "id" : "4a184033-8c0c-4a22-bcdf-ab3dadae21cc",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6600.0,3320.0",
+    "angle" : 0.0,
+    "inWire" : "ede890e7-372c-4b27-8453-9a563a1a2db8",
+    "outWire" : "3d41617d-fd1d-40f2-9b9d-1f9eea78feed",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "d8e2f108-ade9-4683-a2fa-2be1463a5ddd",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6700.0,3320.0",
+    "end" : "6700.0,3320.0",
+    "connections" : [ "5937ac9d-c0b5-410c-b568-300f20a9dbcd", "f7525fa1-37b3-4a24-a38b-58e8478a9f19" ]
+  }, {
+    "id" : "0947e751-d035-4ebc-bbc4-650c03d7fd4d",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6620.0,3320.0",
+    "end" : "6620.0,3320.0",
+    "connections" : [ "5937ac9d-c0b5-410c-b568-300f20a9dbcd", "4886b6b8-e2f8-4a90-a159-9fdb7603c0d0" ]
+  }, {
+    "id" : "5937ac9d-c0b5-410c-b568-300f20a9dbcd",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6700.0,3320.0",
+    "angle" : 90.0,
+    "inWire" : "d8e2f108-ade9-4683-a2fa-2be1463a5ddd",
+    "outWire" : "0947e751-d035-4ebc-bbc4-650c03d7fd4d",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "2303f8e0-2c2c-42a5-a09b-fe855290fbdd",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,3400.0",
+    "end" : "6800.0,3400.0",
+    "connections" : [ "563e6c36-89e2-4831-ae85-e602c363a7a3", "ed8b557c-24a5-4532-bff6-aab0bdfc0f43" ]
+  }, {
+    "id" : "563e6c36-89e2-4831-ae85-e602c363a7a3",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6800.0,3400.0",
+    "angle" : 180.0,
+    "inWire" : "2303f8e0-2c2c-42a5-a09b-fe855290fbdd",
+    "outWire" : "ab165091-cb13-4fdc-a2d5-d8a8b8a06afb",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "929202e3-ea9c-40c8-9cfb-c8cb58ed829f",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6720.0,3400.0",
+    "end" : "6720.0,3400.0",
+    "connections" : [ "656c0c1a-cf5a-4461-b936-9a70037ecca8" ]
+  }, {
+    "id" : "ab45e575-665b-4d68-a600-1da6c4fff44c",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6720.0,3320.0",
+    "end" : "6720.0,3320.0",
+    "connections" : [ "656c0c1a-cf5a-4461-b936-9a70037ecca8", "f7525fa1-37b3-4a24-a38b-58e8478a9f19" ]
+  }, {
+    "id" : "656c0c1a-cf5a-4461-b936-9a70037ecca8",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6720.0,3400.0",
+    "angle" : 180.0,
+    "inWire" : "929202e3-ea9c-40c8-9cfb-c8cb58ed829f",
+    "outWire" : "ab45e575-665b-4d68-a600-1da6c4fff44c",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "03e26405-4055-487f-b9d1-f8326df8e7bb",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6240.0,3480.0",
+    "end" : "6240.0,3480.0",
+    "connections" : [ "c22b2457-84b6-48e3-b7cd-05f4c0704706", "a71fb4f6-3049-4722-ab0c-d82c198f22ff" ]
+  }, {
+    "id" : "9dfb482c-b4f2-44bb-ade9-9227637832dc",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6240.0,3400.0",
+    "end" : "6240.0,3400.0",
+    "connections" : [ "c22b2457-84b6-48e3-b7cd-05f4c0704706", "cfe70eb0-a36b-4a75-9017-1cd8a2886bf8" ]
+  }, {
+    "id" : "c22b2457-84b6-48e3-b7cd-05f4c0704706",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6240.0,3480.0",
+    "angle" : 180.0,
+    "inWire" : "03e26405-4055-487f-b9d1-f8326df8e7bb",
+    "outWire" : "9dfb482c-b4f2-44bb-ade9-9227637832dc",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "1ba566df-f38f-4c69-b7be-b80ec4bbc7e6",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6860.0,3480.0",
+    "end" : "6860.0,3480.0",
+    "connections" : [ "572694b7-09b3-4ca6-9e5e-889834e74817", "a71fb4f6-3049-4722-ab0c-d82c198f22ff" ]
+  }, {
+    "id" : "f3b0b19d-5829-4458-a980-fb2edcad40c8",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6860.0,3400.0",
+    "end" : "6860.0,3400.0",
+    "connections" : [ "572694b7-09b3-4ca6-9e5e-889834e74817", "8cf90105-5095-431a-b2c1-bde2e21b7c10" ]
+  }, {
+    "id" : "572694b7-09b3-4ca6-9e5e-889834e74817",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6860.0,3480.0",
+    "angle" : 180.0,
+    "inWire" : "1ba566df-f38f-4c69-b7be-b80ec4bbc7e6",
+    "outWire" : "f3b0b19d-5829-4458-a980-fb2edcad40c8",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false,
+    "voltage" : "KV12"
+  }, {
+    "id" : "a71fb4f6-3049-4722-ab0c-d82c198f22ff",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6240.0,3480.0",
+    "end" : "6860.0,3480.0",
+    "connections" : [ "03e26405-4055-487f-b9d1-f8326df8e7bb", "1ba566df-f38f-4c69-b7be-b80ec4bbc7e6" ]
+  }, {
+    "id" : "f7525fa1-37b3-4a24-a38b-58e8478a9f19",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6700.0,3320.0",
+    "end" : "6860.0,3320.0",
+    "connections" : [ "ab165091-cb13-4fdc-a2d5-d8a8b8a06afb", "d8e2f108-ade9-4683-a2fa-2be1463a5ddd", "ab45e575-665b-4d68-a600-1da6c4fff44c", "8cf90105-5095-431a-b2c1-bde2e21b7c10" ]
+  }, {
+    "id" : "8cf90105-5095-431a-b2c1-bde2e21b7c10",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6860.0,3320.0",
+    "end" : "6860.0,3400.0",
+    "connections" : [ "f3b0b19d-5829-4458-a980-fb2edcad40c8", "f7525fa1-37b3-4a24-a38b-58e8478a9f19" ]
+  }, {
+    "id" : "ca5bb250-0cc2-48fb-b939-d0654801247e",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6440.0,3320.0",
+    "end" : "6240.0,3320.0",
+    "connections" : [ "fcab9ef7-9610-4f2d-8756-33dea838a598", "f2cdf310-ae4c-470b-8313-8855fa57164f", "66661c18-1bee-47c8-adb1-8466d7359a86", "6b08062b-0420-4450-9ed3-91497ad1825f", "cfe70eb0-a36b-4a75-9017-1cd8a2886bf8" ]
+  }, {
+    "id" : "cfe70eb0-a36b-4a75-9017-1cd8a2886bf8",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6240.0,3320.0",
+    "end" : "6240.0,3400.0",
+    "connections" : [ "9dfb482c-b4f2-44bb-ade9-9227637832dc", "ca5bb250-0cc2-48fb-b939-d0654801247e" ]
+  }, {
+    "id" : "4886b6b8-e2f8-4a90-a159-9fdb7603c0d0",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6520.0,3320.0",
+    "end" : "6620.0,3320.0",
+    "connections" : [ "218921c0-ba03-473f-8f84-213af634e42a", "48d16c74-1ec5-41c3-966b-369072677069", "ede890e7-372c-4b27-8453-9a563a1a2db8", "0947e751-d035-4ebc-bbc4-650c03d7fd4d" ]
+  }, {
+    "id" : "7e1c15bc-b37a-4d86-80a5-da8fcdf8c5ae",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6540.0,3400.0",
+    "end" : "6540.0,3440.0",
+    "connections" : [ "cce34f8f-ec55-4d78-a22b-1e1a2f29eb20" ]
+  }, {
+    "id" : "ed8b557c-24a5-4532-bff6-aab0bdfc0f43",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,3400.0",
+    "end" : "6800.0,3440.0",
+    "connections" : [ "2303f8e0-2c2c-42a5-a09b-fe855290fbdd" ]
+  }, {
+    "id" : "1a41f9b6-d57b-42c0-ac77-3b353ed5c200",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2760.0",
+    "end" : "6800.0,2580.0",
+    "connections" : [ "916576f0-7207-46ed-b9dc-1103bc947b59", "acb90569-3903-41f6-84c3-db3e2a705d88", "6aee2ec5-43e4-42b7-a536-865cdc225228" ]
+  }, {
+    "id" : "a78d1250-0170-4608-ba63-b0093bc7b2c1",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2520.0",
+    "end" : "6800.0,2520.0",
+    "connections" : [ "6aee2ec5-43e4-42b7-a536-865cdc225228", "7008a734-ac70-4a0b-9a64-7bc0629c29e4" ]
+  }, {
+    "id" : "6aee2ec5-43e4-42b7-a536-865cdc225228",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6800.0,2580.0",
+    "angle" : 180.0,
+    "inWire" : "1a41f9b6-d57b-42c0-ac77-3b353ed5c200",
+    "outWire" : "a78d1250-0170-4608-ba63-b0093bc7b2c1",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "255973d8-4144-4da5-b647-705412ababa5",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2460.0",
+    "end" : "6800.0,2460.0",
+    "connections" : [ "7008a734-ac70-4a0b-9a64-7bc0629c29e4", "f9a33636-26e9-41f7-bf58-99601cef34fe" ]
+  }, {
+    "id" : "7008a734-ac70-4a0b-9a64-7bc0629c29e4",
+    "type" : "Breaker",
+    "name" : "",
+    "pos" : "6800.0,2520.0",
+    "angle" : 180.0,
+    "inWire" : "a78d1250-0170-4608-ba63-b0093bc7b2c1",
+    "outWire" : "255973d8-4144-4da5-b647-705412ababa5",
+    "closed" : false,
+    "closedByDefault" : false,
+    "locked" : false,
+    "voltage" : "KV70"
+  }, {
+    "id" : "5b45cc10-3afa-4229-b585-59b4386c0b16",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2400.0",
+    "end" : "6800.0,2400.0",
+    "connections" : [ "f9a33636-26e9-41f7-bf58-99601cef34fe", "dd55a653-e325-4dad-8f4a-cfbb5ef90a06" ]
+  }, {
+    "id" : "f9a33636-26e9-41f7-bf58-99601cef34fe",
+    "type" : "Switch",
+    "name" : "",
+    "pos" : "6800.0,2460.0",
+    "angle" : 180.0,
+    "inWire" : "255973d8-4144-4da5-b647-705412ababa5",
+    "outWire" : "5b45cc10-3afa-4229-b585-59b4386c0b16",
+    "closed" : true,
+    "closedByDefault" : true,
+    "locked" : false
+  }, {
+    "id" : "2f66ca6d-06cd-4699-8d0a-ad071cf5c3d7",
+    "type" : "Wire",
+    "name" : "",
+    "angle" : 0.0,
+    "start" : "6800.0,2320.0",
+    "end" : "6800.0,2320.0",
+    "connections" : [ "dd55a653-e325-4dad-8f4a-cfbb5ef90a06" ]
+  }, {
+    "id" : "dd55a653-e325-4dad-8f4a-cfbb5ef90a06",
+    "type" : "Turbine",
+    "name" : "",
+    "pos" : "6800.0,2400.0",
+    "angle" : 180.0,
+    "on" : false,
+    "outWire1" : "5b45cc10-3afa-4229-b585-59b4386c0b16",
+    "outWire2" : "2f66ca6d-06cd-4699-8d0a-ad071cf5c3d7"
   } ]
 }

@@ -33,6 +33,8 @@ public class GridBuilder {
         return false;
     }
 
+    // TODO: abstract conflictcomponent logic to it's own method to avoid duplicate code
+    //  this is done in multiple places in this file.
 
     public boolean placeDevice(Point position, ComponentType componentType) {
 
@@ -179,20 +181,68 @@ public class GridBuilder {
         } else if (wireConflicts.size() == 0) {
             grid.addComponent(wire); // nothing conflicted
         } else {
+            // TODO: connect if ctrl is pressed
             // wires overlapped, connect to them
+            /*
             for(Component conflictingComponent : wireConflicts) {
                 if(conflictingComponent instanceof Wire)
                     ((Wire) conflictingComponent).connect(wire);
                 wire.connect(conflictingComponent);
             }
             grid.addComponent(wire);
+             */
+
+            // Add wire with bridges
+            for(Component conflictingComponent : wireConflicts) {
+                if(conflictingComponent instanceof Wire) {
+                    Point conflictPoint = getConflictPoint(wire, (Wire) conflictingComponent);
+                    if(conflictPoint == null) {
+                        return false;
+                    }
+                    wire.addBridgePoint(conflictPoint);
+                }
+            }
+            grid.addComponent(wire);
+
         }
         return true;
     }
 
+    public Point getConflictPoint(Wire wire1, Wire wire2) {
+        //TODO: evaluate point wire placement/overlap
+
+        System.out.println("WIRE1 START = (" + wire1.getStart().getX() + ", " + wire1.getStart().getY() + ")");
+        System.out.println("WIRE1 END = (" + wire1.getEnd().getX() + ", " + wire1.getEnd().getY() + ")");
+
+        System.out.println("WIRE2 START = (" + wire2.getStart().getX() + ", " + wire2.getStart().getY() + ")");
+        System.out.println("WIRE2 END = (" + wire2.getEnd().getX() + ", " + wire2.getEnd().getY() + ")");
+
+        if (wire1.getStart().getX() == wire1.getEnd().getX() && wire1.getStart().getY() == wire1.getEnd().getY()) {
+            System.out.println("PLACING POINT WIRE;");
+            return null;
+        }
+        else if (wire2.getStart().getX() == wire2.getEnd().getX() && wire2.getStart().getY() == wire2.getEnd().getY()) {
+            System.out.println("CONFLICTING POINT WIRE;");
+            return null;
+        }
+        else if (wire1.getStart().getX() == wire1.getEnd().getX() && wire2.getStart().getY() == wire2.getEnd().getY()) {
+            System.out.println("PLACING HORIZONTAL WIRE;");
+            System.out.println("BRIDGE AT (" + wire1.getStart().getX() + ", " + wire2.getStart().getY() + ")");
+            return new Point(wire1.getStart().getX(), wire2.getStart().getY());
+        }
+        else if (wire1.getStart().getY() == wire1.getEnd().getY() && wire2.getStart().getX() == wire2.getEnd().getX()){
+            System.out.println("PLACING VERTICAL WIRE;");
+            System.out.println("BRIDGE AT (" + wire2.getStart().getX() + ", " + wire1.getStart().getY() + ")");
+            return new Point(wire2.getStart().getX(), wire1.getStart().getY());
+        }
+        else {
+            return null;
+        }
+    }
+
 
     public List<Component> verifyWirePlacement(Component component) {
-        // returns true if placement is valid, false if placement is invalid
+        // returns list of wires that conflict or null if a non-wire conflict occured.
         ArrayList<Component> wireConflicts = new ArrayList<>();
         int nonWireConflicts = 0;
 

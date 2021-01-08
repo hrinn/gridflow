@@ -172,7 +172,7 @@ public class GridBuilder {
         return true;
     }
 
-    public boolean placeWire(Point startPosition, Point endPosition) {
+    public boolean placeWire(Point startPosition, Point endPosition, boolean shouldConnect) {
         Wire wire = new Wire(startPosition, endPosition);
         List<Component> wireConflicts = verifyWirePlacement(wire);
 
@@ -182,26 +182,27 @@ public class GridBuilder {
             grid.addComponent(wire); // nothing conflicted
         } else {
             // TODO: connect if ctrl is pressed
-            // wires overlapped, connect to them
-            /*
-            for(Component conflictingComponent : wireConflicts) {
-                if(conflictingComponent instanceof Wire)
-                    ((Wire) conflictingComponent).connect(wire);
-                wire.connect(conflictingComponent);
-            }
-            grid.addComponent(wire);
-             */
-
-            // Add wire with bridges
-            for(Component conflictingComponent : wireConflicts) {
-                if(conflictingComponent instanceof Wire) {
-                    Point conflictPoint = getConflictPoint(wire, (Wire) conflictingComponent);
-                    if(conflictPoint == null) {
-                        return false;
-                    }
-                    wire.addBridgePoint(conflictPoint);
+            if(shouldConnect) {
+                // wires overlapped, connect to them
+                for(Component conflictingComponent : wireConflicts) {
+                    if(conflictingComponent instanceof Wire)
+                        ((Wire) conflictingComponent).connect(wire);
+                    wire.connect(conflictingComponent);
                 }
             }
+            else {
+                // Add wire with bridges
+                for(Component conflictingComponent : wireConflicts) {
+                    if(conflictingComponent instanceof Wire) {
+                        Point conflictPoint = getConflictPoint(wire, (Wire) conflictingComponent);
+                        if(conflictPoint == null) {
+                            return false;
+                        }
+                        wire.addBridgePoint(conflictPoint);
+                    }
+                }
+            }
+
             grid.addComponent(wire);
 
         }

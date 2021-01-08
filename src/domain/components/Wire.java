@@ -97,7 +97,7 @@ public class Wire extends Component {
     }
 
     public boolean isVerticalWire() {
-        return start.getX() == end.getX() && start.getY() != end.getY();
+        return start.differenceX(end) == 0;
     }
 
     private List<Wire> getConnectedWires() {

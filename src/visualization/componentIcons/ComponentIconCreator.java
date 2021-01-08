@@ -9,6 +9,7 @@ import javafx.scene.transform.Rotate;
 import domain.geometry.Point;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ComponentIconCreator {
@@ -274,41 +275,7 @@ public class ComponentIconCreator {
             Line wireLine = createLine(p1, p2);
             wireIcon.addWireShape(wireLine);
         } else { // create a line with gaps
-            boolean vertical = p1.differenceX(p2) == 0;
-            boolean forward;
-            if(vertical) {
-                forward = (p1.getY()-p2.getY()) < 0;
-            }
-            else {
-                forward = (p1.getX()-p2.getX()) < 0;
-            }
-
-            double correctBridgeGap = (forward)? BRIDGE_GAP : -BRIDGE_GAP;
-
-            List<Point> wirePoints = new ArrayList<>();
-
-            // create the dashed start and end points
-            wirePoints.add(p1);
-            bridgePoints.forEach(bp -> {
-                Point bpl;
-                Point bpr;
-                if (vertical) {
-                    bpl = new Point(bp.getX(), bp.getY() - correctBridgeGap/2);
-                    bpr = new Point(bp.getX(), bp.getY() + correctBridgeGap/2);
-                } else {
-                    bpl = new Point(bp.getX() - correctBridgeGap/2, bp.getY());
-                    bpr = new Point(bp.getX() + correctBridgeGap/2, bp.getY());
-                }
-                wirePoints.add(bpl);
-                wirePoints.add(bpr);
-            });
-            wirePoints.add(p2);
-            for (int i = 0; i < wirePoints.size(); i += 2) {
-                Point firstPoint = wirePoints.get(i);
-                Point secondPoint = wirePoints.get(i + 1);
-                Line segment = createLine(firstPoint, secondPoint);
-                wireIcon.addWireShape(segment);
-            }
+            getBridgeWire(p1, p2, bridgePoints).forEach(wireIcon::addWireShape);
         }
 
         Dimensions dim = new Dimensions(p1.differenceX(p2)/Globals.UNIT, p1.differenceY(p2)/Globals.UNIT, 0.25);
@@ -319,6 +286,45 @@ public class ComponentIconCreator {
         wireIcon.setFittingRect(dim2, mid);
 
         return wireIcon;
+    }
+
+    private static List<Shape> getBridgeWire(Point p1, Point p2, List<Point> bridgePoints) {
+        List<Shape> wires = new ArrayList<>();
+        boolean vertical = p1.differenceX(p2) == 0;
+
+        // ensure the bridgePoints are sorted left to right if horizontal, or top to bottom if vertical
+        Collections.sort(bridgePoints, (bp1, bp2) -> {
+           if (vertical) {
+               return (int)bp1.getY() - (int)bp2.getY();
+           } else {
+               return (int)bp1.getX() - (int)bp2.getX();
+           }
+        });
+
+        List<Point> wirePoints = new ArrayList<>();
+        wirePoints.add(p1); // first wire point
+        // split the bridgePoints and add them to wire points
+        for (Point bp : bridgePoints) {
+            Point bp1, bp2;
+            if (vertical) {
+                bp1 = bp.translate(0, -BRIDGE_GAP/2);
+                bp2 = bp.translate(0, BRIDGE_GAP/2);
+            } else {
+                bp1 = bp.translate(-BRIDGE_GAP/2, 0);
+                bp2 = bp.translate(BRIDGE_GAP/2, 0);
+            }
+            wirePoints.add(bp1);
+            wirePoints.add(bp2);
+        }
+        wirePoints.add(p2); // last wire point
+
+        // create lines out of the pairs of wire points
+        for (int i = 0; i < wirePoints.size(); i += 2) {
+            Line segment = createLine(wirePoints.get(i),  wirePoints.get(i+1));
+            wires.add(segment);
+        }
+
+        return wires;
     }
 
     public static WireIcon getBlankWireIcon(Point p1, Point p2) {

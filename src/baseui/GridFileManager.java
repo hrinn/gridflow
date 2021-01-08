@@ -35,10 +35,16 @@ public class GridFileManager {
         writer.writeValue(new File(path), gridNode);
     }
 
-    public void loadGrid(String path) throws IOException {
-        JsonParser parser = mapper.getFactory().createParser(new File(path));
-        ObjectNode gridNode = mapper.readTree(parser);
-        parser.close();
+    public void loadGrid(String path) {
+        ObjectNode gridNode;
+        try {
+            JsonParser parser = mapper.getFactory().createParser(new File(path));
+            gridNode = mapper.readTree(parser);
+            parser.close();
+        } catch (IOException e) {
+            System.err.println("Cannot read file");
+            return;
+        }
 
         grid.clearComponents();
         ArrayNode JSONComponents = (ArrayNode) gridNode.get("components");

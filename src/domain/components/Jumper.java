@@ -18,8 +18,8 @@ public class Jumper extends Closeable {
 
     public Jumper(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
-                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
-                node.get("closedByDefault").asBoolean());
+                Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
+                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean());
         createComponentIcon();
     }
 

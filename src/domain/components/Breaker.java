@@ -22,8 +22,8 @@ public class Breaker extends Closeable {
 
     public Breaker(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
-                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
-                node.get("closedByDefault").asBoolean());
+                Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
+                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean());
         voltage = Voltage.valueOf(node.get("voltage").asText());
         createComponentIcon();
     }

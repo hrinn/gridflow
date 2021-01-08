@@ -38,10 +38,10 @@ public class Wire extends Component {
 
     public Wire(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
-                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble());
+                Point.fromString(node.get("pos").asText()), node.get("angle").asDouble());
 
-        start = new Point(node.get("startX").asDouble(), node.get("startY").asDouble());
-        end = new Point(node.get("endX").asDouble(), node.get("endY").asDouble());
+        start = Point.fromString(node.get("start").asText());
+        end = Point.fromString(node.get("end").asText());
     }
 
     public void energize() {
@@ -75,10 +75,8 @@ public class Wire extends Component {
     @Override
     public ObjectNode getObjectNode(ObjectMapper mapper) {
         ObjectNode wire = super.getObjectNode(mapper);
-        wire.put("startX", start.getX());
-        wire.put("startY", start.getY());
-        wire.put("endX", end.getX());
-        wire.put("endY", end.getY());
+        wire.put("start", start.toString());
+        wire.put("end", end.toString());
 
         ArrayNode connections = mapper.createArrayNode();
         this.connections.forEach(c -> connections.add(c.getId().toString()));

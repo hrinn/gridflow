@@ -54,7 +54,7 @@ public class GridFlowApp extends Application {
         SimulationController simulationController = new SimulationController(menuFunctionController.getGrid(), gridFlowEventManager);
         gridFlowEventManager.addListener(simulationController);
 
-        menuFunctionController.loadDefaultGrid();
+        //menuFunctionController.loadDefaultGrid();
 
         // Init GUI
         initGui(primaryStage, constructionController.getCanvasFacade().getCanvas(), buildMenuView, baseUIView);

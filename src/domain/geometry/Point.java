@@ -4,6 +4,7 @@ import application.Globals;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Point {
 
@@ -74,8 +75,14 @@ public class Point {
         return x == point.x && y == point.y;
     }
 
+    public static Point fromString(String string) {
+        List<Double> coords = Arrays.stream(string.split(",")).map(Double::parseDouble).collect
+                (Collectors.toList());
+        return new Point(coords.get(0), coords.get(1));
+    }
+
     @Override
     public String toString() {
-        return "(" + x + "," + y + ")";
+        return x + "," + y;
     }
 }

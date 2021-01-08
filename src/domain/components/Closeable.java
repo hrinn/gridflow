@@ -18,10 +18,10 @@ public abstract class Closeable extends Device implements IToggleable {
         closed = closedByDefault;
     }
 
-    public Closeable(UUID id, String name, Point position, double angle, boolean closedByDefault) {
+    public Closeable(UUID id, String name, Point position, double angle, boolean closedByDefault, boolean closed) {
         super(id, name, position, angle);
         this.closedByDefault = closedByDefault;
-        closed = closedByDefault;
+        this.closed = closed;
     }
 
     public void toggleLocked() {

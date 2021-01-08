@@ -22,7 +22,7 @@ public class Turbine extends Source {
 
     public Turbine(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
-                new Point(node.get("x").asDouble(), node.get("y").asDouble()), node.get("angle").asDouble(),
+                Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
                 node.get("on").asBoolean());
         createComponentIcon();
     }

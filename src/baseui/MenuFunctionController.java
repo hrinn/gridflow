@@ -25,12 +25,8 @@ public class MenuFunctionController {
     }
 
     public void loadDefaultGrid() {
-        try {
-            gridFileManager.loadGrid(DEFAULT_GRID_PATH);
-            gridFlowEventManager.sendEvent(new GridChangedEvent());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        gridFileManager.loadGrid(DEFAULT_GRID_PATH);
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
     }
 
     public void saveGrid() {
@@ -42,11 +38,7 @@ public class MenuFunctionController {
     }
 
     public void loadGrid() {
-        try {
-            gridFileManager.loadGrid(GRID_PATH);
-            gridFlowEventManager.sendEvent(new GridChangedEvent());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        gridFileManager.loadGrid(GRID_PATH);
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
     }
 }

@@ -80,8 +80,7 @@ public abstract class Component {
         component.put("id", getId().toString());
         component.put("type", this.getClass().getSimpleName());
         component.put("name", getName());
-        component.put("x", getPosition().getX());
-        component.put("y", getPosition().getY());
+        component.put("pos", getPosition().toString());
         component.put("angle", getAngle());
         return component;
     }

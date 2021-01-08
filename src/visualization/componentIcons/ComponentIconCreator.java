@@ -275,6 +275,16 @@ public class ComponentIconCreator {
             wireIcon.addWireShape(wireLine);
         } else { // create a line with gaps
             boolean vertical = p1.differenceX(p2) == 0;
+            boolean forward;
+            if(vertical) {
+                forward = (p1.getY()-p2.getY()) < 0;
+            }
+            else {
+                forward = (p1.getX()-p2.getX()) < 0;
+            }
+
+            double correctBridgeGap = (forward)? BRIDGE_GAP : -BRIDGE_GAP;
+
             List<Point> wirePoints = new ArrayList<>();
 
             // create the dashed start and end points
@@ -283,11 +293,11 @@ public class ComponentIconCreator {
                 Point bpl;
                 Point bpr;
                 if (vertical) {
-                    bpl = new Point(bp.getX(), bp.getY() - BRIDGE_GAP/2);
-                    bpr = new Point(bp.getX(), bp.getY() + BRIDGE_GAP/2);
+                    bpl = new Point(bp.getX(), bp.getY() - correctBridgeGap/2);
+                    bpr = new Point(bp.getX(), bp.getY() + correctBridgeGap/2);
                 } else {
-                    bpl = new Point(bp.getX() - BRIDGE_GAP/2, bp.getY());
-                    bpr = new Point(bp.getX() + BRIDGE_GAP/2, bp.getY());
+                    bpl = new Point(bp.getX() - correctBridgeGap/2, bp.getY());
+                    bpr = new Point(bp.getX() + correctBridgeGap/2, bp.getY());
                 }
                 wirePoints.add(bpl);
                 wirePoints.add(bpr);

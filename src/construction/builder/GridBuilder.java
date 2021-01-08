@@ -198,7 +198,13 @@ public class GridBuilder {
                         if(conflictPoint == null) {
                             return false;
                         }
-                        wire.addBridgePoint(conflictPoint);
+                        else if(conflictPoint.equals(wire.getStart()) || conflictPoint.equals(wire.getEnd())) {
+                            ((Wire) conflictingComponent).connect(wire);
+                            wire.connect(conflictingComponent);
+                        }
+                        else {
+                            wire.addBridgePoint(conflictPoint);
+                        }
                     }
                 }
             }
@@ -224,7 +230,7 @@ public class GridBuilder {
         }
         else if (wire2.getStart().getX() == wire2.getEnd().getX() && wire2.getStart().getY() == wire2.getEnd().getY()) {
             System.out.println("CONFLICTING POINT WIRE;");
-            return null;
+            return new Point(wire2.getStart().getX(), wire2.getStart().getY());
         }
         else if (wire1.getStart().getX() == wire1.getEnd().getX() && wire2.getStart().getY() == wire2.getEnd().getY()) {
             System.out.println("PLACING HORIZONTAL WIRE;");

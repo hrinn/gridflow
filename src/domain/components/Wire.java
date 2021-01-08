@@ -157,4 +157,12 @@ public class Wire extends Component {
             }
         }
     }
+
+    public Point getStart() {
+        return start;
+    }
+
+    public Point getEnd() {
+        return end;
+    }
 }

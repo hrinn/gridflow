@@ -43,6 +43,12 @@ public class Wire extends Component {
 
         this.start = start;
         this.end = end;
+
+        ArrayNode jsonBridgePoints = (ArrayNode)node.get("bridgePoints");
+        if (jsonBridgePoints == null) return;
+        jsonBridgePoints.forEach(jbp ->
+                addBridgePoint(Point.fromString(jbp.asText()))
+        );
     }
 
     public void energize() {
@@ -83,6 +89,10 @@ public class Wire extends Component {
         ArrayNode connections = mapper.createArrayNode();
         this.connections.forEach(c -> connections.add(c.getId().toString()));
         wire.put("connections", connections);
+
+        ArrayNode bridgePoints = mapper.createArrayNode();
+        this.bridgePoints.forEach(bp -> bridgePoints.add(bp.toString()));
+        wire.put("bridgePoints", bridgePoints);
 
         return wire;
     }

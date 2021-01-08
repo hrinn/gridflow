@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.Grid;
 import domain.components.*;
+import domain.geometry.Point;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,7 +60,7 @@ public class GridFileManager {
                 case "Switch" -> new Switch(componentJSON);
                 case "Transformer" -> new Transformer(componentJSON);
                 case "Turbine" -> new Turbine(componentJSON);
-                case "Wire" -> new Wire(componentJSON);
+                case "Wire" -> createWireFromJson(componentJSON);
                 default -> throw new UnsupportedOperationException();
             };
             grid.addComponent(component);
@@ -71,6 +72,12 @@ public class GridFileManager {
             JsonNode componentJSON = JSONComponents.get(i);
             component.setConnections(getConnectionsList(componentJSON));
         }
+    }
+
+    private Wire createWireFromJson(JsonNode node) {
+        Point start = Point.fromString(node.get("start").asText());
+        Point end = Point.fromString(node.get("end").asText());
+        return new Wire(node, start, end);
     }
 
     private List<Component> getConnectionsList(JsonNode node) {

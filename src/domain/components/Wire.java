@@ -36,12 +36,12 @@ public class Wire extends Component {
         createComponentIcon();
     }
 
-    public Wire(JsonNode node) {
+    public Wire(JsonNode node, Point start, Point end) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
-                Point.fromString(node.get("pos").asText()), node.get("angle").asDouble());
+                Point.midpoint(start, end), node.get("angle").asDouble());
 
-        start = Point.fromString(node.get("start").asText());
-        end = Point.fromString(node.get("end").asText());
+        this.start = start;
+        this.end = end;
     }
 
     public void energize() {
@@ -75,6 +75,7 @@ public class Wire extends Component {
     @Override
     public ObjectNode getObjectNode(ObjectMapper mapper) {
         ObjectNode wire = super.getObjectNode(mapper);
+        wire.remove("pos");
         wire.put("start", start.toString());
         wire.put("end", end.toString());
 

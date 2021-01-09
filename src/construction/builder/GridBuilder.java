@@ -173,7 +173,9 @@ public class GridBuilder {
     }
 
     public boolean placeWire(Point startPosition, Point endPosition, boolean shouldConnect) {
-        Wire wire = new Wire(startPosition, endPosition);
+        Wire tempWire = new Wire(startPosition, endPosition);
+        Wire wire = new Wire(getTrueStart(tempWire), getTrueEnd(tempWire));
+
         List<Component> wireConflicts = verifyWirePlacement(wire);
 
         if (wireConflicts == null) {
@@ -192,6 +194,8 @@ public class GridBuilder {
             }
             else {
                 // Add wire with bridges
+                ArrayList<Point> addBridgePoints = new ArrayList<>();
+                ArrayList<Wire> connectComponents = new ArrayList<>();
                 for(Component conflictingComponent : wireConflicts) {
                     if(conflictingComponent instanceof Wire) {
                         Point conflictPoint = getConflictPoint(wire, (Wire) conflictingComponent);
@@ -199,16 +203,21 @@ public class GridBuilder {
                             return false;
                         }
                         else if(conflictPoint.equals(wire.getStart()) || conflictPoint.equals(wire.getEnd())) {
-                            ((Wire) conflictingComponent).connect(wire);
-                            wire.connect(conflictingComponent);
+                            connectComponents.add((Wire) conflictingComponent);
                         }
                         else {
-                            wire.addBridgePoint(conflictPoint);
+                            addBridgePoints.add(conflictPoint);
                         }
                     }
                 }
+                for(Point bridgePoint : addBridgePoints) {
+                    wire.addBridgePoint(bridgePoint);
+                }
+                for(Wire connectComponent : connectComponents) {
+                    wire.connect(connectComponent);
+                    connectComponent.connect(wire);
+                }
             }
-
             grid.addComponent(wire);
 
         }
@@ -217,34 +226,75 @@ public class GridBuilder {
 
     public Point getConflictPoint(Wire wire1, Wire wire2) {
         //TODO: evaluate point wire placement/overlap
+        
+        boolean isWire1Vertical = wire1.isVerticalWire();
+        boolean isWire1Point = wire1.isPointWire();
 
-        System.out.println("WIRE1 START = (" + wire1.getStart().getX() + ", " + wire1.getStart().getY() + ")");
-        System.out.println("WIRE1 END = (" + wire1.getEnd().getX() + ", " + wire1.getEnd().getY() + ")");
+        boolean isWire2Vertical = wire2.isVerticalWire();
+        boolean isWire2Point = wire2.isPointWire();
 
-        System.out.println("WIRE2 START = (" + wire2.getStart().getX() + ", " + wire2.getStart().getY() + ")");
-        System.out.println("WIRE2 END = (" + wire2.getEnd().getX() + ", " + wire2.getEnd().getY() + ")");
-
-        if (wire1.getStart().getX() == wire1.getEnd().getX() && wire1.getStart().getY() == wire1.getEnd().getY()) {
-            System.out.println("PLACING POINT WIRE;");
+        if (isWire1Point && isWire2Point) {
+            System.out.println("CANNOT PLACE POINT WIRE ON POINT WIRE");
             return null;
         }
-        else if (wire2.getStart().getX() == wire2.getEnd().getX() && wire2.getStart().getY() == wire2.getEnd().getY()) {
+        else if (isWire1Point) {
+            // TODO: allow placement only on start/end: middle placement return null
+            System.out.println("PLACING POINT WIRE;");
+            return assertOverlappingConflicts(wire1, wire2);
+        }
+        else if (isWire2Point) {
             System.out.println("CONFLICTING POINT WIRE;");
+            System.out.println("BRIDGE AT (" + wire2.getStart().getX() + ", " + wire2.getStart().getY() + ")");
             return new Point(wire2.getStart().getX(), wire2.getStart().getY());
         }
-        else if (wire1.getStart().getX() == wire1.getEnd().getX() && wire2.getStart().getY() == wire2.getEnd().getY()) {
-            System.out.println("PLACING HORIZONTAL WIRE;");
-            System.out.println("BRIDGE AT (" + wire1.getStart().getX() + ", " + wire2.getStart().getY() + ")");
-            return new Point(wire1.getStart().getX(), wire2.getStart().getY());
+        else if (!isWire1Vertical && !isWire2Vertical) { // horizontal on horizontal
+            System.out.println("PLACING HORIZONTAL WIRE ON HORIZONTAL WIRE;");
+            return assertOverlappingConflicts(wire1, wire2);
         }
-        else if (wire1.getStart().getY() == wire1.getEnd().getY() && wire2.getStart().getX() == wire2.getEnd().getX()){
-            System.out.println("PLACING VERTICAL WIRE;");
-            System.out.println("BRIDGE AT (" + wire2.getStart().getX() + ", " + wire1.getStart().getY() + ")");
+        else if (!isWire1Vertical && isWire2Vertical) { // horizontal on vertical
+            System.out.println("PLACING HORIZONTAL WIRE OVER VERTICAL WIRE;");
+            System.out.println("BRIDGE AT (" + wire1.getStart().getX() + ", " + wire2.getStart().getY() + ")");
             return new Point(wire2.getStart().getX(), wire1.getStart().getY());
         }
+        else if (isWire1Vertical && !isWire2Vertical) { // vertical on horizontal
+            System.out.println("PLACING VERTICAL WIRE OVER HORIZONTAL WIRE;");
+            System.out.println("BRIDGE AT (" + wire2.getStart().getX() + ", " + wire1.getStart().getY() + ")");
+            return new Point(wire1.getStart().getX(), wire2.getStart().getY());
+        }
+        else if (isWire1Vertical && isWire2Vertical) { // vertical on vertical
+            return assertOverlappingConflicts(wire1, wire2);
+        }
         else {
+            System.out.println("ELSE CASE");
             return null;
         }
+    }
+
+    public Point assertOverlappingConflicts(Wire wire1, Wire wire2) {
+        if(wire1.getStart().equals(wire2.getEnd())) {
+            return new Point(wire1.getStart().getX(), wire1.getStart().getY());
+        }
+        else if(wire1.getEnd().equals(wire2.getStart())) {
+            return new Point(wire1.getEnd().getX(), wire1.getEnd().getY());
+        }
+        else {
+            System.out.println("OVERLAP RETURNING NULL");
+            return null;
+        }
+    }
+
+    public Point getTrueStart(Wire wire) {
+        if(wire.getStart().getY() < wire.getEnd().getY() || wire.getStart().getX() < wire.getEnd().getX()) {
+            return wire.getStart();
+        }
+        return wire.getEnd();
+    }
+
+    public Point getTrueEnd(Wire wire) {
+        if(wire.getStart().getY() < wire.getEnd().getY() || wire.getStart().getX() < wire.getEnd().getX()) {
+            return wire.getEnd();
+        }
+        return wire.getStart();
     }
 
 

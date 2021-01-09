@@ -14,10 +14,10 @@ public class GhostManagerController implements GridFlowEventListener {
 
     private GhostManager model;
     private GridCanvasFacade canvasFacade;
-    private WireExtendContext wireExtendContext;
+    private DoubleClickPlacementContext wireExtendContext;
     private BuildMenuData buildData;
 
-    public GhostManagerController(GridCanvasFacade canvasFacade, WireExtendContext wireExtendContext,
+    public GhostManagerController(GridCanvasFacade canvasFacade, DoubleClickPlacementContext wireExtendContext,
                                   BuildMenuData buildMenuData, PropertiesData propertiesData) {
         this.model = new GhostManager(canvasFacade, propertiesData);
         this.wireExtendContext = wireExtendContext;

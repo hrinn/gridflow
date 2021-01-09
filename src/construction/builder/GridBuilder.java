@@ -2,6 +2,7 @@ package construction.builder;
 
 import construction.PropertiesData;
 import construction.ComponentType;
+import domain.Association;
 import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
@@ -342,6 +343,11 @@ public class GridBuilder {
             }
         }
         return null;
+    }
+
+    public void placeAssociation(Point topLeft, Point bottomRight) {
+        Association association = new Association(topLeft, topLeft.differenceX(bottomRight), topLeft.differenceY(bottomRight));
+        grid.addAssociation(association);
     }
 
     public void toggleComponent(String componentId) {

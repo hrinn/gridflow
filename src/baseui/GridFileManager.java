@@ -47,7 +47,7 @@ public class GridFileManager {
             return;
         }
 
-        grid.clearComponents();
+        grid.clearGrid();
         ArrayNode JSONComponents = (ArrayNode) gridNode.get("components");
 
         // create components

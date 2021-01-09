@@ -1,6 +1,7 @@
 package visualization.componentIcons;
 
 import application.Globals;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
@@ -339,6 +340,19 @@ public class ComponentIconCreator {
         wireIcon.setFittingRect(dim2, mid);
 
         return wireIcon;
+    }
+
+    public static Group getAssociationNode(Point position, double width, double height) {
+        Group node = new Group();
+
+        Rectangle border = new Rectangle(position.getX(), position.getY(), width, height);
+        border.setMouseTransparent(true);
+        border.setFill(Color.TRANSPARENT);
+        border.setStroke(Color.GRAY);
+        border.setStrokeWidth(1);
+        node.getChildren().add(border);
+
+        return node;
     }
 
     private static Line createLine(Point p1, Point p2) {

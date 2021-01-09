@@ -28,7 +28,7 @@ public class ConstructionController {
     private PropertiesData propertiesData;
 
     // Wire Placing
-    private WireExtendContext wireExtendContext = new WireExtendContext();
+    private DoubleClickPlacementContext wireExtendContext = new DoubleClickPlacementContext();
 
     public ConstructionController(Grid grid, GridFlowEventManager gridFlowEventManager, Stage stage) {
         // shared objects
@@ -126,6 +126,7 @@ public class ConstructionController {
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceComponentEventHandler());
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceWireEventHandler());
+        canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceAssociationEventHandler());
 
         // ghost manager events
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_MOVED, ghostManagerController.getGhostMoveEventHandler());

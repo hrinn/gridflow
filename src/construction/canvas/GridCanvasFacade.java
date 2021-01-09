@@ -66,6 +66,14 @@ public class GridCanvasFacade {
         canvas.boundingRectGroup.getChildren().clear();
     }
 
+    public void clearAssociationGroup() {
+        canvas.associationGroup.getChildren().clear();
+    }
+
+    public void addAssociationNode(Node association) {
+        canvas.associationGroup.getChildren().add(association);
+    }
+
     public void showBackgroundGrid(boolean show) {
         if (show) {
             canvas.backgroundGrid.setOpacity(1);

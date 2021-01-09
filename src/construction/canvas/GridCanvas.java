@@ -20,9 +20,10 @@ public class GridCanvas extends Pane {
     public final Group boundingRectGroup = new Group();
     public final Group overlayGroup = new Group();
     public final Group backgroundGrid = new Group();
+    public final Group associationGroup = new Group();
 
     public GridCanvas() {
-        getChildren().addAll(backgroundGrid, energyOutlineGroup, componentGroup, boundingRectGroup, overlayGroup);
+        getChildren().addAll(backgroundGrid, energyOutlineGroup, componentGroup, associationGroup, boundingRectGroup, overlayGroup);
         addBackgroundGrid();
 
         setPrefSize(unitWidth * Globals.UNIT, unitHeight * Globals.UNIT);

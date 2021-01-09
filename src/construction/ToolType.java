@@ -4,5 +4,6 @@ public enum ToolType {
     INTERACT,
     SELECT,
     PLACE,
-    WIRE
+    WIRE,
+    ASSOCIATION
 }

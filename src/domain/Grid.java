@@ -16,13 +16,19 @@ import java.util.stream.Collectors;
 public class Grid {
 
     private final List<Component> components;
+    private final List<Association> associations;
 
     public Grid() {
         components = new ArrayList<>();
+        associations = new ArrayList<>();
     }
 
     public List<Component> getComponents() {
         return components;
+    }
+
+    public List<Association> getAssociations() {
+        return associations;
     }
 
     public void addComponent(Component component) {
@@ -31,6 +37,10 @@ public class Grid {
 
     public void addComponents(Component... components) {
         this.components.addAll(Arrays.asList(components));
+    }
+
+    public void addAssociation(Association association) {
+        associations.add(association);
     }
 
     public void deleteComponent(String ID) {
@@ -74,12 +84,9 @@ public class Grid {
         }
     }
 
-    public void loadComponents(List<Component> components) {
-        for (Component component : components) addComponent(component);
-    }
-
-    public void clearComponents() {
+    public void clearGrid() {
         components.clear();
+        associations.clear();
     }
 
     public List<Wire> getWires() {
@@ -101,5 +108,4 @@ public class Grid {
                 .filter(comp -> comp.getId().toString().equals(id))
                 .findFirst().orElse(null);
     }
-
 }

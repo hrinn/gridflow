@@ -5,7 +5,6 @@ import construction.*;
 import domain.Grid;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
-import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
@@ -13,22 +12,22 @@ public class GridBuilderController {
 
     private GridBuilder model;
     private GridFlowEventManager gridFlowEventManager;
-    private WireExtendContext wireExtendContext;
+    private DoubleClickPlacementContext doubleClickPlacementContext;
     private BuildMenuData buildData;
     private PropertiesData propertiesData;
 
     public GridBuilderController(Grid grid, GridFlowEventManager gridFlowEventManager,
-                                 WireExtendContext wireExtendContext, BuildMenuData buildMenuData,
+                                 DoubleClickPlacementContext doubleClickPlacementContext, BuildMenuData buildMenuData,
                                  PropertiesData propertiesData) {
         this.model = new GridBuilder(grid, propertiesData);
         this.gridFlowEventManager = gridFlowEventManager;
-        this.wireExtendContext = wireExtendContext;
+        this.doubleClickPlacementContext = doubleClickPlacementContext;
         this.buildData = buildMenuData;
         this.propertiesData = propertiesData;
     }
 
     public void buildDataChanged() {
-        wireExtendContext.placing = false;
+        doubleClickPlacementContext.placing = false;
     }
 
     public void propertiesDataChanged() {
@@ -39,8 +38,8 @@ public class GridBuilderController {
         if (!event.isPrimaryButtonDown()) return;
 
         // for implementing connecting/extending, try and reuse existing code
-        if (wireExtendContext.placing) { // end placement
-            wireExtendContext.placing = false;
+        if (doubleClickPlacementContext.placing) { // end placement
+            doubleClickPlacementContext.placing = false;
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
             Point lockedEndPoint = endPoint.clampPerpendicular(wireExtendContext.beginPoint);
             boolean ctrlPressed = event.isControlDown();
@@ -53,9 +52,28 @@ public class GridBuilderController {
             gridFlowEventManager.sendEvent(new WirePlacedEvent());
 
         } else { // begin placement
-            wireExtendContext.placing = true;
-            wireExtendContext.beginPoint = Point.nearestCoordinate(event.getX(), event.getY());
+            doubleClickPlacementContext.placing = true;
+            doubleClickPlacementContext.beginPoint = Point.nearestCoordinate(event.getX(), event.getY());
         }
+
+        event.consume();
+    };
+
+    private final EventHandler<MouseEvent> placeAssociationEventHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+        if (!event.isPrimaryButtonDown()) return;
+
+        if (doubleClickPlacementContext.placing) { // end placement
+            doubleClickPlacementContext.placing = false;
+            Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
+            model.placeAssociation(doubleClickPlacementContext.beginPoint, endPoint);
+            gridFlowEventManager.sendEvent(new AssociationPlacedEvent());
+        } else { // begin placement
+            doubleClickPlacementContext.placing = true;
+            doubleClickPlacementContext.beginPoint = Point.nearestCoordinate(event.getX(), event.getY());
+        }
+
+        event.consume();
     };
 
     private final EventHandler<MouseEvent> toggleComponentEventHandler = event -> {
@@ -96,5 +114,9 @@ public class GridBuilderController {
 
     public EventHandler<MouseEvent> getPlaceComponentEventHandler() {
         return placeComponentEventHandler;
+    }
+
+    public EventHandler<MouseEvent> getPlaceAssociationEventHandler() {
+        return placeAssociationEventHandler;
     }
 }

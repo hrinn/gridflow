@@ -1,5 +1,6 @@
 package visualization;
 
+import application.events.AssociationPlacedEvent;
 import application.events.GridEnergizedEvent;
 import application.events.GridFlowEvent;
 import application.events.GridFlowEventListener;
@@ -17,6 +18,8 @@ public class VisualizationController implements GridFlowEventListener {
     public void handleEvent(GridFlowEvent gridFlowEvent) {
         if (gridFlowEvent instanceof GridEnergizedEvent) {
             model.displayGrid();
+        } else if (gridFlowEvent instanceof AssociationPlacedEvent) {
+            model.displayAssociations();
         }
     }
 }

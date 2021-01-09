@@ -2,6 +2,8 @@
 ---
 GridFlow is a power grid simulation focused on energy flow. This is a Cal Poly Capstone project in partnership with Vandenberg Air Force Base. 
 
+![Sample Grid Image](src/resources/gridsnip.PNG)
+
 ## Install & Run
 These instructions are for IntelliJ IDEA
 1. Clone the repository.

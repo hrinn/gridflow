@@ -34,7 +34,7 @@ public class GhostManagerController implements GridFlowEventListener {
     }
 
     private void handlePlacementError() {
-        System.out.println("Placement Error");
+        System.err.println("Placement Error");
         model.showGhostError();
     }
 

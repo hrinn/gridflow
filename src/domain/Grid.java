@@ -44,7 +44,7 @@ public class Grid {
                 }
                 components.remove(component);
             } catch (UnsupportedOperationException e) {
-                System.out.println("Cannot delete Wire: " + component.getId());
+                System.err.println("Cannot delete Wire: " + component.getId());
             }
         }
     }

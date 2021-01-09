@@ -224,7 +224,7 @@ public class GridBuilder {
         return true;
     }
 
-    public Point getConflictPoint(Wire wire1, Wire wire2) {
+    public static Point getConflictPoint(Wire wire1, Wire wire2) {
         //TODO: evaluate point wire placement/overlap
         
         boolean isWire1Vertical = wire1.isVerticalWire();
@@ -270,7 +270,7 @@ public class GridBuilder {
         }
     }
 
-    public Point assertOverlappingConflicts(Wire wire1, Wire wire2) {
+    public static Point assertOverlappingConflicts(Wire wire1, Wire wire2) {
         if(wire1.getStart().equals(wire2.getEnd())) {
             return new Point(wire1.getStart().getX(), wire1.getStart().getY());
         }
@@ -296,6 +296,31 @@ public class GridBuilder {
         }
         return wire.getStart();
     }
+
+//    public void removeCausedBridgePoints(Wire wire) {
+//        // returns list of wires that conflict or null if a non-wire conflict occured.
+//        ArrayList<Wire> wireConflicts = new ArrayList<>();
+//        Rectangle currentComponentRect = wire.getComponentIcon().getFittingRect();
+//
+//        List<ComponentIcon> existingComponents = grid.getComponents().stream()
+//                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
+//
+//        for(ComponentIcon comp : existingComponents) {
+//            if (currentComponentRect.getBoundsInParent().intersects(comp.getFittingRect().getBoundsInParent())) {
+//                Component conflictingComponent = grid.getComponent(comp.getID());
+//                if(conflictingComponent instanceof Wire) {
+//                    wireConflicts.add((Wire)conflictingComponent);
+//                }
+//            }
+//        }
+//
+//        for(Wire conflictWire : wireConflicts) {
+//            Point conflictPoint = getConflictPoint(wire, conflictWire);
+//            if(conflictPoint != null) {
+//                conflictWire.removeBridgePoint(conflictPoint);
+//            }
+//        }
+//    }
 
 
     public List<Component> verifyWirePlacement(Component component) {

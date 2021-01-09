@@ -107,61 +107,21 @@ public class DevUtils {
         PowerSource source = new PowerSource("A", canvasPos(0, 12), true);
         source.connectWire(nrw);
 
+        // test bridge wires
+        Wire w1 = new Wire(canvasPos(10, 10), canvasPos(20, 10));
+
+        Wire w2 = new Wire(canvasPos(15, 15), canvasPos(15, 5));
+        w2.addBridgePoint(canvasPos(15, 10));
+
+        PowerSource w2Source = new PowerSource("test", canvasPos(15, 15), true);
+        w2Source.connectWire(w2);
+        w2.connect(w2Source);
+
         return List.of(w3, w5, w7, w8, w9, dd3, dd5, dd7, dd8, dd9, bbus, dd1main, dd1mw, xdd1, xw, dd101w,
-                dd101, dd105, dd105bw, dd105aw, dd1, dd1w, dd103, nrw, source);
+                dd101, dd105, dd105bw, dd105aw, dd1, dd1w, dd103, nrw, source, w1, w2, w2Source);
 
         // Return components
     }
-
-//    private static List<ComponentIcon> drawAllComps() {
-//        Point center = new Point(5350, 2650);
-//        List<ComponentIcon> comps = new ArrayList<>();
-//
-//        DeviceIcon switchIcon = ComponentIconCreator.getSwitchIcon(center);
-//        switchIcon.setDeviceEnergyStates(true, false);
-//        comps.add(switchIcon);
-//
-//        DeviceIcon breakerIcon = ComponentIconCreator.get70KVBreakerIcon(center.translate(40, 0));
-//        breakerIcon.setDeviceEnergyStates(true, true);
-//        comps.add(breakerIcon);
-//
-//        DeviceIcon breakerIcon2 = ComponentIconCreator.get12KVBreakerIcon(center.translate(80, -10));
-//        breakerIcon2.setDeviceEnergyStates(true, false);
-//        comps.add(breakerIcon2);
-//
-//        DeviceIcon xformIcon = ComponentIconCreator.getTransformerIcon(center.translate(130, 0));
-//        xformIcon.setDeviceEnergyStates(true, true);
-//        comps.add(xformIcon);
-//
-//        DeviceIcon jumperIcon = ComponentIconCreator.getJumperIcon(center.translate(170, 0), false);
-//        jumperIcon.setDeviceEnergyStates(false, true);
-//        comps.add(jumperIcon);
-//
-//        DeviceIcon cutoutIcon = ComponentIconCreator.getCutoutIcon(center.translate(210, 0), false);
-//        cutoutIcon.setDeviceEnergyStates(false, false);
-//        comps.add(cutoutIcon);
-//
-//        SourceIcon powerSourceIcon = ComponentIconCreator.getPowerSourceIcon(center.translate(0, 80));
-//        powerSourceIcon.setSourceNodeEnergyState(false);
-//        powerSourceIcon.setWireEnergyState(true, 0);
-//        comps.add(powerSourceIcon);
-//
-//        SourceIcon turbineIcon = ComponentIconCreator.getTurbineIcon(center.translate(60, 80));
-//        turbineIcon.setSourceNodeEnergyState(true);
-//        turbineIcon.setWireEnergyState(true, 0);
-//        turbineIcon.setWireEnergyState(true, 1);
-//        comps.add(turbineIcon);
-//
-//        WireIcon wireIcon1 = ComponentIconCreator.getWireIcon(center.translate(100, 90), center.translate(180, 90));
-//        wireIcon1.setWireIconEnergyState(true);
-//        comps.add(wireIcon1);
-//
-//        WireIcon wireIcon2 = ComponentIconCreator.getWireIcon(center.translate(100, 110), center.translate(180, 110));
-//        wireIcon2.setWireIconEnergyState(false);
-//        comps.add(wireIcon2);
-//
-//        return comps;
-//    }
 
     private static Point canvasPos(int x, int y) {
         return new Point(x, -y).scale(20).translate(6000, 3000);

@@ -21,6 +21,7 @@ public class Wire extends Component {
     private Point start;
     private Point end;
     private boolean energized = false;
+    private List<Point> bridgePoints = new ArrayList<>();
 
     public Wire(Point p1, Point p2) {
         super("", Point.midpoint(p1, p2));
@@ -42,6 +43,12 @@ public class Wire extends Component {
 
         this.start = start;
         this.end = end;
+
+        ArrayNode jsonBridgePoints = (ArrayNode)node.get("bridgePoints");
+        if (jsonBridgePoints == null) return;
+        jsonBridgePoints.forEach(jbp ->
+                addBridgePoint(Point.fromString(jbp.asText()))
+        );
     }
 
     public void energize() {
@@ -83,6 +90,10 @@ public class Wire extends Component {
         this.connections.forEach(c -> connections.add(c.getId().toString()));
         wire.put("connections", connections);
 
+        ArrayNode bridgePoints = mapper.createArrayNode();
+        this.bridgePoints.forEach(bp -> bridgePoints.add(bp.toString()));
+        wire.put("bridgePoints", bridgePoints);
+
         return wire;
     }
 
@@ -96,7 +107,7 @@ public class Wire extends Component {
     }
 
     public boolean isVerticalWire() {
-        return start.getX() == end.getX() && start.getY() != end.getY();
+        return start.differenceX(end) == 0;
     }
 
     private List<Wire> getConnectedWires() {
@@ -128,7 +139,7 @@ public class Wire extends Component {
         {
             icon = ComponentIconCreator.getBlankWireIcon(start, end);
         } else {
-            icon = ComponentIconCreator.getWireIcon(start, end);
+            icon = ComponentIconCreator.getWireIcon(start, end, bridgePoints);
         }
         icon.setWireIconEnergyState(false);
         icon.setComponentIconID(getId().toString());
@@ -140,5 +151,28 @@ public class Wire extends Component {
         WireIcon icon = (WireIcon) getComponentIcon();
         if (icon == null) return;
         icon.setWireIconEnergyState(energized);
+    }
+
+    public void addBridgePoint(Point bridgePoint) {
+        bridgePoints.add(bridgePoint);
+        createComponentIcon();
+    }
+
+    public void removeBridgePoint(Point point) {
+        for (Point bridgePoint : bridgePoints) {
+            if (bridgePoint.equals(point)) {
+                bridgePoints.remove(bridgePoint);
+                createComponentIcon();
+                return;
+            }
+        }
+    }
+
+    public Point getStart() {
+        return start;
+    }
+
+    public Point getEnd() {
+        return end;
     }
 }

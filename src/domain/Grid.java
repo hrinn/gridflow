@@ -1,9 +1,12 @@
 package domain;
 
+import construction.builder.GridBuilder;
 import domain.components.Component;
 import domain.components.Source;
 import domain.components.Wire;
 import domain.geometry.Point;
+import javafx.scene.shape.Rectangle;
+import visualization.componentIcons.ComponentIcon;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,9 +39,37 @@ public class Grid {
         if (component.getId().toString().equals(ID)) {
             try {
                 component.delete();
+                if(component instanceof Wire) {
+                    removeCausedBridgePoints((Wire) component);
+                }
                 components.remove(component);
             } catch (UnsupportedOperationException e) {
                 System.out.println("Cannot delete Wire: " + component.getId());
+            }
+        }
+    }
+
+    public void removeCausedBridgePoints(Wire wire) {
+        // returns list of wires that conflict or null if a non-wire conflict occured.
+        ArrayList<Wire> wireConflicts = new ArrayList<>();
+        Rectangle currentComponentRect = wire.getComponentIcon().getFittingRect();
+
+        List<ComponentIcon> existingComponents = this.getComponents().stream()
+                .map(comp -> comp.getComponentIcon()).collect(Collectors.toList());
+
+        for(ComponentIcon comp : existingComponents) {
+            if (currentComponentRect.getBoundsInParent().intersects(comp.getFittingRect().getBoundsInParent())) {
+                Component conflictingComponent = this.getComponent(comp.getID());
+                if(conflictingComponent instanceof Wire) {
+                    wireConflicts.add((Wire)conflictingComponent);
+                }
+            }
+        }
+
+        for(Wire conflictWire : wireConflicts) {
+            Point conflictPoint = GridBuilder.getConflictPoint(wire, conflictWire);
+            if(conflictPoint != null) {
+                conflictWire.removeBridgePoint(conflictPoint);
             }
         }
     }

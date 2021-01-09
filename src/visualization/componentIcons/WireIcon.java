@@ -1,31 +1,35 @@
 package visualization.componentIcons;
 
 import application.Globals;
+import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import domain.geometry.Point;
 
+import java.util.List;
+
 public class WireIcon extends ComponentIcon {
 
-    private Shape energyOutline;
+    private Group energyOutlines = new Group();
 
     public WireIcon() {
+        addEnergyOutlineNode(energyOutlines);
     }
 
     public void addWireShape(Shape wireShape) {
-        energyOutline = ShapeCopier.copyShape(wireShape);
+        Shape energyOutline = ShapeCopier.copyShape(wireShape);
         energyOutline.setStrokeWidth(Globals.ENERGY_STROKE_WIDTH);
         energyOutline.setStroke(Color.YELLOW);
         energyOutline.setFill(Color.TRANSPARENT);
 
         addNodesToIconNode(wireShape);
-        addEnergyOutlineNode(energyOutline);
+        addShapesToEnergyOutlineNode(energyOutlines, wireShape);
     }
 
     public void setWireIconEnergyState(boolean energized) {
-        if (energyOutline == null) return;
-        energyOutline.setOpacity(energized ? 1 : 0);
+        energyOutlines.getChildren().forEach(child -> child.setOpacity(energized ? 1: 0));
     }
 
     @Override

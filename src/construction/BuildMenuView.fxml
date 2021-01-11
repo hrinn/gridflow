@@ -1,48 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.image.Image?>
-<HBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      fx:controller="construction.BuildMenuViewController"
-      fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-      prefHeight="600.0" prefWidth="225.0">
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="construction.BuildMenuViewController">
     <HBox fx:id="ComponentMenu" prefHeight="200" prefWidth="200" style="-fx-background-color: WHITE; -fx-border-color: BLACK;">
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-            <Button text="Interact" onMousePressed="#pickInteractTool"/>
-            <Button text="Place Wire" onMousePressed="#pickWireTool"/>
-            <Button text="Place PS" onMousePressed="#pickPlacePowerSourceTool"/>
-            <Button text="Place Switch" onMousePressed="#pickPlaceSwitchTool"/>
-            <Button text="Place BR12KV" onMousePressed="#pickPlaceBreaker12KVTool"/>
-            <Button text="Place Jumper" onMousePressed="#pickPlaceJumperTool"/>
+            <Button onMousePressed="#pickInteractTool" prefHeight="96.0" prefWidth="96.0" text="" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/InteractIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
+            <Button onMousePressed="#pickWireTool" prefHeight="96.0" prefWidth="96.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;" translateY="4.0">
+            <graphic>
+               <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/WireIcon.png" />
+                  </image>
+               </ImageView>
+            </graphic></Button>
+            <Button onMousePressed="#pickPlacePowerSourceTool" prefHeight="96.0" prefWidth="96.0" translateY="8.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+            <graphic>
+               <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                  <image>
+                     <Image url="@../resources/PowerSourceIcon.png" />
+                  </image>
+               </ImageView>
+            </graphic></Button>
+            <Button onMousePressed="#pickPlaceSwitchTool" prefHeight="96.0" prefWidth="96.0" text="" translateY="12.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/SwitchIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
+            <Button onMousePressed="#pickPlaceBreaker12KVTool" prefHeight="96.0" prefWidth="96.0" text="" translateY="16.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/Breaker12KVIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
+            <Button minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#pickPlaceJumperTool" prefHeight="96.0" prefWidth="96.0" text="" translateY="20.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/JumperIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
         </VBox>
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-            <Button text="Select" onMousePressed="#pickSelectTool"/>
-            <Button />
-            <Button text="Place Turbine" onMousePressed="#pickPlaceTurbineTool"/>
-            <Button text="Place BR70KV" onMousePressed="#pickPlaceBreaker70KVTool"/>
-            <Button text="Place Xformer" onMousePressed="#pickPlaceTransformerTool"/>
-            <Button text="Place Cutout" onMousePressed="#pickPlaceCutoutTool"/>
+            <Button onMousePressed="#pickSelectTool" prefHeight="96.0" prefWidth="96.0" text="" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/SelectIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
+            <Button prefHeight="96.0" prefWidth="96.0" translateY="4.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/AssociateIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
+            <Button onMousePressed="#pickPlaceTurbineTool" prefHeight="96.0" prefWidth="96.0" text="" translateY="8.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+            <graphic>
+                <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../resources/TurbineIcon.png" />
+                    </image>
+                </ImageView>
+            </graphic></Button>
+            <Button onMousePressed="#pickPlaceBreaker70KVTool" prefHeight="96.0" prefWidth="96.0" text="" translateY="12.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/Breaker70KVIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
+            <Button onMousePressed="#pickPlaceTransformerTool" prefHeight="96.0" prefWidth="96.0" text="" translateY="16.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/TransformerIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
+            <Button onMousePressed="#pickPlaceCutoutTool" prefHeight="96.0" prefWidth="96.0" text="" translateY="20.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+                <graphic>
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../resources/CutoutIcon.png" />
+                        </image>
+                    </ImageView>
+                </graphic></Button>
         </VBox>
     </HBox>
-    <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-          minWidth="-Infinity" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0"
-          onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover">
+    <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0">
         <cursor>
-            <Cursor fx:constant="DEFAULT"/>
+            <Cursor fx:constant="DEFAULT" />
         </cursor>
-        <Button fx:id="ComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0"
-                layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#toggleMenu" prefHeight="25.0"
-                prefWidth="300.0" rotate="90.0" style="-fx-background-color: LIGHTGRAY;">
+        <Button fx:id="ComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#toggleMenu" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: LIGHTGRAY;">
             <graphic>
-                <ImageView fx:id="ArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true"
-                           preserveRatio="true" rotate="-90.0">
-                    <Image url="@../resources/ArrowLeft.png"/>
+                <ImageView fx:id="ArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
+                    <Image url="@../resources/ArrowLeft.png" />
                 </ImageView>
             </graphic>
         </Button>

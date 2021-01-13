@@ -94,6 +94,13 @@ public class ConstructionController {
         event.consume();
     };
 
+    private final EventHandler<KeyEvent> handleEscapeTool = event -> {
+        if (event.getCode() != KeyCode.ESCAPE) return;
+        if (buildMenuData.toolType == ToolType.INTERACT) return;
+        setBuildMenuData(ToolType.INTERACT, buildMenuData.componentType);
+        event.consume();
+    };
+
     private void rotate(boolean ccw) {
         double rotation;
 
@@ -113,6 +120,7 @@ public class ConstructionController {
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleToggleDefaultState);
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleEscapeTool);
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());

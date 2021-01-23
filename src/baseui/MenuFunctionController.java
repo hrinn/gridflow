@@ -4,7 +4,13 @@ import application.DevUtils;
 import application.events.GridChangedEvent;
 import application.events.GridFlowEventManager;
 import domain.Grid;
+import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 
 public class MenuFunctionController {
@@ -14,6 +20,7 @@ public class MenuFunctionController {
 
     private GridFileManager gridFileManager;
     private GridFlowEventManager gridFlowEventManager;
+
 
     public MenuFunctionController(GridFlowEventManager gridFlowEventManager) {
         this.gridFlowEventManager = gridFlowEventManager;
@@ -29,9 +36,28 @@ public class MenuFunctionController {
         gridFlowEventManager.sendEvent(new GridChangedEvent());
     }
 
-    public void saveGrid() {
+
+
+    public void saveGrid(VBox menu) {
+        FileChooser fc = new FileChooser();
+        Window stage = menu.getScene().getWindow();
+
+        fc.setTitle("Save Grid File");
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+        fc.setInitialFileName("grid");
+
         try {
-            gridFileManager.saveGrid(GRID_PATH);
+            File file = fc.showSaveDialog(stage);
+
+            if (file == null){
+                System.out.println("Could not save to file selected in dialog");
+            } else {
+                fc.setInitialDirectory(file.getParentFile());
+                gridFileManager.saveGrid(file.getPath());
+            }
+
+
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }

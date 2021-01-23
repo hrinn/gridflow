@@ -17,6 +17,8 @@ public class BaseUIViewController {
 
     private MenuFunctionController controller;
 
+    @FXML
+    private VBox TopMenu;
 
     public void setController(MenuFunctionController controller) {
         this.controller = controller;
@@ -24,7 +26,7 @@ public class BaseUIViewController {
 
     @FXML
     private void saveGrid() {
-        controller.saveGrid();
+        controller.saveGrid(TopMenu);
     }
 
     @FXML

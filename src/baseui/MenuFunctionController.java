@@ -17,6 +17,7 @@ public class MenuFunctionController {
 
     private static final String GRID_PATH = "./grid.json";
     private static final String DEFAULT_GRID_PATH = "./defaultgrid.json";
+    private static final String DEFAULT_FILENAME = "grid";
 
     private GridFileManager gridFileManager;
     private GridFlowEventManager gridFlowEventManager;
@@ -27,9 +28,11 @@ public class MenuFunctionController {
     public MenuFunctionController(GridFlowEventManager gridFlowEventManager) {
         this.gridFlowEventManager = gridFlowEventManager;
         this.gridFileManager = new GridFileManager();
-        this.lastUsedFileName = "grid";
+        this.lastUsedFileName = DEFAULT_FILENAME;
         this.lastUsedDirectory = new File(".");
         this.futureFC = new FutureTask<>(FileChooser::new);
+
+        // Preload file dialog asynchronously
         ExecutorService ex = Executors.newSingleThreadExecutor();
         ex.execute(futureFC);
     }

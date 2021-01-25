@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.String;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,7 +31,5 @@ public class BaseUIViewController {
     }
 
     @FXML
-    private void loadGrid() {
-        controller.loadGrid();
-    }
+    private void loadGrid() { controller.loadGrid(TopMenu); }
 }

@@ -1,17 +1,17 @@
 package baseui;
 
-import application.DevUtils;
 import application.events.GridChangedEvent;
 import application.events.GridFlowEventManager;
 import domain.Grid;
-import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
 
 public class MenuFunctionController {
 
@@ -20,11 +20,18 @@ public class MenuFunctionController {
 
     private GridFileManager gridFileManager;
     private GridFlowEventManager gridFlowEventManager;
-
+    private String lastUsedFileName;
+    private File lastUsedDirectory;
+    private FutureTask<FileChooser> futureFC;
 
     public MenuFunctionController(GridFlowEventManager gridFlowEventManager) {
         this.gridFlowEventManager = gridFlowEventManager;
         this.gridFileManager = new GridFileManager();
+        this.lastUsedFileName = "grid";
+        this.lastUsedDirectory = new File(".");
+        this.futureFC = new FutureTask<>(FileChooser::new);
+        ExecutorService ex = Executors.newSingleThreadExecutor();
+        ex.execute(futureFC);
     }
 
     public Grid getGrid() {
@@ -37,34 +44,57 @@ public class MenuFunctionController {
     }
 
 
-
     public void saveGrid(VBox menu) {
-        FileChooser fc = new FileChooser();
+        // Get the main stage for dialog modality
         Window stage = menu.getScene().getWindow();
 
-        fc.setTitle("Save Grid File");
-        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
-        fc.setInitialFileName("grid");
-
         try {
+            // Retrieve the file chooser and configure
+            FileChooser fc = futureFC.get();
+            fc.setTitle("Save Grid File");
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+            fc.setInitialFileName(lastUsedFileName);
+            fc.setInitialDirectory(lastUsedDirectory);
+
+            // Show dialog
             File file = fc.showSaveDialog(stage);
 
             if (file == null){
-                System.out.println("Could not save to file selected in dialog");
+                System.err.println("Save dialog canceled");
             } else {
-                fc.setInitialDirectory(file.getParentFile());
                 gridFileManager.saveGrid(file.getPath());
+                lastUsedFileName = file.getName();
+                lastUsedDirectory = file.getParentFile();
             }
-
-
 
         } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public void loadGrid() {
-        gridFileManager.loadGrid(GRID_PATH);
-        gridFlowEventManager.sendEvent(new GridChangedEvent());
+    public void loadGrid(VBox menu) {
+        Window stage = menu.getScene().getWindow();
+
+        try {
+            FileChooser fc = futureFC.get();
+            fc.setTitle("Load Grid File");
+            fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("JSON Files", "*.json"));
+            fc.setInitialDirectory(lastUsedDirectory);
+
+            File file = fc.showOpenDialog(stage);
+
+            if (file == null){
+                System.err.println("Load dialog canceled");
+            } else {
+                gridFileManager.loadGrid(file.getPath());
+                gridFlowEventManager.sendEvent(new GridChangedEvent());
+                lastUsedFileName = file.getName();
+                lastUsedDirectory = file.getParentFile();
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 }

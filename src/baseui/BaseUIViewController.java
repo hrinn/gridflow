@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.String;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +18,8 @@ public class BaseUIViewController {
 
     private MenuFunctionController controller;
 
+    @FXML
+    private VBox TopMenu;
 
     public void setController(MenuFunctionController controller) {
         this.controller = controller;
@@ -24,11 +27,9 @@ public class BaseUIViewController {
 
     @FXML
     private void saveGrid() {
-        controller.saveGrid();
+        controller.saveGrid(TopMenu);
     }
 
     @FXML
-    private void loadGrid() {
-        controller.loadGrid();
-    }
+    private void loadGrid() { controller.loadGrid(TopMenu); }
 }

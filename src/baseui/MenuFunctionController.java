@@ -7,7 +7,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Window;
 
-import java.awt.*;
 import java.io.File;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -17,6 +16,7 @@ public class MenuFunctionController {
 
     private static final String GRID_PATH = "./grid.json";
     private static final String DEFAULT_GRID_PATH = "./defaultgrid.json";
+    private static final String DEFAULT_PATH = ".";
     private static final String DEFAULT_FILENAME = "grid";
 
     private GridFileManager gridFileManager;
@@ -29,7 +29,7 @@ public class MenuFunctionController {
         this.gridFlowEventManager = gridFlowEventManager;
         this.gridFileManager = new GridFileManager();
         this.lastUsedFileName = DEFAULT_FILENAME;
-        this.lastUsedDirectory = new File(".");
+        this.lastUsedDirectory = new File(DEFAULT_PATH);
         this.futureFC = new FutureTask<>(FileChooser::new);
 
         // Preload file dialog asynchronously

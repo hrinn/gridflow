@@ -7,9 +7,12 @@ import visualization.componentIcons.ComponentIconCreator;
 public class Association {
 
     // strings displayed inside the association
-    private String acronym = "";
+    private String acronym = "ASC";
     private String label = "Association";
     private String subLabel = "";
+
+    // label can exist at 9 different positions, 0 being top left and 8 being bottom right
+    private int labelPosition = 0;
 
     // association dimensions
     private Point position; // top left
@@ -27,7 +30,7 @@ public class Association {
     }
 
     private void createAssociationNode() {
-        this.associationNode = ComponentIconCreator.createAssociationNode(position, width, height);
+        this.associationNode = ComponentIconCreator.createAssociationNode(position, width, height, label, labelPosition);
     }
 
     public Group getAssociationNode() {

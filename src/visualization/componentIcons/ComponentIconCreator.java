@@ -342,17 +342,69 @@ public class ComponentIconCreator {
         return wireIcon;
     }
 
-    public static Group createAssociationNode(Point position, double width, double height) {
+    public static Group createAssociationNode(Point topLeft, double width, double height, String label, int posNumber) {
         Group node = new Group();
 
-        Rectangle border = new Rectangle(position.getX(), position.getY(), width, height);
+        // this is the association rectangle displayed on screen
+        Rectangle border = new Rectangle(topLeft.getX(), topLeft.getY(), width, height);
         border.setMouseTransparent(true);
         border.setFill(Color.TRANSPARENT);
         border.setStroke(Color.GRAY);
-        border.setStrokeWidth(1);
-        node.getChildren().add(border);
+        border.setStrokeWidth(2);
 
+        // also add 4 transparent lines that overlay the border for the user to click on
+        Line left = createLine(topLeft, topLeft.translate(0, height));
+        Line right = createLine(topLeft.translate(width, 0), topLeft.translate(width, height));
+        Line top = createLine(topLeft, topLeft.translate(width, 0));
+        Line bottom = createLine(topLeft.translate(0, height), topLeft.translate(width, height));
+
+        double opacity = 0;
+        left.setOpacity(opacity);
+        right.setOpacity(opacity);
+        top.setOpacity(opacity);
+        bottom.setOpacity(opacity);
+
+        double strokeWidth = 10;
+        left.setStrokeWidth(strokeWidth);
+        right.setStrokeWidth(strokeWidth);
+        top.setStrokeWidth(strokeWidth);
+        bottom.setStrokeWidth(strokeWidth);
+
+        // create the text that displays inside the associations
+        Point labelPos = getAssociationLabelPosition(topLeft, width, height, posNumber);
+        Text labelText = createText(labelPos, label, Color.BLACK, 24);
+
+        node.getChildren().addAll(border, labelText, left, right, top, bottom);
         return node;
+    }
+
+    // breaks the association into a nxn parts
+    // returns a point in the center of one of those parts, selected by labelPosition (max of n^2 - 1)
+    private static Point getAssociationLabelPosition(Point topLeft, double width, double height, int labelPosition) {
+        int n = 4;
+
+        // find the positions of the part dividers
+        List<Point> hPoints = new ArrayList<>();
+        List<Point> vPoints = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            hPoints.add(topLeft.translate(i * (width/n), 0));
+            vPoints.add(topLeft.translate(0, i * (height/n)));
+        }
+
+        // this will hold the center points of each part
+        List<Point> centerPoints = new ArrayList<>();
+
+        // now that we have the positions of the 9 sectors, find the middle point of each
+        for (Point vp : vPoints) {
+            for (Point hp : hPoints) {
+                Point ltl = new Point(hp.getX(), vp.getY());
+                centerPoints.add(ltl.translate(width/(2 * n), height/(2 * n)));
+            }
+        }
+
+        // select the point we want
+        return centerPoints.get(labelPosition);
     }
 
     private static Line createLine(Point p1, Point p2) {

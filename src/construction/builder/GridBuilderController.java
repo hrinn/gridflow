@@ -41,9 +41,9 @@ public class GridBuilderController {
         if (doubleClickPlacementContext.placing) { // end placement
             doubleClickPlacementContext.placing = false;
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
-            Point lockedEndPoint = endPoint.clampPerpendicular(wireExtendContext.beginPoint);
+            Point lockedEndPoint = endPoint.clampPerpendicular(doubleClickPlacementContext.beginPoint);
             boolean ctrlPressed = event.isControlDown();
-            boolean res = model.placeWire(wireExtendContext.beginPoint, lockedEndPoint, ctrlPressed);
+            boolean res = model.placeWire(doubleClickPlacementContext.beginPoint, lockedEndPoint, ctrlPressed);
             if (res) {
                 gridFlowEventManager.sendEvent(new GridChangedEvent());
             } else {

@@ -52,15 +52,15 @@ public class GhostManager {
 
     private ComponentIcon ghostIconCreator(ComponentType componentType, Point pos) {
         return switch (componentType) {
-            case BREAKER_12KV -> ComponentIconCreator.get12KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
-            case BREAKER_70KV -> ComponentIconCreator.get70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
-            case CUTOUT -> ComponentIconCreator.getCutoutIcon(pos, properties.getDefaultState());
-            case JUMPER -> ComponentIconCreator.getJumperIcon(pos, properties.getDefaultState());
-            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, properties.getName(), false);
-            case SWITCH -> ComponentIconCreator.getSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState());
-            case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(pos);
-            case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, false);
-            case WIRE -> ComponentIconCreator.getWireIcon(pos, pos, List.of());
+            case BREAKER_12KV -> ComponentIconCreator.create12KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case BREAKER_70KV -> ComponentIconCreator.create70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case CUTOUT -> ComponentIconCreator.createCutoutIcon(pos, properties.getDefaultState());
+            case JUMPER -> ComponentIconCreator.createJumperIcon(pos, properties.getDefaultState());
+            case POWER_SOURCE -> ComponentIconCreator.createPowerSourceIcon(pos, properties.getName(), false);
+            case SWITCH -> ComponentIconCreator.createSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case TRANSFORMER -> ComponentIconCreator.createTransformerIcon(pos);
+            case TURBINE -> ComponentIconCreator.createTurbineIcon(pos, false);
+            case WIRE -> ComponentIconCreator.createWireIcon(pos, pos, List.of());
         };
     }
 
@@ -76,7 +76,7 @@ public class GhostManager {
     public void extendGhostWire(Point start, Point end) {
         ghostEnabled = true;
         canvasMaster.clearOverlay();
-        ghostIcon = ComponentIconCreator.getWireIcon(start, end, List.of());
+        ghostIcon = ComponentIconCreator.createWireIcon(start, end, List.of());
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
         canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
     }

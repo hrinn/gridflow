@@ -64,7 +64,7 @@ public class PowerSource extends Source {
     }
 
     private void createComponentIcon() {
-        SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn());
+        SourceIcon icon = ComponentIconCreator.createPowerSourceIcon(getPosition(), getName(), isOn());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);
         icon.setComponentIconID(getId().toString());

@@ -17,7 +17,7 @@ public class ComponentIconCreator {
 
     private static final double BRIDGE_GAP = 10;
 
-    public static DeviceIcon getSwitchIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static DeviceIcon createSwitchIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon switchIcon = new DeviceIcon();
 
         // base shape
@@ -63,7 +63,7 @@ public class ComponentIconCreator {
         return switchIcon;
     }
 
-    public static DeviceIcon get70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static DeviceIcon create70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon breakerIcon = new DeviceIcon();
         Line inLine = createLine(p, p.translate(0, 1 * Globals.UNIT));
         breakerIcon.addInNodeShapes(inLine);
@@ -98,7 +98,7 @@ public class ComponentIconCreator {
         return breakerIcon;
     }
 
-    public static DeviceIcon get12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static DeviceIcon create12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon breakerIcon = new DeviceIcon();
 
         Line inLine1 = createLine(p, p.translate(0, 0.75 * Globals.UNIT));
@@ -148,7 +148,7 @@ public class ComponentIconCreator {
         return breakerIcon;
     }
 
-    public static DeviceIcon getTransformerIcon(Point p) {
+    public static DeviceIcon createTransformerIcon(Point p) {
 
         // change to new icon that can't be split energy maybe
         DeviceIcon transformerIcon = new DeviceIcon();
@@ -180,7 +180,7 @@ public class ComponentIconCreator {
         return transformerIcon;
     }
 
-    public static DeviceIcon getJumperIcon(Point p, boolean closed) {
+    public static DeviceIcon createJumperIcon(Point p, boolean closed) {
         DeviceIcon jumperIcon = new DeviceIcon();
 
         Line inLine = createLine(p, p.translate(0, Globals.UNIT));
@@ -197,7 +197,7 @@ public class ComponentIconCreator {
         return jumperIcon;
     }
 
-    public static DeviceIcon getCutoutIcon(Point p, boolean closed) {
+    public static DeviceIcon createCutoutIcon(Point p, boolean closed) {
         DeviceIcon cutoutIcon = new DeviceIcon();
 
         Line inLine = createLine(p, p.translate(0, .95 * Globals.UNIT));
@@ -227,7 +227,7 @@ public class ComponentIconCreator {
         return cutoutIcon;
     }
 
-    public static SourceIcon getPowerSourceIcon(Point p, String name, boolean isOn) {
+    public static SourceIcon createPowerSourceIcon(Point p, String name, boolean isOn) {
         SourceIcon powerSourceIcon = new SourceIcon();
 
         Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
@@ -247,7 +247,7 @@ public class ComponentIconCreator {
         return powerSourceIcon;
     }
 
-    public static SourceIcon getTurbineIcon(Point p, boolean isOn) {
+    public static SourceIcon createTurbineIcon(Point p, boolean isOn) {
         SourceIcon turbineIcon = new SourceIcon();
 
         Circle turbineCircle = createCircle(p.translate(0, 2 * Globals.UNIT), Globals.UNIT, Color.RED, Color.BLACK);
@@ -266,7 +266,7 @@ public class ComponentIconCreator {
         return turbineIcon;
     }
 
-    public static WireIcon getWireIcon(Point p1, Point p2, List<Point> bridgePoints) {
+    public static WireIcon createWireIcon(Point p1, Point p2, List<Point> bridgePoints) {
         WireIcon wireIcon = new WireIcon();
 
         if (p1.equals(p2)) {
@@ -276,7 +276,7 @@ public class ComponentIconCreator {
             Line wireLine = createLine(p1, p2);
             wireIcon.addWireShape(wireLine);
         } else { // create a line with gaps
-            getBridgeWire(p1, p2, bridgePoints).forEach(wireIcon::addWireShape);
+            createBridgeWire(p1, p2, bridgePoints).forEach(wireIcon::addWireShape);
         }
 
         Dimensions dim = new Dimensions(p1.differenceX(p2)/Globals.UNIT, p1.differenceY(p2)/Globals.UNIT, 0.25);
@@ -289,7 +289,7 @@ public class ComponentIconCreator {
         return wireIcon;
     }
 
-    private static List<Shape> getBridgeWire(Point p1, Point p2, List<Point> bridgePoints) {
+    private static List<Shape> createBridgeWire(Point p1, Point p2, List<Point> bridgePoints) {
         List<Shape> wires = new ArrayList<>();
         boolean vertical = p1.differenceX(p2) == 0;
 
@@ -328,7 +328,7 @@ public class ComponentIconCreator {
         return wires;
     }
 
-    public static WireIcon getBlankWireIcon(Point p1, Point p2) {
+    public static WireIcon createBlankWireIcon(Point p1, Point p2) {
 
         WireIcon wireIcon = new WireIcon();
 
@@ -342,7 +342,7 @@ public class ComponentIconCreator {
         return wireIcon;
     }
 
-    public static Group getAssociationNode(Point position, double width, double height) {
+    public static Group createAssociationNode(Point position, double width, double height) {
         Group node = new Group();
 
         Rectangle border = new Rectangle(position.getX(), position.getY(), width, height);

@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
+// this controller handles event logic for grid building
+// this is mostly user click while
 public class GridBuilderController {
 
     private GridBuilder model;
@@ -33,11 +35,12 @@ public class GridBuilderController {
     public void propertiesDataChanged() {
     }
 
+    // this event handler is for placing wires with the wire tool
+    // it is run once per click, so the event either begin a placement or finishes a placement
     private final EventHandler<MouseEvent> placeWireEventHandler = event -> {
         if (buildData.toolType != ToolType.WIRE) return;
         if (!event.isPrimaryButtonDown()) return;
 
-        // for implementing connecting/extending, try and reuse existing code
         if (doubleClickPlacementContext.placing) { // end placement
             doubleClickPlacementContext.placing = false;
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
@@ -59,6 +62,8 @@ public class GridBuilderController {
         event.consume();
     };
 
+    // this event handler if for placing associations with the association tool
+    // it is run once per click, like placing wires
     private final EventHandler<MouseEvent> placeAssociationEventHandler = event -> {
         if (buildData.toolType != ToolType.ASSOCIATION) return;
         if (!event.isPrimaryButtonDown()) return;

@@ -2,7 +2,6 @@ package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import domain.geometry.Point;
-import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
@@ -24,7 +23,7 @@ public class Switch extends Closeable {
     }
 
     private void createComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
+        DeviceIcon icon = ComponentIconCreator.createSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());

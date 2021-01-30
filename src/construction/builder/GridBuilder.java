@@ -101,7 +101,7 @@ public class GridBuilder {
 
         switch (componentType) {
             case POWER_SOURCE -> {
-                PowerSource powerSource = new PowerSource(properties.getName(), position, false);
+                PowerSource powerSource = new PowerSource(properties.getName(), position, true);
                 powerSource.setAngle(properties.getRotation());
                 if(!verifyPlacement(powerSource)) return false;
 
@@ -126,7 +126,7 @@ public class GridBuilder {
                 grid.addComponents(powerSource);
             }
             case TURBINE -> {
-                Turbine turbine = new Turbine(properties.getName(), position, false);
+                Turbine turbine = new Turbine(properties.getName(), position, true);
                 turbine.setAngle(properties.getRotation());
                 if(!verifyPlacement(turbine)) return false;
 
@@ -345,8 +345,34 @@ public class GridBuilder {
         return null;
     }
 
-    public void placeAssociation(Point topLeft, Point bottomRight) {
-        Association association = new Association(topLeft, topLeft.differenceX(bottomRight), topLeft.differenceY(bottomRight));
+    public void placeAssociation(Point start, Point end) {
+        // determine topLeft point
+        Point topLeft;
+        if (start.getX() < end.getX()) {
+            if (start.getY() < end.getY()) {
+                // start is top left
+                topLeft = start;
+            } else {
+                // start is bottom left and end is top right
+                topLeft = new Point(start.getX(), end.getY());
+            }
+
+        } else {
+            if (start.getY() < end.getY()) {
+                // start is top right and end is bottom left
+                topLeft = new Point(end.getX(), start.getY());
+            } else {
+                // end is topLeft
+                topLeft = end;
+            }
+        }
+
+        // rectangle dimensions
+        double width = start.differenceX(end);
+        double height = start.differenceY(end);
+
+        // create the association and add it to the grid
+        Association association = new Association(topLeft, width, height);
         grid.addAssociation(association);
     }
 

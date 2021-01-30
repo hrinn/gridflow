@@ -77,7 +77,7 @@ public class Turbine extends Source {
     }
 
     private void createComponentIcon() {
-        SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition(), isOn());
+        SourceIcon icon = ComponentIconCreator.createTurbineIcon(getPosition(), isOn());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);
         icon.setWireEnergyState(false, 1);

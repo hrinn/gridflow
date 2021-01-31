@@ -13,7 +13,6 @@ public class AssociationGhostManager {
     private Node ghost;
     private GridCanvasFacade canvasFacade;
     private boolean ghostEnabled = false;
-    private boolean secondCrosshair = false;
 
     private final double crosshair_width = 5;
 
@@ -24,7 +23,6 @@ public class AssociationGhostManager {
     // before the rectangle has been created, the ghost is just a crosshair
     public void setAssociationGhost() {
         canvasFacade.clearOverlay();
-        secondCrosshair = false;
 
         ghost = createCrosshair();
         canvasFacade.addOverlayNode(ghost);
@@ -40,11 +38,22 @@ public class AssociationGhostManager {
         return crosshair;
     }
 
-    public void setSecondCrosshair() {
-        secondCrosshair = true;
-        Group crosshair2 = createCrosshair();
+    public void setAssociationRectangleGhost(Point p1, Point p2) {
+        canvasFacade.clearOverlay();
 
-        ghost = crosshair2;
+        Rectangle ghostRect = new Rectangle();
+
+        ghostRect.setX(Math.min(p1.getX(), p2.getX()));
+        ghostRect.setY(Math.min(p1.getY(), p2.getY()));
+        ghostRect.setWidth(p1.differenceX(p2));
+        ghostRect.setHeight(p1.differenceY(p2));
+
+        ghostRect.setOpacity(0.5);
+        ghostRect.setFill(Color.TRANSPARENT);
+        ghostRect.setStroke(Color.BLACK);
+        ghostRect.setStrokeWidth(2);
+
+        ghost = ghostRect;
         canvasFacade.addOverlayNode(ghost);
     }
 
@@ -64,17 +73,8 @@ public class AssociationGhostManager {
         ghostEnabled = enabled;
     }
 
-    public void setSecondCrosshairEnabled(boolean enabled) {
-        secondCrosshair = enabled;
-    }
-
     public boolean isGhostEnabled() {
         return ghostEnabled;
     }
-
-    public boolean isSecondCrosshairEnabled() {
-        return secondCrosshair;
-    }
-
 
 }

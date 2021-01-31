@@ -61,6 +61,7 @@ public class GhostManagerController implements GridFlowEventListener {
         }
     }
 
+    // responds to mouse moving and moves the ghost
     private final EventHandler<MouseEvent> ghostMoveEventHandler = event -> {
         if (ghostModel.isGhostEnabled()) {
             Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
@@ -73,11 +74,11 @@ public class GhostManagerController implements GridFlowEventListener {
             }
         } else if (associationModel.isGhostEnabled()) {
             Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
-            if (doubleClickContext.placing && !associationModel.isSecondCrosshairEnabled()) {
-                associationModel.setSecondCrosshair();
-                associationModel.setSecondCrosshairEnabled(true);
+            if (doubleClickContext.placing) {
+                associationModel.setAssociationRectangleGhost(doubleClickContext.beginPoint, coordPoint);
+            } else {
+                associationModel.updateGhostPosition(coordPoint);
             }
-            associationModel.updateGhostPosition(coordPoint);
         }
     };
 

@@ -347,7 +347,9 @@ public class GridBuilder {
 
     public void placeAssociation(Point start, Point end) {
         // determine topLeft point
-        Point topLeft = Point.getTopLeftFromBox(start, end);
+        double x = Math.min(start.getX(), end.getX());
+        double y = Math.min(start.getY(), end.getY());
+        Point topLeft = new Point(x, y);
 
         // rectangle dimensions
         double width = start.differenceX(end);

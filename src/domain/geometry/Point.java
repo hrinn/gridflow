@@ -24,29 +24,6 @@ public class Point {
         return new Point((p1.x + p2.x)/2, (p1.y + p2.y)/2);
     }
 
-    public static Point getTopLeftFromBox(Point p1, Point p2) {
-        Point topLeft;
-        if (p1.getX() < p2.getX()) {
-            if (p1.getY() < p2.getY()) {
-                // p1 is top left
-                topLeft = new Point(p1.getX(), p1.getY());
-            } else {
-                // p1 is bottom left and p2 is top right
-                topLeft = new Point(p1.getX(), p2.getY());
-            }
-
-        } else {
-            if (p1.getY() < p2.getY()) {
-                // p1 is top right and p2 is bottom left
-                topLeft = new Point(p2.getX(), p1.getY());
-            } else {
-                // p2 is topLeft
-                topLeft = new Point(p2.getX(), p2.getY());
-            }
-        }
-        return topLeft;
-    }
-
     public static Point nearestCoordinate(double x, double y) {
         double rx = Math.round(x / Globals.UNIT) * Globals.UNIT;
         double ry = Math.round(y / Globals.UNIT) * Globals.UNIT;

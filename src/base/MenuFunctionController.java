@@ -1,4 +1,4 @@
-package baseui;
+package base;
 
 import application.events.GridChangedEvent;
 import application.events.GridFlowEventManager;

@@ -4,7 +4,11 @@ import domain.geometry.Point;
 import javafx.scene.Group;
 import visualization.componentIcons.ComponentIconCreator;
 
+import java.util.UUID;
+
 public class Association {
+
+    private UUID id;
 
     // strings displayed inside the association
     private String acronym = "ASC";
@@ -23,6 +27,7 @@ public class Association {
     private Group associationNode;
 
     public Association(Point position, double width, double height) {
+        this.id = UUID.randomUUID();
         this.position = position;
         this.width = width;
         this.height = height;

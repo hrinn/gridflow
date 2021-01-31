@@ -1,4 +1,4 @@
-package baseui;
+package base;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;

@@ -1,68 +1,83 @@
 package construction.ghosts;
 
-import application.events.PlacementFailedEvent;
-import application.events.GridFlowEvent;
-import application.events.GridFlowEventListener;
-import application.events.WirePlacedEvent;
+import application.events.*;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
+// This controller manages the events for all ghost related logic (the transparent icons that show when placing)
 public class GhostManagerController implements GridFlowEventListener {
 
-    private GhostManager model;
-    private GridCanvasFacade canvasFacade;
-    private DoubleClickPlacementContext wireExtendContext;
+    private GhostManager ghostModel;
+    private AssociationGhostManager associationModel;
+    private DoubleClickPlacementContext doubleClickContext;
     private BuildMenuData buildData;
 
-    public GhostManagerController(GridCanvasFacade canvasFacade, DoubleClickPlacementContext wireExtendContext,
+    public GhostManagerController(GridCanvasFacade canvasFacade, DoubleClickPlacementContext doubleClickContext,
                                   BuildMenuData buildMenuData, PropertiesData propertiesData) {
-        this.model = new GhostManager(canvasFacade, propertiesData);
-        this.wireExtendContext = wireExtendContext;
-        this.canvasFacade = canvasFacade;
+        this.ghostModel = new GhostManager(canvasFacade, propertiesData);
+        this.associationModel = new AssociationGhostManager(canvasFacade);
+        this.doubleClickContext = doubleClickContext;
         this.buildData = buildMenuData;
     }
 
     public void handleEvent(GridFlowEvent gridFlowEvent) {
         if (gridFlowEvent instanceof WirePlacedEvent) {
-            model.setGhostIcon(ComponentType.WIRE);
+            ghostModel.setGhostIcon(ComponentType.WIRE);
         } else if (gridFlowEvent instanceof PlacementFailedEvent) {
             handlePlacementError();
+        } else if (gridFlowEvent instanceof AssociationPlacedEvent) {
+            associationModel.setAssociationGhost();
         }
     }
 
     private void handlePlacementError() {
         System.err.println("Placement Error");
-        model.showGhostError();
+        ghostModel.showGhostError();
     }
 
+    // switches the ghosts on or off when a different tool is selected
     public void buildMenuDataChanged() {
         if (buildData.toolType == ToolType.PLACE || buildData.toolType == ToolType.WIRE) {
-            model.enableGhostIcon();
-            model.setGhostIcon(buildData.componentType);
+            ghostModel.setGhostEnabled(true);
+            ghostModel.setGhostIcon(buildData.componentType);
+            associationModel.setGhostEnabled(false);
+        } else if (buildData.toolType == ToolType.ASSOCIATION) {
+            associationModel.setGhostEnabled(true);
+            associationModel.setAssociationGhost();
+            ghostModel.setGhostEnabled(false);
         } else {
-            model.disableGhostIcon();
+            ghostModel.setGhostEnabled(false);
+            associationModel.setGhostEnabled(false);
         }
     }
 
     public void propertiesDataChanged(boolean rotationChanged, boolean defaultStateChanged) {
         if (buildData.toolType == ToolType.PLACE) {
-            if (rotationChanged) model.rotateGhostIcon();
-            if (defaultStateChanged) model.updateGhostIcon(buildData.componentType);
+            if (rotationChanged) ghostModel.rotateGhostIcon();
+            if (defaultStateChanged) ghostModel.updateGhostIcon(buildData.componentType);
         }
     }
 
     private final EventHandler<MouseEvent> ghostMoveEventHandler = event -> {
-        if (!model.isGhostEnabled()) return;
-        Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
+        if (ghostModel.isGhostEnabled()) {
+            Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
 
-        if (wireExtendContext.placing) {
-            Point endPoint = coordPoint.clampPerpendicular(wireExtendContext.beginPoint);
-            model.extendGhostWire(wireExtendContext.beginPoint, endPoint);
-        } else {
-            model.updateGhostPosition(coordPoint);
+            if (doubleClickContext.placing) {
+                Point endPoint = coordPoint.clampPerpendicular(doubleClickContext.beginPoint);
+                ghostModel.extendGhostWire(doubleClickContext.beginPoint, endPoint);
+            } else {
+                ghostModel.updateGhostPosition(coordPoint);
+            }
+        } else if (associationModel.isGhostEnabled()) {
+            Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
+            if (doubleClickContext.placing && !associationModel.isSecondCrosshairEnabled()) {
+                associationModel.setSecondCrosshair();
+                associationModel.setSecondCrosshairEnabled(true);
+            }
+            associationModel.updateGhostPosition(coordPoint);
         }
     };
 

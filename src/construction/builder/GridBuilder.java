@@ -347,25 +347,7 @@ public class GridBuilder {
 
     public void placeAssociation(Point start, Point end) {
         // determine topLeft point
-        Point topLeft;
-        if (start.getX() < end.getX()) {
-            if (start.getY() < end.getY()) {
-                // start is top left
-                topLeft = start;
-            } else {
-                // start is bottom left and end is top right
-                topLeft = new Point(start.getX(), end.getY());
-            }
-
-        } else {
-            if (start.getY() < end.getY()) {
-                // start is top right and end is bottom left
-                topLeft = new Point(end.getX(), start.getY());
-            } else {
-                // end is topLeft
-                topLeft = end;
-            }
-        }
+        Point topLeft = Point.getTopLeftFromBox(start, end);
 
         // rectangle dimensions
         double width = start.differenceX(end);

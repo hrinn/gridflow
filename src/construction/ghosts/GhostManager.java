@@ -9,6 +9,7 @@ import visualization.componentIcons.ComponentIconCreator;
 
 import java.util.List;
 
+// The ghost manager creates the ghost icons that display when components are being placed
 public class GhostManager {
 
     private final static double GHOST_OPACITY = 0.5;
@@ -85,13 +86,15 @@ public class GhostManager {
         ghostIcon.showError();
     }
 
-    public void enableGhostIcon() {
-        ghostEnabled = true;
-    }
-
-    public void disableGhostIcon() {
-        ghostEnabled = false;
-        canvasMaster.clearOverlay();
+    public void setGhostEnabled(boolean enabled) {
+        if (ghostIcon != null) {
+            if (enabled) {
+                ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
+            } else {
+                ghostIcon.getComponentNode().setOpacity(0);
+            }
+        }
+        ghostEnabled = enabled;
     }
 
     public boolean isGhostEnabled() {

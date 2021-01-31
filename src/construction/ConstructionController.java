@@ -27,8 +27,8 @@ public class ConstructionController {
     private BuildMenuData buildMenuData;
     private PropertiesData propertiesData;
 
-    // Wire Placing
-    private DoubleClickPlacementContext wireExtendContext = new DoubleClickPlacementContext();
+    // Wire Placing and Association Placing
+    private DoubleClickPlacementContext doubleClickContext = new DoubleClickPlacementContext();
 
     public ConstructionController(Grid grid, GridFlowEventManager gridFlowEventManager, Stage stage) {
         // shared objects
@@ -39,8 +39,8 @@ public class ConstructionController {
         this.stage = stage;
 
         // controllers
-        gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, wireExtendContext, buildMenuData, propertiesData);
-        ghostManagerController = new GhostManagerController(canvasFacade, wireExtendContext, buildMenuData, propertiesData);
+        gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData, propertiesData);
+        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridFlowEventManager.addListener(ghostManagerController);
 

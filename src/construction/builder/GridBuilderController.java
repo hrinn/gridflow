@@ -118,6 +118,18 @@ public class GridBuilderController {
 
     };
 
+    private final EventHandler<MouseEvent> lockComponentEventHandler = event -> {
+        if (buildData.toolType != ToolType.INTERACT) return;
+        if (!event.isSecondaryButtonDown()) return;
+
+        String targetId = ((Node)event.getTarget()).getId();
+        model.lockComponent(targetId);
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
+
+        event.consume();
+
+    };
+
     private final EventHandler<MouseEvent> placeComponentEventHandler = event -> {
         if (buildData.toolType != ToolType.PLACE) return;
         if (!event.isPrimaryButtonDown()) return;
@@ -312,6 +324,10 @@ public class GridBuilderController {
 
     public EventHandler<MouseEvent> getToggleComponentEventHandler() {
         return toggleComponentEventHandler;
+    }
+
+    public EventHandler<MouseEvent> getLockComponentEventHandler() {
+        return lockComponentEventHandler;
     }
 
     public EventHandler<MouseEvent> getPlaceComponentEventHandler() {

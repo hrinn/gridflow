@@ -19,6 +19,7 @@ public class GridCanvasFacade {
 
     // Component Event Handlers
     private EventHandler<MouseEvent> toggleComponentEventHandler;
+    private EventHandler<MouseEvent> lockComponentEventHandler;
     private EventHandler<MouseEvent> selectSingleComponentHandler;
 
     // Association Event Handlers
@@ -64,6 +65,7 @@ public class GridCanvasFacade {
         Group energyOutlineNodes = icon.getEnergyOutlineNodes();
         Rectangle boundingRect = icon.getBoundingRect();
         boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, toggleComponentEventHandler);
+        boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, lockComponentEventHandler);
         boundingRect.addEventHandler(MouseEvent.MOUSE_PRESSED, selectSingleComponentHandler);
 
         canvas.componentGroup.getChildren().add(componentNode);
@@ -154,6 +156,10 @@ public class GridCanvasFacade {
     // All these setters all the event handlers to be set from the Construction Controller
     public void setToggleComponentEventHandler(EventHandler<MouseEvent> eventHandler) {
         this.toggleComponentEventHandler = eventHandler;
+    }
+
+    public void setLockComponentEventHandler(EventHandler<MouseEvent> eventHandler) {
+        this.lockComponentEventHandler = eventHandler;
     }
 
     public void setSelectSingleComponentHandler(EventHandler<MouseEvent> selectSingleComponentHandler) {

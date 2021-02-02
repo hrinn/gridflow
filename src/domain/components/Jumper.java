@@ -44,8 +44,15 @@ public class Jumper extends Closeable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
     }
 
-    public void toggle() {
+
+    public void toggleState() {
         toggleClosed();
+        createComponentIcon();
+    }
+
+    @Override
+    public void toggleLockedState() {
+        toggleLocked();
         createComponentIcon();
     }
 

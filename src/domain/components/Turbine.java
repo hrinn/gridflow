@@ -68,7 +68,7 @@ public class Turbine extends Source {
     }
 
     @Override
-    public void toggle() {
+    public void toggleState() {
         setOn(!isOn());
         createComponentIcon();
     }

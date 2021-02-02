@@ -74,9 +74,15 @@ public class Breaker extends Closeable {
 
 
     @Override
-    public void toggle() {
+    public void toggleState() {
         toggleClosed();
         createComponentIcon();
+    }
+
+    @Override
+    public void toggleLockedState() {
+        toggleLocked(); // Changes the locked state in the parent class (closeable)
+        createComponentIcon(); // Updates the component icon to show the new state
     }
 }
 

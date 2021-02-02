@@ -17,44 +17,58 @@ import java.util.UUID;
 public class ComponentIconCreator {
 
     private static final double BRIDGE_GAP = 10;
+    private static final double LOCK_TEXT_SIZE = 6;
+    private static final String LOCK_TEXT = "LOCK";
 
-    public static DeviceIcon getSwitchIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static DeviceIcon getSwitchIcon(Point p, boolean isClosed, boolean isClosedByDefault, boolean isLocked) {
         DeviceIcon switchIcon = new DeviceIcon();
 
         // base shape
         Line inLine = createLine(p, p.translate(0, 1.25 * Globals.UNIT));
-        Line inBar = createLine(p.translate(-0.5 * Globals.UNIT, 1.25 * Globals.UNIT),
-                p.translate(0.5 * Globals.UNIT, 1.25 * Globals.UNIT));
-        switchIcon.addInNodeShapes(inLine, inBar);
-
         Line outLine = createLine(p.translate(0, 1.75 * Globals.UNIT),
                 p.translate(0, 3 * Globals.UNIT));
-        Line outBar = createLine(p.translate(-0.5 * Globals.UNIT, 1.75 * Globals.UNIT),
-                p.translate(0.5 * Globals.UNIT, 1.75 * Globals.UNIT));
-        switchIcon.addOutNodeShapes(outLine, outBar);
+        switchIcon.addInNodeShapes(inLine);
+        switchIcon.addOutNodeShapes(outLine);
 
-        // State indicators
-        if (isClosedByDefault) {
-            if (isClosed){
-                Line closedBar = createLine(p.translate(0.5 * Globals.UNIT, Globals.UNIT),
-                        p.translate(-0.5 * Globals.UNIT, 2 * Globals.UNIT));
-                switchIcon.addMidNodeShapes(closedBar);
+        if (isLocked) {
+            Circle lockCircle = createCircle(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT,
+                    Color.YELLOW, Color.BLACK);
+            Text lockText = createText(p.translate(0, 1.5*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            switchIcon.addStaticNodes(lockCircle, lockText);
+        } else {
+            Line inBar = createLine(p.translate(-0.5 * Globals.UNIT, 1.25 * Globals.UNIT),
+                    p.translate(0.5 * Globals.UNIT, 1.25 * Globals.UNIT));
+            switchIcon.addInNodeShapes(inBar);
+
+
+            Line outBar = createLine(p.translate(-0.5 * Globals.UNIT, 1.75 * Globals.UNIT),
+                    p.translate(0.5 * Globals.UNIT, 1.75 * Globals.UNIT));
+            switchIcon.addOutNodeShapes(outBar);
+
+            // State indicators
+
+            if (isClosedByDefault) {
+                if (isClosed){
+                    Line closedBar = createLine(p.translate(0.5 * Globals.UNIT, Globals.UNIT),
+                            p.translate(-0.5 * Globals.UNIT, 2 * Globals.UNIT));
+                    switchIcon.addMidNodeShapes(closedBar);
+                }
+                else {
+                    Circle openCircle = createCircle(p.translate(0, 1.5 * Globals.UNIT), 0.25 * Globals.UNIT,
+                            Color.TRANSPARENT, Color.LIMEGREEN);
+                    switchIcon.addStaticNodes(openCircle);
+                }
             }
             else {
-                Circle openCircle = createCircle(p.translate(0, 1.5 * Globals.UNIT), 0.25 * Globals.UNIT,
-                        Color.TRANSPARENT, Color.LIMEGREEN);
-                switchIcon.addStaticNodes(openCircle);
-            }
-        }
-        else {
-            if (isClosed) {
-                Line closedBar1 = createLine(p.translate(0.5 * Globals.UNIT, Globals.UNIT),
-                        p.translate(-0.5 * Globals.UNIT, 2 * Globals.UNIT));
-                closedBar1.setStroke(Color.RED);
-                Line closedBar2 = createLine(p.translate(-0.5 * Globals.UNIT, Globals.UNIT),
-                        p.translate(0.5 * Globals.UNIT, 2 * Globals.UNIT));
-                closedBar2.setStroke(Color.RED);
-                switchIcon.addStaticNodes(closedBar1, closedBar2);
+                if (isClosed) {
+                    Line closedBar1 = createLine(p.translate(0.5 * Globals.UNIT, Globals.UNIT),
+                            p.translate(-0.5 * Globals.UNIT, 2 * Globals.UNIT));
+                    closedBar1.setStroke(Color.RED);
+                    Line closedBar2 = createLine(p.translate(-0.5 * Globals.UNIT, Globals.UNIT),
+                            p.translate(0.5 * Globals.UNIT, 2 * Globals.UNIT));
+                    closedBar2.setStroke(Color.RED);
+                    switchIcon.addStaticNodes(closedBar1, closedBar2);
+                }
             }
         }
 
@@ -64,44 +78,58 @@ public class ComponentIconCreator {
         return switchIcon;
     }
 
-    public static BreakerIcon get70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static BreakerIcon get70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault, boolean isLocked) {
         BreakerIcon breakerIcon = new BreakerIcon();
+
+        //base shape
         Line inLine = createLine(p, p.translate(0, 1 * Globals.UNIT));
         breakerIcon.addInNodeShapes(inLine);
 
         Line outLine = createLine(p.translate(0, 2 * Globals.UNIT), p.translate(0, 3 * Globals.UNIT));
         breakerIcon.addOutNodeShapes(outLine);
 
-        Rectangle box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1 * Globals.UNIT),
-                p.translate(0.5 * Globals.UNIT, 2 * Globals.UNIT), Color.RED, Color.BLACK);
-        breakerIcon.addBackfedOffNodeShapes(box);
 
-        Point center = p.translate(0, 1.5 * Globals.UNIT);
+        Rectangle box;
+        if(isLocked) {
+            box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1 * Globals.UNIT),
+                    p.translate(0.5 * Globals.UNIT, 2 * Globals.UNIT), Color.YELLOW, Color.BLACK);
+            Text lockText = createText(p.translate(0, 1.5*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            breakerIcon.addTextElement(lockText);
+        } else {
+            box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1 * Globals.UNIT),
+                    p.translate(0.5 * Globals.UNIT, 2 * Globals.UNIT), Color.RED, Color.BLACK);
 
-        if (isClosedByDefault) {
-            if (!isClosed) {
-                box.setFill(Color.LIME);
-                Text text = createText(center, "N/C", Color.WHITE, 10);
-                breakerIcon.addTextElement(text);
-            }
-        }
-        else {
-            if (isClosed) {
-                Text text = createText(center, "N/O", Color.WHITE, 10);
-                breakerIcon.addTextElement(text);
+            Point center = p.translate(0, 1.5 * Globals.UNIT);
+
+            if (isClosedByDefault) {
+                if (!isClosed) {
+                    box.setFill(Color.LIME);
+                    Text text = createText(center, "N/C", Color.WHITE, 10);
+                    breakerIcon.addTextElement(text);
+                }
             }
             else {
-                box.setFill(Color.LIME);
+                if (isClosed) {
+                    Text text = createText(center, "N/O", Color.WHITE, 10);
+                    breakerIcon.addTextElement(text);
+                }
+                else {
+                    box.setFill(Color.LIME);
+                }
             }
         }
+
+        breakerIcon.addBackfedOffNodeShapes(box);
+
         breakerIcon.setBoundingRect(new Dimensions(), p);
         breakerIcon.setFittingRect(new Dimensions(2, 3, -1, -1, -0.5, -0.5), p);
         return breakerIcon;
     }
 
-    public static BreakerIcon get12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static BreakerIcon get12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault, boolean isLocked) {
         BreakerIcon breakerIcon = new BreakerIcon();
 
+        //base shape
         Line inLine1 = createLine(p, p.translate(0, 0.75 * Globals.UNIT));
         Line inLine2 = createRoundedLine(p.translate(0, Globals.UNIT), p.translate(0, 1.5 * Globals.UNIT));
         Line inChevron1L = createRoundedLine(p.translate(-0.5 * Globals.UNIT, Globals.UNIT), p.translate(0, 0.75 * Globals.UNIT));
@@ -122,28 +150,37 @@ public class ComponentIconCreator {
                 p.translate(0, 3.25 * Globals.UNIT));
         breakerIcon.addOutNodeShapes(outLine1, outLine2, outChevron1L, outChevron1R, outChevron2L, outChevron2R);
 
-        Rectangle box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1.5 * Globals.UNIT),
-                p.translate(0.5 * Globals.UNIT, 2.5 * Globals.UNIT), Color.RED, Color.BLACK);
-        breakerIcon.addBackfedOffNodeShapes(box);
 
-        Point center = p.translate(0, 2 * Globals.UNIT);
+        Rectangle box;
+        if(isLocked) {
+            box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1.5 * Globals.UNIT),
+                    p.translate(0.5 * Globals.UNIT, 2.5 * Globals.UNIT), Color.YELLOW, Color.BLACK);
+            Text lockText = createText(p.translate(0, 2*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            breakerIcon.addTextElement(lockText);
+        } else {
+            box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1.5 * Globals.UNIT),
+                    p.translate(0.5 * Globals.UNIT, 2.5 * Globals.UNIT), Color.RED, Color.BLACK);
 
-        if (isClosedByDefault) {
-            if (!isClosed) {
-                box.setFill(Color.LIME);
-                Text text = createText(center, "N/C", Color.WHITE, 10);
-                breakerIcon.addTextElement(text);
-            }
-        }
-        else {
-            if (isClosed) {
-                Text text = createText(center, "N/O", Color.WHITE, 10);
-                breakerIcon.addTextElement(text);
+            Point center = p.translate(0, 2 * Globals.UNIT);
+
+            if (isClosedByDefault) {
+                if (!isClosed) {
+                    box.setFill(Color.LIME);
+                    Text text = createText(center, "N/C", Color.WHITE, 10);
+                    breakerIcon.addTextElement(text);
+                }
             }
             else {
-                box.setFill(Color.LIME);
+                if (isClosed) {
+                    Text text = createText(center, "N/O", Color.WHITE, 10);
+                    breakerIcon.addTextElement(text);
+                }
+                else {
+                    box.setFill(Color.LIME);
+                }
             }
         }
+        breakerIcon.addBackfedOffNodeShapes(box);
         breakerIcon.setBoundingRect(new Dimensions(2, 4), p);
         breakerIcon.setFittingRect(new Dimensions(2, 4, -0.75, -0.75, -0.5, -0.5), p);
         return breakerIcon;
@@ -181,87 +218,137 @@ public class ComponentIconCreator {
         return transformerIcon;
     }
 
-    public static DeviceIcon getJumperIcon(Point p, boolean closed) {
+    public static DeviceIcon getJumperIcon(Point p, boolean closed, boolean isLocked) {
         DeviceIcon jumperIcon = new DeviceIcon();
 
+        //base shape
         Line inLine = createLine(p, p.translate(0, Globals.UNIT));
         jumperIcon.addInNodeShapes(inLine);
 
         Line outLine = createLine(p.translate(0, 2 * Globals.UNIT), p.translate(0, 3 * Globals.UNIT));
-        Arc jumper = createHalfArc(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT, ArcOrientation.RIGHT);
-        // transforms must be applied prior to adding the node
-        if (!closed) rotateNode(jumper, p.translate(0, 2 * Globals.UNIT), 45);
+        jumperIcon.addOutNodeShapes(outLine);
 
-        jumperIcon.addOutNodeShapes(outLine, jumper);
+
+        if(isLocked) {
+            Circle lockCircle = createCircle(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT,
+                    Color.YELLOW, Color.BLACK);
+            Text lockText = createText(p.translate(0, 1.5*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            jumperIcon.addStaticNodes(lockCircle, lockText);
+        } else {
+            Arc jumper = createHalfArc(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT, ArcOrientation.RIGHT);
+            // transforms must be applied prior to adding the node
+            if (!closed) rotateNode(jumper, p.translate(0, 2 * Globals.UNIT), 45);
+
+            jumperIcon.addOutNodeShapes(jumper);
+        }
+
+
+
         jumperIcon.setBoundingRect(new Dimensions(2, 3, -0.25, -0.25, -0.75, 0), p);
         jumperIcon.setFittingRect(new Dimensions(2, 3, -1, -0.75, -1, 0), p);
         return jumperIcon;
     }
 
-    public static DeviceIcon getCutoutIcon(Point p, boolean closed) {
+    public static DeviceIcon getCutoutIcon(Point p, boolean closed, boolean isLocked) {
         DeviceIcon cutoutIcon = new DeviceIcon();
 
+        System.out.println("HERE");
+
+        //base shape
         Line inLine = createLine(p, p.translate(0, .95 * Globals.UNIT));
         cutoutIcon.addInNodeShapes(inLine);
 
         Line outLine = createLine(p.translate(0, 2 * Globals.UNIT), p.translate(0, 3 * Globals.UNIT));
-        // these shapes get rotated together
-        Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * Globals.UNIT), 0.15 * Globals.UNIT, ArcOrientation.UP);
-        Circle cutoutDot = createCircle(p.translate(0, 1.125 * Globals.UNIT), 0.5, Color.TRANSPARENT, Color.BLACK);
-        Line cutoutLineL = createRoundedLine(p.translate(0, 2 * Globals.UNIT), p.translate(-0.15 * Globals.UNIT, 1.125 * Globals.UNIT));
-        Line cutoutLineR = createRoundedLine(p.translate(0, 2 * Globals.UNIT), p.translate(0.15 * Globals.UNIT, 1.125 * Globals.UNIT));
+        cutoutIcon.addOutNodeShapes(outLine);
 
-        // rotate shapes
-        if (!closed) {
-            Point pivot = p.translate(0, 2 * Globals.UNIT);
-            double angle = 135;
 
-            rotateNode(cutoutArc, pivot, angle);
-            rotateNode(cutoutLineL, pivot, angle);
-            rotateNode(cutoutLineR, pivot, angle);
-            rotateNode(cutoutDot, pivot, angle);
+        if(isLocked) {
+            Circle lockCircle = createCircle(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT,
+                    Color.YELLOW, Color.BLACK);
+            Text lockText = createText(p.translate(0, 1.5*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            cutoutIcon.addStaticNodes(lockCircle, lockText);
+        } else {
+            // these shapes get rotated together
+            Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * Globals.UNIT), 0.15 * Globals.UNIT, ArcOrientation.UP);
+            Circle cutoutDot = createCircle(p.translate(0, 1.125 * Globals.UNIT), 0.5, Color.TRANSPARENT, Color.BLACK);
+            Line cutoutLineL = createRoundedLine(p.translate(0, 2 * Globals.UNIT), p.translate(-0.15 * Globals.UNIT, 1.125 * Globals.UNIT));
+            Line cutoutLineR = createRoundedLine(p.translate(0, 2 * Globals.UNIT), p.translate(0.15 * Globals.UNIT, 1.125 * Globals.UNIT));
+
+            // rotate shapes
+            if (!closed) {
+                Point pivot = p.translate(0, 2 * Globals.UNIT);
+                double angle = 135;
+
+                rotateNode(cutoutArc, pivot, angle);
+                rotateNode(cutoutLineL, pivot, angle);
+                rotateNode(cutoutLineR, pivot, angle);
+                rotateNode(cutoutDot, pivot, angle);
+            }
+            cutoutIcon.addOutNodeShapes(cutoutArc, cutoutDot, cutoutLineL, cutoutLineR);
         }
-        cutoutIcon.addOutNodeShapes(outLine, cutoutArc, cutoutDot, cutoutLineL, cutoutLineR);
+
+
+
         cutoutIcon.setBoundingRect(new Dimensions(), p);
         cutoutIcon.setFittingRect(new Dimensions(2, 3, -1, -0.25, -0.75, -0.25), p);
 
         return cutoutIcon;
     }
 
-    public static SourceIcon getPowerSourceIcon(Point p, String name, boolean isOn) {
+    public static SourceIcon getPowerSourceIcon(Point p, String name, boolean isOn, boolean isLocked) {
         SourceIcon powerSourceIcon = new SourceIcon();
 
-        Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
-                p.translate(Globals.UNIT, -Globals.UNIT), Color.RED, Color.BLACK);
-        powerSourceIcon.addSourceNodeShapes(sourceBox);
-
+        //base shape
         Line outLine = createLine(p.translate(0, 0), p.translate(0, -Globals.UNIT));
         powerSourceIcon.addOutputLine(outLine);
 
-        if (!isOn) sourceBox.setFill(Color.LIME);
-        Point center = p.translate(0, -2 * Globals.UNIT);
-        Text text = createText(center, name, Color.BLACK, 12);
-        powerSourceIcon.addTextElement(text);
+        if(isLocked) {
+            Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
+                    p.translate(Globals.UNIT, -Globals.UNIT), Color.YELLOW, Color.BLACK);
+            powerSourceIcon.addSourceNodeShapes(sourceBox);
+            Text lockText = createText(p.translate(0, -2*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            powerSourceIcon.addStaticNodeShapes(lockText);
+        } else {
+            Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
+                    p.translate(Globals.UNIT, -Globals.UNIT), Color.RED, Color.BLACK);
+            powerSourceIcon.addSourceNodeShapes(sourceBox);
+
+
+
+            if (!isOn) sourceBox.setFill(Color.LIME);
+            Point center = p.translate(0, -2 * Globals.UNIT);
+            Text text = createText(center, name, Color.BLACK, 12);
+            powerSourceIcon.addStaticNodeShapes(text);
+        }
 
         powerSourceIcon.setBoundingRect(new Dimensions(2, 3, 0, -0.25, 0, 0, true), p);
         powerSourceIcon.setFittingRect(new Dimensions(2, 3, 0, -1, 0, 0, true), p);
         return powerSourceIcon;
     }
 
-    public static SourceIcon getTurbineIcon(Point p, boolean isOn) {
+    public static SourceIcon getTurbineIcon(Point p, boolean isOn, boolean isLocked) {
         SourceIcon turbineIcon = new SourceIcon();
 
-        Circle turbineCircle = createCircle(p.translate(0, 2 * Globals.UNIT), Globals.UNIT, Color.RED, Color.BLACK);
-        turbineIcon.addSourceNodeShapes(turbineCircle);
-
+        //base shape
         Line outLine1 = createLine(p, p.translate(0, Globals.UNIT));
         turbineIcon.addOutputLine(outLine1);
 
         Line outLine2 = createLine(p.translate(0, 3 * Globals.UNIT), p.translate(0, 4 * Globals.UNIT));
         turbineIcon.addOutputLine(outLine2);
 
-        if (!isOn) turbineCircle.setFill(Color.LIME);
 
+
+        if(isLocked) {
+            Circle turbineCircle = createCircle(p.translate(0, 2 * Globals.UNIT), Globals.UNIT, Color.YELLOW, Color.BLACK);
+            turbineIcon.addSourceNodeShapes(turbineCircle);
+            Text lockText = createText(p.translate(0, 2*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            turbineIcon.addStaticNodeShapes(lockText);
+        } else {
+            Circle turbineCircle = createCircle(p.translate(0, 2 * Globals.UNIT), Globals.UNIT, Color.RED, Color.BLACK);
+            turbineIcon.addSourceNodeShapes(turbineCircle);
+
+            if (!isOn) turbineCircle.setFill(Color.LIME);
+        }
         turbineIcon.setBoundingRect(new Dimensions(3, 4), p);
         turbineIcon.setFittingRect(new Dimensions(3, 4, -1, -1, -0.5, -0.5), p);
         return turbineIcon;
@@ -296,11 +383,11 @@ public class ComponentIconCreator {
 
         // ensure the bridgePoints are sorted left to right if horizontal, or top to bottom if vertical
         Collections.sort(bridgePoints, (bp1, bp2) -> {
-           if (vertical) {
-               return (int)bp1.getY() - (int)bp2.getY();
-           } else {
-               return (int)bp1.getX() - (int)bp2.getX();
-           }
+            if (vertical) {
+                return (int)bp1.getY() - (int)bp2.getY();
+            } else {
+                return (int)bp1.getX() - (int)bp2.getX();
+            }
         });
 
         List<Point> wirePoints = new ArrayList<>();

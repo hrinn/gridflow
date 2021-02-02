@@ -31,7 +31,7 @@ public class Switch extends Closeable {
     }
 
     private void createComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault());
+        DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault(), isLocked());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
@@ -46,8 +46,14 @@ public class Switch extends Closeable {
     }
 
     @Override
-    public void toggle() {
+    public void toggleState() {
         toggleClosed();
+        createComponentIcon();
+    }
+
+    @Override
+    public void toggleLockedState() {
+        toggleLocked();
         createComponentIcon();
     }
 

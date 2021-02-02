@@ -54,9 +54,9 @@ public class GridCanvasFacade {
         SceneGestures sceneGestures = new SceneGestures(canvas);
 
         // panning and scrolling
-        canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getBeginPanEventHandler());
-        canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
-        canvas.addEventFilter(MouseEvent.MOUSE_RELEASED, sceneGestures.getEndPanEventHandler());
+        canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, sceneGestures.getBeginPanEventHandler());
+        canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
+        canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, sceneGestures.getEndPanEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
     }
 

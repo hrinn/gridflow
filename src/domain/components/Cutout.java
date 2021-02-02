@@ -44,8 +44,14 @@ public class Cutout extends Closeable{
     }
 
     @Override
-    public void toggle() {
+    public void toggleState() {
         toggleClosed();
+        createComponentIcon();
+    }
+
+    @Override
+    public void toggleLockedState() {
+        toggleLocked();
         createComponentIcon();
     }
 

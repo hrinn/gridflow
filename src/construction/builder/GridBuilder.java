@@ -376,7 +376,7 @@ public class GridBuilder {
             return;
 
         if (component instanceof IToggleable) {
-            ((IToggleable) component).toggle();
+            ((IToggleable) component).toggleState();
         }
     }
 
@@ -384,7 +384,7 @@ public class GridBuilder {
         Component component = grid.getComponent(componentId);
 
         if (component instanceof ILockable) {
-            ((ILockable) component).toggleLocked();
+            ((ILockable) component).toggleLockedState();
         }
     }
 

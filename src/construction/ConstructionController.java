@@ -7,6 +7,7 @@ import construction.ghosts.GhostManagerController;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -14,7 +15,7 @@ import javafx.stage.Stage;
 
 public class ConstructionController {
 
-    private final GridCanvasFacade canvasFacade;
+    private GridCanvasFacade canvasFacade = null;
     private GridFlowEventManager gridFlowEventManager;
     private Stage stage;
 
@@ -137,5 +138,9 @@ public class ConstructionController {
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_RELEASED, selectionManagerController.getEndSelectionEventHandler());
         canvasFacade.setSelectSingleComponentHandler(selectionManagerController.getSelectSingleComponentHandler());
         stage.addEventFilter(KeyEvent.KEY_PRESSED, selectionManagerController.getDeleteHandler());
+
+        // association events
+        canvasFacade.setBeginHoverAssociationBorderHandler(ghostManagerController.getBeginHoverAssociationBorderHandler());
+        canvasFacade.setEndHoverAssociationBorderHandler(ghostManagerController.getEndHoverAssociationBorderHandler());
     }
 }

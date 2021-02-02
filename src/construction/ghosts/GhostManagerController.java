@@ -5,7 +5,9 @@ import construction.*;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 
 // This controller manages the events for all ghost related logic (the transparent icons that show when placing)
 public class GhostManagerController implements GridFlowEventListener {
@@ -14,6 +16,7 @@ public class GhostManagerController implements GridFlowEventListener {
     private AssociationGhostManager associationModel;
     private DoubleClickPlacementContext doubleClickContext;
     private BuildMenuData buildData;
+    private GridCanvasFacade canvasFacade;
 
     public GhostManagerController(GridCanvasFacade canvasFacade, DoubleClickPlacementContext doubleClickContext,
                                   BuildMenuData buildMenuData, PropertiesData propertiesData) {
@@ -21,6 +24,7 @@ public class GhostManagerController implements GridFlowEventListener {
         this.associationModel = new AssociationGhostManager(canvasFacade);
         this.doubleClickContext = doubleClickContext;
         this.buildData = buildMenuData;
+        this.canvasFacade = canvasFacade;
     }
 
     public void handleEvent(GridFlowEvent gridFlowEvent) {
@@ -82,9 +86,48 @@ public class GhostManagerController implements GridFlowEventListener {
         }
     };
 
+
+    // these hover event handlers change the cursor when the user is hovering over an association border
+    // they are in the ghost manager so they can disable the ghosts
+    private final EventHandler<MouseEvent> beginHoverAssociationBorderHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+
+        associationModel.setGhostEnabled(false);
+
+        Line target = (Line)event.getTarget();
+        Cursor cursor;
+        if (target.getStartX() == target.getEndX()) {
+            // vertical line
+            cursor = Cursor.W_RESIZE;
+        } else {
+            // horizontal line
+            cursor = Cursor.N_RESIZE;
+        }
+
+        canvasFacade.getCanvas().setCursor(cursor);
+
+        event.consume();
+    };
+
+    private final EventHandler<MouseEvent> endHoverAssociationBorderHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+
+        associationModel.setGhostEnabled(true);
+        canvasFacade.getCanvas().setCursor(Cursor.DEFAULT);
+
+        event.consume();
+    };
+
     public EventHandler<MouseEvent> getGhostMoveEventHandler() {
         return ghostMoveEventHandler;
     }
 
 
+    public EventHandler<MouseEvent> getBeginHoverAssociationBorderHandler() {
+        return beginHoverAssociationBorderHandler;
+    }
+
+    public EventHandler<MouseEvent> getEndHoverAssociationBorderHandler() {
+        return endHoverAssociationBorderHandler;
+    }
 }

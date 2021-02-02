@@ -364,7 +364,7 @@ public class ComponentIconCreator {
         top.setOpacity(opacity);
         bottom.setOpacity(opacity);
 
-        double strokeWidth = 10;
+        double strokeWidth = 15;
         left.setStrokeWidth(strokeWidth);
         right.setStrokeWidth(strokeWidth);
         top.setStrokeWidth(strokeWidth);

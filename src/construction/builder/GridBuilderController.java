@@ -109,6 +109,8 @@ public class GridBuilderController {
         event.consume();
     };
 
+
+
     public EventHandler<MouseEvent> getPlaceWireEventHandler() {
         return placeWireEventHandler;
     }

@@ -7,9 +7,12 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.WireIcon;
+
+import java.util.UUID;
 
 public class GridCanvasFacade {
 
@@ -19,6 +22,12 @@ public class GridCanvasFacade {
     // Component Event Handlers
     private EventHandler<MouseEvent> toggleComponentEventHandler;
     private EventHandler<MouseEvent> selectSingleComponentHandler;
+
+    // Association Event Handlers
+    private EventHandler<MouseEvent> beginMoveAssociationBorderHandler;
+    private EventHandler<MouseEvent> moveAssociationBorderHandler;
+    private EventHandler<MouseEvent> beginHoverAssociationBorderHandler;
+    private EventHandler<MouseEvent> endHoverAssociationBorderHandler;
 
     public GridCanvasFacade() {
         createCanvas();
@@ -70,8 +79,13 @@ public class GridCanvasFacade {
         canvas.associationGroup.getChildren().clear();
     }
 
-    public void addAssociationNode(Node association) {
+    public void addAssociationNode(Group association, UUID id) {
         canvas.associationGroup.getChildren().add(association);
+        association.setId(id.toString());
+        association.getChildren().stream().filter(child -> child instanceof Line).forEach(line -> {
+            line.addEventHandler(MouseEvent.MOUSE_ENTERED, beginHoverAssociationBorderHandler);
+            line.addEventHandler(MouseEvent.MOUSE_EXITED, endHoverAssociationBorderHandler);
+        });
     }
 
     public void showBackgroundGrid(boolean show) {
@@ -100,5 +114,21 @@ public class GridCanvasFacade {
 
     public void setSelectSingleComponentHandler(EventHandler<MouseEvent> selectSingleComponentHandler) {
         this.selectSingleComponentHandler = selectSingleComponentHandler;
+    }
+
+    public void setBeginHoverAssociationBorderHandler(EventHandler<MouseEvent> beginHoverAssociationBorderHandler) {
+        this.beginHoverAssociationBorderHandler = beginHoverAssociationBorderHandler;
+    }
+
+    public void setMoveAssociationBorderHandler(EventHandler<MouseEvent> moveAssociationBorderHandler) {
+        this.moveAssociationBorderHandler = moveAssociationBorderHandler;
+    }
+
+    public void setBeginMoveAssociationBorderHandler(EventHandler<MouseEvent> beginMoveAssociationBorderHandler) {
+        this.beginMoveAssociationBorderHandler = beginMoveAssociationBorderHandler;
+    }
+
+    public void setEndHoverAssociationBorderHandler(EventHandler<MouseEvent> endHoverAssociationBorderHandler) {
+        this.endHoverAssociationBorderHandler = endHoverAssociationBorderHandler;
     }
 }

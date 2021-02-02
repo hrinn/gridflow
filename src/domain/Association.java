@@ -41,4 +41,8 @@ public class Association {
     public Group getAssociationNode() {
         return associationNode;
     }
+
+    public UUID getID() {
+        return id;
+    }
 }

@@ -29,6 +29,7 @@ public class ConstructionController {
     private PropertiesData propertiesData;
 
     // Wire Placing and Association Placing
+    // Used to share if a double click is in progress, and where the first click was if so
     private DoubleClickPlacementContext doubleClickContext = new DoubleClickPlacementContext();
 
     public ConstructionController(Grid grid, GridFlowEventManager gridFlowEventManager, Stage stage) {
@@ -127,7 +128,7 @@ public class ConstructionController {
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceComponentEventHandler());
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceWireEventHandler());
-        canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceAssociationEventHandler());
+        canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceAssociationEventHandler());
 
         // ghost manager events
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_MOVED, ghostManagerController.getGhostMoveEventHandler());
@@ -142,5 +143,6 @@ public class ConstructionController {
         // association events
         canvasFacade.setBeginHoverAssociationBorderHandler(ghostManagerController.getBeginHoverAssociationBorderHandler());
         canvasFacade.setEndHoverAssociationBorderHandler(ghostManagerController.getEndHoverAssociationBorderHandler());
+        canvasFacade.setBeginMoveAssociationBorderHandler(gridBuilderController.getBeginMoveAssociationBorderEventHandler());
     }
 }

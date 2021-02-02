@@ -2,11 +2,13 @@ package construction.builder;
 
 import application.events.*;
 import construction.*;
+import domain.Association;
 import domain.Grid;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Line;
 
 // this controller handles event logic for grid building
 // this is mostly user click while
@@ -17,6 +19,8 @@ public class GridBuilderController {
     private DoubleClickPlacementContext doubleClickPlacementContext;
     private BuildMenuData buildData;
     private PropertiesData propertiesData;
+    private AssociationMoveContext associationMoveContext = new AssociationMoveContext();
+    private Grid grid;
 
     public GridBuilderController(Grid grid, GridFlowEventManager gridFlowEventManager,
                                  DoubleClickPlacementContext doubleClickPlacementContext, BuildMenuData buildMenuData,
@@ -26,6 +30,7 @@ public class GridBuilderController {
         this.doubleClickPlacementContext = doubleClickPlacementContext;
         this.buildData = buildMenuData;
         this.propertiesData = propertiesData;
+        this.grid = grid;
     }
 
     public void buildDataChanged() {
@@ -109,7 +114,41 @@ public class GridBuilderController {
         event.consume();
     };
 
+    private final EventHandler<MouseEvent> beginMoveAssociationBorderEventHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+        if (!event.isPrimaryButtonDown()) return;
 
+        // determine which association was targeted
+        Line target = ((Line)event.getTarget());
+
+        associationMoveContext.target = grid.getAssociation(target.getId());
+        // determine which line was targeted
+        associationMoveContext.targetLine = getAssociationTargetLine(
+                associationMoveContext.target.getTopleft(),
+                new Point(target.getEndX(), target.getEndY()),
+                associationMoveContext.target.getWidth(),
+                associationMoveContext.target.getHeight()
+        );
+        associationMoveContext.moving = true;
+
+        event.consume();
+    };
+
+    // takes the association's top left point, target line's end point, assoc's width, and assoc's height
+    // and determines which line was targeted. (0 - top, 1 - right, 2 - bottom, 3 - left)
+    private int getAssociationTargetLine(Point aTopLeft, Point tEnd, double w, double h) {
+        if (aTopLeft.translate(w, 0).equals(tEnd)) {
+            return 0;
+        } else if (aTopLeft.translate(w, h).equals(tEnd)) {
+            return 1;
+        } else if (aTopLeft.translate(0, h).equals(tEnd)) {
+            return 2;
+        } else if (tEnd.equals(aTopLeft)) {
+            return 3;
+        } else {
+            return -1;
+        }
+    }
 
     public EventHandler<MouseEvent> getPlaceWireEventHandler() {
         return placeWireEventHandler;
@@ -125,5 +164,9 @@ public class GridBuilderController {
 
     public EventHandler<MouseEvent> getPlaceAssociationEventHandler() {
         return placeAssociationEventHandler;
+    }
+
+    public EventHandler<MouseEvent> getBeginMoveAssociationBorderEventHandler() {
+        return beginMoveAssociationBorderEventHandler;
     }
 }

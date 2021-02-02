@@ -12,6 +12,7 @@ import domain.geometry.Point;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 public class ComponentIconCreator {
 
@@ -342,8 +343,9 @@ public class ComponentIconCreator {
         return wireIcon;
     }
 
-    public static Group createAssociationNode(Point topLeft, double width, double height, String label, int posNumber) {
+    public static Group createAssociationNode(Point topLeft, double width, double height, String label, int posNumber, UUID id) {
         Group node = new Group();
+        node.setId(id.toString());
 
         // this is the association rectangle displayed on screen
         Rectangle border = new Rectangle(topLeft.getX(), topLeft.getY(), width, height);
@@ -353,28 +355,28 @@ public class ComponentIconCreator {
         border.setStrokeWidth(2);
 
         // also add 4 transparent lines that overlay the border for the user to click on
-        Line left = createLine(topLeft, topLeft.translate(0, height));
-        Line right = createLine(topLeft.translate(width, 0), topLeft.translate(width, height));
         Line top = createLine(topLeft, topLeft.translate(width, 0));
-        Line bottom = createLine(topLeft.translate(0, height), topLeft.translate(width, height));
+        Line right = createLine(topLeft.translate(width, 0), topLeft.translate(width, height));
+        Line bottom = createLine(topLeft.translate(width, height), topLeft.translate(0, height));
+        Line left = createLine(topLeft.translate(0, height), topLeft);
 
-        double opacity = 0;
-        left.setOpacity(opacity);
-        right.setOpacity(opacity);
-        top.setOpacity(opacity);
-        bottom.setOpacity(opacity);
+        List<Line> lines = List.of(left, right, top, bottom);
+        double opacity = 0.1;
+        double strokeWidth = 25;
 
-        double strokeWidth = 15;
-        left.setStrokeWidth(strokeWidth);
-        right.setStrokeWidth(strokeWidth);
-        top.setStrokeWidth(strokeWidth);
-        bottom.setStrokeWidth(strokeWidth);
+        // set the line properties all at once
+        lines.forEach(line -> {
+            line.setOpacity(opacity);
+            line.setStrokeWidth(strokeWidth);
+            line.setId(id.toString());
+        });
 
         // create the text that displays inside the associations
         Point labelPos = getAssociationLabelPosition(topLeft, width, height, posNumber);
         Text labelText = createText(labelPos, label, Color.BLACK, 24);
 
-        node.getChildren().addAll(border, labelText, left, right, top, bottom);
+        node.getChildren().addAll(border, labelText);
+        node.getChildren().addAll(lines);
         return node;
     }
 

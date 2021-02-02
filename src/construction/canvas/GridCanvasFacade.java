@@ -26,6 +26,7 @@ public class GridCanvasFacade {
     // Association Event Handlers
     private EventHandler<MouseEvent> beginMoveAssociationBorderHandler;
     private EventHandler<MouseEvent> moveAssociationBorderHandler;
+    private EventHandler<MouseEvent> endMoveAssociationBorderHandler;
     private EventHandler<MouseEvent> beginHoverAssociationBorderHandler;
     private EventHandler<MouseEvent> endHoverAssociationBorderHandler;
 
@@ -85,6 +86,7 @@ public class GridCanvasFacade {
         association.getChildren().stream().filter(child -> child instanceof Line).forEach(line -> {
             line.addEventHandler(MouseEvent.MOUSE_ENTERED, beginHoverAssociationBorderHandler);
             line.addEventHandler(MouseEvent.MOUSE_EXITED, endHoverAssociationBorderHandler);
+            line.addEventHandler(MouseEvent.MOUSE_PRESSED, beginMoveAssociationBorderHandler);
         });
     }
 
@@ -130,5 +132,9 @@ public class GridCanvasFacade {
 
     public void setEndHoverAssociationBorderHandler(EventHandler<MouseEvent> endHoverAssociationBorderHandler) {
         this.endHoverAssociationBorderHandler = endHoverAssociationBorderHandler;
+    }
+
+    public void setEndMoveAssociationBorderHandler(EventHandler<MouseEvent> endMoveAssociationBorderHandler) {
+        this.endMoveAssociationBorderHandler = endMoveAssociationBorderHandler;
     }
 }

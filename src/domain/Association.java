@@ -35,7 +35,7 @@ public class Association {
     }
 
     private void createAssociationNode() {
-        this.associationNode = ComponentIconCreator.createAssociationNode(position, width, height, label, labelPosition);
+        this.associationNode = ComponentIconCreator.createAssociationNode(position, width, height, label, labelPosition, id);
     }
 
     public Group getAssociationNode() {
@@ -44,5 +44,17 @@ public class Association {
 
     public UUID getID() {
         return id;
+    }
+
+    public Point getTopleft() {
+        return position;
+    }
+
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
     }
 }

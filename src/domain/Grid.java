@@ -108,4 +108,10 @@ public class Grid {
                 .filter(comp -> comp.getId().toString().equals(id))
                 .findFirst().orElse(null);
     }
+
+    public Association getAssociation(String id) {
+        return associations.stream()
+                .filter(association -> association.getID().toString().equals(id))
+                .findFirst().orElse(null);
+    }
 }

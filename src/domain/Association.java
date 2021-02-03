@@ -15,9 +15,6 @@ public class Association {
     private String label = "Association";
     private String subLabel = "";
 
-    // label can exist at 9 different positions, 0 being top left and 8 being bottom right
-    private int labelPosition = 0;
-
     // association dimensions
     private Point position; // top left
     private double width;
@@ -35,7 +32,7 @@ public class Association {
     }
 
     private void createAssociationNode() {
-        this.associationNode = ComponentIconCreator.createAssociationNode(position, width, height, label, labelPosition, id);
+        this.associationNode = ComponentIconCreator.createAssociationNode(position, width, height, label, id);
     }
 
     public Group getAssociationNode() {

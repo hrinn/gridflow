@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.WireIcon;
 
@@ -28,7 +29,10 @@ public class GridCanvasFacade {
     private EventHandler<MouseEvent> moveAssociationBorderHandler;
     private EventHandler<MouseEvent> endMoveAssociationBorderHandler;
     private EventHandler<MouseEvent> beginHoverAssociationBorderHandler;
-    private EventHandler<MouseEvent> endHoverAssociationBorderHandler;
+    private EventHandler<MouseEvent> beginHoverAssociationTextHandler;
+    private EventHandler<MouseEvent> endHoverAssociationHandler;
+    private EventHandler<MouseEvent> beginAssociationTextDragHandler;
+    private EventHandler<MouseEvent> dragAssociationTextHandler;
 
     public GridCanvasFacade() {
         createCanvas();
@@ -83,10 +87,19 @@ public class GridCanvasFacade {
     public void addAssociationNode(Group association, UUID id) {
         canvas.associationGroup.getChildren().add(association);
         association.setId(id.toString());
+        // install the event handlers on individual association components
+        // the event handlers for the border lines (allows you to drag them)
         association.getChildren().stream().filter(child -> child instanceof Line).forEach(line -> {
             line.addEventHandler(MouseEvent.MOUSE_ENTERED, beginHoverAssociationBorderHandler);
-            line.addEventHandler(MouseEvent.MOUSE_EXITED, endHoverAssociationBorderHandler);
+            line.addEventHandler(MouseEvent.MOUSE_EXITED, endHoverAssociationHandler);
             line.addEventHandler(MouseEvent.MOUSE_PRESSED, beginMoveAssociationBorderHandler);
+        });
+        // event handlers for the text (allows you to drag it)
+        association.getChildren().stream().filter(child -> child instanceof Text).forEach(text -> {
+            text.addEventHandler(MouseEvent.MOUSE_ENTERED, beginHoverAssociationTextHandler);
+            text.addEventHandler(MouseEvent.MOUSE_EXITED,endHoverAssociationHandler);
+            text.addEventHandler(MouseEvent.MOUSE_PRESSED, beginAssociationTextDragHandler);
+            text.addEventHandler(MouseEvent.MOUSE_DRAGGED, dragAssociationTextHandler);
         });
     }
 
@@ -130,11 +143,23 @@ public class GridCanvasFacade {
         this.beginMoveAssociationBorderHandler = beginMoveAssociationBorderHandler;
     }
 
-    public void setEndHoverAssociationBorderHandler(EventHandler<MouseEvent> endHoverAssociationBorderHandler) {
-        this.endHoverAssociationBorderHandler = endHoverAssociationBorderHandler;
+    public void setEndHoverAssociationHandler(EventHandler<MouseEvent> endHoverAssociationHandler) {
+        this.endHoverAssociationHandler = endHoverAssociationHandler;
     }
 
     public void setEndMoveAssociationBorderHandler(EventHandler<MouseEvent> endMoveAssociationBorderHandler) {
         this.endMoveAssociationBorderHandler = endMoveAssociationBorderHandler;
+    }
+
+    public void setBeginHoverAssociationTextHandler(EventHandler<MouseEvent> beginHoverAssociationTextHandler) {
+        this.beginHoverAssociationTextHandler = beginHoverAssociationTextHandler;
+    }
+
+    public void setBeginAssociationTextDragHandler(EventHandler<MouseEvent> beginAssociationTextDragHandler) {
+        this.beginAssociationTextDragHandler = beginAssociationTextDragHandler;
+    }
+
+    public void setDragAssociationTextHandler(EventHandler<MouseEvent> dragAssociationTextHandler) {
+        this.dragAssociationTextHandler = dragAssociationTextHandler;
     }
 }

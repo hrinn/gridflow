@@ -116,7 +116,8 @@ public class ConstructionController {
     }
 
     private void installEventHandlers() {
-        // gets event handlers from the 3 sub controllers and installed them into the canvasFacade
+        // gets event handlers from the sub controllers and installs them into the canvasFacade
+        // event handlers are what respond to user inputs
 
         // construction controller events
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
@@ -142,7 +143,10 @@ public class ConstructionController {
 
         // association events
         canvasFacade.setBeginHoverAssociationBorderHandler(ghostManagerController.getBeginHoverAssociationBorderHandler());
-        canvasFacade.setEndHoverAssociationBorderHandler(ghostManagerController.getEndHoverAssociationBorderHandler());
+        canvasFacade.setEndHoverAssociationHandler(ghostManagerController.getEndHoverAssociationHandler());
         canvasFacade.setBeginMoveAssociationBorderHandler(gridBuilderController.getBeginMoveAssociationBorderEventHandler());
+        canvasFacade.setBeginHoverAssociationTextHandler(ghostManagerController.getBeginHoverAssociationTextHandler());
+        canvasFacade.setBeginAssociationTextDragHandler(gridBuilderController.getBeginAssociationTextDragEventHandler());
+        canvasFacade.setDragAssociationTextHandler(gridBuilderController.getDragAssociationTextEventHandler());
     }
 }

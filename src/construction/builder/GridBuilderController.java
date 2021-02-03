@@ -9,6 +9,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 // this controller handles event logic for grid building
 // this is mostly user click while
@@ -16,11 +17,17 @@ public class GridBuilderController {
 
     private GridBuilder model;
     private GridFlowEventManager gridFlowEventManager;
-    private DoubleClickPlacementContext doubleClickPlacementContext;
     private BuildMenuData buildData;
     private PropertiesData propertiesData;
-    private AssociationMoveContext associationMoveContext = new AssociationMoveContext();
     private Grid grid;
+
+    // these Contexts store data needed for actions that take place over time
+    // used change borders of an association
+    private AssociationMoveContext associationMoveContext = new AssociationMoveContext();
+    // used to move the text of an association
+    private DragContext dragContext = new DragContext();
+    // used for double click actions, like placing a wire or placing an association
+    private DoubleClickPlacementContext doubleClickPlacementContext;
 
     public GridBuilderController(Grid grid, GridFlowEventManager gridFlowEventManager,
                                  DoubleClickPlacementContext doubleClickPlacementContext, BuildMenuData buildMenuData,
@@ -150,6 +157,34 @@ public class GridBuilderController {
         }
     }
 
+    // runs when the use begins dragging an association's label
+    private final EventHandler<MouseEvent> beginAssociationTextDragEventHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+        if (!event.isPrimaryButtonDown()) return;
+
+        Text target = (Text)event.getTarget();
+        // original position
+        dragContext.mouseAnchorX = target.getLayoutX();
+        dragContext.mouseAnchorY = target.getLayoutY();
+
+        dragContext.translateAnchorX = target.getTranslateX();
+        dragContext.translateAnchorY = target.getTranslateY();
+
+        event.consume();
+    };
+
+    // runs while the user is dragging an association's label
+    private final EventHandler<MouseEvent> dragAssociationTextEventHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+        if (!event.isPrimaryButtonDown()) return;
+
+        Text target = (Text)event.getTarget();
+        target.setTranslateX(event.getX() - dragContext.mouseAnchorX);
+        target.setTranslateY(event.getY() - dragContext.mouseAnchorY);
+
+        event.consume();
+    };
+
     public EventHandler<MouseEvent> getPlaceWireEventHandler() {
         return placeWireEventHandler;
     }
@@ -168,5 +203,13 @@ public class GridBuilderController {
 
     public EventHandler<MouseEvent> getBeginMoveAssociationBorderEventHandler() {
         return beginMoveAssociationBorderEventHandler;
+    }
+
+    public EventHandler<MouseEvent> getBeginAssociationTextDragEventHandler() {
+        return beginAssociationTextDragEventHandler;
+    }
+
+    public EventHandler<MouseEvent> getDragAssociationTextEventHandler() {
+        return dragAssociationTextEventHandler;
     }
 }

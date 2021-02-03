@@ -343,7 +343,7 @@ public class ComponentIconCreator {
         return wireIcon;
     }
 
-    public static Group createAssociationNode(Point topLeft, double width, double height, String label, int posNumber, UUID id) {
+    public static Group createAssociationNode(Point topLeft, double width, double height, String label, UUID id) {
         Group node = new Group();
         node.setId(id.toString());
 
@@ -372,7 +372,7 @@ public class ComponentIconCreator {
         });
 
         // create the text that displays inside the associations
-        Point labelPos = getAssociationLabelPosition(topLeft, width, height, posNumber);
+        Point labelPos = getAssociationLabelPosition(topLeft, width, height);
         Text labelText = createText(labelPos, label, Color.BLACK, 24);
 
         node.getChildren().addAll(border, labelText);
@@ -380,33 +380,9 @@ public class ComponentIconCreator {
         return node;
     }
 
-    // breaks the association into a nxn parts
-    // returns a point in the center of one of those parts, selected by labelPosition (max of n^2 - 1)
-    private static Point getAssociationLabelPosition(Point topLeft, double width, double height, int labelPosition) {
-        int n = 4;
-
-        // find the positions of the part dividers
-        List<Point> hPoints = new ArrayList<>();
-        List<Point> vPoints = new ArrayList<>();
-
-        for (int i = 0; i < n; i++) {
-            hPoints.add(topLeft.translate(i * (width/n), 0));
-            vPoints.add(topLeft.translate(0, i * (height/n)));
-        }
-
-        // this will hold the center points of each part
-        List<Point> centerPoints = new ArrayList<>();
-
-        // now that we have the positions of the 9 sectors, find the middle point of each
-        for (Point vp : vPoints) {
-            for (Point hp : hPoints) {
-                Point ltl = new Point(hp.getX(), vp.getY());
-                centerPoints.add(ltl.translate(width/(2 * n), height/(2 * n)));
-            }
-        }
-
-        // select the point we want
-        return centerPoints.get(labelPosition);
+    // gets the top left part of a 3x3 grid to place the text
+    private static Point getAssociationLabelPosition(Point topLeft, double width, double height) {
+        return new Point(topLeft.getX() + width/6, topLeft.getY() + height/6);
     }
 
     private static Line createLine(Point p1, Point p2) {

@@ -1,5 +1,6 @@
 package construction.canvas;
 
+import construction.DragContext;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -36,8 +37,7 @@ public class SceneGestures {
 
     private final EventHandler<MouseEvent> beginPanEventHandler = event -> {
             // right mouse button => panning
-            if(!event.isSecondaryButtonDown())
-                return;
+            if(!event.isSecondaryButtonDown()) return;
             panning = true;
 
             sceneDragContext.mouseAnchorX = event.getSceneX();
@@ -46,12 +46,13 @@ public class SceneGestures {
             sceneDragContext.translateAnchorX = canvas.getTranslateX();
             sceneDragContext.translateAnchorY = canvas.getTranslateY();
 
+            event.consume();
     };
 
     private final EventHandler<MouseEvent> onPanEventHandler = event -> {
             // right mouse button => panning
-            if(!event.isSecondaryButtonDown())
-                return;
+            if(!event.isSecondaryButtonDown()) return;
+            if (!panning) return;
 
             canvas.setTranslateX(sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX);
             canvas.setTranslateY(sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY);

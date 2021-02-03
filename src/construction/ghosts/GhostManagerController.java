@@ -4,8 +4,10 @@ import application.events.*;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 
@@ -109,11 +111,21 @@ public class GhostManagerController implements GridFlowEventListener {
         event.consume();
     };
 
-    private final EventHandler<MouseEvent> endHoverAssociationBorderHandler = event -> {
+    // resets the mouse back to default after no longer hovering over an association component
+    private final EventHandler<MouseEvent> endHoverAssociationHandler = event -> {
         if (buildData.toolType != ToolType.ASSOCIATION) return;
 
         associationModel.setGhostEnabled(true);
         canvasFacade.getCanvas().setCursor(Cursor.DEFAULT);
+
+        event.consume();
+    };
+
+    private final EventHandler<MouseEvent> beginHoverAssociationTextHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+
+        associationModel.setGhostEnabled(false);
+        canvasFacade.getCanvas().setCursor(Cursor.MOVE);
 
         event.consume();
     };
@@ -127,7 +139,11 @@ public class GhostManagerController implements GridFlowEventListener {
         return beginHoverAssociationBorderHandler;
     }
 
-    public EventHandler<MouseEvent> getEndHoverAssociationBorderHandler() {
-        return endHoverAssociationBorderHandler;
+    public EventHandler<MouseEvent> getEndHoverAssociationHandler() {
+        return endHoverAssociationHandler;
+    }
+
+    public EventHandler<MouseEvent> getBeginHoverAssociationTextHandler() {
+        return beginHoverAssociationTextHandler;
     }
 }

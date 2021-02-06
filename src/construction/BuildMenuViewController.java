@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Translate;
@@ -44,9 +45,13 @@ public class BuildMenuViewController {
     private HBox ComponentMenu;
 
     @FXML
+    private BorderPane PropertiesWindow;
+
+    @FXML
     private void initialize() {
-        // Bind the managed and visible properties for the component menus
+        // Bind the managed and visible properties for the component menu and properties window
         ComponentMenu.managedProperty().bind(ComponentMenu.visibleProperty());
+        PropertiesWindow.managedProperty().bind(PropertiesWindow.visibleProperty());
         ComponentMenu.setVisible(state != MenuState.MenuCollapsed);
     }
 
@@ -149,7 +154,7 @@ public class BuildMenuViewController {
         Translate menuButtonTrans = new Translate();
 
         if (state == MenuState.MenuExpanded){
-            CollapseMenu(ComponentMenu);
+            CollapseMenu();
             ComponentBuilderMenu.setPrefHeight(MENU_COLLAPSED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_COLLAPSED_WIDTH);
 
@@ -159,7 +164,7 @@ public class BuildMenuViewController {
 
             ComponentBuilderMenu.setPrefHeight(MENU_EXPANDED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_EXPANDED_WIDTH);
-            ExpandMenu(ComponentMenu);
+            ExpandMenu();
 
             state = MenuState.MenuExpanded;
         }
@@ -168,14 +173,16 @@ public class BuildMenuViewController {
         ComponentBuilderMenu.getTransforms().add(menuButtonTrans);
     }
 
-    private void CollapseMenu(HBox menu){
-        menu.setVisible(false);
+    private void CollapseMenu(){
+        ComponentMenu.setVisible(false);
+        PropertiesWindow.setVisible(false);
         constructionController.setBuildMenuData(ToolType.INTERACT, null);
         constructionController.getCanvasFacade().showBackgroundGrid(false);
     }
 
-    private void ExpandMenu(HBox menu){
-        menu.setVisible(true);
+    private void ExpandMenu(){
+        ComponentMenu.setVisible(true);
+        PropertiesWindow.setVisible(true);
         constructionController.getCanvasFacade().showBackgroundGrid(true);
     }
 

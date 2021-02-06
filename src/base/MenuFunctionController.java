@@ -30,7 +30,7 @@ public class MenuFunctionController {
         this.lastUsedDirectory = new File(DEFAULT_PATH);
         this.futureFC = new FutureTask<>(FileChooser::new);
 
-        // Preload file dialog asynchronously
+        // Pre-load file dialog asynchronously
         ExecutorService ex = Executors.newSingleThreadExecutor();
         ex.execute(futureFC);
     }

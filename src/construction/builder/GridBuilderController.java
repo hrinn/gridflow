@@ -32,6 +32,7 @@ public class GridBuilderController {
     }
 
     public void propertiesDataChanged() {
+
     }
 
     private final EventHandler<MouseEvent> placeWireEventHandler = event -> {

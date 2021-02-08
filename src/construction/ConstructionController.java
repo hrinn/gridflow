@@ -25,7 +25,7 @@ public class ConstructionController {
 
     // UI Data
     private BuildMenuData buildMenuData;
-    private PropertiesData propertiesData;
+    public PropertiesData propertiesData;
 
     // Wire Placing
     private WireExtendContext wireExtendContext = new WireExtendContext();
@@ -71,9 +71,12 @@ public class ConstructionController {
         propertiesData.setRotation(rotation);
         propertiesData.setDefaultState(defaultState);
 
+        // Use this call to gridbuilder to pass back the necessary data
         gridBuilderController.propertiesDataChanged();
         ghostManagerController.propertiesDataChanged(rotationChanged, defaultStateChanged);
     }
+
+//    public void setPropertiesData(double rotation, boolean defaultState, )
 
     private final EventHandler<KeyEvent> handleRKeyRotation = event -> {
         if (event.getCode() != KeyCode.R) return;

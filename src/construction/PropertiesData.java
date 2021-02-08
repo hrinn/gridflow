@@ -2,15 +2,21 @@ package construction;
 
 public class PropertiesData {
 
+    private ComponentType type;
     private String name;
     private boolean defaultState;
     private double rotation;
 
     public PropertiesData() {
+        type = null;
         name = "";
         defaultState = true;
         rotation = 0;
     }
+
+    public ComponentType getType() { return type; }
+
+    public void setType(ComponentType type) { this.type = type; }
 
     public String getName() {
         return name;
@@ -34,5 +40,12 @@ public class PropertiesData {
 
     public void setDefaultState(boolean defaultState) {
         this.defaultState = defaultState;
+    }
+
+    public void setDefaultProperties(ComponentType type){
+        setType(type);
+        setName("");
+        setDefaultState(true);
+        setRotation(0);
     }
 }

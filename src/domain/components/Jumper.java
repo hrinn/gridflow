@@ -30,7 +30,7 @@ public class Jumper extends Closeable {
     }
 
     private void createComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), isClosed());
+        DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), isClosed(), isLocked());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());

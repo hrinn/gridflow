@@ -32,7 +32,7 @@ public abstract class Source extends Component implements IToggleable, ILockable
 
     public abstract void toggleState();
 
-    public void toggleLockedState() {
+    public void toggleLocked() {
         locked = !locked;
     }
 

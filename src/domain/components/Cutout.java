@@ -29,7 +29,7 @@ public class Cutout extends Closeable{
     }
 
     private void createComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getCutoutIcon(getPosition(), isClosed());
+        DeviceIcon icon = ComponentIconCreator.getCutoutIcon(getPosition(), isClosed(), isLocked());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());

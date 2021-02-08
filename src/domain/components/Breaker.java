@@ -38,9 +38,9 @@ public class Breaker extends Closeable {
     private void createComponentIcon() {
         BreakerIcon icon;
         if (voltage == Voltage.KV12) {
-            icon = ComponentIconCreator.get12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
+            icon = ComponentIconCreator.get12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault(), isLocked());
         } else {
-            icon = ComponentIconCreator.get70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
+            icon = ComponentIconCreator.get70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault(), isLocked());
         }
         icon.setComponentName(getName());
         icon.setBreakerEnergyStates(isInWireEnergized(), isOutWireEnergized(), isClosed());

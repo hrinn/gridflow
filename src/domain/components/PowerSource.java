@@ -74,7 +74,7 @@ public class PowerSource extends Source {
     }
 
     private void createComponentIcon() {
-        SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn());
+        SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn(), isLocked());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);
         icon.setComponentIconID(getId().toString());
@@ -91,6 +91,12 @@ public class PowerSource extends Source {
     @Override
     public ComponentMemento makeSnapshot() {
         return new PowerSourceSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn(), outWire.getId().toString());
+    }
+
+    @Override
+    public void toggleLockedState() {
+        toggleLocked(); // Changes the locked state in the parent class (closeable)
+        createComponentIcon(); // Updates the component icon to show the new state
     }
 }
 

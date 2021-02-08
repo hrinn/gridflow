@@ -51,6 +51,7 @@ public class GridBuilderController {
     }
 
     public void propertiesDataChanged() {
+
     }
 
     // this event handler is for placing wires with the wire tool

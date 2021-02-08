@@ -1,0 +1,26 @@
+/* Styles for the elements rendered in the properties window */
+
+
+.field-label {
+    -fx-font-size: 15px;
+    -fx-text-alignment: right;
+    -fx-padding: 0 5px 0 0;
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
+    /*-fx-wrap-text: true;*/
+    /*-fx-border-insets: 5px;*/
+    /*-fx-background-insets: 5px;*/
+}
+
+.field-name-container {
+    -fx-alignment: top-right;
+    -fx-pref-width: 75px;
+}
+
+.field-container {
+    /*-fx-max-height: 100%;*/
+}
+
+.component-field {
+    -fx-pref-height: 30px;
+}

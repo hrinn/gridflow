@@ -16,6 +16,8 @@
 <?import java.lang.Integer?>
 
 <?import java.lang.Double?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.text.Text?>
 <VBox fx:id="VerticalMenuContainer" maxWidth="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="construction.BuildMenuViewController"
       prefWidth="225.0"
       prefHeight="${screen.visualBounds.height}">
@@ -141,34 +143,34 @@
     </HBox>
    <BorderPane fx:id="PropertiesWindow" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="${VerticalMenuContainer.prefHeight - ComponentMenuHeight}" prefWidth="200.0" style="-fx-border-color: BLACK; -fx-background-color: WHITE;">
       <top>
-         <Label alignment="CENTER" contentDisplay="CENTER" text="Component Properties" BorderPane.alignment="CENTER">
+         <Label fx:id="PropertiesTitle" alignment="CENTER" contentDisplay="CENTER" text="Properties" style="-fx-font-size: 15 vw;" BorderPane.alignment="CENTER">
             <padding>
                <Insets bottom="5.0" />
             </padding></Label>
       </top>
-      <center>
-         <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="175.0" BorderPane.alignment="CENTER">
-            <children>
-               <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="148.0" />
-               <TextField promptText="Name" />
-            </children>
-         </VBox>
-      </center>
-      <left>
-         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="50.0" BorderPane.alignment="CENTER">
-            <children>
-               <Label alignment="CENTER" contentDisplay="RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" text="Type">
-                  <padding>
-                     <Insets top="5.0" />
-                  </padding>
-               </Label>
-               <Label alignment="CENTER" contentDisplay="RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" text="Name">
-                  <padding>
-                     <Insets top="5.0" />
-                  </padding>
-               </Label>
-            </children>
-         </VBox>
-      </left>
+<!--      <center>-->
+<!--         <VBox alignment="TOP_CENTER" maxWidth="-Infinity" prefHeight="200.0" prefWidth="175.0" BorderPane.alignment="CENTER">-->
+<!--            <children>-->
+<!--               <TextArea maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="148.0" />-->
+<!--               <TextField promptText="Name" />-->
+<!--            </children>-->
+<!--         </VBox>-->
+<!--      </center>-->
+<!--      <left>-->
+<!--         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="50.0" BorderPane.alignment="CENTER">-->
+<!--            <children>-->
+<!--               <Label alignment="CENTER" contentDisplay="RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" text="Type">-->
+<!--                  <padding>-->
+<!--                     <Insets top="5.0" />-->
+<!--                  </padding>-->
+<!--               </Label>-->
+<!--               <Label alignment="CENTER" contentDisplay="RIGHT" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0" text="Name">-->
+<!--                  <padding>-->
+<!--                     <Insets top="5.0" />-->
+<!--                  </padding>-->
+<!--               </Label>-->
+<!--            </children>-->
+<!--         </VBox>-->
+<!--      </left>-->
    </BorderPane>
 </VBox>

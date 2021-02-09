@@ -1,11 +1,14 @@
 package construction.builder;
 
+import application.Globals;
 import application.events.*;
 import construction.*;
+import construction.canvas.GridCanvasFacade;
 import domain.Association;
 import domain.Grid;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
@@ -21,6 +24,7 @@ public class GridBuilderController {
     private BuildMenuData buildData;
     private PropertiesData propertiesData;
     private Grid grid;
+    private GridCanvasFacade canvasFacade;
 
     // these Contexts store data needed for actions that take place over time
     // used change borders of an association
@@ -32,13 +36,14 @@ public class GridBuilderController {
 
     public GridBuilderController(Grid grid, GridFlowEventManager gridFlowEventManager,
                                  DoubleClickPlacementContext doubleClickPlacementContext, BuildMenuData buildMenuData,
-                                 PropertiesData propertiesData) {
+                                 PropertiesData propertiesData, GridCanvasFacade canvasFacade) {
         this.model = new GridBuilder(grid, propertiesData);
         this.gridFlowEventManager = gridFlowEventManager;
         this.doubleClickPlacementContext = doubleClickPlacementContext;
         this.buildData = buildMenuData;
         this.propertiesData = propertiesData;
         this.grid = grid;
+        this.canvasFacade = canvasFacade;
     }
 
     public void buildDataChanged() {
@@ -146,24 +151,21 @@ public class GridBuilderController {
         if (associationMoveContext.targetPosition == null) return;
 
         Rectangle rect = associationMoveContext.target.getAssociationIcon().getRect();
-        double handleRadius = 5;
         Point newLoc = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
 
         double deltaX = newLoc.getX() - associationMoveContext.targetPosition.getX();
         double deltaY = newLoc.getY() - associationMoveContext.targetPosition.getY();
         double newX = rect.getX() + deltaX ;
-        if (newX >= handleRadius
-                && newX <= rect.getX() + rect.getWidth() - handleRadius) {
+        if (newX <= rect.getX() + rect.getWidth()) {
             rect.setX(newX);
             rect.setWidth(rect.getWidth() - deltaX);
         }
         double newY = rect.getY() + deltaY ;
-        if (newY >= handleRadius
-                && newY <= rect.getY() + rect.getHeight() - handleRadius) {
+        if (newY <= rect.getY() + rect.getHeight()) {
             rect.setY(newY);
             rect.setHeight(rect.getHeight() - deltaY);
         }
-        associationMoveContext.targetPosition = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
+        associationMoveContext.targetPosition = newLoc;
         event.consume();
     };
 
@@ -173,26 +175,22 @@ public class GridBuilderController {
         if (associationMoveContext.targetPosition == null) return;
 
 
-        Point newLoc = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
-
+        Point position = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
         Rectangle rect = associationMoveContext.target.getAssociationIcon().getRect();
-        double handleRadius = 5;
 
-        double deltaX = newLoc.getX() - associationMoveContext.targetPosition.getX();
-        double deltaY = newLoc.getY() - associationMoveContext.targetPosition.getY();
+        double deltaX = position.getX() - associationMoveContext.targetPosition.getX();
+        double deltaY = position.getY() - associationMoveContext.targetPosition.getY();
         double newMaxX = rect.getX() + rect.getWidth() + deltaX ;
-        if (newMaxX >= rect.getX()
-                && newMaxX <= rect.getParent().getBoundsInLocal().getWidth() - handleRadius) {
+        if (newMaxX >= rect.getWidth()) {
             rect.setWidth(rect.getWidth() + deltaX);
         }
         double newMaxY = rect.getY() + rect.getHeight() + deltaY ;
-        if (newMaxY >= rect.getY()
-                && newMaxY <= rect.getParent().getBoundsInLocal().getHeight() - handleRadius) {
+        if (newMaxY >= rect.getY() && newMaxY >= rect.getHeight()) {
             rect.setHeight(rect.getHeight() + deltaY);
         }
-        associationMoveContext.targetPosition = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
-        event.consume();
+        associationMoveContext.targetPosition = position;
 
+        event.consume();
     };
 
     // runs when the use begins dragging an association's label

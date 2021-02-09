@@ -40,7 +40,8 @@ public class ConstructionController {
         this.stage = stage;
 
         // controllers
-        gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData, propertiesData);
+        gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData,
+                propertiesData, canvasFacade);
         ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridFlowEventManager.addListener(ghostManagerController);
@@ -102,6 +103,13 @@ public class ConstructionController {
         event.consume();
     };
 
+    // association event handlers
+    // eats clicks on the association, to prevent associations from being placed inside the association
+    private final EventHandler<MouseEvent> consumeAssociationClicksHandler = event -> {
+        if (buildMenuData.toolType != ToolType.ASSOCIATION) return;
+        event.consume();
+    };
+
     private void rotate(boolean ccw) {
         double rotation;
 
@@ -141,9 +149,11 @@ public class ConstructionController {
         stage.addEventFilter(KeyEvent.KEY_PRESSED, selectionManagerController.getDeleteHandler());
 
         // association events
-        // change cursor depending on what you are hovering over
+        canvasFacade.setConsumeAssociationClicksHandler(consumeAssociationClicksHandler);
+        // disables ghost when hovering over association
+        canvasFacade.setBeginHoverAssociationHandler(ghostManagerController.getBeginHoverAssociationHandler());
         canvasFacade.setEndHoverAssociationHandler(ghostManagerController.getEndHoverAssociationHandler());
-        canvasFacade.setBeginHoverAssociationTextHandler(ghostManagerController.getBeginHoverAssociationTextHandler());
+        // change cursor depending on what you are hovering over
         // move text when dragging the text
         canvasFacade.setBeginAssociationTextDragHandler(gridBuilderController.getBeginAssociationTextDragEventHandler());
         canvasFacade.setDragAssociationTextHandler(gridBuilderController.getDragAssociationTextEventHandler());

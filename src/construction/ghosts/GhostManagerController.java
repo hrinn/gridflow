@@ -16,7 +16,6 @@ public class GhostManagerController implements GridFlowEventListener {
     private AssociationGhostManager associationModel;
     private DoubleClickPlacementContext doubleClickContext;
     private BuildMenuData buildData;
-    private GridCanvasFacade canvasFacade;
 
     public GhostManagerController(GridCanvasFacade canvasFacade, DoubleClickPlacementContext doubleClickContext,
                                   BuildMenuData buildMenuData, PropertiesData propertiesData) {
@@ -24,7 +23,6 @@ public class GhostManagerController implements GridFlowEventListener {
         this.associationModel = new AssociationGhostManager(canvasFacade);
         this.doubleClickContext = doubleClickContext;
         this.buildData = buildMenuData;
-        this.canvasFacade = canvasFacade;
     }
 
     public void handleEvent(GridFlowEvent gridFlowEvent) {
@@ -86,22 +84,17 @@ public class GhostManagerController implements GridFlowEventListener {
         }
     };
 
-    // resets the mouse back to default after no longer hovering over an association component
     private final EventHandler<MouseEvent> endHoverAssociationHandler = event -> {
         if (buildData.toolType != ToolType.ASSOCIATION) return;
 
         associationModel.setGhostEnabled(true);
-        canvasFacade.getCanvas().setCursor(Cursor.DEFAULT);
-
         event.consume();
     };
 
-    private final EventHandler<MouseEvent> beginHoverAssociationTextHandler = event -> {
+    private final EventHandler<MouseEvent> beginHoverAssociationHandler = event -> {
         if (buildData.toolType != ToolType.ASSOCIATION) return;
 
         associationModel.setGhostEnabled(false);
-        canvasFacade.getCanvas().setCursor(Cursor.MOVE);
-
         event.consume();
     };
 
@@ -113,7 +106,7 @@ public class GhostManagerController implements GridFlowEventListener {
         return endHoverAssociationHandler;
     }
 
-    public EventHandler<MouseEvent> getBeginHoverAssociationTextHandler() {
-        return beginHoverAssociationTextHandler;
+    public EventHandler<MouseEvent> getBeginHoverAssociationHandler() {
+        return beginHoverAssociationHandler;
     }
 }

@@ -2,6 +2,7 @@ package construction.canvas;
 
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
@@ -24,11 +25,11 @@ public class GridCanvasFacade {
     private EventHandler<MouseEvent> beginResizeAssociationHandler;
     private EventHandler<MouseEvent> resizeAssociationNWHandler;
     private EventHandler<MouseEvent> resizeAssociationSEHandler;
-    private EventHandler<MouseEvent> endMoveAssociationBorderHandler;
-    private EventHandler<MouseEvent> beginHoverAssociationTextHandler;
+    private EventHandler<MouseEvent> beginHoverAssociationHandler;
     private EventHandler<MouseEvent> endHoverAssociationHandler;
     private EventHandler<MouseEvent> beginAssociationTextDragHandler;
     private EventHandler<MouseEvent> dragAssociationTextHandler;
+    private EventHandler<MouseEvent> consumeAssociationClicksHandler;
 
     public GridCanvasFacade() {
         createCanvas();
@@ -83,20 +84,29 @@ public class GridCanvasFacade {
     public void addAssociationIcon(AssociationIcon icon) {
         canvas.associationGroup.getChildren().add(icon.getAssociationGroup());
         // install the event handlers on individual association components
+
+        // disables the ghost when hovering over an association
+        icon.getAssociationGroup().addEventHandler(MouseEvent.MOUSE_ENTERED, beginHoverAssociationHandler);
+        icon.getAssociationGroup().addEventHandler(MouseEvent.MOUSE_EXITED, endHoverAssociationHandler);
+
+        // prevents associations from being made inside an association
+        icon.getRect().addEventHandler(MouseEvent.MOUSE_PRESSED, consumeAssociationClicksHandler);
+
         // the event handlers for the border lines (allows you to drag them)
         icon.getHandles().forEach(handle -> {
-            handle.addEventHandler(MouseEvent.MOUSE_EXITED, endHoverAssociationHandler);
             handle.addEventHandler(MouseEvent.MOUSE_PRESSED, beginResizeAssociationHandler);
+            setCursorChange(handle, Cursor.NW_RESIZE);
         });
         icon.getResizeHandleNW().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationNWHandler);
         icon.getResizeHandleSE().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationSEHandler);
+
         // event handlers for the text (allows you to drag it)
         Text text = icon.getText();
         text.addEventHandler(MouseEvent.MOUSE_PRESSED, beginAssociationTextDragHandler);
         text.addEventHandler(MouseEvent.MOUSE_DRAGGED, dragAssociationTextHandler);
-        // event handlers for changing cursor on text hover
-        text.addEventHandler(MouseEvent.MOUSE_ENTERED, beginHoverAssociationTextHandler);
-        text.addEventHandler(MouseEvent.MOUSE_EXITED, endHoverAssociationHandler);
+
+        // cursor changes on hover
+        setCursorChange(text, Cursor.MOVE);
     }
 
     public void showBackgroundGrid(boolean show) {
@@ -105,6 +115,13 @@ public class GridCanvasFacade {
         } else {
             canvas.backgroundGrid.setOpacity(0);
         }
+    }
+
+    private void setCursorChange(Node node, Cursor cursor) {
+        node.setOnMouseEntered(event -> canvas.setCursor(cursor));
+        node.setOnMouseExited(event -> canvas.setCursor(Cursor.DEFAULT));
+        node.setOnDragDetected(event -> canvas.setCursor(Cursor.CLOSED_HAND));
+        node.setOnMouseReleased(event -> canvas.setCursor(Cursor.DEFAULT));
     }
 
     public void addCanvasEventHandler(EventType eventType, EventHandler eventHandler) {
@@ -135,14 +152,6 @@ public class GridCanvasFacade {
         this.endHoverAssociationHandler = endHoverAssociationHandler;
     }
 
-    public void setEndMoveAssociationBorderHandler(EventHandler<MouseEvent> endMoveAssociationBorderHandler) {
-        this.endMoveAssociationBorderHandler = endMoveAssociationBorderHandler;
-    }
-
-    public void setBeginHoverAssociationTextHandler(EventHandler<MouseEvent> beginHoverAssociationTextHandler) {
-        this.beginHoverAssociationTextHandler = beginHoverAssociationTextHandler;
-    }
-
     public void setBeginAssociationTextDragHandler(EventHandler<MouseEvent> beginAssociationTextDragHandler) {
         this.beginAssociationTextDragHandler = beginAssociationTextDragHandler;
     }
@@ -157,5 +166,13 @@ public class GridCanvasFacade {
 
     public void setResizeAssociationSEHandler(EventHandler<MouseEvent> resizeAssociationSEHandler) {
         this.resizeAssociationSEHandler = resizeAssociationSEHandler;
+    }
+
+    public void setBeginHoverAssociationHandler(EventHandler<MouseEvent> beginHoverAssociationHandler) {
+        this.beginHoverAssociationHandler = beginHoverAssociationHandler;
+    }
+
+    public void setConsumeAssociationClicksHandler(EventHandler<MouseEvent> consumeAssociationClicksHandler) {
+        this.consumeAssociationClicksHandler = consumeAssociationClicksHandler;
     }
 }

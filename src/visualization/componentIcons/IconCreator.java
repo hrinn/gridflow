@@ -348,7 +348,6 @@ public class IconCreator {
 
         // this is the association rectangle displayed on screen
         Rectangle border = new Rectangle(topLeft.getX(), topLeft.getY(), width, height);
-        border.setMouseTransparent(true);
         border.setFill(Color.TRANSPARENT);
         border.setStroke(Color.GRAY);
         border.setStrokeWidth(2);
@@ -359,7 +358,7 @@ public class IconCreator {
         Circle SE = new Circle();
         List<Circle> handles = List.of(NW, SE);
         handles.forEach(handle -> {
-            handle.setRadius(5);
+            handle.setRadius(Globals.ASSOC_HANDLE_RADIUS);
             handle.setFill(Color.TRANSPARENT);
             handle.setStroke(Color.GRAY);
             handle.setStrokeWidth(2);
@@ -378,7 +377,7 @@ public class IconCreator {
 
     // gets the top left part of a 3x3 grid to place the text
     private static Point getAssociationLabelPosition(Point topLeft, double width, double height) {
-        return new Point(topLeft.getX() + width/6, topLeft.getY() + height/6);
+        return new Point(topLeft.getX() + width/2, topLeft.getY() + height/2);
     }
 
     private static Line createLine(Point p1, Point p2) {

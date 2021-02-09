@@ -8,8 +8,9 @@ import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Line;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import org.w3c.dom.css.Rect;
 
 // this controller handles event logic for grid building
 // this is mostly user click while
@@ -121,41 +122,78 @@ public class GridBuilderController {
         event.consume();
     };
 
-    private final EventHandler<MouseEvent> beginMoveAssociationBorderEventHandler = event -> {
+    private final EventHandler<MouseEvent> beginResizeAssociationEventHandler = event -> {
         if (buildData.toolType != ToolType.ASSOCIATION) return;
         if (!event.isPrimaryButtonDown()) return;
 
         // determine which association was targeted
-        Line target = ((Line)event.getTarget());
-
-        associationMoveContext.target = grid.getAssociation(target.getId());
-        // determine which line was targeted
-        associationMoveContext.targetLine = getAssociationTargetLine(
-                associationMoveContext.target.getTopleft(),
-                new Point(target.getEndX(), target.getEndY()),
-                associationMoveContext.target.getWidth(),
-                associationMoveContext.target.getHeight()
-        );
-        associationMoveContext.moving = true;
+        String targetID = ((Node)event.getTarget()).getId();
+        Association target = grid.getAssociation(targetID);
+        if (target == null) {
+            System.err.println("Resize Association Handler, ID is null");
+            return;
+        }
+        associationMoveContext.target = target;
+        // determine beginning point for move
+        associationMoveContext.targetPosition = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
 
         event.consume();
     };
 
-    // takes the association's top left point, target line's end point, assoc's width, and assoc's height
-    // and determines which line was targeted. (0 - top, 1 - right, 2 - bottom, 3 - left)
-    private int getAssociationTargetLine(Point aTopLeft, Point tEnd, double w, double h) {
-        if (aTopLeft.translate(w, 0).equals(tEnd)) {
-            return 0;
-        } else if (aTopLeft.translate(w, h).equals(tEnd)) {
-            return 1;
-        } else if (aTopLeft.translate(0, h).equals(tEnd)) {
-            return 2;
-        } else if (tEnd.equals(aTopLeft)) {
-            return 3;
-        } else {
-            return -1;
+    private final EventHandler<MouseEvent> resizeAssociationNWHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+        if (!event.isPrimaryButtonDown()) return;
+        if (associationMoveContext.targetPosition == null) return;
+
+        Rectangle rect = associationMoveContext.target.getAssociationIcon().getRect();
+        double handleRadius = 5;
+        Point newLoc = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
+
+        double deltaX = newLoc.getX() - associationMoveContext.targetPosition.getX();
+        double deltaY = newLoc.getY() - associationMoveContext.targetPosition.getY();
+        double newX = rect.getX() + deltaX ;
+        if (newX >= handleRadius
+                && newX <= rect.getX() + rect.getWidth() - handleRadius) {
+            rect.setX(newX);
+            rect.setWidth(rect.getWidth() - deltaX);
         }
-    }
+        double newY = rect.getY() + deltaY ;
+        if (newY >= handleRadius
+                && newY <= rect.getY() + rect.getHeight() - handleRadius) {
+            rect.setY(newY);
+            rect.setHeight(rect.getHeight() - deltaY);
+        }
+        associationMoveContext.targetPosition = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
+        event.consume();
+    };
+
+    private final EventHandler<MouseEvent> resizeAssociationSEHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+        if (!event.isPrimaryButtonDown()) return;
+        if (associationMoveContext.targetPosition == null) return;
+
+
+        Point newLoc = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
+
+        Rectangle rect = associationMoveContext.target.getAssociationIcon().getRect();
+        double handleRadius = 5;
+
+        double deltaX = newLoc.getX() - associationMoveContext.targetPosition.getX();
+        double deltaY = newLoc.getY() - associationMoveContext.targetPosition.getY();
+        double newMaxX = rect.getX() + rect.getWidth() + deltaX ;
+        if (newMaxX >= rect.getX()
+                && newMaxX <= rect.getParent().getBoundsInLocal().getWidth() - handleRadius) {
+            rect.setWidth(rect.getWidth() + deltaX);
+        }
+        double newMaxY = rect.getY() + rect.getHeight() + deltaY ;
+        if (newMaxY >= rect.getY()
+                && newMaxY <= rect.getParent().getBoundsInLocal().getHeight() - handleRadius) {
+            rect.setHeight(rect.getHeight() + deltaY);
+        }
+        associationMoveContext.targetPosition = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
+        event.consume();
+
+    };
 
     // runs when the use begins dragging an association's label
     private final EventHandler<MouseEvent> beginAssociationTextDragEventHandler = event -> {
@@ -163,10 +201,10 @@ public class GridBuilderController {
         if (!event.isPrimaryButtonDown()) return;
 
         Text target = (Text)event.getTarget();
-        // original position
-        dragContext.mouseAnchorX = target.getLayoutX();
-        dragContext.mouseAnchorY = target.getLayoutY();
 
+        // original position
+        dragContext.mouseAnchorX = event.getSceneX();
+        dragContext.mouseAnchorY = event.getSceneY();
         dragContext.translateAnchorX = target.getTranslateX();
         dragContext.translateAnchorY = target.getTranslateY();
 
@@ -178,9 +216,16 @@ public class GridBuilderController {
         if (buildData.toolType != ToolType.ASSOCIATION) return;
         if (!event.isPrimaryButtonDown()) return;
 
+        // moves the text based on the mouse position
+        // does so by translating the text and taking into account its original position
+        double offsetX = event.getSceneX() - dragContext.mouseAnchorX;
+        double offsetY = event.getSceneY() - dragContext.mouseAnchorY;
+        double newTranslateX = dragContext.translateAnchorX + offsetX;
+        double newTranslateY = dragContext.translateAnchorY + offsetY;
+
         Text target = (Text)event.getTarget();
-        target.setTranslateX(event.getX() - dragContext.mouseAnchorX);
-        target.setTranslateY(event.getY() - dragContext.mouseAnchorY);
+        target.setTranslateX(newTranslateX);
+        target.setTranslateY(newTranslateY);
 
         event.consume();
     };
@@ -201,8 +246,8 @@ public class GridBuilderController {
         return placeAssociationEventHandler;
     }
 
-    public EventHandler<MouseEvent> getBeginMoveAssociationBorderEventHandler() {
-        return beginMoveAssociationBorderEventHandler;
+    public EventHandler<MouseEvent> getBeginResizeAssociationEventHandler() {
+        return beginResizeAssociationEventHandler;
     }
 
     public EventHandler<MouseEvent> getBeginAssociationTextDragEventHandler() {
@@ -211,5 +256,13 @@ public class GridBuilderController {
 
     public EventHandler<MouseEvent> getDragAssociationTextEventHandler() {
         return dragAssociationTextEventHandler;
+    }
+
+    public EventHandler<MouseEvent> getResizeAssociationNWHandler() {
+        return resizeAssociationNWHandler;
+    }
+
+    public EventHandler<MouseEvent> getResizeAssociationSEHandler() {
+        return resizeAssociationSEHandler;
     }
 }

@@ -2,7 +2,7 @@ package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import domain.geometry.Point;
-import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.IconCreator;
 import visualization.componentIcons.DeviceIcon;
 
 import java.util.UUID;
@@ -21,7 +21,7 @@ public class Transformer extends Device {
     }
 
     private void createComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.createTransformerIcon(getPosition());
+        DeviceIcon icon = IconCreator.createTransformerIcon(getPosition());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());

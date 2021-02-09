@@ -1,5 +1,6 @@
 package construction.builder;
 
+import construction.AssociationMoveContext;
 import construction.PropertiesData;
 import construction.ComponentType;
 import domain.Association;
@@ -358,6 +359,11 @@ public class GridBuilder {
         // create the association and add it to the grid
         Association association = new Association(topLeft, width, height);
         grid.addAssociation(association);
+    }
+
+    public void resizeAssociation(AssociationMoveContext context, Point position) {
+        Rectangle rect = context.target.getAssociationIcon().getRect();
+
     }
 
     public void toggleComponent(String componentId) {

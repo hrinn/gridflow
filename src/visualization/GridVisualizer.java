@@ -25,7 +25,7 @@ public class GridVisualizer {
     public void displayAssociations() {
         canvasFacade.clearAssociationGroup();
         for (Association association : grid.getAssociations()) {
-            canvasFacade.addAssociationNode(association.getAssociationNode(), association.getID());
+            canvasFacade.addAssociationIcon(association.getAssociationIcon());
         }
     }
 

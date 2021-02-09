@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.*;
-import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.IconCreator;
 import visualization.componentIcons.WireIcon;
 
 import java.util.ArrayList;
@@ -136,9 +136,9 @@ public class Wire extends Component {
         WireIcon icon;
         if (isPointWire() && connections.size() > 1)
         {
-            icon = ComponentIconCreator.createBlankWireIcon(start, end);
+            icon = IconCreator.createBlankWireIcon(start, end);
         } else {
-            icon = ComponentIconCreator.createWireIcon(start, end, bridgePoints);
+            icon = IconCreator.createWireIcon(start, end, bridgePoints);
         }
         icon.setWireIconEnergyState(false);
         icon.setComponentIconID(getId().toString());

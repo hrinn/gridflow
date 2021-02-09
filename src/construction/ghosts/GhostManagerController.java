@@ -4,10 +4,8 @@ import application.events.*;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Line;
 
@@ -88,29 +86,6 @@ public class GhostManagerController implements GridFlowEventListener {
         }
     };
 
-
-    // these hover event handlers change the cursor when the user is hovering over an association border
-    // they are in the ghost manager so they can disable the ghosts
-    private final EventHandler<MouseEvent> beginHoverAssociationBorderHandler = event -> {
-        if (buildData.toolType != ToolType.ASSOCIATION) return;
-
-        associationModel.setGhostEnabled(false);
-
-        Line target = (Line)event.getTarget();
-        Cursor cursor;
-        if (target.getStartX() == target.getEndX()) {
-            // vertical line
-            cursor = Cursor.W_RESIZE;
-        } else {
-            // horizontal line
-            cursor = Cursor.N_RESIZE;
-        }
-
-        canvasFacade.getCanvas().setCursor(cursor);
-
-        event.consume();
-    };
-
     // resets the mouse back to default after no longer hovering over an association component
     private final EventHandler<MouseEvent> endHoverAssociationHandler = event -> {
         if (buildData.toolType != ToolType.ASSOCIATION) return;
@@ -132,11 +107,6 @@ public class GhostManagerController implements GridFlowEventListener {
 
     public EventHandler<MouseEvent> getGhostMoveEventHandler() {
         return ghostMoveEventHandler;
-    }
-
-
-    public EventHandler<MouseEvent> getBeginHoverAssociationBorderHandler() {
-        return beginHoverAssociationBorderHandler;
     }
 
     public EventHandler<MouseEvent> getEndHoverAssociationHandler() {

@@ -7,7 +7,6 @@ import construction.ghosts.GhostManagerController;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import javafx.event.EventHandler;
-import javafx.scene.Cursor;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -142,11 +141,15 @@ public class ConstructionController {
         stage.addEventFilter(KeyEvent.KEY_PRESSED, selectionManagerController.getDeleteHandler());
 
         // association events
-        canvasFacade.setBeginHoverAssociationBorderHandler(ghostManagerController.getBeginHoverAssociationBorderHandler());
+        // change cursor depending on what you are hovering over
         canvasFacade.setEndHoverAssociationHandler(ghostManagerController.getEndHoverAssociationHandler());
-        canvasFacade.setBeginMoveAssociationBorderHandler(gridBuilderController.getBeginMoveAssociationBorderEventHandler());
         canvasFacade.setBeginHoverAssociationTextHandler(ghostManagerController.getBeginHoverAssociationTextHandler());
+        // move text when dragging the text
         canvasFacade.setBeginAssociationTextDragHandler(gridBuilderController.getBeginAssociationTextDragEventHandler());
         canvasFacade.setDragAssociationTextHandler(gridBuilderController.getDragAssociationTextEventHandler());
+        // resize association when dragging handles
+        canvasFacade.setBeginResizeAssociationHandler(gridBuilderController.getBeginResizeAssociationEventHandler());
+        canvasFacade.setResizeAssociationNWHandler(gridBuilderController.getResizeAssociationNWHandler());
+        canvasFacade.setResizeAssociationSEHandler(gridBuilderController.getResizeAssociationSEHandler());
     }
 }

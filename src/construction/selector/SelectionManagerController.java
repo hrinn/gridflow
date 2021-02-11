@@ -1,6 +1,5 @@
 package construction.selector;
 
-import application.events.AssociationChangedEvent;
 import application.events.GridChangedEvent;
 import application.events.GridFlowEventManager;
 import construction.BuildMenuData;
@@ -77,7 +76,6 @@ public class SelectionManagerController {
 
         model.deleteSelectedItems();
         gridFlowEventManager.sendEvent(new GridChangedEvent());
-        gridFlowEventManager.sendEvent(new AssociationChangedEvent());
         event.consume();
     };
 

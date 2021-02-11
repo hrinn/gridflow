@@ -65,11 +65,12 @@ public class GridBuilderController {
             boolean ctrlPressed = event.isControlDown();
             boolean res = model.placeWire(doubleClickPlacementContext.beginPoint, lockedEndPoint, ctrlPressed);
             if (res) {
-                gridFlowEventManager.sendEvent(new GridChangedEvent());
+                GridChangedEvent e = new GridChangedEvent();
+                e.toolCausingChange = ToolType.WIRE;
+                gridFlowEventManager.sendEvent(e);
             } else {
                 gridFlowEventManager.sendEvent(new PlacementFailedEvent());
             }
-            gridFlowEventManager.sendEvent(new WirePlacedEvent());
 
         } else { // begin placement
             doubleClickPlacementContext.placing = true;
@@ -89,7 +90,9 @@ public class GridBuilderController {
             doubleClickPlacementContext.placing = false;
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
             model.placeAssociation(doubleClickPlacementContext.beginPoint, endPoint);
-            gridFlowEventManager.sendEvent(new AssociationChangedEvent());
+            GridChangedEvent e = new GridChangedEvent();
+            e.toolCausingChange = ToolType.ASSOCIATION;
+            gridFlowEventManager.sendEvent(e);
         } else { // begin placement
             doubleClickPlacementContext.placing = true;
             doubleClickPlacementContext.beginPoint = Point.nearestCoordinate(event.getX(), event.getY());

@@ -80,6 +80,10 @@ public class Grid {
         associations.remove(association);
     }
 
+    public int countAssociations() {
+        return associations.size();
+    }
+
     public void removeCausedBridgePoints(Wire wire) {
         // returns list of wires that conflict or null if a non-wire conflict occured.
         ArrayList<Wire> wireConflicts = new ArrayList<>();

@@ -5982,5 +5982,87 @@
     "end" : "10140.0,4220.0",
     "connections" : [ "6317e79b-87fe-4233-83c5-124577f647d5", "fa0ba500-9b4f-4b0a-965e-c89fd3a78c1d" ],
     "bridgePoints" : [ ]
+  } ],
+  "associations" : [ {
+    "id" : "6dfff15f-1cfe-46d5-a207-26e67a73474e",
+    "label" : "Droid Depot",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "6780.0,1700.0",
+    "width" : 700.0,
+    "height" : 640.0,
+    "labelPos" : "-195.0,-40.0"
+  }, {
+    "id" : "2ce588e8-69a7-445e-ad92-881760eed294",
+    "label" : "Ewok Village",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "8000.0,1060.0",
+    "width" : 160.0,
+    "height" : 300.0,
+    "labelPos" : "10.0,-199.0"
+  }, {
+    "id" : "74144a67-1c86-4500-8461-e50678d6296e",
+    "label" : "Alderan Central Switchyard",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "8320.0,1020.0",
+    "width" : 960.0,
+    "height" : 720.0,
+    "labelPos" : "-4.0,-309.0"
+  }, {
+    "id" : "5c568fff-eb65-4801-94c2-ec8cb8bf6693",
+    "label" : "Wookie Lake",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "8460.0,1800.0",
+    "width" : 720.0,
+    "height" : 560.0,
+    "labelPos" : "-117.0,-167.0"
+  }, {
+    "id" : "38bd0b6f-5aa5-478f-bae7-40a42bd5c6f8",
+    "label" : "High Council Station",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "9480.0,1460.0",
+    "width" : 840.0,
+    "height" : 900.0,
+    "labelPos" : "3.0,-251.0"
+  }, {
+    "id" : "7c2f7eec-9d78-4933-86e0-5435f4fa3944",
+    "label" : "Solo Ace Flight Center",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "7360.0,2400.0",
+    "width" : 720.0,
+    "height" : 840.0,
+    "labelPos" : "7.0,-364.0"
+  }, {
+    "id" : "b0afc602-30ff-4f63-8b56-95d881b48123",
+    "label" : "Padawan Training Center",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "9120.0,2680.0",
+    "width" : 880.0,
+    "height" : 220.0,
+    "labelPos" : "-320.0,-60.0"
+  }, {
+    "id" : "3f8d68b0-9633-4127-972a-cf2872c65da7",
+    "label" : "Skywalker Power Plant",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "8740.0,3480.0",
+    "width" : 1040.0,
+    "height" : 440.0,
+    "labelPos" : "15.0,-164.0"
+  }, {
+    "id" : "e138738f-d01f-4873-be7f-6554b8b06282",
+    "label" : "Sky Defense Ministry",
+    "subLabel" : "",
+    "acronym" : "ASC",
+    "pos" : "8640.0,4260.0",
+    "width" : 600.0,
+    "height" : 260.0,
+    "labelPos" : "-205.0,-84.0"
   } ]
 }

@@ -357,7 +357,7 @@ public class GridBuilder {
         double height = start.differenceY(end);
 
         // create the association and add it to the grid
-        Association association = new Association(topLeft, width, height);
+        Association association = new Association(topLeft, width, height, grid.countAssociations());
         grid.addAssociation(association);
     }
 

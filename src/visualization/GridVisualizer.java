@@ -20,9 +20,7 @@ public class GridVisualizer {
         for (Component component : grid.getComponents()) {
             canvasFacade.addComponentIcon(component.getUpdatedComponentIcon());
         }
-    }
 
-    public void displayAssociations() {
         canvasFacade.clearAssociationGroup();
         for (Association association : grid.getAssociations()) {
             canvasFacade.addAssociationIcon(association.getAssociationIcon());

@@ -1,5 +1,6 @@
 package visualization.componentIcons;
 
+import domain.geometry.Point;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -136,6 +137,11 @@ public class AssociationIcon {
     public void setText(Text text) {
         label = text;
         association.getChildren().add(text);
+    }
+
+    public void setTextPosition(Point position) {
+        label.setTranslateX(position.getX());
+        label.setTranslateY(position.getY());
     }
 
     public Text getText() {

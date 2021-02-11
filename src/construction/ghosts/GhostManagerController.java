@@ -24,12 +24,15 @@ public class GhostManagerController implements GridFlowEventListener {
     }
 
     public void handleEvent(GridFlowEvent gridFlowEvent) {
-        if (gridFlowEvent instanceof WirePlacedEvent) {
-            ghostModel.setGhostIcon(ComponentType.WIRE);
+        if (gridFlowEvent instanceof GridChangedEvent) {
+            GridChangedEvent e = (GridChangedEvent)gridFlowEvent;
+            if (e.toolCausingChange == ToolType.WIRE) {
+                ghostModel.setGhostIcon(ComponentType.WIRE);
+            } else if (e.toolCausingChange == ToolType.ASSOCIATION) {
+                associationModel.setAssociationGhost();
+            }
         } else if (gridFlowEvent instanceof PlacementFailedEvent) {
             handlePlacementError();
-        } else if (gridFlowEvent instanceof AssociationChangedEvent) {
-            associationModel.setAssociationGhost();
         }
     }
 

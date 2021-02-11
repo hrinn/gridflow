@@ -32,7 +32,7 @@ public class Breaker extends Closeable {
         if (voltage == Voltage.KV12) {
             icon = ComponentIconCreator.get12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
         } else {
-            icon = ComponentIconCreator.create70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
+            icon = ComponentIconCreator.get70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
         }
         icon.setComponentName(getName());
         icon.setDeviceEnergyStates(false, false);

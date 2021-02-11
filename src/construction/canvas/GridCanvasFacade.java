@@ -8,8 +8,9 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Text;
+import visualization.componentIcons.AssociationIcon;
 import visualization.componentIcons.ComponentIcon;
-import visualization.componentIcons.WireIcon;
 
 public class GridCanvasFacade {
 
@@ -19,6 +20,25 @@ public class GridCanvasFacade {
     // Component Event Handlers
     private EventHandler<MouseEvent> toggleComponentEventHandler;
     private EventHandler<MouseEvent> selectSingleComponentHandler;
+
+    // Association Event Handlers
+    // Handlers to resize the association box using the handles on each corner
+    private EventHandler<MouseEvent> beginResizeAssociationHandler;
+    private EventHandler<MouseEvent> resizeAssociationNWHandler;
+    private EventHandler<MouseEvent> resizeAssociationSEHandler;
+    private EventHandler<MouseEvent> resizeAssociationNEHandler;
+    private EventHandler<MouseEvent> resizeAssociationSWHandler;
+
+    // Handlers to move the text and show new cursors
+    private EventHandler<MouseEvent> beginAssociationTextDragHandler;
+    private EventHandler<MouseEvent> dragAssociationTextHandler;
+    private EventHandler<MouseEvent> showMoveCursorOnTextHoverHandler;
+    private EventHandler<MouseEvent> showDefaultCursorOnLeaveTextHoverHandler;
+
+    // general association events
+    private EventHandler<MouseEvent> beginHoverAssociationHandler;
+    private EventHandler<MouseEvent> endHoverAssociationHandler;
+    private EventHandler<MouseEvent> consumeAssociationClicksHandler;
 
     public GridCanvasFacade() {
         createCanvas();
@@ -66,12 +86,57 @@ public class GridCanvasFacade {
         canvas.boundingRectGroup.getChildren().clear();
     }
 
+    public void clearAssociationGroup() {
+        canvas.associationGroup.getChildren().clear();
+    }
+
+    public void addAssociationIcon(AssociationIcon icon) {
+        canvas.associationGroup.getChildren().add(icon.getAssociationGroup());
+        // install the event handlers on individual association components
+
+        // disables the ghost when hovering over an association
+        icon.getAssociationGroup().addEventHandler(MouseEvent.MOUSE_ENTERED, beginHoverAssociationHandler);
+        icon.getAssociationGroup().addEventHandler(MouseEvent.MOUSE_EXITED, endHoverAssociationHandler);
+
+        // prevents associations from being made inside an association
+        icon.getRect().addEventHandler(MouseEvent.MOUSE_PRESSED, consumeAssociationClicksHandler);
+
+        // the event handlers for the border lines (allows you to drag them)
+        icon.getHandles().forEach(handle -> {
+            handle.addEventHandler(MouseEvent.MOUSE_PRESSED, beginResizeAssociationHandler);
+        });
+        icon.getResizeHandleNW().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationNWHandler);
+        setHandleCursorChange(icon.getResizeHandleNW(), Cursor.NW_RESIZE);
+        icon.getResizeHandleSE().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationSEHandler);
+        setHandleCursorChange(icon.getResizeHandleSE(), Cursor.SE_RESIZE);
+        icon.getResizeHandleNE().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationNEHandler);
+        setHandleCursorChange(icon.getResizeHandleNE(), Cursor.NE_RESIZE);
+        icon.getResizeHandleSW().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationSWHandler);
+        setHandleCursorChange(icon.getResizeHandleSW(), Cursor.SW_RESIZE);
+
+        // event handlers for the text (allows you to drag it)
+        Text text = icon.getText();
+        text.addEventHandler(MouseEvent.MOUSE_PRESSED, beginAssociationTextDragHandler);
+        text.addEventHandler(MouseEvent.MOUSE_DRAGGED, dragAssociationTextHandler);
+        text.addEventHandler(MouseEvent.MOUSE_ENTERED, showMoveCursorOnTextHoverHandler);
+        text.addEventHandler(MouseEvent.MOUSE_EXITED, showDefaultCursorOnLeaveTextHoverHandler);
+    }
+
     public void showBackgroundGrid(boolean show) {
         if (show) {
             canvas.backgroundGrid.setOpacity(1);
         } else {
             canvas.backgroundGrid.setOpacity(0);
         }
+    }
+
+    private void setHandleCursorChange(Node handle, Cursor cursor) {
+        handle.setOnMouseEntered(event -> {
+            if (((Node)event.getTarget()).getOpacity() != 0) {
+                canvas.setCursor(cursor);
+            }
+        });
+        handle.setOnMouseExited(event -> canvas.setCursor(Cursor.DEFAULT));
     }
 
     public void addCanvasEventHandler(EventType eventType, EventHandler eventHandler) {
@@ -86,11 +151,60 @@ public class GridCanvasFacade {
         return canvas;
     }
 
+    // All these setters all the event handlers to be set from the Construction Controller
     public void setToggleComponentEventHandler(EventHandler<MouseEvent> eventHandler) {
         this.toggleComponentEventHandler = eventHandler;
     }
 
     public void setSelectSingleComponentHandler(EventHandler<MouseEvent> selectSingleComponentHandler) {
         this.selectSingleComponentHandler = selectSingleComponentHandler;
+    }
+
+    public void setBeginResizeAssociationHandler(EventHandler<MouseEvent> beginResizeAssociationHandler) {
+        this.beginResizeAssociationHandler = beginResizeAssociationHandler;
+    }
+
+    public void setEndHoverAssociationHandler(EventHandler<MouseEvent> endHoverAssociationHandler) {
+        this.endHoverAssociationHandler = endHoverAssociationHandler;
+    }
+
+    public void setBeginAssociationTextDragHandler(EventHandler<MouseEvent> beginAssociationTextDragHandler) {
+        this.beginAssociationTextDragHandler = beginAssociationTextDragHandler;
+    }
+
+    public void setDragAssociationTextHandler(EventHandler<MouseEvent> dragAssociationTextHandler) {
+        this.dragAssociationTextHandler = dragAssociationTextHandler;
+    }
+
+    public void setResizeAssociationNWHandler(EventHandler<MouseEvent> resizeAssociationNWHandler) {
+        this.resizeAssociationNWHandler = resizeAssociationNWHandler;
+    }
+
+    public void setResizeAssociationSEHandler(EventHandler<MouseEvent> resizeAssociationSEHandler) {
+        this.resizeAssociationSEHandler = resizeAssociationSEHandler;
+    }
+
+    public void setBeginHoverAssociationHandler(EventHandler<MouseEvent> beginHoverAssociationHandler) {
+        this.beginHoverAssociationHandler = beginHoverAssociationHandler;
+    }
+
+    public void setConsumeAssociationClicksHandler(EventHandler<MouseEvent> consumeAssociationClicksHandler) {
+        this.consumeAssociationClicksHandler = consumeAssociationClicksHandler;
+    }
+
+    public void setResizeAssociationNEHandler(EventHandler<MouseEvent> resizeAssociationNEHandler) {
+        this.resizeAssociationNEHandler = resizeAssociationNEHandler;
+    }
+
+    public void setResizeAssociationSWHandler(EventHandler<MouseEvent> resizeAssociationSWHandler) {
+        this.resizeAssociationSWHandler = resizeAssociationSWHandler;
+    }
+
+    public void setShowDefaultCursorOnLeaveTextHoverHandler(EventHandler<MouseEvent> showDefaultCursorOnLeaveTextHoverHandler) {
+        this.showDefaultCursorOnLeaveTextHoverHandler = showDefaultCursorOnLeaveTextHoverHandler;
+    }
+
+    public void setShowMoveCursorOnTextHoverHandler(EventHandler<MouseEvent> showMoveCursorOnTextHoverHandler) {
+        this.showMoveCursorOnTextHoverHandler = showMoveCursorOnTextHoverHandler;
     }
 }

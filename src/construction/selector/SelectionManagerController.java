@@ -1,10 +1,8 @@
 package construction.selector;
 
 import application.events.GridChangedEvent;
-import application.events.GridFlowEvent;
 import application.events.GridFlowEventManager;
 import construction.BuildMenuData;
-import construction.PropertiesData;
 import construction.ToolType;
 import construction.canvas.GridCanvasFacade;
 import domain.Grid;
@@ -76,7 +74,7 @@ public class SelectionManagerController {
     private final EventHandler<KeyEvent> deleteHandler = event -> {
         if (event.getCode() != KeyCode.DELETE) return;
 
-        model.deleteSelectedComponents();
+        model.deleteSelectedItems();
         gridFlowEventManager.sendEvent(new GridChangedEvent());
         event.consume();
     };

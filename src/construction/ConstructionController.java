@@ -14,7 +14,7 @@ import javafx.stage.Stage;
 
 public class ConstructionController {
 
-    private final GridCanvasFacade canvasFacade;
+    private GridCanvasFacade canvasFacade = null;
     private GridFlowEventManager gridFlowEventManager;
     private Stage stage;
 
@@ -27,8 +27,9 @@ public class ConstructionController {
     private BuildMenuData buildMenuData;
     private PropertiesData propertiesData;
 
-    // Wire Placing
-    private WireExtendContext wireExtendContext = new WireExtendContext();
+    // Wire Placing and Association Placing
+    // Used to share if a double click is in progress, and where the first click was if so
+    private DoubleClickPlacementContext doubleClickContext = new DoubleClickPlacementContext();
 
     public ConstructionController(Grid grid, GridFlowEventManager gridFlowEventManager, Stage stage) {
         // shared objects
@@ -39,8 +40,9 @@ public class ConstructionController {
         this.stage = stage;
 
         // controllers
-        gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, wireExtendContext, buildMenuData, propertiesData);
-        ghostManagerController = new GhostManagerController(canvasFacade, wireExtendContext, buildMenuData, propertiesData);
+        gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData,
+                propertiesData, canvasFacade);
+        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridFlowEventManager.addListener(ghostManagerController);
 
@@ -101,6 +103,13 @@ public class ConstructionController {
         event.consume();
     };
 
+    // association event handlers
+    // eats clicks on the association, to prevent associations from being placed inside the association
+    private final EventHandler<MouseEvent> consumeAssociationClicksHandler = event -> {
+        if (buildMenuData.toolType != ToolType.ASSOCIATION) return;
+        event.consume();
+    };
+
     private void rotate(boolean ccw) {
         double rotation;
 
@@ -114,7 +123,8 @@ public class ConstructionController {
     }
 
     private void installEventHandlers() {
-        // gets event handlers from the 3 sub controllers and installed them into the canvasFacade
+        // gets event handlers from the sub controllers and installs them into the canvasFacade
+        // event handlers are what respond to user inputs
 
         // construction controller events
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
@@ -126,6 +136,7 @@ public class ConstructionController {
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceComponentEventHandler());
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceWireEventHandler());
+        canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_PRESSED, gridBuilderController.getPlaceAssociationEventHandler());
 
         // ghost manager events
         canvasFacade.addCanvasEventFilter(MouseEvent.MOUSE_MOVED, ghostManagerController.getGhostMoveEventHandler());
@@ -136,5 +147,25 @@ public class ConstructionController {
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_RELEASED, selectionManagerController.getEndSelectionEventHandler());
         canvasFacade.setSelectSingleComponentHandler(selectionManagerController.getSelectSingleComponentHandler());
         stage.addEventFilter(KeyEvent.KEY_PRESSED, selectionManagerController.getDeleteHandler());
+
+        // association events
+        canvasFacade.setConsumeAssociationClicksHandler(consumeAssociationClicksHandler);
+
+        // disables ghost when hovering over association
+        canvasFacade.setBeginHoverAssociationHandler(ghostManagerController.getBeginHoverAssociationHandler());
+        canvasFacade.setEndHoverAssociationHandler(ghostManagerController.getEndHoverAssociationHandler());
+
+        // move text when dragging the text and show new cursor
+        canvasFacade.setBeginAssociationTextDragHandler(gridBuilderController.getBeginAssociationTextDragEventHandler());
+        canvasFacade.setDragAssociationTextHandler(gridBuilderController.getDragAssociationTextEventHandler());
+        canvasFacade.setShowMoveCursorOnTextHoverHandler(gridBuilderController.getShowMoveCursorOnTextHoverHandler());
+        canvasFacade.setShowDefaultCursorOnLeaveTextHoverHandler(gridBuilderController.getShowDefaultCursorOnLeaveTextHoverHandler());
+
+        // resize association when dragging handles
+        canvasFacade.setBeginResizeAssociationHandler(gridBuilderController.getBeginResizeAssociationEventHandler());
+        canvasFacade.setResizeAssociationNWHandler(gridBuilderController.getResizeAssociationNWHandler());
+        canvasFacade.setResizeAssociationSEHandler(gridBuilderController.getResizeAssociationSEHandler());
+        canvasFacade.setResizeAssociationNEHandler(gridBuilderController.getResizeAssociationNEHandler());
+        canvasFacade.setResizeAssociationSWHandler(gridBuilderController.getResizeAssociationSWHandler());
     }
 }

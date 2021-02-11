@@ -110,6 +110,11 @@ public class BuildMenuViewController {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.CUTOUT);
     }
 
+    @FXML
+    private void pickAssociationTool() {
+        constructionController.setBuildMenuData(ToolType.ASSOCIATION, null);
+    }
+
     // UI Control
 
     @FXML

@@ -1,4 +1,4 @@
-package baseui;
+package base;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import domain.Association;
 import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
@@ -27,11 +28,18 @@ public class GridFileManager {
 
     public void saveGrid(String path) throws IOException {
         ObjectNode gridNode = mapper.createObjectNode();
-        ArrayNode components = mapper.createArrayNode();
 
+        // save components
+        ArrayNode components = mapper.createArrayNode();
         grid.getComponents().forEach(c -> components.add(c.getObjectNode(mapper)));
         gridNode.put("components", components);
 
+        // save associations
+        ArrayNode associations = mapper.createArrayNode();
+        grid.getAssociations().forEach(a -> associations.add(a.getObjectNode(mapper)));
+        gridNode.put("associations", associations);
+
+        // write all the data to the file
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
         writer.writeValue(new File(path), gridNode);
     }
@@ -47,7 +55,7 @@ public class GridFileManager {
             return;
         }
 
-        grid.clearComponents();
+        grid.clearGrid();
         ArrayNode JSONComponents = (ArrayNode) gridNode.get("components");
 
         // create components
@@ -71,6 +79,14 @@ public class GridFileManager {
             Component component = grid.getComponents().get(i);
             JsonNode componentJSON = JSONComponents.get(i);
             component.setConnections(getConnectionsList(componentJSON));
+        }
+
+        // create associations from JSON
+        ArrayNode JSONAssociations = (ArrayNode) gridNode.get("associations");
+        if (JSONAssociations == null) return;
+        for (JsonNode associationJSON : JSONAssociations) {
+            Association association = new Association(associationJSON);
+            grid.addAssociation(association);
         }
     }
 

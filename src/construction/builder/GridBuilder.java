@@ -1,7 +1,9 @@
 package construction.builder;
 
+import construction.AssociationMoveContext;
 import construction.PropertiesData;
 import construction.ComponentType;
+import domain.Association;
 import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
@@ -100,7 +102,7 @@ public class GridBuilder {
 
         switch (componentType) {
             case POWER_SOURCE -> {
-                PowerSource powerSource = new PowerSource(properties.getName(), position, false);
+                PowerSource powerSource = new PowerSource(properties.getName(), position, true);
                 powerSource.setAngle(properties.getRotation());
                 if(!verifyPlacement(powerSource)) return false;
 
@@ -125,7 +127,7 @@ public class GridBuilder {
                 grid.addComponents(powerSource);
             }
             case TURBINE -> {
-                Turbine turbine = new Turbine(properties.getName(), position, false);
+                Turbine turbine = new Turbine(properties.getName(), position, true);
                 turbine.setAngle(properties.getRotation());
                 if(!verifyPlacement(turbine)) return false;
 
@@ -342,6 +344,26 @@ public class GridBuilder {
             }
         }
         return null;
+    }
+
+    public void placeAssociation(Point start, Point end) {
+        // determine topLeft point
+        double x = Math.min(start.getX(), end.getX());
+        double y = Math.min(start.getY(), end.getY());
+        Point topLeft = new Point(x, y);
+
+        // rectangle dimensions
+        double width = start.differenceX(end);
+        double height = start.differenceY(end);
+
+        // create the association and add it to the grid
+        Association association = new Association(topLeft, width, height, grid.countAssociations());
+        grid.addAssociation(association);
+    }
+
+    public void resizeAssociation(AssociationMoveContext context, Point position) {
+        Rectangle rect = context.target.getAssociationIcon().getRect();
+
     }
 
     public void toggleComponent(String componentId) {

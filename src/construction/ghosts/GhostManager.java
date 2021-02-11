@@ -5,10 +5,11 @@ import construction.ComponentType;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
-import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.IconCreator;
 
 import java.util.List;
 
+// The ghost manager creates the ghost icons that display when components are being placed
 public class GhostManager {
 
     private final static double GHOST_OPACITY = 0.5;
@@ -52,15 +53,15 @@ public class GhostManager {
 
     private ComponentIcon ghostIconCreator(ComponentType componentType, Point pos) {
         return switch (componentType) {
-            case BREAKER_12KV -> ComponentIconCreator.get12KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
-            case BREAKER_70KV -> ComponentIconCreator.get70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
-            case CUTOUT -> ComponentIconCreator.getCutoutIcon(pos, properties.getDefaultState());
-            case JUMPER -> ComponentIconCreator.getJumperIcon(pos, properties.getDefaultState());
-            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, properties.getName(), false);
-            case SWITCH -> ComponentIconCreator.getSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState());
-            case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(pos);
-            case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, false);
-            case WIRE -> ComponentIconCreator.getWireIcon(pos, pos, List.of());
+            case BREAKER_12KV -> IconCreator.create12KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case BREAKER_70KV -> IconCreator.create70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case CUTOUT -> IconCreator.createCutoutIcon(pos, properties.getDefaultState());
+            case JUMPER -> IconCreator.createJumperIcon(pos, properties.getDefaultState());
+            case POWER_SOURCE -> IconCreator.createPowerSourceIcon(pos, properties.getName(), false);
+            case SWITCH -> IconCreator.createSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case TRANSFORMER -> IconCreator.createTransformerIcon(pos);
+            case TURBINE -> IconCreator.createTurbineIcon(pos, false);
+            case WIRE -> IconCreator.createWireIcon(pos, pos, List.of());
         };
     }
 
@@ -76,7 +77,7 @@ public class GhostManager {
     public void extendGhostWire(Point start, Point end) {
         ghostEnabled = true;
         canvasMaster.clearOverlay();
-        ghostIcon = ComponentIconCreator.getWireIcon(start, end, List.of());
+        ghostIcon = IconCreator.createWireIcon(start, end, List.of());
         ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
         canvasMaster.addOverlayNode(ghostIcon.getComponentNode());
     }
@@ -85,13 +86,15 @@ public class GhostManager {
         ghostIcon.showError();
     }
 
-    public void enableGhostIcon() {
-        ghostEnabled = true;
-    }
-
-    public void disableGhostIcon() {
-        ghostEnabled = false;
-        canvasMaster.clearOverlay();
+    public void setGhostEnabled(boolean enabled) {
+        if (ghostIcon != null) {
+            if (enabled) {
+                ghostIcon.getComponentNode().setOpacity(GHOST_OPACITY);
+            } else {
+                ghostIcon.getComponentNode().setOpacity(0);
+            }
+        }
+        ghostEnabled = enabled;
     }
 
     public boolean isGhostEnabled() {

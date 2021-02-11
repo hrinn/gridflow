@@ -1,25 +1,29 @@
 package visualization;
 
 import construction.canvas.GridCanvasFacade;
+import domain.Association;
 import domain.Grid;
-import domain.components.*;
-import visualization.componentIcons.ComponentIcon;
+import domain.components.Component;
 
 public class GridVisualizer {
 
     private final Grid grid;
-    private final GridCanvasFacade canvasMaster;
+    private final GridCanvasFacade canvasFacade;
 
-    public GridVisualizer(Grid grid, GridCanvasFacade canvasMaster) {
+    public GridVisualizer(Grid grid, GridCanvasFacade canvasFacade) {
         this.grid = grid;
-        this.canvasMaster = canvasMaster;
+        this.canvasFacade = canvasFacade;
     }
 
     public void displayGrid() {
-        canvasMaster.clearComponentGroups();
-        // maybe set up the complicated component icon display stuff in here instead of component class
+        canvasFacade.clearComponentGroups();
         for (Component component : grid.getComponents()) {
-            canvasMaster.addComponentIcon(component.getUpdatedComponentIcon());
+            canvasFacade.addComponentIcon(component.getUpdatedComponentIcon());
+        }
+
+        canvasFacade.clearAssociationGroup();
+        for (Association association : grid.getAssociations()) {
+            canvasFacade.addAssociationIcon(association.getAssociationIcon());
         }
     }
 

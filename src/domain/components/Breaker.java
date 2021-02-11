@@ -3,9 +3,8 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import construction.ComponentType;
 import domain.geometry.Point;
-import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.IconCreator;
 import visualization.componentIcons.DeviceIcon;
 
 import java.util.UUID;
@@ -31,9 +30,9 @@ public class Breaker extends Closeable {
     private void createComponentIcon() {
         DeviceIcon icon;
         if (voltage == Voltage.KV12) {
-            icon = ComponentIconCreator.get12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
+            icon = IconCreator.create12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
         } else {
-            icon = ComponentIconCreator.get70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
+            icon = IconCreator.create70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault());
         }
         icon.setComponentName(getName());
         icon.setDeviceEnergyStates(false, false);

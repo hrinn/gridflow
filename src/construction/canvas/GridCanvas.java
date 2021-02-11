@@ -15,14 +15,18 @@ public class GridCanvas extends Pane {
     private final double unitWidth = 1000;
     private final double unitHeight = 500;
 
+    // the different groups displayed in the canvas
+    // each one occupies a different layer
     public final Group componentGroup = new Group();
     public final Group energyOutlineGroup = new Group();
     public final Group boundingRectGroup = new Group();
     public final Group overlayGroup = new Group();
     public final Group backgroundGrid = new Group();
+    public final Group associationGroup = new Group();
 
     public GridCanvas() {
-        getChildren().addAll(backgroundGrid, energyOutlineGroup, componentGroup, boundingRectGroup, overlayGroup);
+        // the order the groups are added to the canvas is the layer order (behind to front)
+        getChildren().addAll(backgroundGrid, energyOutlineGroup, componentGroup, associationGroup, boundingRectGroup, overlayGroup);
         addBackgroundGrid();
 
         setPrefSize(unitWidth * Globals.UNIT, unitHeight * Globals.UNIT);

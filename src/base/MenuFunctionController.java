@@ -1,4 +1,4 @@
-package baseui;
+package base;
 
 import application.events.GridChangedEvent;
 import application.events.GridFlowEventManager;
@@ -14,7 +14,6 @@ import java.util.concurrent.FutureTask;
 
 public class MenuFunctionController {
 
-    private static final String GRID_PATH = "./grid.json";
     private static final String DEFAULT_GRID_PATH = "./defaultgrid.json";
     private static final String DEFAULT_PATH = ".";
     private static final String DEFAULT_FILENAME = "grid";

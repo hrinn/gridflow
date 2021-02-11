@@ -10,7 +10,7 @@
 
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="baseui.BaseUIViewController"
+      fx:controller="base.BaseUIViewController"
       fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="3840" prefWidth="3840"
       style="-fx-border-color: LIGHTGRAY; -fx-background-color: LIGHTGRAY" translateX="-1.0" translateY="-2.0"
       BorderPane.alignment="TOP_LEFT">

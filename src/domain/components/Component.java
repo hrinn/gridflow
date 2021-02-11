@@ -1,15 +1,15 @@
 package domain.components;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import domain.Selectable;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 
 import java.util.List;
 import java.util.UUID;
 
-public abstract class Component {
+public abstract class Component implements Selectable {
 
     private UUID id;
     private String name;
@@ -63,6 +63,10 @@ public abstract class Component {
 
     public ComponentIcon getComponentIcon() {
         return icon;
+    }
+
+    public void setSelect(boolean select) {
+        getComponentIcon().setSelect(select);
     }
 
     protected void setComponentIcon(ComponentIcon icon) {

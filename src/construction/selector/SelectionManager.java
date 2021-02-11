@@ -2,9 +2,10 @@ package construction.selector;
 
 import construction.canvas.GridCanvasFacade;
 import domain.Grid;
-import domain.components.Component;
+import domain.Selectable;
 import domain.components.Wire;
 import domain.geometry.Point;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -14,14 +15,14 @@ import java.util.stream.Collectors;
 
 public class SelectionManager {
 
-    private List<String> selectedComponentIDs;
+    private List<String> selectedIDs;
     private Rectangle selectionBox;
     private GridCanvasFacade canvasFacade;
     private Grid grid;
     private Point mouseDownPoint;
 
     public SelectionManager(GridCanvasFacade canvasFacade, Grid grid) {
-        selectedComponentIDs = new ArrayList<>();
+        selectedIDs = new ArrayList<>();
         selectionBox = new Rectangle();
         this.canvasFacade = canvasFacade;
         this.grid = grid;
@@ -34,35 +35,36 @@ public class SelectionManager {
 
     // list of component icons is bad, causing issues
 
-    public void deleteSelectedComponents() {
+    public void deleteSelectedItems() {
         // Wires cannot be deleted if they are connected to a device or source, so delete the selected devices first
         sortWiresToBack();
-        for (String ID : selectedComponentIDs) {
-            grid.deleteComponent(ID);
-        }
-        deSelectAll();
+        selectedIDs.forEach(id -> {
+            setSelect(id, false);
+            grid.deleteSelectedItem(id);
+        });
+        selectedIDs.clear();
     }
 
     private void setSelect(String ID, boolean select) {
-        Component comp = grid.getComponent(ID);
-        if (comp != null) comp.getUpdatedComponentIcon().setSelect(select);
+        Selectable item = grid.getSelectableByID(ID);
+        item.setSelect(select);
     }
 
     public void deSelectAll() {
-        selectedComponentIDs.forEach(ID -> setSelect(ID, false));
-        selectedComponentIDs.clear();
+        selectedIDs.forEach(ID -> setSelect(ID, false));
+        selectedIDs.clear();
     }
 
     public void continuousPointSelection(String ID) {
-        if (selectedComponentIDs.contains(ID)) return;
+        if (selectedIDs.contains(ID)) return;
         setSelect(ID, true);
-        selectedComponentIDs.add(ID);
+        selectedIDs.add(ID);
     }
 
     public void pointSelection(String ID) {
         deSelectAll();
         setSelect(ID, true);
-        selectedComponentIDs.add(ID);
+        selectedIDs.add(ID);
     }
 
     public void beginSelection(double x, double y) {
@@ -84,10 +86,14 @@ public class SelectionManager {
 
     public void endSelection() {
         // detect selection box overlap
-        getSelectedNodeIDs().forEach(id -> {
-            if (!selectedComponentIDs.contains(id)) {
+        List<String> intersectingIDs = new ArrayList<>();
+        intersectingIDs.addAll(getIntersectingBoundingRectIDs());
+        intersectingIDs.addAll(getIntersectingAssociationIDs());
+
+        intersectingIDs.forEach(id -> {
+            if (!selectedIDs.contains(id)) {
                 setSelect(id, true);
-                selectedComponentIDs.add(id);
+                selectedIDs.add(id);
             }
         });
         clearSelection();
@@ -105,7 +111,7 @@ public class SelectionManager {
         System.out.println("Width: " + selectionBox.getWidth() + " Height: " + selectionBox.getHeight());
     }
 
-    private List<String> getSelectedNodeIDs() {
+    private List<String> getIntersectingBoundingRectIDs() {
         List<String> IDList = new ArrayList<>();
         List<Rectangle> existingBoundingRects = grid.getComponents().stream().map(comp ->
             comp.getUpdatedComponentIcon().getBoundingRect()
@@ -120,8 +126,24 @@ public class SelectionManager {
         return IDList;
     }
 
+    private List<String> getIntersectingAssociationIDs() {
+        List<String> IDList = new ArrayList<>();
+        List<Node> selectableNodes = new ArrayList<>();
+        // gets all the selectable nodes of every association
+        grid.getAssociations().forEach(association ->
+                selectableNodes.addAll(association.getAssociationIcon().getSelectableNodes()));
+
+        for (Node node : selectableNodes) {
+            if (selectionBox.getBoundsInParent().intersects(node.getBoundsInParent())) {
+                IDList.add(node.getId());
+            }
+        }
+
+        return IDList;
+    }
+
     private void sortWiresToBack() {
-        selectedComponentIDs.sort((ID1, ID2) -> {
+        selectedIDs.sort((ID1, ID2) -> {
             if (grid.getComponent(ID1) instanceof Wire) {
                 if (grid.getComponent(ID2) instanceof Wire) {
                     // comp1 and comp2 are wires

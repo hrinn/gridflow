@@ -68,6 +68,8 @@ public class AssociationGhostManager {
                 ghost.setOpacity(0.5);
             } else {
                 ghost.setOpacity(0);
+                ghost.setTranslateX(0);
+                ghost.setTranslateY(0);
             }
         }
         ghostEnabled = enabled;

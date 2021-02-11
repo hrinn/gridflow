@@ -7,5 +7,5 @@ public class Globals {
     public static final String GRIDFLOW_BLUE = "#008EB0";
 
     // Associations
-    public static final double ASSOC_HANDLE_RADIUS = 8;
+    public static final double ASSOC_HANDLE_RADIUS = 10;
 }

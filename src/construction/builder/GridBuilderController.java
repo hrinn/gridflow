@@ -1,6 +1,5 @@
 package construction.builder;
 
-import application.Globals;
 import application.events.*;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
@@ -13,7 +12,6 @@ import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
-import org.w3c.dom.css.Rect;
 
 // this controller handles event logic for grid building
 // this is mostly user click while
@@ -48,6 +46,7 @@ public class GridBuilderController {
 
     public void buildDataChanged() {
         doubleClickPlacementContext.placing = false;
+        updateAssociationHandles(buildData.toolType == ToolType.ASSOCIATION);
     }
 
     public void propertiesDataChanged() {
@@ -90,7 +89,7 @@ public class GridBuilderController {
             doubleClickPlacementContext.placing = false;
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
             model.placeAssociation(doubleClickPlacementContext.beginPoint, endPoint);
-            gridFlowEventManager.sendEvent(new AssociationPlacedEvent());
+            gridFlowEventManager.sendEvent(new AssociationChangedEvent());
         } else { // begin placement
             doubleClickPlacementContext.placing = true;
             doubleClickPlacementContext.beginPoint = Point.nearestCoordinate(event.getX(), event.getY());
@@ -140,7 +139,7 @@ public class GridBuilderController {
         }
         associationMoveContext.target = target;
         // determine beginning point for move
-        associationMoveContext.targetPosition = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
+        associationMoveContext.targetPosition = Point.nearestCoordinate(event.getX(), event.getY());
 
         event.consume();
     };
@@ -151,7 +150,7 @@ public class GridBuilderController {
         if (associationMoveContext.targetPosition == null) return;
 
         Rectangle rect = associationMoveContext.target.getAssociationIcon().getRect();
-        Point newLoc = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
+        Point newLoc = Point.nearestCoordinate(event.getX(), event.getY());
 
         double deltaX = newLoc.getX() - associationMoveContext.targetPosition.getX();
         double deltaY = newLoc.getY() - associationMoveContext.targetPosition.getY();
@@ -175,7 +174,7 @@ public class GridBuilderController {
         if (associationMoveContext.targetPosition == null) return;
 
 
-        Point position = Point.nearestCoordinate(event.getSceneX(), event.getSceneY());
+        Point position = Point.nearestCoordinate(event.getX(), event.getY());
         Rectangle rect = associationMoveContext.target.getAssociationIcon().getRect();
 
         double deltaX = position.getX() - associationMoveContext.targetPosition.getX();
@@ -192,6 +191,61 @@ public class GridBuilderController {
 
         event.consume();
     };
+
+    private final EventHandler<MouseEvent> resizeAssociationNEHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+        if (!event.isPrimaryButtonDown()) return;
+        if (associationMoveContext.targetPosition == null) return;
+
+
+        Point position = Point.nearestCoordinate(event.getX(), event.getY());
+        Rectangle rect = associationMoveContext.target.getAssociationIcon().getRect();
+
+        double deltaX = position.getX() - associationMoveContext.targetPosition.getX();
+        double deltaY = position.getY() - associationMoveContext.targetPosition.getY();
+        double newMaxX = rect.getX() + rect.getWidth() + deltaX ;
+        if (newMaxX >= rect.getWidth()) {
+            rect.setWidth(rect.getWidth() + deltaX);
+        }
+        double newY = rect.getY() + deltaY ;
+        if (newY <= rect.getY() + rect.getHeight()) {
+            rect.setY(newY);
+            rect.setHeight(rect.getHeight() - deltaY);
+        }
+        associationMoveContext.targetPosition = position;
+
+        event.consume();
+    };
+
+    private final EventHandler<MouseEvent> resizeAssociationSWHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+        if (!event.isPrimaryButtonDown()) return;
+        if (associationMoveContext.targetPosition == null) return;
+
+
+        Point position = Point.nearestCoordinate(event.getX(), event.getY());
+        Rectangle rect = associationMoveContext.target.getAssociationIcon().getRect();
+
+        double deltaX = position.getX() - associationMoveContext.targetPosition.getX();
+        double deltaY = position.getY() - associationMoveContext.targetPosition.getY();
+        double newX = rect.getX() + deltaX ;
+        if (newX <= rect.getX() + rect.getWidth()) {
+            rect.setX(newX);
+            rect.setWidth(rect.getWidth() - deltaX);
+        }
+        double newMaxY = rect.getY() + rect.getHeight() + deltaY;
+        if (newMaxY >= rect.getY() && newMaxY >= rect.getHeight()) {
+            rect.setHeight(rect.getHeight() + deltaY);
+        }
+        associationMoveContext.targetPosition = position;
+
+        event.consume();
+    };
+
+    // hides or shows the association handles based on current selected tool
+    private void updateAssociationHandles(boolean show) {
+        grid.getAssociations().forEach(association -> association.getAssociationIcon().showHandles(show));
+    }
 
     // runs when the use begins dragging an association's label
     private final EventHandler<MouseEvent> beginAssociationTextDragEventHandler = event -> {
@@ -225,6 +279,20 @@ public class GridBuilderController {
         target.setTranslateX(newTranslateX);
         target.setTranslateY(newTranslateY);
 
+        event.consume();
+    };
+
+    private final EventHandler<MouseEvent> showMoveCursorOnTextHoverHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+
+        canvasFacade.getCanvas().setCursor(Cursor.MOVE);
+        event.consume();
+    };
+
+    private final EventHandler<MouseEvent> showDefaultCursorOnLeaveTextHoverHandler = event -> {
+        if (buildData.toolType != ToolType.ASSOCIATION) return;
+
+        canvasFacade.getCanvas().setCursor(Cursor.DEFAULT);
         event.consume();
     };
 
@@ -262,5 +330,21 @@ public class GridBuilderController {
 
     public EventHandler<MouseEvent> getResizeAssociationSEHandler() {
         return resizeAssociationSEHandler;
+    }
+
+    public EventHandler<MouseEvent> getResizeAssociationNEHandler() {
+        return resizeAssociationNEHandler;
+    }
+
+    public EventHandler<MouseEvent> getResizeAssociationSWHandler() {
+        return resizeAssociationSWHandler;
+    }
+
+    public EventHandler<MouseEvent> getShowDefaultCursorOnLeaveTextHoverHandler() {
+        return showDefaultCursorOnLeaveTextHoverHandler;
+    }
+
+    public EventHandler<MouseEvent> getShowMoveCursorOnTextHoverHandler() {
+        return showMoveCursorOnTextHoverHandler;
     }
 }

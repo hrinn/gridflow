@@ -5,9 +5,7 @@ import construction.*;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
-import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.shape.Line;
 
 // This controller manages the events for all ghost related logic (the transparent icons that show when placing)
 public class GhostManagerController implements GridFlowEventListener {
@@ -30,7 +28,7 @@ public class GhostManagerController implements GridFlowEventListener {
             ghostModel.setGhostIcon(ComponentType.WIRE);
         } else if (gridFlowEvent instanceof PlacementFailedEvent) {
             handlePlacementError();
-        } else if (gridFlowEvent instanceof AssociationPlacedEvent) {
+        } else if (gridFlowEvent instanceof AssociationChangedEvent) {
             associationModel.setAssociationGhost();
         }
     }

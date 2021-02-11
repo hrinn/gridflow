@@ -7,7 +7,7 @@ import visualization.componentIcons.IconCreator;
 
 import java.util.UUID;
 
-public class Association {
+public class Association implements Selectable {
 
     private UUID id;
 
@@ -34,5 +34,9 @@ public class Association {
 
     public UUID getID() {
         return id;
+    }
+
+    public void setSelect(boolean select) {
+        associationIcon.setSelect(select);
     }
 }

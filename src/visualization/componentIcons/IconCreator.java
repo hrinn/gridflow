@@ -356,7 +356,9 @@ public class IconCreator {
         // resize handles, these are the circles that appear in the 4 corners and allow the users to drag the association
         Circle NW = new Circle();
         Circle SE = new Circle();
-        List<Circle> handles = List.of(NW, SE);
+        Circle NE = new Circle();
+        Circle SW = new Circle();
+        List<Circle> handles = List.of(NW, SE, NE, SW);
         handles.forEach(handle -> {
             handle.setRadius(Globals.ASSOC_HANDLE_RADIUS);
             handle.setFill(Color.TRANSPARENT);
@@ -364,11 +366,11 @@ public class IconCreator {
             handle.setStrokeWidth(2);
         });
         // handle positions are set in this function
-        icon.setHandles(NW, SE);
+        icon.setHandles(NW, SE, NE, SW);
 
         // create the text that displays inside the associations
         Point labelPos = getAssociationLabelPosition(topLeft, width, height);
-        Text labelText = createText(labelPos, label, Color.BLACK, 24);
+        Text labelText = createText(labelPos, label, Color.BLACK, 32);
         icon.setText(labelText);
         icon.setID(id);
 

@@ -43,20 +43,41 @@ public class Grid {
         associations.add(association);
     }
 
-    public void deleteComponent(String ID) {
-        Component component = getComponent(ID);
-        if (component == null) return;
-        if (component.getId().toString().equals(ID)) {
-            try {
-                component.delete();
-                if(component instanceof Wire) {
-                    removeCausedBridgePoints((Wire) component);
-                }
-                components.remove(component);
-            } catch (UnsupportedOperationException e) {
-                System.err.println("Cannot delete Wire: " + component.getId());
+    public void deleteSelectedItem(String ID) {
+        Component comp = getComponent(ID);
+        if (comp == null) {
+            Association association = getAssociation(ID);
+            if (association != null) {
+                deleteAssociation(association);
             }
+        } else {
+            deleteComponent(comp);
         }
+    }
+
+    private void deleteComponent(Component component) {
+        try {
+            component.delete();
+            if(component instanceof Wire) {
+                removeCausedBridgePoints((Wire) component);
+            }
+            components.remove(component);
+        } catch (UnsupportedOperationException e) {
+            System.err.println("Cannot delete Wire: " + component.getId());
+        }
+    }
+
+    // gets a selectable by ID, returns null if not found
+    public Selectable getSelectableByID(String ID) {
+        Selectable selectable = getComponent(ID);
+        if (selectable == null) {
+            selectable = getAssociation(ID);
+        }
+        return selectable;
+    }
+
+    private void deleteAssociation(Association association) {
+        associations.remove(association);
     }
 
     public void removeCausedBridgePoints(Wire wire) {

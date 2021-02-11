@@ -150,16 +150,22 @@ public class ConstructionController {
 
         // association events
         canvasFacade.setConsumeAssociationClicksHandler(consumeAssociationClicksHandler);
+
         // disables ghost when hovering over association
         canvasFacade.setBeginHoverAssociationHandler(ghostManagerController.getBeginHoverAssociationHandler());
         canvasFacade.setEndHoverAssociationHandler(ghostManagerController.getEndHoverAssociationHandler());
-        // change cursor depending on what you are hovering over
-        // move text when dragging the text
+
+        // move text when dragging the text and show new cursor
         canvasFacade.setBeginAssociationTextDragHandler(gridBuilderController.getBeginAssociationTextDragEventHandler());
         canvasFacade.setDragAssociationTextHandler(gridBuilderController.getDragAssociationTextEventHandler());
+        canvasFacade.setShowMoveCursorOnTextHoverHandler(gridBuilderController.getShowMoveCursorOnTextHoverHandler());
+        canvasFacade.setShowDefaultCursorOnLeaveTextHoverHandler(gridBuilderController.getShowDefaultCursorOnLeaveTextHoverHandler());
+
         // resize association when dragging handles
         canvasFacade.setBeginResizeAssociationHandler(gridBuilderController.getBeginResizeAssociationEventHandler());
         canvasFacade.setResizeAssociationNWHandler(gridBuilderController.getResizeAssociationNWHandler());
         canvasFacade.setResizeAssociationSEHandler(gridBuilderController.getResizeAssociationSEHandler());
+        canvasFacade.setResizeAssociationNEHandler(gridBuilderController.getResizeAssociationNEHandler());
+        canvasFacade.setResizeAssociationSWHandler(gridBuilderController.getResizeAssociationSWHandler());
     }
 }

@@ -22,13 +22,22 @@ public class GridCanvasFacade {
     private EventHandler<MouseEvent> selectSingleComponentHandler;
 
     // Association Event Handlers
+    // Handlers to resize the association box using the handles on each corner
     private EventHandler<MouseEvent> beginResizeAssociationHandler;
     private EventHandler<MouseEvent> resizeAssociationNWHandler;
     private EventHandler<MouseEvent> resizeAssociationSEHandler;
-    private EventHandler<MouseEvent> beginHoverAssociationHandler;
-    private EventHandler<MouseEvent> endHoverAssociationHandler;
+    private EventHandler<MouseEvent> resizeAssociationNEHandler;
+    private EventHandler<MouseEvent> resizeAssociationSWHandler;
+
+    // Handlers to move the text and show new cursors
     private EventHandler<MouseEvent> beginAssociationTextDragHandler;
     private EventHandler<MouseEvent> dragAssociationTextHandler;
+    private EventHandler<MouseEvent> showMoveCursorOnTextHoverHandler;
+    private EventHandler<MouseEvent> showDefaultCursorOnLeaveTextHoverHandler;
+
+    // general association events
+    private EventHandler<MouseEvent> beginHoverAssociationHandler;
+    private EventHandler<MouseEvent> endHoverAssociationHandler;
     private EventHandler<MouseEvent> consumeAssociationClicksHandler;
 
     public GridCanvasFacade() {
@@ -95,18 +104,22 @@ public class GridCanvasFacade {
         // the event handlers for the border lines (allows you to drag them)
         icon.getHandles().forEach(handle -> {
             handle.addEventHandler(MouseEvent.MOUSE_PRESSED, beginResizeAssociationHandler);
-            setCursorChange(handle, Cursor.NW_RESIZE);
         });
         icon.getResizeHandleNW().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationNWHandler);
+        setHandleCursorChange(icon.getResizeHandleNW(), Cursor.NW_RESIZE);
         icon.getResizeHandleSE().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationSEHandler);
+        setHandleCursorChange(icon.getResizeHandleSE(), Cursor.SE_RESIZE);
+        icon.getResizeHandleNE().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationNEHandler);
+        setHandleCursorChange(icon.getResizeHandleNE(), Cursor.NE_RESIZE);
+        icon.getResizeHandleSW().addEventHandler(MouseEvent.MOUSE_DRAGGED, resizeAssociationSWHandler);
+        setHandleCursorChange(icon.getResizeHandleSW(), Cursor.SW_RESIZE);
 
         // event handlers for the text (allows you to drag it)
         Text text = icon.getText();
         text.addEventHandler(MouseEvent.MOUSE_PRESSED, beginAssociationTextDragHandler);
         text.addEventHandler(MouseEvent.MOUSE_DRAGGED, dragAssociationTextHandler);
-
-        // cursor changes on hover
-        setCursorChange(text, Cursor.MOVE);
+        text.addEventHandler(MouseEvent.MOUSE_ENTERED, showMoveCursorOnTextHoverHandler);
+        text.addEventHandler(MouseEvent.MOUSE_EXITED, showDefaultCursorOnLeaveTextHoverHandler);
     }
 
     public void showBackgroundGrid(boolean show) {
@@ -117,11 +130,13 @@ public class GridCanvasFacade {
         }
     }
 
-    private void setCursorChange(Node node, Cursor cursor) {
-        node.setOnMouseEntered(event -> canvas.setCursor(cursor));
-        node.setOnMouseExited(event -> canvas.setCursor(Cursor.DEFAULT));
-        node.setOnDragDetected(event -> canvas.setCursor(Cursor.CLOSED_HAND));
-        node.setOnMouseReleased(event -> canvas.setCursor(Cursor.DEFAULT));
+    private void setHandleCursorChange(Node handle, Cursor cursor) {
+        handle.setOnMouseEntered(event -> {
+            if (((Node)event.getTarget()).getOpacity() != 0) {
+                canvas.setCursor(cursor);
+            }
+        });
+        handle.setOnMouseExited(event -> canvas.setCursor(Cursor.DEFAULT));
     }
 
     public void addCanvasEventHandler(EventType eventType, EventHandler eventHandler) {
@@ -136,6 +151,7 @@ public class GridCanvasFacade {
         return canvas;
     }
 
+    // All these setters all the event handlers to be set from the Construction Controller
     public void setToggleComponentEventHandler(EventHandler<MouseEvent> eventHandler) {
         this.toggleComponentEventHandler = eventHandler;
     }
@@ -174,5 +190,21 @@ public class GridCanvasFacade {
 
     public void setConsumeAssociationClicksHandler(EventHandler<MouseEvent> consumeAssociationClicksHandler) {
         this.consumeAssociationClicksHandler = consumeAssociationClicksHandler;
+    }
+
+    public void setResizeAssociationNEHandler(EventHandler<MouseEvent> resizeAssociationNEHandler) {
+        this.resizeAssociationNEHandler = resizeAssociationNEHandler;
+    }
+
+    public void setResizeAssociationSWHandler(EventHandler<MouseEvent> resizeAssociationSWHandler) {
+        this.resizeAssociationSWHandler = resizeAssociationSWHandler;
+    }
+
+    public void setShowDefaultCursorOnLeaveTextHoverHandler(EventHandler<MouseEvent> showDefaultCursorOnLeaveTextHoverHandler) {
+        this.showDefaultCursorOnLeaveTextHoverHandler = showDefaultCursorOnLeaveTextHoverHandler;
+    }
+
+    public void setShowMoveCursorOnTextHoverHandler(EventHandler<MouseEvent> showMoveCursorOnTextHoverHandler) {
+        this.showMoveCursorOnTextHoverHandler = showMoveCursorOnTextHoverHandler;
     }
 }

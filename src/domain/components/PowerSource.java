@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
-import visualization.componentIcons.IconCreator;
+import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.SourceIcon;
 
 import java.util.List;
@@ -64,7 +64,7 @@ public class PowerSource extends Source {
     }
 
     private void createComponentIcon() {
-        SourceIcon icon = IconCreator.createPowerSourceIcon(getPosition(), getName(), isOn());
+        SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);
         icon.setComponentIconID(getId().toString());

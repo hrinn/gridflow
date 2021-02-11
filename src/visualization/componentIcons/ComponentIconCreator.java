@@ -14,11 +14,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public class IconCreator {
+public class ComponentIconCreator {
 
     private static final double BRIDGE_GAP = 10;
 
-    public static DeviceIcon createSwitchIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static DeviceIcon getSwitchIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon switchIcon = new DeviceIcon();
 
         // base shape
@@ -64,7 +64,7 @@ public class IconCreator {
         return switchIcon;
     }
 
-    public static DeviceIcon create70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static DeviceIcon get70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon breakerIcon = new DeviceIcon();
         Line inLine = createLine(p, p.translate(0, 1 * Globals.UNIT));
         breakerIcon.addInNodeShapes(inLine);
@@ -99,7 +99,7 @@ public class IconCreator {
         return breakerIcon;
     }
 
-    public static DeviceIcon create12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+    public static DeviceIcon get12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
         DeviceIcon breakerIcon = new DeviceIcon();
 
         Line inLine1 = createLine(p, p.translate(0, 0.75 * Globals.UNIT));
@@ -149,7 +149,7 @@ public class IconCreator {
         return breakerIcon;
     }
 
-    public static DeviceIcon createTransformerIcon(Point p) {
+    public static DeviceIcon getTransformerIcon(Point p) {
 
         // change to new icon that can't be split energy maybe
         DeviceIcon transformerIcon = new DeviceIcon();
@@ -181,7 +181,7 @@ public class IconCreator {
         return transformerIcon;
     }
 
-    public static DeviceIcon createJumperIcon(Point p, boolean closed) {
+    public static DeviceIcon getJumperIcon(Point p, boolean closed) {
         DeviceIcon jumperIcon = new DeviceIcon();
 
         Line inLine = createLine(p, p.translate(0, Globals.UNIT));
@@ -198,7 +198,7 @@ public class IconCreator {
         return jumperIcon;
     }
 
-    public static DeviceIcon createCutoutIcon(Point p, boolean closed) {
+    public static DeviceIcon getCutoutIcon(Point p, boolean closed) {
         DeviceIcon cutoutIcon = new DeviceIcon();
 
         Line inLine = createLine(p, p.translate(0, .95 * Globals.UNIT));
@@ -228,7 +228,7 @@ public class IconCreator {
         return cutoutIcon;
     }
 
-    public static SourceIcon createPowerSourceIcon(Point p, String name, boolean isOn) {
+    public static SourceIcon getPowerSourceIcon(Point p, String name, boolean isOn) {
         SourceIcon powerSourceIcon = new SourceIcon();
 
         Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
@@ -248,7 +248,7 @@ public class IconCreator {
         return powerSourceIcon;
     }
 
-    public static SourceIcon createTurbineIcon(Point p, boolean isOn) {
+    public static SourceIcon getTurbineIcon(Point p, boolean isOn) {
         SourceIcon turbineIcon = new SourceIcon();
 
         Circle turbineCircle = createCircle(p.translate(0, 2 * Globals.UNIT), Globals.UNIT, Color.RED, Color.BLACK);
@@ -267,7 +267,7 @@ public class IconCreator {
         return turbineIcon;
     }
 
-    public static WireIcon createWireIcon(Point p1, Point p2, List<Point> bridgePoints) {
+    public static WireIcon getWireIcon(Point p1, Point p2, List<Point> bridgePoints) {
         WireIcon wireIcon = new WireIcon();
 
         if (p1.equals(p2)) {
@@ -329,7 +329,7 @@ public class IconCreator {
         return wires;
     }
 
-    public static WireIcon createBlankWireIcon(Point p1, Point p2) {
+    public static WireIcon getBlankWireIcon(Point p1, Point p2) {
 
         WireIcon wireIcon = new WireIcon();
 
@@ -343,7 +343,7 @@ public class IconCreator {
         return wireIcon;
     }
 
-    public static AssociationIcon createAssociationNode(Point topLeft, double width, double height, String label, UUID id) {
+    public static AssociationIcon getAssociationNode(Point topLeft, double width, double height, String label, UUID id) {
         AssociationIcon icon = new AssociationIcon();
 
         // this is the association rectangle displayed on screen

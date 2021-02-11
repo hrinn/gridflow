@@ -4,11 +4,10 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import domain.geometry.Point;
-import javafx.scene.Group;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import visualization.componentIcons.AssociationIcon;
-import visualization.componentIcons.IconCreator;
+import visualization.componentIcons.ComponentIconCreator;
 
 import java.util.UUID;
 
@@ -45,7 +44,7 @@ public class Association implements Selectable {
     }
 
     private void createAssociationIcon(Point position, double width, double height) {
-        this.associationIcon = IconCreator.createAssociationNode(position, width, height, label, id);
+        this.associationIcon = ComponentIconCreator.getAssociationNode(position, width, height, label, id);
     }
 
     public AssociationIcon getAssociationIcon() {

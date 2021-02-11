@@ -2,7 +2,7 @@ package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import domain.geometry.Point;
-import visualization.componentIcons.IconCreator;
+import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
 import java.util.UUID;
@@ -22,7 +22,7 @@ public class Cutout extends Closeable{
     }
 
     private void createComponentIcon() {
-        DeviceIcon icon = IconCreator.createCutoutIcon(getPosition(), isClosed());
+        DeviceIcon icon = ComponentIconCreator.getCutoutIcon(getPosition(), isClosed());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());

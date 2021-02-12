@@ -1,5 +1,9 @@
 package construction;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -14,12 +18,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.UUID;
 
 enum MenuState {
     MenuCollapsed, MenuExpanded
 }
 
-public class BuildMenuViewController {
+enum PropertyState {
+    Component, Selection, Association
+}
+
+public class BuildMenuViewController implements PropertiesObserver{
 
     private static final String ARROW_RIGHT_PATH = "src/resources/ArrowRight.png";
     private static final String ARROW_LEFT_PATH = "src/resources/ArrowLeft.png";
@@ -33,9 +42,10 @@ public class BuildMenuViewController {
     private MenuState state = MenuState.MenuExpanded;
 
     private ConstructionController constructionController;
-    private PropertiesData sharedProperties;
+    private PropertiesData Properties;
 
     // variables for the different property windows
+    private PropertyState propertyWindow;
     private VBox ComponentFieldNames;
     private VBox ComponentFields;
     private VBox AssociationFieldNames;
@@ -61,9 +71,15 @@ public class BuildMenuViewController {
 
     @FXML
     private void initialize() {
-        // Bind the managed and visible properties for the component menu and properties window
+        this.Properties = new PropertiesData();
+
+        // Bind the managed and visible properties for the component menu and properties window.
+        // Allows the windows to be hidden through node visibility.
         ComponentMenu.managedProperty().bind(ComponentMenu.visibleProperty());
-       // PropertiesWindow.managedProperty().bind(PropertiesWindow.visibleProperty());
+        PropertiesWindow.managedProperty().bind(PropertiesWindow.visibleProperty());
+
+        // Setup observer for properties data
+        PropertiesManager.attach(this);
 
         // Pre-generate the different windows
         generatePropertyElements();
@@ -71,10 +87,18 @@ public class BuildMenuViewController {
 
     public void setConstructionController(ConstructionController constructionController) {
         this.constructionController = constructionController;
-        this.sharedProperties = constructionController.propertiesData;
+        //this.Properties = constructionController.propertiesData;
     }
 
-
+    @Override
+    public void updateProperties(PropertiesData properties) {
+//        // received data from somewhere else, update the properties variable (window only updates when..)
+//        if (!this.Properties.equals(properties)) {
+//
+//        }
+        this.Properties = properties;
+        setPropertiesWindow();
+    }
 
     @FXML
     public void ConstructionViewController(){ }
@@ -85,6 +109,9 @@ public class BuildMenuViewController {
     private void pickInteractTool() {
         // At this point, the tool is selected. Update the properties window to show default now
         constructionController.setBuildMenuData(ToolType.INTERACT, null);
+        //Properties.setDefaultProperties(this.Properties.getType());
+        PropertiesManager.notifyObservers(this.Properties);
+        setComponentPropertiesWindow();
     }
 
     @FXML
@@ -94,63 +121,75 @@ public class BuildMenuViewController {
 
     @FXML
     private void pickWireTool() {
+
         constructionController.setBuildMenuData(ToolType.WIRE, ComponentType.WIRE);
+        Properties.setDefaultComponentProperties(ComponentType.WIRE);
+        PropertiesManager.notifyObservers(this.Properties);
+        setComponentPropertiesWindow();
     }
 
     @FXML
     private void pickPlacePowerSourceTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.POWER_SOURCE);
         // Whenever a component is selected, first display the default properties for that component
-        sharedProperties.setDefaultProperties(ComponentType.POWER_SOURCE);
+        Properties.setDefaultComponentProperties(ComponentType.POWER_SOURCE);
+        PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
     }
 
     @FXML
     private void pickPlaceTurbineTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.TURBINE);
-        sharedProperties.setDefaultProperties(ComponentType.TURBINE);
+        Properties.setDefaultComponentProperties(ComponentType.TURBINE);
+        PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
     }
 
     @FXML
     private void pickPlaceSwitchTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.SWITCH);
-        sharedProperties.setDefaultProperties(ComponentType.SWITCH);
+        Properties.setDefaultComponentProperties(ComponentType.SWITCH);
+        PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
     }
 
     @FXML
     private void pickPlaceBreaker70KVTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.BREAKER_70KV);
-        sharedProperties.setDefaultProperties(ComponentType.BREAKER_70KV);
+        Properties.setDefaultComponentProperties(ComponentType.BREAKER_70KV);
+        PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
     }
 
     @FXML
     private void pickPlaceBreaker12KVTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.BREAKER_12KV);
-        sharedProperties.setDefaultProperties(ComponentType.BREAKER_12KV);
+        Properties.setDefaultComponentProperties(ComponentType.BREAKER_12KV);
+        PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
     }
 
     @FXML
     private void pickPlaceTransformerTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.TRANSFORMER);
-        sharedProperties.setDefaultProperties(ComponentType.TRANSFORMER);
+        Properties.setDefaultComponentProperties(ComponentType.TRANSFORMER);
+        PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
     }
 
     @FXML
     private void pickPlaceJumperTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.JUMPER);
-        sharedProperties.setDefaultProperties(ComponentType.JUMPER);
+        Properties.setDefaultComponentProperties(ComponentType.JUMPER);
+        PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
     }
 
     @FXML
     private void pickPlaceCutoutTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.CUTOUT);
-        sharedProperties.setDefaultProperties(ComponentType.CUTOUT);
+        Properties.setDefaultComponentProperties(ComponentType.CUTOUT);
+        PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
     }
 
@@ -162,12 +201,12 @@ public class BuildMenuViewController {
     // UI Control
 
     @FXML
-    private void darkenMenuButtonOnHover(){
+    private void darkenMenuButtonOnHover() {
         ComponentMenuButton.setStyle("-fx-background-color: #737373");
     }
 
     @FXML
-    private void lightenMenuButtonOnHover(){
+    private void lightenMenuButtonOnHover() {
         ComponentMenuButton.setStyle("-fx-background-color: #b0b0b0");
     }
 
@@ -199,21 +238,31 @@ public class BuildMenuViewController {
         ComponentBuilderMenu.getTransforms().add(menuButtonTrans);
     }
 
-//    private void setPropertiesWindow(ToolType type, ComponentType compType, String name, double rotation, boolean state){
-//
-//
-//    }
+    private void setDefaultPropertiesWindow(){
 
-    private void setComponentPropertiesWindow(){
+    }
+
+    private void setPropertiesWindow(){
+        // set the window based on (component id = component, numselected = selection, and association?)
+        if (!Properties.getID().equals(new UUID(0, 0))) {
+            // Component properties, update window
+            setComponentPropertiesWindow();
+        }
+
+    }
+
+    private void setComponentPropertiesWindow() {
         // set the window fields before adding to view
         for (Node node : ComponentFields.getChildren()) {
-            if (node.getId().equals("typeField")){
-                ((TextField)node).setText(sharedProperties.getType().toString());
-            } else if (node.getId().equals("nameField")) {
-                ((TextField)node).setText(sharedProperties.getName());
-            } else if (node.getId().equals("stateField")) {
-                if (!sharedProperties.getDefaultState()) {
-                    ((RadioButton)node).setSelected(true);
+            if (node != null){
+                if (node.getId().equals("typeField") && Properties.getType() != null){
+                    ((TextField)node).setText(Properties.getType().toString());
+                }
+                else if (node.getId().equals("nameField")) {
+                    ((TextField)node).setText(Properties.getName());
+                }
+                else if (node.getId().equals("stateField")) {
+                    ((RadioButton)node).setSelected(!Properties.getDefaultState());
                 }
             }
         }
@@ -224,13 +273,13 @@ public class BuildMenuViewController {
     }
 
 
-    private void generatePropertyElements(){
+    private void generatePropertyElements() {
 
         initComponentProperties();
         initSelectionProperties();
     }
 
-    private void initComponentProperties(){
+    private void initComponentProperties() {
         Label type = new Label("Type");
         type.getStyleClass().add("field-label");
 
@@ -247,30 +296,56 @@ public class BuildMenuViewController {
         typeField.setId("typeField");
         typeField.setEditable(false);
         typeField.setFocusTraversable(false);
-        typeField.getStyleClass().add("component-field");
+        typeField.getStyleClass().add("field");
 
         TextField nameField = new TextField();
         nameField.setId("nameField");
-        nameField.getStyleClass().add("component-field");
+        nameField.getStyleClass().add("field");
+        nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
+                if (t1){
+                    System.out.println("User is typing!");
+                    constructionController.setUserTyping(true);
+                } else {
+                    System.out.println("User has stopped typing!");
+                    constructionController.setUserTyping(false);
+                }
+            }
+        });
 
         RadioButton stateField = new RadioButton();
         stateField.setId("stateField");
-        stateField.getStyleClass().add("component-field");
+        stateField.getStyleClass().add("field");
 
-        ComponentFields = new VBox(10, typeField, nameField, stateField);
+        Button applyButton = new Button("Apply");
+        applyButton.setId("applyComponentProperties");
+        applyButton.getStyleClass().addAll("field", "apply-button");
+        applyButton.setOnAction(actionEvent -> {
+            // && !nameField.getText().isEmpty()
+            if (nameField.getText() != null) {
+                // set component name in properties and update
+                Properties.setName(nameField.getText());
+                PropertiesManager.notifyObservers(Properties);
+            }
+        }
+
+        );
+
+        ComponentFields = new VBox(10, typeField, nameField, stateField, applyButton);
         ComponentFields.getStyleClass().add("field-container");
 
     }
 
 
-    private void initSelectionProperties(){
+    private void initSelectionProperties() {
         Label numSelected = new Label("Selected");
         numSelected.getStyleClass().add("field-label");
 
         TextField selectedField = new TextField();
         selectedField.setEditable(false);
         selectedField.setFocusTraversable(false);
-        selectedField.getStyleClass().add("component-field");
+        selectedField.getStyleClass().add("field");
 
         SelectedFieldNames = new VBox(numSelected);
         SelectedFieldNames.getStyleClass().add("field-name-container");
@@ -278,8 +353,6 @@ public class BuildMenuViewController {
         SelectedFields = new VBox(selectedField);
 
     }
-
-
 
 
 

@@ -13,7 +13,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class ConstructionController {
+public class ConstructionController implements PropertiesObserver {
 
     private GridCanvasFacade canvasFacade = null;
     private GridFlowEventManager gridFlowEventManager;
@@ -28,6 +28,7 @@ public class ConstructionController {
     // UI Data
     private BuildMenuData buildMenuData;
     public PropertiesData propertiesData;
+    public boolean isTyping;
 
     // Wire Placing and Association Placing
     // Used to share if a double click is in progress, and where the first click was if so
@@ -40,6 +41,7 @@ public class ConstructionController {
         this.buildMenuData = new BuildMenuData();
         this.propertiesData = new PropertiesData();
         this.stage = stage;
+        this.isTyping = false;
 
         // controllers
         gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData,
@@ -50,11 +52,14 @@ public class ConstructionController {
         gridFlowEventManager.addListener(gridHistorianController);
         gridFlowEventManager.addListener(ghostManagerController);
 
-        setPropertiesData(0, true);
+        //setPropertiesData(0, true);
         setBuildMenuData(ToolType.INTERACT, null);
 
         installEventHandlers();
+        PropertiesManager.attach(this);
     }
+
+    public void setUserTyping(boolean typing) { this.isTyping = typing; }
 
     public GridCanvasFacade getCanvasFacade() {
         return canvasFacade;
@@ -80,14 +85,19 @@ public class ConstructionController {
         propertiesData.setRotation(rotation);
         propertiesData.setDefaultState(defaultState);
 
-        // Use this call to gridbuilder to pass back the necessary data
+        // Use this call to gridbuilder to pass back the necessary data (dead call)
         gridBuilderController.propertiesDataChanged();
         ghostManagerController.propertiesDataChanged(rotationChanged, defaultStateChanged);
     }
 
-//    public void setPropertiesData(double rotation, boolean defaultState, )
+    @Override
+    public void updateProperties(PropertiesData properties){
+        this.propertiesData = properties;
+    }
+
 
     private final EventHandler<KeyEvent> handleRKeyRotation = event -> {
+        if (isTyping) return;
         if (event.getCode() != KeyCode.R) return;
         rotate(event.isControlDown());
         event.consume();
@@ -100,6 +110,7 @@ public class ConstructionController {
     };
 
     private final EventHandler<KeyEvent> handleToggleDefaultState = event -> {
+        if (isTyping) return;
         if (event.getCode() != KeyCode.E) return;
         if (buildMenuData.toolType != ToolType.PLACE) return;
         setPropertiesData(propertiesData.getRotation(), !propertiesData.getDefaultState());

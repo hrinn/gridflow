@@ -1,6 +1,9 @@
 package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import construction.history.ComponentMemento;
 import construction.history.MementoType;
 import domain.geometry.Point;
@@ -47,6 +50,15 @@ public class Transformer extends Device {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
     }
+
+    @Override
+    public void updateComponentIconName() {
+        DeviceIcon icon = (DeviceIcon)getComponentIcon();
+        icon.setComponentName(getName());
+    }
+
+    @Override
+    public ComponentType getComponentType() { return ComponentType.TRANSFORMER; }
 }
 
 class TransformerSnapshot implements ComponentMemento {

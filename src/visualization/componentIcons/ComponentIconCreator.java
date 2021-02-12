@@ -64,8 +64,8 @@ public class ComponentIconCreator {
         return switchIcon;
     }
 
-    public static DeviceIcon get70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
-        DeviceIcon breakerIcon = new DeviceIcon();
+    public static BreakerIcon get70KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+        BreakerIcon breakerIcon = new BreakerIcon();
         Line inLine = createLine(p, p.translate(0, 1 * Globals.UNIT));
         breakerIcon.addInNodeShapes(inLine);
 
@@ -74,7 +74,7 @@ public class ComponentIconCreator {
 
         Rectangle box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1 * Globals.UNIT),
                 p.translate(0.5 * Globals.UNIT, 2 * Globals.UNIT), Color.RED, Color.BLACK);
-        breakerIcon.addMidNodeShapes(box);
+        breakerIcon.addBackfedOffNodeShapes(box);
 
         Point center = p.translate(0, 1.5 * Globals.UNIT);
 
@@ -82,13 +82,13 @@ public class ComponentIconCreator {
             if (!isClosed) {
                 box.setFill(Color.LIME);
                 Text text = createText(center, "N/C", Color.WHITE, 10);
-                breakerIcon.addStaticNodes(text);
+                breakerIcon.addTextElement(text);
             }
         }
         else {
             if (isClosed) {
                 Text text = createText(center, "N/O", Color.WHITE, 10);
-                breakerIcon.addStaticNodes(text);
+                breakerIcon.addTextElement(text);
             }
             else {
                 box.setFill(Color.LIME);
@@ -99,8 +99,8 @@ public class ComponentIconCreator {
         return breakerIcon;
     }
 
-    public static DeviceIcon get12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
-        DeviceIcon breakerIcon = new DeviceIcon();
+    public static BreakerIcon get12KVBreakerIcon(Point p, boolean isClosed, boolean isClosedByDefault) {
+        BreakerIcon breakerIcon = new BreakerIcon();
 
         Line inLine1 = createLine(p, p.translate(0, 0.75 * Globals.UNIT));
         Line inLine2 = createRoundedLine(p.translate(0, Globals.UNIT), p.translate(0, 1.5 * Globals.UNIT));
@@ -124,7 +124,7 @@ public class ComponentIconCreator {
 
         Rectangle box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1.5 * Globals.UNIT),
                 p.translate(0.5 * Globals.UNIT, 2.5 * Globals.UNIT), Color.RED, Color.BLACK);
-        breakerIcon.addMidNodeShapes(box);
+        breakerIcon.addBackfedOffNodeShapes(box);
 
         Point center = p.translate(0, 2 * Globals.UNIT);
 
@@ -132,13 +132,13 @@ public class ComponentIconCreator {
             if (!isClosed) {
                 box.setFill(Color.LIME);
                 Text text = createText(center, "N/C", Color.WHITE, 10);
-                breakerIcon.addStaticNodes(text);
+                breakerIcon.addTextElement(text);
             }
         }
         else {
             if (isClosed) {
                 Text text = createText(center, "N/O", Color.WHITE, 10);
-                breakerIcon.addStaticNodes(text);
+                breakerIcon.addTextElement(text);
             }
             else {
                 box.setFill(Color.LIME);
@@ -241,7 +241,7 @@ public class ComponentIconCreator {
         if (!isOn) sourceBox.setFill(Color.LIME);
         Point center = p.translate(0, -2 * Globals.UNIT);
         Text text = createText(center, name, Color.BLACK, 12);
-        powerSourceIcon.addStaticNodeShapes(text);
+        powerSourceIcon.addTextElement(text);
 
         powerSourceIcon.setBoundingRect(new Dimensions(2, 3, 0, -0.25, 0, 0, true), p);
         powerSourceIcon.setFittingRect(new Dimensions(2, 3, 0, -1, 0, 0, true), p);

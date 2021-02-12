@@ -51,15 +51,19 @@ public class DeviceIcon extends ComponentIcon {
         }
     }
 
-    private void setInNodeEnergyState(boolean energized) {
+    protected void setInNodeEnergyState(boolean energized) {
         inNodeEnergyOutline.getChildren().forEach(element -> element.setOpacity(energized ? 1 : 0));
     }
 
-    private void setOutNodeEnergyState(boolean energized) {
+    protected void setOutNodeEnergyState(boolean energized) {
         outNodeEnergyOutline.getChildren().forEach(element -> element.setOpacity(energized ? 1 : 0));
     }
 
-    private void setMidNodeEnergyState(boolean energized) {
+    protected void setMidNodeEnergyState(boolean energized) {
         midNodeEnergyOutline.getChildren().forEach(element -> element.setOpacity(energized ? 1 : 0));
+    }
+
+    protected Group getMidNodeEnergyOutline() {
+        return midNodeEnergyOutline;
     }
 }

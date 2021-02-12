@@ -8,7 +8,7 @@ public class PropertiesData {
 
     public PropertiesData() {
         name = "";
-        defaultState = false;
+        defaultState = true;
         rotation = 0;
     }
 

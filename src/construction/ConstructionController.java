@@ -60,6 +60,9 @@ public class ConstructionController {
         if (toolType != null) buildMenuData.toolType = toolType;
         if (componentType != null) buildMenuData.componentType = componentType;
 
+        // default state becomes closed when tool switches
+        setPropertiesData(propertiesData.getRotation(), true);
+
         // these run if the controllers need to react to build data changing
         ghostManagerController.buildMenuDataChanged();
         selectionManagerController.buildMenuDataChanged();

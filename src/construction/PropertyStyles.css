@@ -21,6 +21,10 @@
     /*-fx-max-height: 100%;*/
 }
 
-.component-field {
+.field {
     -fx-pref-height: 30px;
+}
+
+.apply-button {
+    -fx-pref-width: 75px;
 }

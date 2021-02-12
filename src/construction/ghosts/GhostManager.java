@@ -2,6 +2,8 @@ package construction.ghosts;
 
 import construction.PropertiesData;
 import construction.ComponentType;
+import construction.PropertiesManager;
+import construction.PropertiesObserver;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
@@ -9,8 +11,7 @@ import visualization.componentIcons.ComponentIconCreator;
 
 import java.util.List;
 
-// The ghost manager creates the ghost icons that display when components are being placed
-public class GhostManager {
+public class GhostManager implements PropertiesObserver {
 
     private final static double GHOST_OPACITY = 0.5;
 
@@ -22,6 +23,17 @@ public class GhostManager {
     public GhostManager(GridCanvasFacade canvasMaster, PropertiesData properties) {
         this.canvasMaster = canvasMaster;
         this.properties = properties;
+    }
+
+    public GhostManager(GridCanvasFacade canvasMaster) {
+        this.canvasMaster = canvasMaster;
+        this.properties = new PropertiesData();
+        PropertiesManager.attach(this);
+    }
+
+    @Override
+    public void updateProperties(PropertiesData PD) {
+        this.properties = PD;
     }
 
     public void setGhostIcon(ComponentType componentType) {

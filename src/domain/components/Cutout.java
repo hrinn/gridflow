@@ -1,6 +1,7 @@
 package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import construction.ComponentType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 import visualization.componentIcons.ComponentIconCreator;
@@ -32,9 +33,18 @@ public class Cutout extends Closeable{
     }
 
     @Override
+    public ComponentType getComponentType() { return ComponentType.CUTOUT; }
+
+    @Override
     public void updateComponentIcon() {
         DeviceIcon icon = (DeviceIcon) getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+    }
+
+    @Override
+    public void updateComponentIconName() {
+        DeviceIcon icon = (DeviceIcon)getComponentIcon();
+        icon.setComponentName(getName());
     }
 
     @Override

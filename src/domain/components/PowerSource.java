@@ -3,8 +3,10 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.DeviceIcon;
 import visualization.componentIcons.SourceIcon;
 
 import java.util.List;
@@ -73,8 +75,17 @@ public class PowerSource extends Source {
     }
 
     @Override
+    public ComponentType getComponentType() { return ComponentType.POWER_SOURCE; }
+
+    @Override
     public void updateComponentIcon() {
         SourceIcon icon = (SourceIcon) getComponentIcon();
         icon.setWireEnergyState(isOutWireEnergized(), 0);
+    }
+
+    @Override
+    public void updateComponentIconName() {
+        SourceIcon icon = (SourceIcon)getComponentIcon();
+        icon.setComponentName(getName());
     }
 }

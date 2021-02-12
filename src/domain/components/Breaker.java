@@ -7,6 +7,7 @@ import construction.ComponentType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
+import visualization.componentIcons.SourceIcon;
 
 import java.util.UUID;
 
@@ -43,9 +44,24 @@ public class Breaker extends Closeable {
     }
 
     @Override
+    public ComponentType getComponentType() {
+        if (voltage == Voltage.KV12) {
+            return ComponentType.BREAKER_12KV;
+        } else {
+            return ComponentType.BREAKER_70KV;
+        }
+    }
+
+    @Override
     public void updateComponentIcon() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
+    }
+
+    @Override
+    public void updateComponentIconName() {
+        DeviceIcon icon = (DeviceIcon)getComponentIcon();
+        icon.setComponentName(getName());
     }
 
     public Voltage getVoltage() {
@@ -58,8 +74,6 @@ public class Breaker extends Closeable {
         breaker.put("voltage", voltage.toString());
         return breaker;
     }
-
-    
 
     @Override
     public void toggle() {

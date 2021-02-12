@@ -1,7 +1,10 @@
 package construction.builder;
 
+import application.events.GridFlowEventManager;
 import construction.PropertiesData;
 import construction.ComponentType;
+import construction.PropertiesManager;
+import construction.PropertiesObserver;
 import domain.Grid;
 import domain.components.*;
 import domain.geometry.Point;
@@ -10,9 +13,10 @@ import visualization.componentIcons.ComponentIcon;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class GridBuilder {
+public class GridBuilder implements PropertiesObserver {
 
     private Grid grid;
     private PropertiesData properties;
@@ -20,6 +24,31 @@ public class GridBuilder {
     public GridBuilder(Grid grid, PropertiesData properties) {
         this.grid = grid;
         this.properties = properties;
+        PropertiesManager.attach(this);
+    }
+
+    @Override
+    public void updateProperties(PropertiesData PD){
+        Component component = grid.getComponent(PD.getID().toString());
+        // if the component id is specified, component is selected via toggle
+        // access that component and change its name if they differ
+        if (component != null){
+            if (!PD.getID().equals(new UUID(0, 0))) {
+                if (!component.getName().equals(PD.getName())) {
+                    component.setName(PD.getName());
+                    component.updateComponentIconName();
+                    //PropertiesManager.sendGridEvent();
+                }
+            } else if (PD.getID().equals(this.properties.getID())){
+                // IDs match, they are the same component, update component name and state here
+                component.setName(PD.getName());
+                component.updateComponentIconName();
+                // TODO component changes state
+            }
+        }
+
+
+        this.properties = PD;
     }
 
     // This is what runs when a component is placed on the canvas standalone
@@ -81,6 +110,10 @@ public class GridBuilder {
         }
 
         grid.addComponent(device);
+
+        this.properties.setID(device.getId());
+        PropertiesManager.notifyObservers(this.properties);
+
         return true;
     }
 
@@ -123,6 +156,9 @@ public class GridBuilder {
 
 
                 grid.addComponents(powerSource);
+
+                this.properties.setID(powerSource.getId());
+                PropertiesManager.notifyObservers(this.properties);
             }
             case TURBINE -> {
                 Turbine turbine = new Turbine(properties.getName(), position, false);
@@ -165,8 +201,10 @@ public class GridBuilder {
                     return false;
                 }
 
-
                 grid.addComponents(turbine);
+
+                this.properties.setID(turbine.getId());
+                PropertiesManager.notifyObservers(this.properties);
             }
         }
         return true;
@@ -346,6 +384,39 @@ public class GridBuilder {
 
     public void toggleComponent(String componentId) {
         Component component = grid.getComponent(componentId);
+
+        // Apply name supplied from properties data if different, otherwise update with own
+        if (this.properties.getName().isEmpty()) {
+            // update properties window with current name
+            this.properties.setName(component.getName());
+            component.updateComponentIconName();
+        }
+
+        // if id's don't match, toggled new comp, update properties
+        if (!component.getId().equals(this.properties.getID())) {
+            // Need to know the component class in order to assign the component type based on interaction
+            // Make a function that checks the class on the local component
+            // return the component type variable and update:
+            // properties(type, name = "", state = true (default), rotation (based on getangle))
+            this.properties.setType(component.getComponentType());
+            this.properties.setName(component.getName());
+            component.updateComponentIconName();
+            this.properties.setDefaultState(true);
+            this.properties.setRotation(component.getAngle());
+        }
+        else if (!component.getName().equals(this.properties.getName())) {
+            // new name
+            component.setName(this.properties.getName());
+            component.updateComponentIconName();
+        }
+
+        // TODO else if state is changed, update state
+
+        // always set the ID
+        this.properties.setID(UUID.fromString(componentId));
+        PropertiesManager.notifyObservers(this.properties);
+
+        // TODO Everything above this will be abstracted out into another function
 
         if (component instanceof IToggleable) {
             ((IToggleable) component).toggle();

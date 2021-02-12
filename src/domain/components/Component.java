@@ -3,6 +3,7 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
 
@@ -40,6 +41,8 @@ public abstract class Component {
         return name;
     }
 
+    public void setName(String name) { this.name = name; }
+
     public Point getPosition() {
         return position;
     }
@@ -54,7 +57,11 @@ public abstract class Component {
         getUpdatedComponentIcon().setAngle(angle, getPosition());
     }
 
+    public abstract ComponentType getComponentType();
+
     public abstract void updateComponentIcon();
+
+    public abstract void updateComponentIconName();
 
     public ComponentIcon getUpdatedComponentIcon() {
         updateComponentIcon();

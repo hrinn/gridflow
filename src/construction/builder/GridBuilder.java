@@ -390,7 +390,7 @@ public class GridBuilder {
                 }
             }
             else if(component instanceof Source) {
-                if(!((Source) component).isOn()) {
+                if(((Source) component).isOn()) {
                     toggleComponent(componentId);
                 }
             }

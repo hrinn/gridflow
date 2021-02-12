@@ -2,17 +2,25 @@ package visualization.componentIcons;
 
 import application.Globals;
 import javafx.animation.StrokeTransition;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import domain.geometry.Point;
+import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Rotate;
+import javafx.scene.transform.Transform;
+import javafx.scene.transform.Translate;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ComponentIcon {
 
@@ -24,6 +32,8 @@ public class ComponentIcon {
     private final Group energyOutlineNodes = new Group();
     private double height;
     private final StrokeTransition errorTransition = new StrokeTransition(Duration.millis(1000), getBoundingRect(), Color.RED, DEFAULT_BOUNDING_COLOR);
+
+    private List<Text> textElements = new ArrayList<>();
 
     private final static Color SELECT_COLOR = Color.BLUE;
     public final static Color DEFAULT_BOUNDING_COLOR = Color.TRANSPARENT;
@@ -96,9 +106,12 @@ public class ComponentIcon {
         energyOutlineNodes.getTransforms().clear();
         boundingRect.getTransforms().clear();
         fittingRect.getTransforms().clear();
+        textElements.forEach(text -> text.setRotate(0));
+        componentName.setRotate(0);
     }
 
     public void setAngle(double angle, Point position) {
+        // transform the rest of the components
         Rotate rotateTransform = new Rotate();
         rotateTransform.setPivotX(position.getX());
         rotateTransform.setPivotY(position.getY());
@@ -107,6 +120,9 @@ public class ComponentIcon {
         boundingRect.getTransforms().add(rotateTransform);
         energyOutlineNodes.getTransforms().add(rotateTransform);
         fittingRect.getTransforms().add(rotateTransform);
+        textElements.forEach(text -> text.setRotate(-angle));
+        componentName.setRotate(-angle);
+
     }
 
     public void setTranslate(double x, double y) {
@@ -123,6 +139,11 @@ public class ComponentIcon {
     public void showError() {
         errorTransition.stop();
         errorTransition.play();
+    }
+
+    public void addTextElement(Text text) {
+        textElements.add(text);
+        iconNode.getChildren().add(text);
     }
 
     protected void addShapesToEnergyOutlineNode(Group energyOutlineNode, Shape... shapes) {

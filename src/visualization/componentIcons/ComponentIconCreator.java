@@ -82,13 +82,13 @@ public class ComponentIconCreator {
             if (!isClosed) {
                 box.setFill(Color.LIME);
                 Text text = createText(center, "N/C", Color.WHITE, 10);
-                breakerIcon.addStaticNodes(text);
+                breakerIcon.addTextElement(text);
             }
         }
         else {
             if (isClosed) {
                 Text text = createText(center, "N/O", Color.WHITE, 10);
-                breakerIcon.addStaticNodes(text);
+                breakerIcon.addTextElement(text);
             }
             else {
                 box.setFill(Color.LIME);
@@ -132,13 +132,13 @@ public class ComponentIconCreator {
             if (!isClosed) {
                 box.setFill(Color.LIME);
                 Text text = createText(center, "N/C", Color.WHITE, 10);
-                breakerIcon.addStaticNodes(text);
+                breakerIcon.addTextElement(text);
             }
         }
         else {
             if (isClosed) {
                 Text text = createText(center, "N/O", Color.WHITE, 10);
-                breakerIcon.addStaticNodes(text);
+                breakerIcon.addTextElement(text);
             }
             else {
                 box.setFill(Color.LIME);
@@ -241,7 +241,7 @@ public class ComponentIconCreator {
         if (!isOn) sourceBox.setFill(Color.LIME);
         Point center = p.translate(0, -2 * Globals.UNIT);
         Text text = createText(center, name, Color.BLACK, 12);
-        powerSourceIcon.addStaticNodeShapes(text);
+        powerSourceIcon.addTextElement(text);
 
         powerSourceIcon.setBoundingRect(new Dimensions(2, 3, 0, -0.25, 0, 0, true), p);
         powerSourceIcon.setFittingRect(new Dimensions(2, 3, 0, -1, 0, 0, true), p);

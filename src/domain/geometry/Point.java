@@ -81,6 +81,10 @@ public class Point {
         return new Point(coords.get(0), coords.get(1));
     }
 
+    public Point copy() {
+        return new Point(x, y);
+    }
+
     @Override
     public String toString() {
         return x + "," + y;

@@ -3,6 +3,8 @@ package domain;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.history.Memento;
+import construction.history.MementoType;
 import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -74,5 +76,40 @@ public class Association implements Selectable {
         Point labelPos = new Point(text.getTranslateX(), text.getTranslateY());
         association.put("labelPos", labelPos.toString());
         return association;
+    }
+
+    public Memento makeSnapshot() {
+        Rectangle rect = getAssociationIcon().getRect();
+        Text text = getAssociationIcon().getText();
+        return new AssociationSnapshot(id.toString(), label, subLabel, acronym, new Point(rect.getX(), rect.getY()),
+                rect.getWidth(), rect.getHeight(), new Point(text.getTranslateX(), text.getTranslateY()));
+    }
+}
+
+class AssociationSnapshot implements Memento {
+    private String id;
+    private String label;
+    private String subLabel;
+    private String acronym;
+    private Point position;
+    private double width;
+    private double height;
+    private Point labelPos;
+
+    public AssociationSnapshot(String id, String label, String sublabel, String acronym,
+                               Point pos, double width, double height, Point labelPos) {
+        this.id = id;
+        this.label = label;
+        this.subLabel = sublabel;
+        this.acronym = acronym;
+        this.position = pos;
+        this.width = width;
+        this.height = height;
+        this.labelPos = labelPos;
+    }
+
+    @Override
+    public MementoType getType() {
+        return MementoType.ASSOCIATION;
     }
 }

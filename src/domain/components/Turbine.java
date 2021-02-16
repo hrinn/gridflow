@@ -3,6 +3,8 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.history.Memento;
+import construction.history.MementoType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.SourceIcon;
@@ -92,5 +94,31 @@ public class Turbine extends Source {
         SourceIcon icon = (SourceIcon)getComponentIcon();
         icon.setWireEnergyState(isOutWire1Energized(), 0);
         icon.setWireEnergyState(isOutWire2Energized(), 1);
+    }
+
+    @Override
+    public Memento makeSnapshot() {
+        return new TurbineSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn());
+    }
+}
+
+class TurbineSnapshot implements Memento {
+    private String id;
+    private String name;
+    private double angle;
+    private Point pos;
+    private boolean on;
+
+    public TurbineSnapshot(String id, String name, double angle, Point pos, boolean on) {
+        this.id = id;
+        this.name = name;
+        this.angle = angle;
+        this.pos = pos.copy();
+        this.on = on;
+    }
+
+    @Override
+    public MementoType getType() {
+        return MementoType.TURBINE;
     }
 }

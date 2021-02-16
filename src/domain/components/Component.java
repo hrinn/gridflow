@@ -2,6 +2,7 @@ package domain.components;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.history.Memento;
 import domain.Selectable;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
@@ -88,6 +89,8 @@ public abstract class Component implements Selectable {
         component.put("angle", getAngle());
         return component;
     }
+
+    public abstract Memento makeSnapshot();
 
     public abstract void delete();
 

@@ -1,6 +1,8 @@
 package domain;
 
 import construction.builder.GridBuilder;
+import construction.history.Memento;
+import construction.history.MementoType;
 import domain.components.Component;
 import domain.components.Source;
 import domain.components.Wire;
@@ -138,5 +140,28 @@ public class Grid {
         return associations.stream()
                 .filter(association -> association.getID().toString().equals(id))
                 .findFirst().orElse(null);
+    }
+
+    public Memento makeSnapshot() {
+        return new GridSnapshot(components, associations);
+    }
+
+    public void restore(Memento memento) {
+
+    }
+}
+
+class GridSnapshot implements Memento {
+
+    private final List<Memento> componentMementos = new ArrayList<>();
+    private final List<Memento> associationMementos = new ArrayList<>();
+
+    public GridSnapshot(List<Component> components, List<Association> associations) {
+        components.forEach(component -> componentMementos.add(component.makeSnapshot()));
+        associations.forEach(association -> associationMementos.add(association.makeSnapshot()));
+    }
+
+    public MementoType getType() {
+        return MementoType.GRID;
     }
 }

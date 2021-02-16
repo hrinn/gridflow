@@ -3,6 +3,8 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.history.Memento;
+import construction.history.MementoType;
 import domain.geometry.Point;
 import visualization.componentIcons.BreakerIcon;
 import visualization.componentIcons.ComponentIconCreator;
@@ -59,11 +61,40 @@ public class Breaker extends Closeable {
         return breaker;
     }
 
-    
+    @Override
+    public Memento makeSnapshot() {
+        return new BreakerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), voltage, isClosed(), isClosedByDefault());
+    }
+
 
     @Override
     public void toggle() {
         toggleClosed();
         createComponentIcon();
+    }
+}
+
+class BreakerSnapshot implements Memento {
+    private String id;
+    private String name;
+    private double angle;
+    private Point pos;
+    private Voltage voltage;
+    private boolean closed;
+    private boolean closedByDefault;
+
+    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault) {
+        this.id = id;
+        this.name = name;
+        this.angle = angle;
+        this.pos = pos.copy();
+        this.voltage = voltage;
+        this.closed = closed;
+        this.closedByDefault = closedByDefault;
+    }
+
+    @Override
+    public MementoType getType() {
+        return MementoType.BREAKER;
     }
 }

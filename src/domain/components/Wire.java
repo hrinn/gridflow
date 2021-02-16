@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import construction.history.ComponentMemento;
-import construction.history.MementoType;
 import domain.geometry.*;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.WireIcon;
@@ -188,7 +187,8 @@ public class Wire extends Component {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new WireSnapshot(getId().toString(), getName(), start, end, bridgePoints, energized);
+        List<String> connectionIDs = connections.stream().map(connection -> connection.getId().toString()).collect(Collectors.toList());
+        return new WireSnapshot(getId().toString(), getName(), start, end, bridgePoints, energized, connectionIDs);
     }
 }
 
@@ -199,8 +199,9 @@ class WireSnapshot implements ComponentMemento {
     private Point end;
     private List<Point> bridgePoints;
     private boolean energized;
+    private List<String> connectionIDs;
 
-    public WireSnapshot(String id, String name, Point start, Point end, List<Point> bps, boolean energized) {
+    public WireSnapshot(String id, String name, Point start, Point end, List<Point> bps, boolean energized, List<String> connectionIDs) {
         this.id = id;
         this.name = name;
         this.start = start.copy();
@@ -208,10 +209,16 @@ class WireSnapshot implements ComponentMemento {
         this.bridgePoints = new ArrayList<>();
         bps.forEach(bp -> bridgePoints.add(bp.copy()));
         this.energized = energized;
+        this.connectionIDs = connectionIDs;
     }
 
     @Override
     public Component getComponent() {
         return new Wire(id, name, start, end, 0, bridgePoints, energized);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return connectionIDs;
     }
 }

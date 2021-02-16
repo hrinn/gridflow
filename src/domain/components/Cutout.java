@@ -6,6 +6,7 @@ import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Cutout extends Closeable{
@@ -50,7 +51,8 @@ public class Cutout extends Closeable{
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new CutoutSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault());
+        return new CutoutSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(),
+                getInWireID().toString(), getOutWireID().toString());
     }
 }
 
@@ -61,17 +63,26 @@ class CutoutSnapshot implements ComponentMemento {
     Point pos;
     boolean closed;
     boolean closedByDefault;
+    String outNodeId;
+    String inNodeId;
 
-    public CutoutSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault) {
+    public CutoutSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, String inNodeId, String outNodeId) {
         this.id = id;
         this.name = name;
         this.angle = angle;
         this.pos = pos.copy();
         this.closed = closed;
         this.closedByDefault = closedByDefault;
+        this.inNodeId = inNodeId;
+        this.outNodeId = outNodeId;
     }
 
     public Cutout getComponent() {
         return new Cutout(this);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return List.of(inNodeId, outNodeId);
     }
 }

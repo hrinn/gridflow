@@ -146,8 +146,19 @@ public class Grid {
     }
 
     public void restore(GridMemento memento) {
+        // restore components and associations
         this.components = memento.getComponents();
         this.associations = memento.getAssociations();
+
+        // link components together
+        for (int i = 0; i < components.size(); i++) {
+            Component component = components.get(i);
+            List<Component> connections = ((GridSnapshot)memento)
+                    .getComponentConnectionsIDsByIndex(i).stream() // gets list of IDs from the memento
+                    .map(connectionID -> getComponent(connectionID)) // maps this to a list of components
+                    .collect(Collectors.toList()); // converts the stream back to a list
+            component.setConnections(connections);
+        }
     }
 }
 
@@ -162,7 +173,13 @@ class GridSnapshot implements GridMemento {
     }
 
     public List<Component> getComponents() {
+        // maps each component memento to a component and returns it as a list
         return componentMementos.stream().map(cm -> cm.getComponent()).collect(Collectors.toList());
+    }
+
+    // returns a list of IDs for the components that component i is connected to
+    public List<String> getComponentConnectionsIDsByIndex(int i) {
+        return componentMementos.get(i).getConnectionIDs();
     }
 
     public List<Association> getAssociations() {

@@ -7,6 +7,7 @@ import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Transformer extends Device {
@@ -38,7 +39,7 @@ public class Transformer extends Device {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new TransformerSnapshot(getId().toString(), getName(), getAngle(), getPosition());
+        return new TransformerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), getInWireID().toString(), getOutWireID().toString());
     }
 
     @Override
@@ -53,16 +54,25 @@ class TransformerSnapshot implements ComponentMemento {
     String name;
     double angle;
     Point pos;
+    String inNodeId;
+    String outNodeId;
 
-    public TransformerSnapshot(String id, String name, double angle, Point pos) {
+    public TransformerSnapshot(String id, String name, double angle, Point pos, String inNodeId, String outNodeId) {
         this.id = id;
         this.name = name;
         this.angle = angle;
         this.pos = pos.copy();
+        this.inNodeId = inNodeId;
+        this.outNodeId = outNodeId;
     }
 
     @Override
     public Component getComponent() {
         return new Transformer(this);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return List.of(inNodeId, outNodeId);
     }
 }

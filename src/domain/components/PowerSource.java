@@ -90,7 +90,7 @@ public class PowerSource extends Source {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new PowerSourceSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn());
+        return new PowerSourceSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn(), outWire.getId().toString());
     }
 }
 
@@ -100,17 +100,24 @@ class PowerSourceSnapshot implements ComponentMemento {
     double angle;
     Point pos;
     boolean on;
+    String outWireID;
 
-    public PowerSourceSnapshot(String id, String name, double angle, Point pos, boolean on) {
+    public PowerSourceSnapshot(String id, String name, double angle, Point pos, boolean on, String outWireID) {
         this.id = id;
         this.name = name;
         this.angle = angle;
         this.pos = pos.copy();
         this.on = on;
+        this.outWireID = outWireID;
     }
 
     @Override
     public Component getComponent() {
         return new PowerSource(this);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return List.of(outWireID);
     }
 }

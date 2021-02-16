@@ -79,5 +79,13 @@ public abstract class Device extends Component {
         outWire.disconnect(getId());
     }
 
+    public UUID getInWireID() {
+        return inWire.getId();
+    }
+
+    public UUID getOutWireID() {
+        return outWire.getId();
+    }
+
 
 }

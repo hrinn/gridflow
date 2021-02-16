@@ -8,6 +8,7 @@ import domain.geometry.Point;
 import visualization.componentIcons.BreakerIcon;
 import visualization.componentIcons.ComponentIconCreator;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Breaker extends Closeable {
@@ -67,7 +68,8 @@ public class Breaker extends Closeable {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new BreakerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), voltage, isClosed(), isClosedByDefault());
+        return new BreakerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), voltage, isClosed(), isClosedByDefault(),
+                getInWireID().toString(), getOutWireID().toString());
     }
 
 
@@ -86,8 +88,10 @@ class BreakerSnapshot implements ComponentMemento {
     Voltage voltage;
     boolean closed;
     boolean closedByDefault;
+    String inNodeID;
+    String outNodeID;
 
-    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault) {
+    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault, String inNodeID, String outNodeID) {
         this.id = id;
         this.name = name;
         this.angle = angle;
@@ -95,9 +99,16 @@ class BreakerSnapshot implements ComponentMemento {
         this.voltage = voltage;
         this.closed = closed;
         this.closedByDefault = closedByDefault;
+        this.inNodeID = inNodeID;
+        this.outNodeID = outNodeID;
     }
 
     public Breaker getComponent() {
         return new Breaker(this);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return List.of(inNodeID, outNodeID);
     }
 }

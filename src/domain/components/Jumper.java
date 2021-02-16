@@ -6,6 +6,7 @@ import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Jumper extends Closeable {
@@ -50,7 +51,7 @@ public class Jumper extends Closeable {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new JumperSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault());
+        return new JumperSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(), getInWireID().toString(), getOutWireID().toString());
     }
 }
 
@@ -61,18 +62,27 @@ class JumperSnapshot implements ComponentMemento {
     Point pos;
     boolean closed;
     boolean closedByDefault;
+    String inNodeId;
+    String outNodeId;
 
-    public JumperSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault) {
+    public JumperSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, String inNodeId, String outNodeId) {
         this.id = id;
         this.name = name;
         this.angle = angle;
         this.pos = pos.copy();
         this.closed = closed;
         this.closedByDefault = closedByDefault;
+        this.inNodeId = inNodeId;
+        this.outNodeId = outNodeId;
     }
 
     @Override
     public Component getComponent() {
         return new Jumper(this);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return List.of(inNodeId, outNodeId);
     }
 }

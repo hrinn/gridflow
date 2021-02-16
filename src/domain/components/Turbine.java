@@ -103,7 +103,7 @@ public class Turbine extends Source {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new TurbineSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn());
+        return new TurbineSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn(), outWire1.getId().toString(), outWire2.getId().toString());
     }
 }
 
@@ -113,17 +113,26 @@ class TurbineSnapshot implements ComponentMemento {
     double angle;
     Point pos;
     boolean on;
+    String outWire1ID;
+    String outWire2ID;
 
-    public TurbineSnapshot(String id, String name, double angle, Point pos, boolean on) {
+    public TurbineSnapshot(String id, String name, double angle, Point pos, boolean on, String outWire1ID, String outWire2ID) {
         this.id = id;
         this.name = name;
         this.angle = angle;
         this.pos = pos.copy();
         this.on = on;
+        this.outWire1ID = outWire1ID;
+        this.outWire2ID = outWire2ID;
     }
 
     @Override
     public Component getComponent() {
         return new Turbine(this);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return List.of(outWire1ID, outWire2ID);
     }
 }

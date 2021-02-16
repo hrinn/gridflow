@@ -3,8 +3,9 @@ package domain;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import construction.history.Memento;
-import construction.history.MementoType;
+import construction.history.AssociationMemento;
+import construction.history.ComponentMemento;
+import domain.components.Component;
 import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -25,12 +26,26 @@ public class Association implements Selectable {
     // the javaFX node displayed on screen
     private AssociationIcon associationIcon;
 
+    // first time constructor
     public Association(Point position, double width, double height, int n) {
         this.id = UUID.randomUUID();
         this.label = "Association " + n;
         createAssociationIcon(position, width, height);
     }
 
+    // memento constructor (restore from snapshot)
+    public Association(String id, String label, String subLabel, String acronym,
+                       Point pos, double width, double height, Point labelPos) {
+        this.id = UUID.fromString(id);
+        this.label = label;
+        this.subLabel = subLabel;
+        this.acronym = acronym;
+        createAssociationIcon(pos, width, height);
+        associationIcon.setTextPosition(labelPos);
+        associationIcon.showHandles(false);
+    }
+
+    // JSON Node Constructor (for restoring from file)
     public Association(JsonNode node) {
         this.id = UUID.fromString(node.get("id").asText());
         this.label = node.get("label").asText();
@@ -78,7 +93,7 @@ public class Association implements Selectable {
         return association;
     }
 
-    public Memento makeSnapshot() {
+    public AssociationMemento makeSnapshot() {
         Rectangle rect = getAssociationIcon().getRect();
         Text text = getAssociationIcon().getText();
         return new AssociationSnapshot(id.toString(), label, subLabel, acronym, new Point(rect.getX(), rect.getY()),
@@ -86,7 +101,7 @@ public class Association implements Selectable {
     }
 }
 
-class AssociationSnapshot implements Memento {
+class AssociationSnapshot implements AssociationMemento {
     private String id;
     private String label;
     private String subLabel;
@@ -108,8 +123,7 @@ class AssociationSnapshot implements Memento {
         this.labelPos = labelPos;
     }
 
-    @Override
-    public MementoType getType() {
-        return MementoType.ASSOCIATION;
+    public Association getAssociation() {
+        return new Association(id, label, subLabel, acronym, position, width, height, labelPos);
     }
 }

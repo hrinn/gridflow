@@ -3,12 +3,10 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import construction.history.Memento;
-import construction.history.MementoType;
+import construction.history.ComponentMemento;
 import domain.geometry.Point;
 import visualization.componentIcons.BreakerIcon;
 import visualization.componentIcons.ComponentIconCreator;
-import visualization.componentIcons.DeviceIcon;
 
 import java.util.UUID;
 
@@ -19,6 +17,12 @@ public class Breaker extends Closeable {
     public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault) {
         super(name, position, closedByDefault);
         this.voltage = voltage;
+        createComponentIcon();
+    }
+
+    public Breaker(BreakerSnapshot snapshot) {
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
+        voltage = snapshot.voltage;
         createComponentIcon();
     }
 
@@ -62,7 +66,7 @@ public class Breaker extends Closeable {
     }
 
     @Override
-    public Memento makeSnapshot() {
+    public ComponentMemento makeSnapshot() {
         return new BreakerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), voltage, isClosed(), isClosedByDefault());
     }
 
@@ -74,14 +78,14 @@ public class Breaker extends Closeable {
     }
 }
 
-class BreakerSnapshot implements Memento {
-    private String id;
-    private String name;
-    private double angle;
-    private Point pos;
-    private Voltage voltage;
-    private boolean closed;
-    private boolean closedByDefault;
+class BreakerSnapshot implements ComponentMemento {
+    String id;
+    String name;
+    double angle;
+    Point pos;
+    Voltage voltage;
+    boolean closed;
+    boolean closedByDefault;
 
     public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault) {
         this.id = id;
@@ -93,8 +97,7 @@ class BreakerSnapshot implements Memento {
         this.closedByDefault = closedByDefault;
     }
 
-    @Override
-    public MementoType getType() {
-        return MementoType.BREAKER;
+    public Breaker getComponent() {
+        return new Breaker(this);
     }
 }

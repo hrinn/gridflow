@@ -1,11 +1,10 @@
 package domain;
 
 import construction.builder.GridBuilder;
-import construction.history.Memento;
-import construction.history.MementoType;
-import domain.components.Component;
-import domain.components.Source;
-import domain.components.Wire;
+import construction.history.AssociationMemento;
+import construction.history.ComponentMemento;
+import construction.history.GridMemento;
+import domain.components.*;
 import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
 import visualization.componentIcons.ComponentIcon;
@@ -17,8 +16,8 @@ import java.util.stream.Collectors;
 
 public class Grid {
 
-    private final List<Component> components;
-    private final List<Association> associations;
+    private List<Component> components;
+    private List<Association> associations;
 
     public Grid() {
         components = new ArrayList<>();
@@ -142,26 +141,34 @@ public class Grid {
                 .findFirst().orElse(null);
     }
 
-    public Memento makeSnapshot() {
+    public GridMemento makeSnapshot() {
         return new GridSnapshot(components, associations);
     }
 
-    public void restore(Memento memento) {
-
+    public void restore(GridMemento memento) {
+        this.components = memento.getComponents();
+        this.associations = memento.getAssociations();
     }
 }
 
-class GridSnapshot implements Memento {
+class GridSnapshot implements GridMemento {
 
-    private final List<Memento> componentMementos = new ArrayList<>();
-    private final List<Memento> associationMementos = new ArrayList<>();
+    private final List<ComponentMemento> componentMementos = new ArrayList<>();
+    private final List<AssociationMemento> associationMementos = new ArrayList<>();
 
     public GridSnapshot(List<Component> components, List<Association> associations) {
         components.forEach(component -> componentMementos.add(component.makeSnapshot()));
         associations.forEach(association -> associationMementos.add(association.makeSnapshot()));
     }
 
-    public MementoType getType() {
-        return MementoType.GRID;
+    public List<Component> getComponents() {
+        return componentMementos.stream().map(cm -> cm.getComponent()).collect(Collectors.toList());
+    }
+
+    public List<Association> getAssociations() {
+        // maps each association memento to an association and returns it as a list
+        return associationMementos.stream()
+                .map(am -> ((AssociationSnapshot)am).getAssociation())
+                .collect(Collectors.toList());
     }
 }

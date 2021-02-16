@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import construction.history.Memento;
+import construction.history.ComponentMemento;
 import construction.history.MementoType;
 import domain.geometry.*;
 import visualization.componentIcons.ComponentIconCreator;
@@ -36,6 +36,12 @@ public class Wire extends Component {
         start = p;
         end = p;
         createComponentIcon();
+    }
+
+    public Wire(String id, String name, Point start, Point end, double angle, List<Point> bridgePoints, boolean energized) {
+        super(UUID.fromString(id), name, Point.midpoint(start, end), angle);
+        this.bridgePoints = bridgePoints;
+        this.energized = energized;
     }
 
     public Wire(JsonNode node, Point start, Point end) {
@@ -178,12 +184,12 @@ public class Wire extends Component {
     }
 
     @Override
-    public Memento makeSnapshot() {
+    public ComponentMemento makeSnapshot() {
         return new WireSnapshot(getId().toString(), getName(), start, end, bridgePoints, energized);
     }
 }
 
-class WireSnapshot implements Memento {
+class WireSnapshot implements ComponentMemento {
     private String id;
     private String name;
     private Point start;
@@ -202,7 +208,7 @@ class WireSnapshot implements Memento {
     }
 
     @Override
-    public MementoType getType() {
-        return MementoType.WIRE;
+    public Component getComponent() {
+        return new Wire(id, name, start, end, 0, bridgePoints, energized);
     }
 }

@@ -1,8 +1,7 @@
 package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import construction.history.Memento;
-import construction.history.MementoType;
+import construction.history.ComponentMemento;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
@@ -13,6 +12,11 @@ public class Cutout extends Closeable{
 
     public Cutout(String name, Point position, boolean closedByDefault) {
         super(name, position, closedByDefault);
+        createComponentIcon();
+    }
+
+    public Cutout(CutoutSnapshot snapshot) {
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
         createComponentIcon();
     }
 
@@ -45,18 +49,18 @@ public class Cutout extends Closeable{
     }
 
     @Override
-    public Memento makeSnapshot() {
+    public ComponentMemento makeSnapshot() {
         return new CutoutSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault());
     }
 }
 
-class CutoutSnapshot implements Memento {
-    private String id;
-    private String name;
-    private double angle;
-    private Point pos;
-    private boolean closed;
-    private boolean closedByDefault;
+class CutoutSnapshot implements ComponentMemento {
+    String id;
+    String name;
+    double angle;
+    Point pos;
+    boolean closed;
+    boolean closedByDefault;
 
     public CutoutSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault) {
         this.id = id;
@@ -67,8 +71,7 @@ class CutoutSnapshot implements Memento {
         this.closedByDefault = closedByDefault;
     }
 
-    @Override
-    public MementoType getType() {
-        return MementoType.CUTOUT;
+    public Cutout getComponent() {
+        return new Cutout(this);
     }
 }

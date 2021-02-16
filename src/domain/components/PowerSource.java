@@ -3,7 +3,7 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import construction.history.Memento;
+import construction.history.ComponentMemento;
 import construction.history.MementoType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
@@ -25,6 +25,11 @@ public class PowerSource extends Source {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
                 node.get("on").asBoolean());
+        createComponentIcon();
+    }
+
+    public PowerSource(PowerSourceSnapshot snapshot) {
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.on);
         createComponentIcon();
     }
 
@@ -81,17 +86,17 @@ public class PowerSource extends Source {
     }
 
     @Override
-    public Memento makeSnapshot() {
+    public ComponentMemento makeSnapshot() {
         return new PowerSourceSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn());
     }
 }
 
-class PowerSourceSnapshot implements Memento {
-    private String id;
-    private String name;
-    private double angle;
-    private Point pos;
-    private boolean on;
+class PowerSourceSnapshot implements ComponentMemento {
+    String id;
+    String name;
+    double angle;
+    Point pos;
+    boolean on;
 
     public PowerSourceSnapshot(String id, String name, double angle, Point pos, boolean on) {
         this.id = id;
@@ -102,7 +107,7 @@ class PowerSourceSnapshot implements Memento {
     }
 
     @Override
-    public MementoType getType() {
-        return MementoType.POWER_SOURCE;
+    public Component getComponent() {
+        return new PowerSource(this);
     }
 }

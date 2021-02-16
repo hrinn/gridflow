@@ -1,7 +1,7 @@
 package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import construction.history.Memento;
+import construction.history.ComponentMemento;
 import construction.history.MementoType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
@@ -22,6 +22,11 @@ public class Transformer extends Device {
         createComponentIcon();
     }
 
+    public Transformer(TransformerSnapshot snapshot) {
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle);
+        createComponentIcon();
+    }
+
     private void createComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getTransformerIcon(getPosition());
         icon.setDeviceEnergyStates(false, false);
@@ -32,7 +37,7 @@ public class Transformer extends Device {
     }
 
     @Override
-    public Memento makeSnapshot() {
+    public ComponentMemento makeSnapshot() {
         return new TransformerSnapshot(getId().toString(), getName(), getAngle(), getPosition());
     }
 
@@ -43,11 +48,11 @@ public class Transformer extends Device {
     }
 }
 
-class TransformerSnapshot implements Memento {
-    private String id;
-    private String name;
-    private double angle;
-    private Point pos;
+class TransformerSnapshot implements ComponentMemento {
+    String id;
+    String name;
+    double angle;
+    Point pos;
 
     public TransformerSnapshot(String id, String name, double angle, Point pos) {
         this.id = id;
@@ -57,7 +62,7 @@ class TransformerSnapshot implements Memento {
     }
 
     @Override
-    public MementoType getType() {
-        return MementoType.TRANSFORMER;
+    public Component getComponent() {
+        return new Transformer(this);
     }
 }

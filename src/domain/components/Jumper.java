@@ -1,8 +1,7 @@
 package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import construction.history.Memento;
-import construction.history.MementoType;
+import construction.history.ComponentMemento;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
@@ -14,6 +13,11 @@ public class Jumper extends Closeable {
 
     public Jumper(String name, Point position, boolean closedByDefault) {
         super(name, position, closedByDefault);
+        createComponentIcon();
+    }
+
+    public Jumper(JumperSnapshot snapshot) {
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
         createComponentIcon();
     }
 
@@ -45,18 +49,18 @@ public class Jumper extends Closeable {
     }
 
     @Override
-    public Memento makeSnapshot() {
+    public ComponentMemento makeSnapshot() {
         return new JumperSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault());
     }
 }
 
-class JumperSnapshot implements Memento {
-    private String id;
-    private String name;
-    private double angle;
-    private Point pos;
-    private boolean closed;
-    private boolean closedByDefault;
+class JumperSnapshot implements ComponentMemento {
+    String id;
+    String name;
+    double angle;
+    Point pos;
+    boolean closed;
+    boolean closedByDefault;
 
     public JumperSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault) {
         this.id = id;
@@ -68,7 +72,7 @@ class JumperSnapshot implements Memento {
     }
 
     @Override
-    public MementoType getType() {
-        return MementoType.JUMPER;
+    public Component getComponent() {
+        return new Jumper(this);
     }
 }

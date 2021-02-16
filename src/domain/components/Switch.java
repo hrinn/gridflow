@@ -1,7 +1,7 @@
 package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import construction.history.Memento;
+import construction.history.ComponentMemento;
 import construction.history.MementoType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
@@ -21,6 +21,11 @@ public class Switch extends Closeable {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
                 node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean());
+        createComponentIcon();
+    }
+
+    public Switch(SwitchSnapshot snapshot) {
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
         createComponentIcon();
     }
 
@@ -46,18 +51,18 @@ public class Switch extends Closeable {
     }
 
     @Override
-    public Memento makeSnapshot() {
+    public ComponentMemento makeSnapshot() {
         return new SwitchSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault());
     }
 }
 
-class SwitchSnapshot implements Memento {
-    private String id;
-    private String name;
-    private double angle;
-    private Point pos;
-    private boolean closed;
-    private boolean closedByDefault;
+class SwitchSnapshot implements ComponentMemento {
+    String id;
+    String name;
+    double angle;
+    Point pos;
+    boolean closed;
+    boolean closedByDefault;
 
     public SwitchSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault) {
         this.id = id;
@@ -69,7 +74,7 @@ class SwitchSnapshot implements Memento {
     }
 
     @Override
-    public MementoType getType() {
-        return MementoType.SWITCH;
+    public Component getComponent() {
+        return new Switch(this);
     }
 }

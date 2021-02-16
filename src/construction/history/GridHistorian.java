@@ -21,12 +21,14 @@ public class GridHistorian {
 
     public void undo() {
         GridMemento memento = undoStack.pop();
+        if (memento == null) return;
         redoStack.push(memento);
         grid.restore(memento);
     }
 
     public void redo() {
         GridMemento memento = redoStack.pop();
+        if (memento == null) return;
         undoStack.push(memento);
         grid.restore(memento);
     }

@@ -55,6 +55,9 @@ public class PowerSource extends Source {
 
     @Override
     public List<Component> getConnections() {
+        if (outWire == null) {
+            return List.of();
+        }
         return List.of(outWire);
     }
 

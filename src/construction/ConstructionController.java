@@ -4,6 +4,7 @@ import application.events.GridFlowEventManager;
 import construction.builder.GridBuilderController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
+import construction.history.GridHistorianController;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import javafx.event.EventHandler;
@@ -22,6 +23,7 @@ public class ConstructionController {
     private GridBuilderController gridBuilderController;
     private GhostManagerController ghostManagerController;
     private SelectionManagerController selectionManagerController;
+    private GridHistorianController gridHistorianController;
 
     // UI Data
     private BuildMenuData buildMenuData;
@@ -44,6 +46,8 @@ public class ConstructionController {
                 propertiesData, canvasFacade);
         ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
+        gridHistorianController = new GridHistorianController(grid, gridFlowEventManager);
+        gridFlowEventManager.addListener(gridHistorianController);
         gridFlowEventManager.addListener(ghostManagerController);
 
         setPropertiesData(0, true);
@@ -134,6 +138,10 @@ public class ConstructionController {
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleToggleDefaultState);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleEscapeTool);
+
+        // undo/redo events
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, gridHistorianController.getUndoEventHandler());
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, gridHistorianController.getRedoEventHandler());
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());

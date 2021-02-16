@@ -124,6 +124,6 @@ class TurbineSnapshot implements ComponentMemento {
 
     @Override
     public Component getComponent() {
-        return null;
+        return new Turbine(this);
     }
 }

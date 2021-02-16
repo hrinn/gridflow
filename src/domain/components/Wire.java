@@ -42,6 +42,9 @@ public class Wire extends Component {
         super(UUID.fromString(id), name, Point.midpoint(start, end), angle);
         this.bridgePoints = bridgePoints;
         this.energized = energized;
+        this.start = start;
+        this.end = end;
+        createComponentIcon();
     }
 
     public Wire(JsonNode node, Point start, Point end) {

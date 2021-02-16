@@ -20,6 +20,9 @@ public class LimitedStack<T> {
     }
 
     public T pop() {
+        if (stack.isEmpty()) {
+            return null;
+        }
         return stack.pop();
     }
 

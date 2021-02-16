@@ -14,7 +14,7 @@ public class SimulationController implements GridFlowEventListener {
     }
 
     public void handleEvent(GridFlowEvent gridFlowEvent) {
-        if (gridFlowEvent instanceof GridChangedEvent) {
+        if (gridFlowEvent instanceof GridChangedEvent || gridFlowEvent instanceof StateRestoredEvent) {
             model.energyDFS();
             gridFlowEventManager.sendEvent(new GridEnergizedEvent());
         }

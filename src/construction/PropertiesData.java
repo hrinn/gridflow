@@ -12,11 +12,19 @@ public class PropertiesData {
     private double rotation;
 
     public PropertiesData() {
-        type = null;
-        ID = new UUID(0, 0);
-        name = "";
-        defaultState = true;
-        rotation = 0;
+        this.type = null;
+        this.ID = new UUID(0, 0);
+        this.name = "";
+        this.defaultState = true;
+        this.rotation = 0;
+    }
+
+    public PropertiesData(ComponentType type, UUID ID, String name, boolean defState, double rot) {
+        this.type = type;
+        this.ID = ID;
+        this.name = name;
+        this.defaultState = defState;
+        this.rotation = rot;
     }
 
     @Override
@@ -75,5 +83,13 @@ public class PropertiesData {
         setID(new UUID(0, 0));
         setDefaultState(true);
         setRotation(0);
+    }
+
+    public void copyContents(PropertiesData properties) {
+        setType(properties.getType());
+        setID(properties.getID());
+        setName(properties.getName());
+        setDefaultState(properties.getDefaultState());
+        setRotation(properties.getRotation());
     }
 }

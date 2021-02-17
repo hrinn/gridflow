@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.history.ComponentMemento;
 import domain.geometry.*;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.WireIcon;
@@ -33,6 +34,15 @@ public class Wire extends Component {
         super("", p);
         start = p;
         end = p;
+        createComponentIcon();
+    }
+
+    public Wire(String id, String name, Point start, Point end, double angle, List<Point> bridgePoints, boolean energized) {
+        super(UUID.fromString(id), name, Point.midpoint(start, end), angle);
+        this.bridgePoints = bridgePoints;
+        this.energized = energized;
+        this.start = start;
+        this.end = end;
         createComponentIcon();
     }
 
@@ -173,5 +183,42 @@ public class Wire extends Component {
 
     public Point getEnd() {
         return end;
+    }
+
+    @Override
+    public ComponentMemento makeSnapshot() {
+        List<String> connectionIDs = connections.stream().map(connection -> connection.getId().toString()).collect(Collectors.toList());
+        return new WireSnapshot(getId().toString(), getName(), start, end, bridgePoints, energized, connectionIDs);
+    }
+}
+
+class WireSnapshot implements ComponentMemento {
+    private String id;
+    private String name;
+    private Point start;
+    private Point end;
+    private List<Point> bridgePoints;
+    private boolean energized;
+    private List<String> connectionIDs;
+
+    public WireSnapshot(String id, String name, Point start, Point end, List<Point> bps, boolean energized, List<String> connectionIDs) {
+        this.id = id;
+        this.name = name;
+        this.start = start.copy();
+        this.end = end.copy();
+        this.bridgePoints = new ArrayList<>();
+        bps.forEach(bp -> bridgePoints.add(bp.copy()));
+        this.energized = energized;
+        this.connectionIDs = connectionIDs;
+    }
+
+    @Override
+    public Component getComponent() {
+        return new Wire(id, name, start, end, 0, bridgePoints, energized);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return connectionIDs;
     }
 }

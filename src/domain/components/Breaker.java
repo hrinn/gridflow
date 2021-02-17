@@ -3,11 +3,12 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.history.ComponentMemento;
 import domain.geometry.Point;
 import visualization.componentIcons.BreakerIcon;
 import visualization.componentIcons.ComponentIconCreator;
-import visualization.componentIcons.DeviceIcon;
 
+import java.util.List;
 import java.util.UUID;
 
 public class Breaker extends Closeable {
@@ -17,6 +18,12 @@ public class Breaker extends Closeable {
     public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault) {
         super(name, position, closedByDefault);
         this.voltage = voltage;
+        createComponentIcon();
+    }
+
+    public Breaker(BreakerSnapshot snapshot) {
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
+        voltage = snapshot.voltage;
         createComponentIcon();
     }
 
@@ -59,11 +66,49 @@ public class Breaker extends Closeable {
         return breaker;
     }
 
-    
+    @Override
+    public ComponentMemento makeSnapshot() {
+        return new BreakerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), voltage, isClosed(), isClosedByDefault(),
+                getInWireID().toString(), getOutWireID().toString());
+    }
+
 
     @Override
     public void toggle() {
         toggleClosed();
         createComponentIcon();
+    }
+}
+
+class BreakerSnapshot implements ComponentMemento {
+    String id;
+    String name;
+    double angle;
+    Point pos;
+    Voltage voltage;
+    boolean closed;
+    boolean closedByDefault;
+    String inNodeID;
+    String outNodeID;
+
+    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault, String inNodeID, String outNodeID) {
+        this.id = id;
+        this.name = name;
+        this.angle = angle;
+        this.pos = pos.copy();
+        this.voltage = voltage;
+        this.closed = closed;
+        this.closedByDefault = closedByDefault;
+        this.inNodeID = inNodeID;
+        this.outNodeID = outNodeID;
+    }
+
+    public Breaker getComponent() {
+        return new Breaker(this);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return List.of(inNodeID, outNodeID);
     }
 }

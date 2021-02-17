@@ -3,6 +3,9 @@ package domain;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.history.AssociationMemento;
+import construction.history.ComponentMemento;
+import domain.components.Component;
 import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -23,12 +26,26 @@ public class Association implements Selectable {
     // the javaFX node displayed on screen
     private AssociationIcon associationIcon;
 
+    // first time constructor
     public Association(Point position, double width, double height, int n) {
         this.id = UUID.randomUUID();
         this.label = "Association " + n;
         createAssociationIcon(position, width, height);
     }
 
+    // memento constructor (restore from snapshot)
+    public Association(String id, String label, String subLabel, String acronym,
+                       Point pos, double width, double height, Point labelPos) {
+        this.id = UUID.fromString(id);
+        this.label = label;
+        this.subLabel = subLabel;
+        this.acronym = acronym;
+        createAssociationIcon(pos, width, height);
+        associationIcon.setTextPosition(labelPos);
+        associationIcon.showHandles(false);
+    }
+
+    // JSON Node Constructor (for restoring from file)
     public Association(JsonNode node) {
         this.id = UUID.fromString(node.get("id").asText());
         this.label = node.get("label").asText();
@@ -74,5 +91,39 @@ public class Association implements Selectable {
         Point labelPos = new Point(text.getTranslateX(), text.getTranslateY());
         association.put("labelPos", labelPos.toString());
         return association;
+    }
+
+    public AssociationMemento makeSnapshot() {
+        Rectangle rect = getAssociationIcon().getRect();
+        Text text = getAssociationIcon().getText();
+        return new AssociationSnapshot(id.toString(), label, subLabel, acronym, new Point(rect.getX(), rect.getY()),
+                rect.getWidth(), rect.getHeight(), new Point(text.getTranslateX(), text.getTranslateY()));
+    }
+}
+
+class AssociationSnapshot implements AssociationMemento {
+    private String id;
+    private String label;
+    private String subLabel;
+    private String acronym;
+    private Point position;
+    private double width;
+    private double height;
+    private Point labelPos;
+
+    public AssociationSnapshot(String id, String label, String sublabel, String acronym,
+                               Point pos, double width, double height, Point labelPos) {
+        this.id = id;
+        this.label = label;
+        this.subLabel = sublabel;
+        this.acronym = acronym;
+        this.position = pos;
+        this.width = width;
+        this.height = height;
+        this.labelPos = labelPos;
+    }
+
+    public Association getAssociation() {
+        return new Association(id, label, subLabel, acronym, position, width, height, labelPos);
     }
 }

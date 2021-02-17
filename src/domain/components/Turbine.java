@@ -3,6 +3,8 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.history.ComponentMemento;
+import construction.history.MementoType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.SourceIcon;
@@ -24,6 +26,11 @@ public class Turbine extends Source {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
                 node.get("on").asBoolean());
+        createComponentIcon();
+    }
+
+    public Turbine(TurbineSnapshot snapshot) {
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.on);
         createComponentIcon();
     }
 
@@ -92,5 +99,40 @@ public class Turbine extends Source {
         SourceIcon icon = (SourceIcon)getComponentIcon();
         icon.setWireEnergyState(isOutWire1Energized(), 0);
         icon.setWireEnergyState(isOutWire2Energized(), 1);
+    }
+
+    @Override
+    public ComponentMemento makeSnapshot() {
+        return new TurbineSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn(), outWire1.getId().toString(), outWire2.getId().toString());
+    }
+}
+
+class TurbineSnapshot implements ComponentMemento {
+    String id;
+    String name;
+    double angle;
+    Point pos;
+    boolean on;
+    String outWire1ID;
+    String outWire2ID;
+
+    public TurbineSnapshot(String id, String name, double angle, Point pos, boolean on, String outWire1ID, String outWire2ID) {
+        this.id = id;
+        this.name = name;
+        this.angle = angle;
+        this.pos = pos.copy();
+        this.on = on;
+        this.outWire1ID = outWire1ID;
+        this.outWire2ID = outWire2ID;
+    }
+
+    @Override
+    public Component getComponent() {
+        return new Turbine(this);
+    }
+
+    @Override
+    public List<String> getConnectionIDs() {
+        return List.of(outWire1ID, outWire2ID);
     }
 }

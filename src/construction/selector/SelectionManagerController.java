@@ -2,6 +2,7 @@ package construction.selector;
 
 import application.events.GridChangedEvent;
 import application.events.GridFlowEventManager;
+import application.events.SaveStateEvent;
 import construction.BuildMenuData;
 import construction.ToolType;
 import construction.canvas.GridCanvasFacade;
@@ -18,12 +19,14 @@ public class SelectionManagerController {
     private BuildMenuData buildMenuData;
     private GridFlowEventManager gridFlowEventManager;
     private boolean dragSelecting = false;
+    private Grid grid;
 
     public SelectionManagerController(GridCanvasFacade canvasFacade, BuildMenuData buildMenuData, Grid grid,
                                       GridFlowEventManager gridFlowEventManager) {
         this.model = new SelectionManager(canvasFacade, grid);
         this.buildMenuData = buildMenuData;
         this.gridFlowEventManager = gridFlowEventManager;
+        this.grid = grid;
     }
 
     public void buildMenuDataChanged() {
@@ -74,6 +77,7 @@ public class SelectionManagerController {
     private final EventHandler<KeyEvent> deleteHandler = event -> {
         if (event.getCode() != KeyCode.DELETE) return;
 
+        gridFlowEventManager.sendEvent(new SaveStateEvent(grid.makeSnapshot()));
         model.deleteSelectedItems();
         gridFlowEventManager.sendEvent(new GridChangedEvent());
         event.consume();

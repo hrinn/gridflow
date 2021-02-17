@@ -1,9 +1,10 @@
 package domain;
 
 import construction.builder.GridBuilder;
-import domain.components.Component;
-import domain.components.Source;
-import domain.components.Wire;
+import construction.history.AssociationMemento;
+import construction.history.ComponentMemento;
+import construction.history.GridMemento;
+import domain.components.*;
 import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
 import visualization.componentIcons.ComponentIcon;
@@ -15,8 +16,8 @@ import java.util.stream.Collectors;
 
 public class Grid {
 
-    private final List<Component> components;
-    private final List<Association> associations;
+    private List<Component> components;
+    private List<Association> associations;
 
     public Grid() {
         components = new ArrayList<>();
@@ -138,5 +139,53 @@ public class Grid {
         return associations.stream()
                 .filter(association -> association.getID().toString().equals(id))
                 .findFirst().orElse(null);
+    }
+
+    public GridMemento makeSnapshot() {
+        return new GridSnapshot(components, associations);
+    }
+
+    public void restore(GridMemento memento) {
+        // restore components and associations
+        this.components = memento.getComponents();
+        this.associations = memento.getAssociations();
+
+        // link components together
+        for (int i = 0; i < components.size(); i++) {
+            Component component = components.get(i);
+            List<Component> connections = ((GridSnapshot)memento)
+                    .getComponentConnectionsIDsByIndex(i).stream() // gets list of IDs from the memento
+                    .map(connectionID -> getComponent(connectionID)) // maps this to a list of components
+                    .collect(Collectors.toList()); // converts the stream back to a list
+            component.setConnections(connections);
+        }
+    }
+}
+
+class GridSnapshot implements GridMemento {
+
+    private final List<ComponentMemento> componentMementos = new ArrayList<>();
+    private final List<AssociationMemento> associationMementos = new ArrayList<>();
+
+    public GridSnapshot(List<Component> components, List<Association> associations) {
+        components.forEach(component -> componentMementos.add(component.makeSnapshot()));
+        associations.forEach(association -> associationMementos.add(association.makeSnapshot()));
+    }
+
+    public List<Component> getComponents() {
+        // maps each component memento to a component and returns it as a list
+        return componentMementos.stream().map(cm -> cm.getComponent()).collect(Collectors.toList());
+    }
+
+    // returns a list of IDs for the components that component i is connected to
+    public List<String> getComponentConnectionsIDsByIndex(int i) {
+        return componentMementos.get(i).getConnectionIDs();
+    }
+
+    public List<Association> getAssociations() {
+        // maps each association memento to an association and returns it as a list
+        return associationMementos.stream()
+                .map(am -> ((AssociationSnapshot)am).getAssociation())
+                .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package construction.builder;
 import application.events.*;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
+import construction.history.GridMemento;
 import domain.Association;
 import domain.Grid;
 import domain.geometry.Point;
@@ -63,8 +64,11 @@ public class GridBuilderController {
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
             Point lockedEndPoint = endPoint.clampPerpendicular(doubleClickPlacementContext.beginPoint);
             boolean ctrlPressed = event.isControlDown();
+            GridMemento prePlaceWireMemento = grid.makeSnapshot(); // create a snapshot of the grid before the wire is placed
             boolean res = model.placeWire(doubleClickPlacementContext.beginPoint, lockedEndPoint, ctrlPressed);
             if (res) {
+                // if the wire was successfully placed
+                gridFlowEventManager.sendEvent(new SaveStateEvent(prePlaceWireMemento)); // save the snapshot to the undo history
                 GridChangedEvent e = new GridChangedEvent();
                 e.toolCausingChange = ToolType.WIRE;
                 gridFlowEventManager.sendEvent(e);
@@ -89,6 +93,7 @@ public class GridBuilderController {
         if (doubleClickPlacementContext.placing) { // end placement
             doubleClickPlacementContext.placing = false;
             Point endPoint = Point.nearestCoordinate(event.getX(), event.getY());
+            gridFlowEventManager.sendEvent(new SaveStateEvent(grid.makeSnapshot())); // save the state of the grid before change
             model.placeAssociation(doubleClickPlacementContext.beginPoint, endPoint);
             GridChangedEvent e = new GridChangedEvent();
             e.toolCausingChange = ToolType.ASSOCIATION;
@@ -107,7 +112,7 @@ public class GridBuilderController {
 
         String targetId = ((Node)event.getTarget()).getId();
         model.toggleComponent(targetId);
-        gridFlowEventManager.sendEvent(new GridChangedEvent());
+        gridFlowEventManager.sendEvent(new GridChangedEvent()); // toggling components does not create a snapshot to save processing power
 
         event.consume();
 
@@ -119,8 +124,10 @@ public class GridBuilderController {
 
         Point coordPoint = Point.nearestCoordinate(event.getX(), event.getY());
 
+        SaveStateEvent e = new SaveStateEvent(grid.makeSnapshot()); // create a snapshot of the grid before placing component
         boolean res = model.placeComponent(coordPoint, buildData.componentType);
         if (res) {
+            gridFlowEventManager.sendEvent(e); // save the pre place grid state
             gridFlowEventManager.sendEvent(new GridChangedEvent());
         } else {
             gridFlowEventManager.sendEvent(new PlacementFailedEvent());

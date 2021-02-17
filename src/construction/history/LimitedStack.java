@@ -26,4 +26,11 @@ public class LimitedStack<T> {
         return stack.pop();
     }
 
+    public void clear() {
+        stack.clear();
+    }
+
+    public void printSize() {
+        System.err.println(stack.size());
+    }
 }

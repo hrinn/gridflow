@@ -18,34 +18,27 @@ public class GridHistorianController implements GridFlowEventListener {
 
     @Override
     public void handleEvent(GridFlowEvent gridFlowEvent) {
-        if (gridFlowEvent instanceof GridChangedEvent) {
-            model.saveState();
+        if (gridFlowEvent instanceof SaveStateEvent) {
+            GridMemento memento = ((SaveStateEvent)gridFlowEvent).getMemento();
+            model.saveState(memento);
         }
     }
 
-    private final EventHandler<KeyEvent> undoEventHandler = event -> {
+    private final EventHandler<KeyEvent> undoRedoEventHandler = event -> {
         if (!(event.getCode() == KeyCode.Z && event.isControlDown())) return;
 
-        model.undo();
-        eventManager.sendEvent(new StateRestoredEvent());
+        if (event.isShiftDown()) {
+            model.redo();
+        } else {
+            model.undo();
+        }
+
+        eventManager.sendEvent(new GridChangedEvent());
 
         event.consume();
     };
 
-    private final EventHandler<KeyEvent> redoEventHandler = event -> {
-        if (!(event.getCode() == KeyCode.Z && event.isControlDown() && event.isShiftDown())) return;
-
-        model.redo();
-        eventManager.sendEvent(new StateRestoredEvent());
-
-        event.consume();
-    };
-
-    public EventHandler<KeyEvent> getUndoEventHandler() {
-        return undoEventHandler;
-    }
-
-    public EventHandler<KeyEvent> getRedoEventHandler() {
-        return redoEventHandler;
+    public EventHandler<KeyEvent> getUndoRedoEventHandler() {
+        return undoRedoEventHandler;
     }
 }

@@ -140,8 +140,7 @@ public class ConstructionController {
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleEscapeTool);
 
         // undo/redo events
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, gridHistorianController.getUndoEventHandler());
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, gridHistorianController.getRedoEventHandler());
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, gridHistorianController.getUndoRedoEventHandler());
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());

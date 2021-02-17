@@ -40,6 +40,8 @@ public abstract class Closeable extends Device implements IToggleable {
         closed = !closed;
     }
 
+    public void setClosedByDefault(boolean closedByDefault) { this.closedByDefault = closedByDefault; }
+
     @Override
     public ObjectNode getObjectNode(ObjectMapper mapper) {
         ObjectNode closeable = super.getObjectNode(mapper);

@@ -34,21 +34,28 @@ public class GridBuilder implements PropertiesObserver {
         // access that component and change its name if they differ
         if (component != null){
             if (!PD.getID().equals(new UUID(0, 0))) {
+                // Name changed
                 if (!component.getName().equals(PD.getName())) {
                     component.setName(PD.getName());
                     component.updateComponentIconName();
-                    //PropertiesManager.sendGridEvent();
                 }
+
             } else if (PD.getID().equals(this.properties.getID())){
                 // IDs match, they are the same component, update component name and state here
                 component.setName(PD.getName());
                 component.updateComponentIconName();
-                // TODO component changes state
+
+                // State changed
+                if (component instanceof Closeable) {
+                    if (this.properties.getDefaultState() != (((Closeable) component).isClosedByDefault())) {
+                        ((Closeable) component).setClosedByDefault(this.properties.getDefaultState());
+                    }
+                }
             }
         }
-
-
-        this.properties = PD;
+        
+        this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
+                PD.getDefaultState(), PD.getRotation());
     }
 
     // This is what runs when a component is placed on the canvas standalone
@@ -385,41 +392,60 @@ public class GridBuilder implements PropertiesObserver {
     public void toggleComponent(String componentId) {
         Component component = grid.getComponent(componentId);
 
-        // Apply name supplied from properties data if different, otherwise update with own
-        if (this.properties.getName().isEmpty()) {
-            // update properties window with current name
-            this.properties.setName(component.getName());
-            component.updateComponentIconName();
-        }
-
-        // if id's don't match, toggled new comp, update properties
-        if (!component.getId().equals(this.properties.getID())) {
-            // Need to know the component class in order to assign the component type based on interaction
-            // Make a function that checks the class on the local component
-            // return the component type variable and update:
-            // properties(type, name = "", state = true (default), rotation (based on getangle))
-            this.properties.setType(component.getComponentType());
-            this.properties.setName(component.getName());
-            component.updateComponentIconName();
-            this.properties.setDefaultState(true);
-            this.properties.setRotation(component.getAngle());
-        }
-        else if (!component.getName().equals(this.properties.getName())) {
-            // new name
-            component.setName(this.properties.getName());
-            component.updateComponentIconName();
-        }
-
-        // TODO else if state is changed, update state
+        toggleComponentProperties(component);
 
         // always set the ID
         this.properties.setID(UUID.fromString(componentId));
         PropertiesManager.notifyObservers(this.properties);
 
-        // TODO Everything above this will be abstracted out into another function
-
         if (component instanceof IToggleable) {
             ((IToggleable) component).toggle();
+        }
+    }
+
+    private void toggleComponentProperties(Component comp) {
+        // Apply name supplied from properties data if different, otherwise update with own
+//        if (this.properties.getName().isEmpty()) {
+//            // update properties window with current name
+//            this.properties.setName(comp.getName());
+//            comp.updateComponentIconName();
+//        }
+
+        // if id's don't match, toggled new comp, update properties
+        if (!comp.getId().equals(this.properties.getID())) {
+            this.properties.setType(comp.getComponentType());
+
+            this.properties.setName(comp.getName());
+            comp.updateComponentIconName();
+
+            this.properties.setRotation(comp.getAngle());
+            this.properties.setDefaultState(true);
+
+            // if component is closeable, grab its state, otherwise, it will always be default (true)
+            if (comp instanceof Closeable) {
+                this.properties.setDefaultState((((Closeable) comp).isClosedByDefault()));
+            } else {
+                this.properties.setDefaultState(true);
+            }
+        }
+//        else if (!comp.getName().equals(this.properties.getName())) {
+//            // new name
+//            comp.setName(this.properties.getName());
+//            comp.updateComponentIconName();
+//        }
+        // ID's match, toggled the same component. Update the name and state if changed
+        else {
+            // Name has been changed
+            if (!comp.getName().equals(this.properties.getName())) {
+                comp.setName(this.properties.getName());
+            }
+            // State has changed
+            if (comp instanceof Closeable) {
+                if (this.properties.getDefaultState() != (((Closeable) comp).isClosedByDefault())) {
+                    ((Closeable) comp).setClosedByDefault(this.properties.getDefaultState());
+                }
+            }
+
         }
     }
 

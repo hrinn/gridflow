@@ -1,5 +1,7 @@
 package construction;
 
+import application.events.GridChangedEvent;
+import application.events.GridEnergizedEvent;
 import application.events.GridFlowEventManager;
 import construction.builder.GridBuilderController;
 import construction.canvas.GridCanvasFacade;
@@ -83,7 +85,14 @@ public class ConstructionController implements PropertiesObserver {
 
     @Override
     public void updateProperties(PropertiesData properties){
-        this.propertiesData = properties;
+        // if default state is changed, update the ghostmanager
+        if (properties.getDefaultState() != propertiesData.getDefaultState()) {
+            // Default state has changed through the properties window
+            ghostManagerController.propertiesDataChanged(false, true);
+        }
+
+        this.propertiesData = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
+                                                    properties.getDefaultState(), properties.getRotation());
     }
 
 

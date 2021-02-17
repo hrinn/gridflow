@@ -9,7 +9,9 @@ import javafx.event.EventTarget;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 
-public class GridBuilderController {
+import java.util.UUID;
+
+public class GridBuilderController implements PropertiesObserver {
 
     private GridBuilder model;
     private GridFlowEventManager gridFlowEventManager;
@@ -24,11 +26,18 @@ public class GridBuilderController {
         this.gridFlowEventManager = gridFlowEventManager;
         this.wireExtendContext = wireExtendContext;
         this.buildData = buildMenuData;
-        this.propertiesData = propertiesData;
+        this.propertiesData = new PropertiesData();
+        PropertiesManager.attach(this);
     }
 
     public void buildDataChanged() {
         wireExtendContext.placing = false;
+    }
+
+    @Override
+    public void updateProperties(PropertiesData PD) {
+        this.propertiesData = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
+                PD.getDefaultState(), PD.getRotation());
     }
 
     public void propertiesDataChanged() {
@@ -83,6 +92,10 @@ public class GridBuilderController {
         } else {
             gridFlowEventManager.sendEvent(new PlacementFailedEvent());
         }
+
+        // Change the UUID back to default for placing of next component
+        this.propertiesData.setID(new UUID(0, 0));
+        PropertiesManager.notifyObservers(this.propertiesData);
 
         event.consume();
     };

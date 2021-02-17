@@ -6,6 +6,7 @@ import application.events.SaveStateEvent;
 import construction.BuildMenuData;
 import construction.ToolType;
 import construction.canvas.GridCanvasFacade;
+import construction.history.GridMemento;
 import domain.Grid;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -77,9 +78,12 @@ public class SelectionManagerController {
     private final EventHandler<KeyEvent> deleteHandler = event -> {
         if (event.getCode() != KeyCode.DELETE) return;
 
-        gridFlowEventManager.sendEvent(new SaveStateEvent(grid.makeSnapshot()));
-        model.deleteSelectedItems();
-        gridFlowEventManager.sendEvent(new GridChangedEvent());
+        GridMemento preDeleteState = grid.makeSnapshot();
+        int numdeleted = model.deleteSelectedItems();
+        if (numdeleted != 0) {
+            gridFlowEventManager.sendEvent(new SaveStateEvent(preDeleteState));
+            gridFlowEventManager.sendEvent(new GridChangedEvent());
+        }
         event.consume();
     };
 

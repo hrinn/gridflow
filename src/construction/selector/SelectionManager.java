@@ -33,16 +33,18 @@ public class SelectionManager {
     }
 
 
-    // list of component icons is bad, causing issues
-
-    public void deleteSelectedItems() {
+    // deletes all items in the selected ids list
+    // returns the number of items deleted
+    public int deleteSelectedItems() {
         // Wires cannot be deleted if they are connected to a device or source, so delete the selected devices first
         sortWiresToBack();
         selectedIDs.forEach(id -> {
             setSelect(id, false);
             grid.deleteSelectedItem(id);
         });
+        int nitems = selectedIDs.size();
         selectedIDs.clear();
+        return nitems;
     }
 
     private void setSelect(String ID, boolean select) {

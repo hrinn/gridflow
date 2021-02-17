@@ -14,9 +14,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.util.UUID;
 // this controller handles event logic for grid building
 // this is mostly user click while
-public class GridBuilderController {
+
+public class GridBuilderController implements PropertiesObserver {
 
     private GridBuilder model;
     private GridFlowEventManager gridFlowEventManager;
@@ -40,7 +42,8 @@ public class GridBuilderController {
         this.gridFlowEventManager = gridFlowEventManager;
         this.doubleClickPlacementContext = doubleClickPlacementContext;
         this.buildData = buildMenuData;
-        this.propertiesData = propertiesData;
+        this.propertiesData = new PropertiesData();
+        PropertiesManager.attach(this);
         this.grid = grid;
         this.canvasFacade = canvasFacade;
     }
@@ -48,6 +51,12 @@ public class GridBuilderController {
     public void buildDataChanged() {
         doubleClickPlacementContext.placing = false;
         updateAssociationHandles(buildData.toolType == ToolType.ASSOCIATION);
+    }
+
+    @Override
+    public void updateProperties(PropertiesData PD) {
+        this.propertiesData = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
+                PD.getDefaultState(), PD.getRotation());
     }
 
     public void propertiesDataChanged() {
@@ -144,6 +153,10 @@ public class GridBuilderController {
         } else {
             gridFlowEventManager.sendEvent(new PlacementFailedEvent());
         }
+
+        // Change the UUID back to default for placing of next component
+        this.propertiesData.setID(new UUID(0, 0));
+        PropertiesManager.notifyObservers(this.propertiesData);
 
         event.consume();
     };

@@ -46,6 +46,7 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     private ConstructionController constructionController;
     private PropertiesData Properties;
+    private boolean defaultState;
 
     // variables for the different property windows
     private PropertyState propertyWindow;
@@ -75,6 +76,7 @@ public class BuildMenuViewController implements PropertiesObserver{
     @FXML
     private void initialize() {
         this.Properties = new PropertiesData();
+        this.defaultState = true;
 
         // Bind the managed and visible properties for the component menu and properties window.
         // Allows the windows to be hidden through node visibility.
@@ -101,11 +103,10 @@ public class BuildMenuViewController implements PropertiesObserver{
     }
     @Override
     public void updateProperties(PropertiesData properties) {
-//        // received data from somewhere else, update the properties variable (window only updates when..)
-//        if (!this.Properties.equals(properties)) {
-//
-//        }
-        this.Properties = properties;
+        // received data from somewhere else, update the properties variable and set the window
+        this.Properties = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
+                properties.getDefaultState(), properties.getRotation());
+
         setPropertiesWindow();
     }
 
@@ -144,7 +145,6 @@ public class BuildMenuViewController implements PropertiesObserver{
     @FXML
     private void pickPlacePowerSourceTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.POWER_SOURCE);
-        // Whenever a component is selected, first display the default properties for that component
         Properties.setDefaultComponentProperties(ComponentType.POWER_SOURCE);
         PropertiesManager.notifyObservers(this.Properties);
         setComponentPropertiesWindow();
@@ -228,7 +228,7 @@ public class BuildMenuViewController implements PropertiesObserver{
     private void toggleMenu() {
         Translate menuButtonTrans = new Translate();
 
-        if (state == MenuState.MenuExpanded){
+        if (state == MenuState.MenuExpanded) {
             CollapseMenu();
             ComponentBuilderMenu.setPrefHeight(MENU_COLLAPSED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_COLLAPSED_WIDTH);
@@ -253,7 +253,7 @@ public class BuildMenuViewController implements PropertiesObserver{
     }
 
     private void setPropertiesWindow(){
-        // set the window based on (component id = component, numselected = selection, and association?)
+        // If ID is not default, component is active
         if (!Properties.getID().equals(new UUID(0, 0))) {
             // Component properties, update window
             setComponentPropertiesWindow();
@@ -284,12 +284,13 @@ public class BuildMenuViewController implements PropertiesObserver{
 
 
     private void generatePropertyElements() {
-
         initComponentProperties();
         initSelectionProperties();
     }
 
     private void initComponentProperties() {
+        boolean defaultState = true;
+
         Label type = new Label("Type");
         type.getStyleClass().add("field-label");
 
@@ -311,22 +312,28 @@ public class BuildMenuViewController implements PropertiesObserver{
         TextField nameField = new TextField();
         nameField.setId("nameField");
         nameField.getStyleClass().add("field");
-        nameField.focusedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean t1) {
-                if (t1){
-                    System.out.println("User is typing!");
-                    constructionController.setUserTyping(true);
-                } else {
-                    System.out.println("User has stopped typing!");
-                    constructionController.setUserTyping(false);
-                }
+        nameField.focusedProperty().addListener((observableValue, aBoolean, textFieldActive) -> {
+            if (textFieldActive){
+                System.out.println("User is typing!");
+                constructionController.setUserTyping(true);
+            } else {
+                System.out.println("User has stopped typing!");
+                constructionController.setUserTyping(false);
             }
         });
 
         RadioButton stateField = new RadioButton();
         stateField.setId("stateField");
         stateField.getStyleClass().add("field");
+        stateField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
+            if (isSelected) {
+                // change/update properties
+                Properties.setDefaultState(false);
+            } else {
+                Properties.setDefaultState(true);
+            }
+            PropertiesManager.notifyObservers(Properties);
+        });
 
         Button applyButton = new Button("Apply");
         applyButton.setId("applyComponentProperties");
@@ -338,9 +345,7 @@ public class BuildMenuViewController implements PropertiesObserver{
                 Properties.setName(nameField.getText());
                 PropertiesManager.notifyObservers(Properties);
             }
-        }
-
-        );
+        });
 
         ComponentFields = new VBox(10, typeField, nameField, stateField, applyButton);
         ComponentFields.getStyleClass().add("field-container");

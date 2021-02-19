@@ -6,7 +6,7 @@ import domain.geometry.Point;
 
 import java.util.UUID;
 
-public abstract class Closeable extends Device implements IToggleable {
+public abstract class Closeable extends Device implements IToggleable, ILockable {
 
     private boolean closed;
     private boolean closedByDefault;
@@ -26,6 +26,10 @@ public abstract class Closeable extends Device implements IToggleable {
 
     public void toggleLocked() {
         locked = !locked;
+    }
+
+    public boolean isLocked() {
+        return locked;
     }
 
     public boolean isClosed() {

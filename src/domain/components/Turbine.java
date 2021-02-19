@@ -68,7 +68,7 @@ public class Turbine extends Source {
     }
 
     @Override
-    public void toggle() {
+    public void toggleState() {
         setOn(!isOn());
         createComponentIcon();
     }
@@ -84,7 +84,7 @@ public class Turbine extends Source {
     }
 
     private void createComponentIcon() {
-        SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition(), isOn());
+        SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition(), isOn(), isLocked());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);
         icon.setWireEnergyState(false, 1);
@@ -104,6 +104,12 @@ public class Turbine extends Source {
     @Override
     public ComponentMemento makeSnapshot() {
         return new TurbineSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isOn(), outWire1.getId().toString(), outWire2.getId().toString());
+    }
+
+    @Override
+    public void toggleLockedState() {
+        toggleLocked(); // Changes the locked state in the parent class (closeable)
+        createComponentIcon(); // Updates the component icon to show the new state
     }
 }
 

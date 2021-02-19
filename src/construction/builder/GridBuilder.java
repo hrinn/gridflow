@@ -369,8 +369,34 @@ public class GridBuilder {
     public void toggleComponent(String componentId) {
         Component component = grid.getComponent(componentId);
 
+        //only toggle if component is not locked
+        boolean locked = component instanceof Closeable && ((Closeable) component).isLocked();
+        locked = (component instanceof Source)? ((Source) component).isLocked() : locked;
+        if(locked)
+            return;
+
         if (component instanceof IToggleable) {
-            ((IToggleable) component).toggle();
+            ((IToggleable) component).toggleState();
+        }
+    }
+
+    public void lockComponent(String componentId) {
+        Component component = grid.getComponent(componentId);
+
+        if (component instanceof ILockable) {
+            if(component instanceof Closeable) {
+                if(((Closeable) component).isClosed()) {
+                    toggleComponent(componentId);
+                }
+            }
+            else if(component instanceof Source) {
+                if(((Source) component).isOn()) {
+                    toggleComponent(componentId);
+                }
+            }
+            ((ILockable) component).toggleLockedState();
+        } else {
+            System.err.println("Component Not Lockable");
         }
     }
 

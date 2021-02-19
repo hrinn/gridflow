@@ -30,7 +30,7 @@ public class Jumper extends Closeable {
     }
 
     private void createComponentIcon() {
-        DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), isClosed());
+        DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), isClosed(), isLocked());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setComponentName(getName());
@@ -44,8 +44,15 @@ public class Jumper extends Closeable {
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
     }
 
-    public void toggle() {
+
+    public void toggleState() {
         toggleClosed();
+        createComponentIcon();
+    }
+
+    @Override
+    public void toggleLockedState() {
+        toggleLocked();
         createComponentIcon();
     }
 

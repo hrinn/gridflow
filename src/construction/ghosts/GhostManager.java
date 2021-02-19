@@ -53,14 +53,14 @@ public class GhostManager {
 
     private ComponentIcon ghostIconCreator(ComponentType componentType, Point pos) {
         return switch (componentType) {
-            case BREAKER_12KV -> ComponentIconCreator.get12KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
-            case BREAKER_70KV -> ComponentIconCreator.get70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState());
-            case CUTOUT -> ComponentIconCreator.getCutoutIcon(pos, properties.getDefaultState());
-            case JUMPER -> ComponentIconCreator.getJumperIcon(pos, properties.getDefaultState());
-            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, properties.getName(), true);
-            case SWITCH -> ComponentIconCreator.getSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState());
+            case BREAKER_12KV -> ComponentIconCreator.get12KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState(), false);
+            case BREAKER_70KV -> ComponentIconCreator.get70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState(), false);
+            case CUTOUT -> ComponentIconCreator.getCutoutIcon(pos, properties.getDefaultState(), false);
+            case JUMPER -> ComponentIconCreator.getJumperIcon(pos, properties.getDefaultState(), false);
+            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, properties.getName(), false, false);
+            case SWITCH -> ComponentIconCreator.getSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState(), false);
             case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(pos);
-            case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, true);
+            case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, false, false);
             case WIRE -> ComponentIconCreator.getWireIcon(pos, pos, List.of());
         };
     }

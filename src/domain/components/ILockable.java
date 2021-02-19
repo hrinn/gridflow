@@ -1,5 +1,5 @@
 package domain.components;
 
 public interface ILockable {
-    void toggleLocked();
+    void toggleLockedState();
 }

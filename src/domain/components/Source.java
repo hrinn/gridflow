@@ -7,9 +7,10 @@ import domain.geometry.Point;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class Source extends Component implements IToggleable {
+public abstract class Source extends Component implements IToggleable, ILockable {
 
     private boolean on;
+    private boolean locked = false;
 
     public Source(String name, Point position, boolean on) {
         super(name, position);
@@ -29,7 +30,15 @@ public abstract class Source extends Component implements IToggleable {
         this.on = on;
     }
 
-    public abstract void toggle();
+    public abstract void toggleState();
+
+    public void toggleLocked() {
+        locked = !locked;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
 
     @Override
     public List<Component> getAccessibleConnections() {

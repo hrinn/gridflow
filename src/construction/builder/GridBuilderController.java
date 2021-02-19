@@ -122,8 +122,6 @@ public class GridBuilderController {
         if (buildData.toolType != ToolType.INTERACT) return;
         if (!event.isSecondaryButtonDown()) return;
 
-        System.err.println("Lock Event");
-
         String targetId = ((Node)event.getTarget()).getId();
         model.lockComponent(targetId);
         gridFlowEventManager.sendEvent(new GridChangedEvent());

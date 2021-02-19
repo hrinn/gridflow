@@ -34,7 +34,8 @@ public class ComponentIconCreator {
             Circle lockCircle = createCircle(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT,
                     Color.YELLOW, Color.BLACK);
             Text lockText = createText(p.translate(0, 1.5*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
-            switchIcon.addStaticNodes(lockCircle, lockText);
+            switchIcon.addStaticNodes(lockCircle);
+            switchIcon.addTextElement(lockText);
         } else {
             Line inBar = createLine(p.translate(-0.5 * Globals.UNIT, 1.25 * Globals.UNIT),
                     p.translate(0.5 * Globals.UNIT, 1.25 * Globals.UNIT));
@@ -88,17 +89,16 @@ public class ComponentIconCreator {
         Line outLine = createLine(p.translate(0, 2 * Globals.UNIT), p.translate(0, 3 * Globals.UNIT));
         breakerIcon.addOutNodeShapes(outLine);
 
-
-        Rectangle box;
         if(isLocked) {
-            box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1 * Globals.UNIT),
+            Rectangle box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1 * Globals.UNIT),
                     p.translate(0.5 * Globals.UNIT, 2 * Globals.UNIT), Color.YELLOW, Color.BLACK);
+            breakerIcon.addBackfedOffNodeShapes(box);
             Text lockText = createText(p.translate(0, 1.5*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
             breakerIcon.addTextElement(lockText);
         } else {
-            box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1 * Globals.UNIT),
+            Rectangle box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1 * Globals.UNIT),
                     p.translate(0.5 * Globals.UNIT, 2 * Globals.UNIT), Color.RED, Color.BLACK);
-
+            breakerIcon.addBackfedOffNodeShapes(box);
             Point center = p.translate(0, 1.5 * Globals.UNIT);
 
             if (isClosedByDefault) {
@@ -118,8 +118,6 @@ public class ComponentIconCreator {
                 }
             }
         }
-
-        breakerIcon.addBackfedOffNodeShapes(box);
 
         breakerIcon.setBoundingRect(new Dimensions(), p);
         breakerIcon.setFittingRect(new Dimensions(2, 3, -1, -1, -0.5, -0.5), p);
@@ -151,15 +149,16 @@ public class ComponentIconCreator {
         breakerIcon.addOutNodeShapes(outLine1, outLine2, outChevron1L, outChevron1R, outChevron2L, outChevron2R);
 
 
-        Rectangle box;
         if(isLocked) {
-            box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1.5 * Globals.UNIT),
+            Rectangle box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1.5 * Globals.UNIT),
                     p.translate(0.5 * Globals.UNIT, 2.5 * Globals.UNIT), Color.YELLOW, Color.BLACK);
             Text lockText = createText(p.translate(0, 2*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            breakerIcon.addBackfedOffNodeShapes(box);
             breakerIcon.addTextElement(lockText);
         } else {
-            box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1.5 * Globals.UNIT),
+            Rectangle box = createRectangle(p.translate(-0.5 * Globals.UNIT, 1.5 * Globals.UNIT),
                     p.translate(0.5 * Globals.UNIT, 2.5 * Globals.UNIT), Color.RED, Color.BLACK);
+            breakerIcon.addBackfedOffNodeShapes(box);
 
             Point center = p.translate(0, 2 * Globals.UNIT);
 
@@ -180,7 +179,7 @@ public class ComponentIconCreator {
                 }
             }
         }
-        breakerIcon.addBackfedOffNodeShapes(box);
+
         breakerIcon.setBoundingRect(new Dimensions(2, 4), p);
         breakerIcon.setFittingRect(new Dimensions(2, 4, -0.75, -0.75, -0.5, -0.5), p);
         return breakerIcon;
@@ -233,7 +232,8 @@ public class ComponentIconCreator {
             Circle lockCircle = createCircle(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT,
                     Color.YELLOW, Color.BLACK);
             Text lockText = createText(p.translate(0, 1.5*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
-            jumperIcon.addStaticNodes(lockCircle, lockText);
+            jumperIcon.addStaticNodes(lockCircle);
+            jumperIcon.addTextElement(lockText);
         } else {
             Arc jumper = createHalfArc(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT, ArcOrientation.RIGHT);
             // transforms must be applied prior to adding the node
@@ -266,7 +266,8 @@ public class ComponentIconCreator {
             Circle lockCircle = createCircle(p.translate(0, 1.5 * Globals.UNIT), 0.5 * Globals.UNIT,
                     Color.YELLOW, Color.BLACK);
             Text lockText = createText(p.translate(0, 1.5*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
-            cutoutIcon.addStaticNodes(lockCircle, lockText);
+            cutoutIcon.addStaticNodes(lockCircle);
+            cutoutIcon.addTextElement(lockText);
         } else {
             // these shapes get rotated together
             Arc cutoutArc = createHalfArc(p.translate(0, 1.125 * Globals.UNIT), 0.15 * Globals.UNIT, ArcOrientation.UP);
@@ -307,7 +308,7 @@ public class ComponentIconCreator {
                     p.translate(Globals.UNIT, -Globals.UNIT), Color.YELLOW, Color.BLACK);
             powerSourceIcon.addSourceNodeShapes(sourceBox);
             Text lockText = createText(p.translate(0, -2*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
-            powerSourceIcon.addStaticNodeShapes(lockText);
+            powerSourceIcon.addTextElement(lockText);
         } else {
             Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
                     p.translate(Globals.UNIT, -Globals.UNIT), Color.RED, Color.BLACK);
@@ -318,7 +319,7 @@ public class ComponentIconCreator {
             if (!isOn) sourceBox.setFill(Color.LIME);
             Point center = p.translate(0, -2 * Globals.UNIT);
             Text text = createText(center, name, Color.BLACK, 12);
-            powerSourceIcon.addStaticNodeShapes(text);
+            powerSourceIcon.addTextElement(text);
         }
 
         powerSourceIcon.setBoundingRect(new Dimensions(2, 3, 0, -0.25, 0, 0, true), p);
@@ -342,7 +343,7 @@ public class ComponentIconCreator {
             Circle turbineCircle = createCircle(p.translate(0, 2 * Globals.UNIT), Globals.UNIT, Color.YELLOW, Color.BLACK);
             turbineIcon.addSourceNodeShapes(turbineCircle);
             Text lockText = createText(p.translate(0, 2*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
-            turbineIcon.addStaticNodeShapes(lockText);
+            turbineIcon.addTextElement(lockText);
         } else {
             Circle turbineCircle = createCircle(p.translate(0, 2 * Globals.UNIT), Globals.UNIT, Color.RED, Color.BLACK);
             turbineIcon.addSourceNodeShapes(turbineCircle);

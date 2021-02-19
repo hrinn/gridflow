@@ -96,7 +96,7 @@
                     </graphic></Button>
                 <Button onMousePressed="#pickPlaceTurbineTool" prefHeight="96.0" prefWidth="96.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;" text="" translateY="8.0">
                 <graphic>
-                    <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
+                    <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                         <image>
                             <Image url="@../resources/TurbineIcon.png" />
                         </image>

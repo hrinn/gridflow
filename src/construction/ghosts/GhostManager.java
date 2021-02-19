@@ -33,7 +33,8 @@ public class GhostManager implements PropertiesObserver {
 
     @Override
     public void updateProperties(PropertiesData PD) {
-        this.properties = PD;
+        this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
+                PD.getDefaultState(), PD.getRotation());
     }
 
     public void setGhostIcon(ComponentType componentType) {

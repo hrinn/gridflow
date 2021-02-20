@@ -143,7 +143,7 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         // Toggle state, update ghost manager
         propertiesData.setDefaultState(!propertiesData.getDefaultState());
         PropertiesManager.notifyObservers(propertiesData);
-        //ghostManagerController.propertiesDataChanged(false, true);
+        ghostManagerController.propertiesDataChanged(false, true);
         event.consume();
     };
 

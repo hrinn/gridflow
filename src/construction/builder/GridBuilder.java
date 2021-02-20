@@ -55,9 +55,10 @@ public class GridBuilder implements PropertiesObserver {
                 }
             }
         }
-        
+
+        //this.properties = PD;
         this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
-                PD.getDefaultState(), PD.getRotation());
+                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected());
     }
 
     // This is what runs when a component is placed on the canvas standalone

@@ -59,14 +59,13 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         // controllers
         gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData,
                 propertiesData, canvasFacade);
-        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
+        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridHistorianController = new GridHistorianController(grid, gridFlowEventManager);
         canvasExpandController = new CanvasExpandController(stage.getScene(), canvasFacade);
         gridFlowEventManager.addListener(gridHistorianController);
         gridFlowEventManager.addListener(ghostManagerController);
 
-        //setPropertiesData(0, true);
         setBuildMenuData(ToolType.INTERACT, null);
 
         installEventHandlers();
@@ -84,7 +83,8 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         if (componentType != null) buildMenuData.componentType = componentType;
 
         // default state becomes closed when tool switches
-        setPropertiesData(propertiesData.getRotation(), true);
+        //setPropertiesData(propertiesData.getRotation(), true);
+        //propertiesData.setRotation();
 
         // these run if the controllers need to react to build data changing
         ghostManagerController.buildMenuDataChanged();
@@ -107,15 +107,20 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
     @Override
     public void updateProperties(PropertiesData properties){
         // if default state is changed, update the ghostmanager
-        if (properties.getDefaultState() != propertiesData.getDefaultState()) {
-            // Default state has changed through the properties window
-            ghostManagerController.propertiesDataChanged(false, true);
-        }
+        // if the default state or rotation changes, update the ghost icon
+//        if (this.propertiesData.getDefaultState() != properties.getDefaultState()) {
+//            ghostManagerController.propertiesDataChanged(false, true);
+//        } else if (this.propertiesData.getRotation() != properties.getRotation()) {
+//            ghostManagerController.propertiesDataChanged(true, false);
+//        }
 
         this.propertiesData = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
-                                                    properties.getDefaultState(), properties.getRotation());
+                                                    properties.getDefaultState(), properties.getRotation(), properties.getNumSelected());
     }
 
+    public void notifyGhostController (boolean rotChanged, boolean stateChanged) {
+        ghostManagerController.propertiesDataChanged(rotChanged, stateChanged);
+    }
 
     private final EventHandler<KeyEvent> handleRKeyRotation = event -> {
         if (isTyping) return;
@@ -134,7 +139,11 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         if (isTyping) return;
         if (event.getCode() != KeyCode.E) return;
         if (buildMenuData.toolType != ToolType.PLACE) return;
-        setPropertiesData(propertiesData.getRotation(), !propertiesData.getDefaultState());
+
+        // Toggle state, update ghost manager
+        propertiesData.setDefaultState(!propertiesData.getDefaultState());
+        PropertiesManager.notifyObservers(propertiesData);
+        //ghostManagerController.propertiesDataChanged(false, true);
         event.consume();
     };
 
@@ -162,7 +171,9 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
             rotation = (propertiesData.getRotation() == 270) ? 0 : propertiesData.getRotation() + 90;
         }
 
-        setPropertiesData(rotation, propertiesData.getDefaultState());
+        propertiesData.setRotation(rotation);
+        PropertiesManager.notifyObservers(propertiesData);
+        ghostManagerController.propertiesDataChanged(true, false);
     }
 
     // Functions that implement button actions in the top menu

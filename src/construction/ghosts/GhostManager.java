@@ -20,11 +20,6 @@ public class GhostManager implements PropertiesObserver {
     private PropertiesData properties;
     private boolean ghostEnabled;
 
-    public GhostManager(GridCanvasFacade canvasMaster, PropertiesData properties) {
-        this.canvasMaster = canvasMaster;
-        this.properties = properties;
-    }
-
     public GhostManager(GridCanvasFacade canvasMaster) {
         this.canvasMaster = canvasMaster;
         this.properties = new PropertiesData();
@@ -34,7 +29,7 @@ public class GhostManager implements PropertiesObserver {
     @Override
     public void updateProperties(PropertiesData PD) {
         this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
-                PD.getDefaultState(), PD.getRotation());
+                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected());
     }
 
     public void setGhostIcon(ComponentType componentType) {

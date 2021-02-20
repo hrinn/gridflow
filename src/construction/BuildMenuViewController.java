@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Properties;
 import java.util.UUID;
 
 enum MenuState {
@@ -89,16 +90,25 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     public void setConstructionController(ConstructionController constructionController) {
         this.constructionController = constructionController;
-        //this.Properties = constructionController.propertiesData;
     }
 
     @Override
     public void updateProperties(PropertiesData properties) {
+        // State and rotation may change if the key handlers were pressed, update component window
+
         // received data from somewhere else, update the properties variable and set the window
         this.Properties = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
-                properties.getDefaultState(), properties.getRotation());
+                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected());
 
         setPropertiesWindow();
+    }
+
+    private void setPropertiesAndUpdate (ComponentType type) {
+        Properties.setDefaultProperties(type);
+        PropertiesManager.notifyObservers(this.Properties);
+        // Notify ghostmanager of changes and update the window
+        constructionController.notifyGhostController(true, true);
+        setComponentPropertiesWindow();
     }
 
     @FXML
@@ -110,9 +120,7 @@ public class BuildMenuViewController implements PropertiesObserver{
     private void pickInteractTool() {
         // At this point, the tool is selected. Update the properties window to show default now
         constructionController.setBuildMenuData(ToolType.INTERACT, null);
-        //Properties.setDefaultProperties(this.Properties.getType());
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(this.Properties.getType());
     }
 
     @FXML
@@ -122,75 +130,56 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     @FXML
     private void pickWireTool() {
-
         constructionController.setBuildMenuData(ToolType.WIRE, ComponentType.WIRE);
-        Properties.setDefaultComponentProperties(ComponentType.WIRE);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.WIRE);
     }
 
     @FXML
     private void pickPlacePowerSourceTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.POWER_SOURCE);
-        Properties.setDefaultComponentProperties(ComponentType.POWER_SOURCE);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.POWER_SOURCE);
     }
 
     @FXML
     private void pickPlaceTurbineTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.TURBINE);
-        Properties.setDefaultComponentProperties(ComponentType.TURBINE);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.TURBINE);
     }
 
     @FXML
     private void pickPlaceSwitchTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.SWITCH);
-        Properties.setDefaultComponentProperties(ComponentType.SWITCH);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.SWITCH);
     }
 
     @FXML
     private void pickPlaceBreaker70KVTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.BREAKER_70KV);
-        Properties.setDefaultComponentProperties(ComponentType.BREAKER_70KV);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.BREAKER_70KV);
     }
 
     @FXML
     private void pickPlaceBreaker12KVTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.BREAKER_12KV);
-        Properties.setDefaultComponentProperties(ComponentType.BREAKER_12KV);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.BREAKER_12KV);
     }
 
     @FXML
     private void pickPlaceTransformerTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.TRANSFORMER);
-        Properties.setDefaultComponentProperties(ComponentType.TRANSFORMER);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.TRANSFORMER);
     }
 
     @FXML
     private void pickPlaceJumperTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.JUMPER);
-        Properties.setDefaultComponentProperties(ComponentType.JUMPER);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.JUMPER);
     }
 
     @FXML
     private void pickPlaceCutoutTool() {
         constructionController.setBuildMenuData(ToolType.PLACE, ComponentType.CUTOUT);
-        Properties.setDefaultComponentProperties(ComponentType.CUTOUT);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
+        setPropertiesAndUpdate(ComponentType.CUTOUT);
     }
 
     @FXML
@@ -243,11 +232,16 @@ public class BuildMenuViewController implements PropertiesObserver{
     }
 
     private void setPropertiesWindow(){
-        // If ID is not default, component is active
-        if (!Properties.getID().equals(new UUID(0, 0))) {
-            // Component properties, update window
+        // if numselected is less than 2, show the component properties
+        if (Properties.getNumSelected() < 2) {
             setComponentPropertiesWindow();
         }
+
+//        // If ID is not default, component is active
+//        if (!Properties.getID().equals(new UUID(0, 0))) {
+//            // Component properties, update window
+//            setComponentPropertiesWindow();
+//        }
 
     }
 
@@ -304,10 +298,8 @@ public class BuildMenuViewController implements PropertiesObserver{
         nameField.getStyleClass().add("field");
         nameField.focusedProperty().addListener((observableValue, aBoolean, textFieldActive) -> {
             if (textFieldActive){
-                System.out.println("User is typing!");
                 constructionController.setUserTyping(true);
             } else {
-                System.out.println("User has stopped typing!");
                 constructionController.setUserTyping(false);
             }
         });
@@ -322,7 +314,8 @@ public class BuildMenuViewController implements PropertiesObserver{
             } else {
                 Properties.setDefaultState(true);
             }
-            PropertiesManager.notifyObservers(Properties);
+            PropertiesManager.notifyObservers(this.Properties);
+            constructionController.notifyGhostController(false, true);
         });
 
         Button applyButton = new Button("Apply");
@@ -333,7 +326,7 @@ public class BuildMenuViewController implements PropertiesObserver{
             if (nameField.getText() != null) {
                 // set component name in properties and update
                 Properties.setName(nameField.getText());
-                PropertiesManager.notifyObservers(Properties);
+                PropertiesManager.notifyObservers(this.Properties);
             }
         });
 

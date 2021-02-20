@@ -10,6 +10,7 @@ public class PropertiesData {
     private String name;
     private boolean defaultState;
     private double rotation;
+    private int numSelected;
 
     public PropertiesData() {
         this.type = null;
@@ -17,14 +18,24 @@ public class PropertiesData {
         this.name = "";
         this.defaultState = true;
         this.rotation = 0;
+        this.numSelected = 0;
     }
 
-    public PropertiesData(ComponentType type, UUID ID, String name, boolean defState, double rot) {
+    public PropertiesData(ComponentType type, UUID ID, String name, boolean defState, double rot, int numSelected) {
         this.type = type;
         this.ID = ID;
         this.name = name;
         this.defaultState = defState;
         this.rotation = rot;
+        this.numSelected = numSelected;
+    }
+
+    public PropertiesData(PropertiesData PD) {
+        this.type = PD.getType();
+        this.ID = PD.getID();
+        this.name = PD.getName();
+        this.defaultState = PD.getDefaultState();
+        this.rotation = PD.getRotation();
     }
 
     @Override
@@ -70,6 +81,10 @@ public class PropertiesData {
 
     public void setDefaultState(boolean defaultState) { this.defaultState = defaultState; }
 
+    public void setNumSelected (int num) { this.numSelected = num; }
+
+    public int getNumSelected () { return this.numSelected; }
+
     public void setDefaultProperties(ComponentType type){
         setType(type);
         setID(new UUID(0, 0));
@@ -83,6 +98,7 @@ public class PropertiesData {
         setID(new UUID(0, 0));
         setDefaultState(true);
         setRotation(0);
+        setNumSelected(0);
     }
 
     public void copyContents(PropertiesData properties) {

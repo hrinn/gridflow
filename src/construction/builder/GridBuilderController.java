@@ -55,8 +55,9 @@ public class GridBuilderController implements PropertiesObserver {
 
     @Override
     public void updateProperties(PropertiesData PD) {
+        //this.propertiesData = PD;
         this.propertiesData = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
-                PD.getDefaultState(), PD.getRotation());
+                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected());
     }
 
     public void propertiesDataChanged() {

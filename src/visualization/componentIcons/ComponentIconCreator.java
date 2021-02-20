@@ -252,8 +252,6 @@ public class ComponentIconCreator {
     public static DeviceIcon getCutoutIcon(Point p, boolean closed, boolean isLocked) {
         DeviceIcon cutoutIcon = new DeviceIcon();
 
-        System.out.println("HERE");
-
         //base shape
         Line inLine = createLine(p, p.translate(0, .95 * Globals.UNIT));
         cutoutIcon.addInNodeShapes(inLine);

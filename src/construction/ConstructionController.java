@@ -141,9 +141,17 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         if (buildMenuData.toolType != ToolType.PLACE) return;
 
         // Toggle state, update ghost manager
-        propertiesData.setDefaultState(!propertiesData.getDefaultState());
-        PropertiesManager.notifyObservers(propertiesData);
-        ghostManagerController.propertiesDataChanged(false, true);
+        // If placing a new source component, they are on by default and can't be changed
+        // unless selected later
+        if ( !((propertiesData.getType() == ComponentType.POWER_SOURCE
+                || propertiesData.getType() == ComponentType.TURBINE)
+                &&  buildMenuData.toolType == ToolType.PLACE)) {
+
+            propertiesData.setDefaultState(!propertiesData.getDefaultState());
+            PropertiesManager.notifyObservers(propertiesData);
+            ghostManagerController.propertiesDataChanged(false, true);
+        }
+
         event.consume();
     };
 

@@ -142,7 +142,6 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
 
         // Toggle state, update ghost manager
         // If placing a new source component, they are on by default and can't be changed
-        // unless selected later
         if ( !((propertiesData.getType() == ComponentType.POWER_SOURCE
                 || propertiesData.getType() == ComponentType.TURBINE)
                 &&  buildMenuData.toolType == ToolType.PLACE)) {
@@ -179,6 +178,7 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
             rotation = (propertiesData.getRotation() == 270) ? 0 : propertiesData.getRotation() + 90;
         }
 
+        // Update properties and ghost object
         propertiesData.setRotation(rotation);
         PropertiesManager.notifyObservers(propertiesData);
         ghostManagerController.propertiesDataChanged(true, false);

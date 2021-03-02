@@ -6,6 +6,8 @@ import construction.canvas.GridCanvasFacade;
 import construction.history.GridMemento;
 import domain.Association;
 import domain.Grid;
+import domain.components.Closeable;
+import domain.components.Component;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -55,6 +57,32 @@ public class GridBuilderController implements PropertiesObserver {
 
     @Override
     public void updateProperties(PropertiesData PD) {
+        Component component = grid.getComponent(PD.getID().toString());
+        // if the component id is specified, component is selected via toggle
+        // access that component and change its name if they differ
+        if (component != null){
+            if (!PD.getID().equals(new UUID(0, 0))) {
+                // Name changed
+                if (!component.getName().equals(PD.getName())) {
+                    component.setName(PD.getName());
+                    component.updateComponentIconName();
+                }
+
+            } else if (PD.getID().equals(this.propertiesData.getID())){
+                // IDs match, they are the same component, update component name and state here
+                component.setName(PD.getName());
+                component.updateComponentIconName();
+
+                // State changed
+                if (component instanceof Closeable) {
+                    if (this.propertiesData.getDefaultState() != (((Closeable) component).isClosedByDefault())) {
+                        ((Closeable) component).setClosedByDefault(this.propertiesData.getDefaultState());
+                    }
+                }
+            }
+        }
+
+
         //this.propertiesData = PD;
         this.propertiesData = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
                 PD.getDefaultState(), PD.getRotation(), PD.getNumSelected());

@@ -31,31 +31,6 @@ public class GridBuilder implements PropertiesObserver {
 
     @Override
     public void updateProperties(PropertiesData PD){
-        Component component = grid.getComponent(PD.getID().toString());
-        // if the component id is specified, component is selected via toggle
-        // access that component and change its name if they differ
-        if (component != null){
-            if (!PD.getID().equals(new UUID(0, 0))) {
-                // Name changed
-                if (!component.getName().equals(PD.getName())) {
-                    component.setName(PD.getName());
-                    component.updateComponentIconName();
-                }
-
-            } else if (PD.getID().equals(this.properties.getID())){
-                // IDs match, they are the same component, update component name and state here
-                component.setName(PD.getName());
-                component.updateComponentIconName();
-
-                // State changed
-                if (component instanceof Closeable) {
-                    if (this.properties.getDefaultState() != (((Closeable) component).isClosedByDefault())) {
-                        ((Closeable) component).setClosedByDefault(this.properties.getDefaultState());
-                    }
-                }
-            }
-        }
-
         //this.properties = PD;
         this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
                 PD.getDefaultState(), PD.getRotation(), PD.getNumSelected());

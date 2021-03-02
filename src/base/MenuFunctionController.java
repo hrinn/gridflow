@@ -45,7 +45,6 @@ public class MenuFunctionController {
         gridFlowEventManager.sendEvent(new GridChangedEvent());
     }
 
-
     public void saveGrid(VBox menu) {
         // Get the main stage for dialog modality
         Window stage = menu.getScene().getWindow();

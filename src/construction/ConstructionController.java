@@ -1,23 +1,28 @@
 package construction;
 
 import application.events.GridFlowEventManager;
+import base.BaseMenuFunctions;
 import construction.builder.GridBuilderController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.history.GridHistorianController;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
+import domain.components.Component;
+import domain.geometry.Point;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class ConstructionController {
+public class ConstructionController implements BaseMenuFunctions {
 
     private GridCanvasFacade canvasFacade = null;
     private GridFlowEventManager gridFlowEventManager;
     private Stage stage;
+    private Grid grid;
 
     // Sub Controllers
     private GridBuilderController gridBuilderController;
@@ -36,10 +41,11 @@ public class ConstructionController {
     public ConstructionController(Grid grid, GridFlowEventManager gridFlowEventManager, Stage stage) {
         // shared objects
         this.gridFlowEventManager = gridFlowEventManager;
-        this.canvasFacade = new GridCanvasFacade();
+        this.canvasFacade = new GridCanvasFacade(stage.getScene());
         this.buildMenuData = new BuildMenuData();
         this.propertiesData = new PropertiesData();
         this.stage = stage;
+        this.grid = grid;
 
         // controllers
         gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData,
@@ -129,18 +135,51 @@ public class ConstructionController {
         setPropertiesData(rotation, propertiesData.getDefaultState());
     }
 
+    // Functions that implement button actions in the top menu
+    @Override
+    public void undo() {
+        gridHistorianController.undo();
+    }
+
+    @Override
+    public void redo() {
+        gridHistorianController.redo();
+    }
+
+    @Override
+    public void delete() {
+        selectionManagerController.delete();
+    }
+
+    @Override
+    public void selectAll() {
+        selectionManagerController.selectAll();
+    }
+
+    @Override
+    public void zoomToFit() {
+        // Calculate middle position of grid
+        double tx = 0;
+        double ty = 0;
+        double n = 0;
+        for (Component comp : grid.getComponents()) {
+            tx += comp.getPosition().getX();
+            ty += comp.getPosition().getY();
+            n++;
+        }
+        // Set middle position as pan
+       // canvasFacade.setCameraPos(tx/n, ty/n);
+    }
+
+    // gets event handlers from the sub controllers and installs them into the canvasFacade
+    // event handlers are what respond to user inputs
     private void installEventHandlers() {
-        // gets event handlers from the sub controllers and installs them into the canvasFacade
-        // event handlers are what respond to user inputs
 
         // construction controller events
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleToggleDefaultState);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleEscapeTool);
-
-        // undo/redo events
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, gridHistorianController.getUndoRedoEventHandler());
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());
@@ -157,7 +196,6 @@ public class ConstructionController {
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_DRAGGED, selectionManagerController.getExpandSelectionEventHandler());
         canvasFacade.addCanvasEventHandler(MouseEvent.MOUSE_RELEASED, selectionManagerController.getEndSelectionEventHandler());
         canvasFacade.setSelectSingleComponentHandler(selectionManagerController.getSelectSingleComponentHandler());
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, selectionManagerController.getDeleteHandler());
 
         // association events
         canvasFacade.setConsumeAssociationClicksHandler(consumeAssociationClicksHandler);

@@ -1,12 +1,15 @@
 package construction.canvas;
 
+import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import visualization.componentIcons.AssociationIcon;
@@ -16,6 +19,8 @@ public class GridCanvasFacade {
 
     // this is the master's baby. it adds nodes to and removes nodes from the canvas.
     private GridCanvas canvas;
+
+    private Scene scene;
 
     // Component Event Handlers
     private EventHandler<MouseEvent> toggleComponentEventHandler;
@@ -41,14 +46,19 @@ public class GridCanvasFacade {
     private EventHandler<MouseEvent> endHoverAssociationHandler;
     private EventHandler<MouseEvent> consumeAssociationClicksHandler;
 
-    public GridCanvasFacade() {
+    public GridCanvasFacade(Scene scene) {
+        this.scene = scene;
         createCanvas();
     }
 
     private void createCanvas() {
         canvas = new GridCanvas();
-        canvas.setTranslateX(-5350); // get this from application settings?
-        canvas.setTranslateY(-2650);
+        canvas.setScale(0.7);
+        //canvas.setTranslateX(100);
+        //canvas.setTranslateY(100);
+        // draw center point
+        canvas.getChildren().add(new Circle(canvas.getPrefWidth()/2, canvas.getPrefHeight()/2, 5));
+        setCameraPos((canvas.getPrefWidth()/2) / canvas.getScale(), (canvas.getPrefHeight()/2) / canvas.getScale());
 
         // canvas events
         SceneGestures sceneGestures = new SceneGestures(canvas);
@@ -58,6 +68,27 @@ public class GridCanvasFacade {
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
         canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, sceneGestures.getEndPanEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+    }
+
+    // Takes an (x, y) in Grid Coordinates and sets the center of the camera there
+    public void setCameraPos(double x, double y) {
+        x = x * canvas.getScale();
+        y = y * canvas.getScale();
+//        System.out.println("Camera pos: " + x + ", " + y);
+//        System.out.println("Scale: " + canvas.getScale());
+//        System.out.println("Scene dims: " + scene.getWidth() + ", " + scene.getHeight());
+
+//        System.out.println("Scene in grid coords: " + rsw + ", " + rsh);
+        double rx = -x + scene.getWidth()/2;
+        double ry = -y + scene.getHeight()/2;
+        System.out.println("Translation: " + rx + ", " + ry);
+        canvas.setTranslateX(rx);
+        canvas.setTranslateY(ry);
+    }
+
+    public void setTranslatePos(double x, double y) {
+        canvas.setTranslateX(x);
+        canvas.setTranslateY(y);
     }
 
     public void addComponentIcon(ComponentIcon icon) {

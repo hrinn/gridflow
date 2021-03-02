@@ -1,0 +1,9 @@
+package base;
+
+public interface BaseMenuFunctions {
+    void undo();
+    void redo();
+    void delete();
+    void selectAll();
+    void zoomToFit();
+}

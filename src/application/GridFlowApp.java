@@ -29,51 +29,53 @@ public class GridFlowApp extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        // Custom event manager for our events
+        /* Create GUI elements */
+        Group root = new Group();
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        primaryStage.setScene(scene);
+
+        /* Create custom event manager for module communication */
         GridFlowEventManager gridFlowEventManager = new GridFlowEventManager();
 
-        // Init modules
+        /* Init modules and connect them all together */
+        // Base UI Module
         FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/base/BaseUIView.fxml"));
         MenuFunctionController menuFunctionController = new MenuFunctionController(gridFlowEventManager);
         Node baseUIView = baseUIViewLoader.load();
         BaseUIViewController baseUIViewController = baseUIViewLoader.getController();
         baseUIViewController.setController(menuFunctionController);
 
+        // Construction Module
         ConstructionController constructionController = new ConstructionController(menuFunctionController.getGrid(), gridFlowEventManager, primaryStage);
         FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
         Node buildMenuView = buildMenuViewLoader.load();
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
         buildMenuViewController.setConstructionController(constructionController);
+        baseUIViewController.setBaseMenuFunctions(constructionController);
 
+        // Visualization Module
         VisualizationController visualizationController = new VisualizationController(menuFunctionController.getGrid(), constructionController.getCanvasFacade());
         gridFlowEventManager.addListener(visualizationController);
 
+        // Simulation Module
         SimulationController simulationController = new SimulationController(menuFunctionController.getGrid(), gridFlowEventManager);
         gridFlowEventManager.addListener(simulationController);
 
+        // Load the default grid JSON file
         menuFunctionController.loadDefaultGrid();
 
-        // Init GUI
-        initGui(primaryStage, constructionController.getCanvasFacade().getCanvas(), buildMenuView, baseUIView);
-    }
+        /* Add UI elements to Scene */
+        BorderPane UI = new BorderPane();
+        UI.setLeft(buildMenuView);
+        UI.setTop(baseUIView);
+        UI.setPickOnBounds(false);
+        root.getChildren().addAll(constructionController.getCanvasFacade().getCanvas(), UI);
 
-    private void initGui(Stage primaryStage, GridCanvas canvas, Node buildMenuView, Node baseUIView) {
-        Group root = new Group();
-
-        BorderPane ui = new BorderPane();
-        ui.setLeft(buildMenuView);
-        ui.setTop(baseUIView);
-        ui.setPickOnBounds(false);
-
-        root.getChildren().addAll(canvas, ui);
-
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
-
+        /* Init GUI */
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));
         primaryStage.setMinHeight(700);
         primaryStage.setMinWidth(500);
-        primaryStage.setScene(scene);
         primaryStage.show();
     }
 

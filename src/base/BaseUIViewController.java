@@ -64,6 +64,12 @@ public class BaseUIViewController {
     }
 
     @FXML
+    private void clearGrid() {
+        selectAll();
+        delete();
+    }
+
+    @FXML
     private void selectAll() {
         baseMenuFunctions.selectAll();
     }

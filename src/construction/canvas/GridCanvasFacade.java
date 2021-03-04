@@ -57,7 +57,7 @@ public class GridCanvasFacade {
         //canvas.setTranslateX(100);
         //canvas.setTranslateY(100);
         // draw center point
-        canvas.getChildren().add(new Circle(canvas.getPrefWidth()/2, canvas.getPrefHeight()/2, 5));
+//        canvas.getChildren().add(new Circle(canvas.getPrefWidth()/2, canvas.getPrefHeight()/2, 5));
         setCameraPos((canvas.getPrefWidth()/2) / canvas.getScale(), (canvas.getPrefHeight()/2) / canvas.getScale());
 
         // canvas events

@@ -156,6 +156,11 @@ public class ConstructionController implements BaseMenuFunctions {
         selectionManagerController.selectAll();
     }
 
+//    @Override
+//    public void clearGrid() {
+//        grid.getComponents().forEach(comp -> comp.delete());
+//    }
+
     @Override
     public void zoomToFit() {
         // Calculate middle position of grid

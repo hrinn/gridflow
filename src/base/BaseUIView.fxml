@@ -27,7 +27,7 @@
                         <Menu fx:id="FileMenu" mnemonicParsing="false"
                               style="-fx-font-size: 14; -fx-text-alignment: center;" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="New Grid"/>
+                                <MenuItem mnemonicParsing="false" text="Clear Grid" onAction="#clearGrid"/>
                                 <MenuItem mnemonicParsing="false" text="Save Grid" onAction="#saveGrid"/>
                                 <MenuItem mnemonicParsing="false" text="Load Grid" onAction="#loadGrid"/>
                                 <MenuItem mnemonicParsing="false" text="Switch Account"/>

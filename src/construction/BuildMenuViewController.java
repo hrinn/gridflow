@@ -47,7 +47,7 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     private ConstructionController constructionController;
     private PropertiesData Properties;
-    private boolean defaultState;
+    private boolean defaultStateChanged;
 
     // variables for the different property windows
     private PropertyState propertyWindow;
@@ -77,7 +77,7 @@ public class BuildMenuViewController implements PropertiesObserver{
     @FXML
     private void initialize() {
         this.Properties = new PropertiesData();
-        this.defaultState = true;
+        this.defaultStateChanged = false;
 
         // Bind the managed and visible properties for the component menu and properties window.
         // Allows the windows to be hidden through node visibility.
@@ -133,7 +133,10 @@ public class BuildMenuViewController implements PropertiesObserver{
     private void pickInteractTool() {
         // At this point, the tool is selected. Update the properties window to show default now
         constructionController.setBuildMenuData(ToolType.INTERACT, null);
-        setPropertiesAndUpdate(this.Properties.getType());
+
+        //setPropertiesAndUpdate(this.Properties.getType());
+        // Instead of supply/changing the toggled properties, set the properties window with default properties
+        setDefaultPropertiesWindow();
     }
 
     @FXML
@@ -238,13 +241,20 @@ public class BuildMenuViewController implements PropertiesObserver{
     }
 
     private void setDefaultPropertiesWindow(){
-
+        Properties.setDefaultProperties(null);
+        PropertiesManager.notifyObservers(this.Properties);
+        setComponentPropertiesWindow();
     }
 
     private void setPropertiesWindow(){
         // if numselected is less than 2, show the component properties
         if (Properties.getNumSelected() < 2) {
             setComponentPropertiesWindow();
+        }
+        // else if association, show association
+        // else multiple selected, show selection properties
+        else {
+
         }
 
 //        // If ID is not default, component is active
@@ -259,8 +269,13 @@ public class BuildMenuViewController implements PropertiesObserver{
         // set the window fields before adding to view
         for (Node node : ComponentFields.getChildren()) {
             if (node != null){
-                if (node.getId().equals("typeField") && Properties.getType() != null){
-                    ((TextField)node).setText(Properties.getType().toString());
+                // && Properties.getType() != null, Definitely update properties if still null
+                if (node.getId().equals("typeField")){
+                    if (Properties.getType() == null) {
+                        ((TextField)node).setText("");
+                    } else {
+                        ((TextField)node).setText(Properties.getType().toString());
+                    }
                 }
                 else if (node.getId().equals("nameField")) {
                     ((TextField)node).setText(Properties.getName());
@@ -283,7 +298,6 @@ public class BuildMenuViewController implements PropertiesObserver{
     }
 
     private void initComponentProperties() {
-        boolean defaultState = true;
 
         Label type = new Label("Type");
         type.getStyleClass().add("field-label");
@@ -324,8 +338,8 @@ public class BuildMenuViewController implements PropertiesObserver{
             } else {
                 Properties.setDefaultState(true);
             }
-            PropertiesManager.notifyObservers(this.Properties);
-            constructionController.notifyGhostController(false, true);
+
+            defaultStateChanged = true;
         });
 
         Button applyButton = new Button("Apply");
@@ -338,6 +352,14 @@ public class BuildMenuViewController implements PropertiesObserver{
                 Properties.setName(nameField.getText());
                 PropertiesManager.notifyObservers(this.Properties);
             }
+
+            if (defaultStateChanged) {
+                PropertiesManager.notifyObservers(this.Properties);
+                constructionController.notifyGhostController(false, true);
+                defaultStateChanged = false;
+            }
+
+//            PropertiesManager.notifyObservers(this.Properties);
         });
 
         ComponentFields = new VBox(10, typeField, nameField, stateField, applyButton);

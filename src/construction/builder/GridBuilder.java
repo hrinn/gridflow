@@ -396,11 +396,12 @@ public class GridBuilder implements PropertiesObserver {
         if(locked)
             return;
 
-        toggleComponentProperties(component);
+        // TODO: remove toggle changing of component properties (may need this later?)
+        //toggleComponentProperties(component);
 
         // always set the ID
-        this.properties.setID(UUID.fromString(componentId));
-        PropertiesManager.notifyObservers(this.properties);
+        //this.properties.setID(UUID.fromString(componentId));
+        //PropertiesManager.notifyObservers(this.properties);
 
         if (component instanceof IToggleable) {
             ((IToggleable) component).toggleState();
@@ -427,13 +428,8 @@ public class GridBuilder implements PropertiesObserver {
         }
     }
 
+    // TODO: Remove this if needed
     private void toggleComponentProperties(Component comp) {
-        // Apply name supplied from properties data if different, otherwise update with own
-//        if (this.properties.getName().isEmpty()) {
-//            // update properties window with current name
-//            this.properties.setName(comp.getName());
-//            comp.updateComponentIconName();
-//        }
 
         // if id's don't match, toggled new comp, update properties
         if (!comp.getId().equals(this.properties.getID())) {

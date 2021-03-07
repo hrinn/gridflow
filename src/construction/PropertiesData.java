@@ -91,6 +91,7 @@ public class PropertiesData {
         setName("");
         setDefaultState(true);
         setRotation(0);
+        setNumSelected(0);
     }
 
     public void setDefaultComponentProperties(ComponentType type) {

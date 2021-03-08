@@ -73,12 +73,17 @@ public class GridBuilderController implements PropertiesObserver {
                 component.setName(PD.getName());
                 component.updateComponentIconName();
 
-                // State changed
-                if (component instanceof Closeable) {
-                    if (this.propertiesData.getDefaultState() != (((Closeable) component).isClosedByDefault())) {
-                        ((Closeable) component).setClosedByDefault(this.propertiesData.getDefaultState());
-                    }
-                }
+//                // State changed
+//                if (component instanceof Closeable) {
+//                    if (this.propertiesData.getDefaultState() != (((Closeable) component).isClosedByDefault())) {
+//                        ((Closeable) component).setClosedByDefault(this.propertiesData.getDefaultState());
+//                    }
+//                }
+            }
+
+            // State changed, always check
+            if (component instanceof Closeable) {
+                ((Closeable) component).setClosedByDefault(PD.getDefaultState());
             }
         }
 

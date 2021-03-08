@@ -94,12 +94,13 @@ public class PropertiesData {
         setNumSelected(0);
     }
 
-    public void setDefaultComponentProperties(ComponentType type) {
-        setType(type);
+    public void setDefaultComponentProperties(int numSelected) {
+        setType(null);
         setID(new UUID(0, 0));
+        setName("");
         setDefaultState(true);
         setRotation(0);
-        setNumSelected(0);
+        setNumSelected(numSelected);
     }
 
     public void copyContents(PropertiesData properties) {

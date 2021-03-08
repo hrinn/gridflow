@@ -1,21 +1,31 @@
 package construction.selector;
 
+import construction.PropertiesData;
+import construction.PropertiesManager;
+import construction.PropertiesObserver;
 import construction.canvas.GridCanvasFacade;
 import domain.Grid;
 import domain.Selectable;
+import domain.components.Closeable;
+import domain.components.Component;
 import domain.components.Wire;
 import domain.geometry.Point;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class SelectionManager {
 
     private List<String> selectedIDs;
+    private ObservableList<String> observedSelectedIDs;
     private Rectangle selectionBox;
     private GridCanvasFacade canvasFacade;
     private Grid grid;
@@ -23,6 +33,7 @@ public class SelectionManager {
 
     public SelectionManager(GridCanvasFacade canvasFacade, Grid grid) {
         selectedIDs = new ArrayList<>();
+        observedSelectedIDs = FXCollections.observableList(selectedIDs);
         selectionBox = new Rectangle();
         this.canvasFacade = canvasFacade;
         this.grid = grid;
@@ -30,6 +41,38 @@ public class SelectionManager {
         selectionBox.setFill(Color.TRANSPARENT);
         selectionBox.setStroke(Color.BLACK);
         selectionBox.getStrokeDashArray().add(10.0);
+
+        // set up action on selectIDs list changed
+        observedSelectedIDs.addListener(new ListChangeListener<String>() {
+            @Override
+            public void onChanged(Change<? extends String> change) {
+                // if the list is changed when IDs are selected, update the properties
+                int numSelected = selectedIDs.size();
+                System.out.format("Number of selected components is: %d\n", numSelected);
+                PropertiesData properties = new PropertiesData();
+
+
+                // single comp selected. Get its info and update the properties data
+                if (numSelected == 1) {
+                    properties.setNumSelected(numSelected);
+                    properties.setID(UUID.fromString(selectedIDs.get(0)));
+                    Component comp = grid.getComponent(selectedIDs.get(0));
+                    properties.setType(comp.getComponentType());
+                    properties.setName(comp.getName());
+                    properties.setRotation(comp.getAngle());
+                    // if component can have its state changed, update default state, else leave alone
+                    if (comp instanceof Closeable) {
+                        properties.setDefaultState(((Closeable) comp).isClosedByDefault());
+                    }
+
+                } else {
+                    properties.setDefaultComponentProperties(numSelected);
+                }
+
+                // update the properties observers
+                PropertiesManager.notifyObservers(properties);
+            }
+        });
     }
 
     void selectAll() {
@@ -50,12 +93,12 @@ public class SelectionManager {
     public int deleteSelectedItems() {
         // Wires cannot be deleted if they are connected to a device or source, so delete the selected devices first
         sortWiresToBack();
-        selectedIDs.forEach(id -> {
+        observedSelectedIDs.forEach(id -> {
             setSelect(id, false);
             grid.deleteSelectedItem(id);
         });
-        int nitems = selectedIDs.size();
-        selectedIDs.clear();
+        int nitems = observedSelectedIDs.size();
+        observedSelectedIDs.clear();
         return nitems;
     }
 
@@ -65,20 +108,20 @@ public class SelectionManager {
     }
 
     public void deSelectAll() {
-        selectedIDs.forEach(ID -> setSelect(ID, false));
-        selectedIDs.clear();
+        observedSelectedIDs.forEach(ID -> setSelect(ID, false));
+        observedSelectedIDs.clear();
     }
 
     public void continuousPointSelection(String ID) {
-        if (selectedIDs.contains(ID)) return;
+        if (observedSelectedIDs.contains(ID)) return;
         setSelect(ID, true);
-        selectedIDs.add(ID);
+        observedSelectedIDs.add(ID);
     }
 
     public void pointSelection(String ID) {
         deSelectAll();
         setSelect(ID, true);
-        selectedIDs.add(ID);
+        observedSelectedIDs.add(ID);
     }
 
     public void beginSelection(double x, double y) {
@@ -105,9 +148,9 @@ public class SelectionManager {
         intersectingIDs.addAll(getIntersectingAssociationIDs());
 
         intersectingIDs.forEach(id -> {
-            if (!selectedIDs.contains(id)) {
+            if (!observedSelectedIDs.contains(id)) {
                 setSelect(id, true);
-                selectedIDs.add(id);
+                observedSelectedIDs.add(id);
             }
         });
         clearSelection();
@@ -157,7 +200,7 @@ public class SelectionManager {
     }
 
     private void sortWiresToBack() {
-        selectedIDs.sort((ID1, ID2) -> {
+        observedSelectedIDs.sort((ID1, ID2) -> {
             if (grid.getComponent(ID1) instanceof Wire) {
                 if (grid.getComponent(ID2) instanceof Wire) {
                     // comp1 and comp2 are wires
@@ -177,4 +220,5 @@ public class SelectionManager {
             }
         });
     }
+
 }

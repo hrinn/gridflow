@@ -43,20 +43,19 @@ public class SelectionManager {
         selectionBox.getStrokeDashArray().add(10.0);
 
         // set up action on selectIDs list changed
-        observedSelectedIDs.addListener(new ListChangeListener<String>() {
-            @Override
-            public void onChanged(Change<? extends String> change) {
-                // if the list is changed when IDs are selected, update the properties
-                int numSelected = selectedIDs.size();
-                System.out.format("Number of selected components is: %d\n", numSelected);
-                PropertiesData properties = new PropertiesData();
+        observedSelectedIDs.addListener((ListChangeListener<String>) change -> {
+            // if the list is changed when IDs are selected, update the properties
+            int numSelected = selectedIDs.size();
+            PropertiesData properties = new PropertiesData();
 
 
-                // single comp selected. Get its info and update the properties data
-                if (numSelected == 1) {
-                    properties.setNumSelected(numSelected);
+            if (numSelected == 1) {
+                properties.setNumSelected(numSelected);
+                Component comp = grid.getComponent(selectedIDs.get(0));
+
+                // If comp is null, probably an association
+                if (comp != null) {
                     properties.setID(UUID.fromString(selectedIDs.get(0)));
-                    Component comp = grid.getComponent(selectedIDs.get(0));
                     properties.setType(comp.getComponentType());
                     properties.setName(comp.getName());
                     properties.setRotation(comp.getAngle());
@@ -64,14 +63,14 @@ public class SelectionManager {
                     if (comp instanceof Closeable) {
                         properties.setDefaultState(((Closeable) comp).isClosedByDefault());
                     }
+                } // else if thing selected is an association
 
-                } else {
-                    properties.setDefaultComponentProperties(numSelected);
-                }
-
-                // update the properties observers
-                PropertiesManager.notifyObservers(properties);
+            } else {
+                properties.setDefaultComponentProperties(numSelected);
             }
+
+            // update the properties observers
+            PropertiesManager.notifyObservers(properties);
         });
     }
 

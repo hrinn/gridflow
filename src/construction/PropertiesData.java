@@ -11,6 +11,7 @@ public class PropertiesData {
     private boolean defaultState;
     private double rotation;
     private int numSelected;
+    private boolean isAssociation;
 
     public PropertiesData() {
         this.type = null;
@@ -19,6 +20,7 @@ public class PropertiesData {
         this.defaultState = true;
         this.rotation = 0;
         this.numSelected = 0;
+        this.isAssociation = false;
     }
 
     public PropertiesData(ComponentType type, UUID ID, String name, boolean defState, double rot, int numSelected) {
@@ -28,6 +30,7 @@ public class PropertiesData {
         this.defaultState = defState;
         this.rotation = rot;
         this.numSelected = numSelected;
+        this.isAssociation = false;
     }
 
     public PropertiesData(PropertiesData PD) {
@@ -84,6 +87,10 @@ public class PropertiesData {
     public void setNumSelected (int num) { this.numSelected = num; }
 
     public int getNumSelected () { return this.numSelected; }
+
+    public void setAssociation (boolean isAssoc) { this.isAssociation = isAssoc; }
+
+    public boolean getAssociation () { return this.isAssociation; }
 
     public void setDefaultProperties(ComponentType type){
         setType(type);

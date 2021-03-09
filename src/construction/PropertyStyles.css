@@ -4,7 +4,7 @@
 .field-label {
     -fx-font-size: 15px;
     -fx-text-alignment: right;
-    -fx-padding: 0 5px 0 0;
+    -fx-padding: 0 8px 0 0;
     -fx-pref-height: 30px;
     -fx-min-height: 30px;
     /*-fx-wrap-text: true;*/
@@ -17,12 +17,32 @@
     -fx-pref-width: 75px;
 }
 
-.field-container {
-    /*-fx-max-height: 100%;*/
-}
-
 .field {
     -fx-pref-height: 30px;
+}
+
+.field_text {
+    -fx-font-size: 15px;
+    -fx-padding: 0 8px 0 0;
+}
+
+.selected_field_text {
+    -fx-font-size: 15px;
+    /*-fx-padding: 0 8px 0 0;*/
+    -fx-text-alignment: left;
+    -fx-alignment: center-left;
+    -fx-pref-height: 30px;
+    -fx-pref-width: 75px;
+}
+
+.selected_field_label {
+    -fx-font-size: 15px;
+    -fx-text-alignment: left;
+    -fx-wrap-text: true;
+    -fx-padding: 0 0 0 2px;
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
+    -fx-pref-width: 125px;
 }
 
 .apply-button {

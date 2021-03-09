@@ -12,6 +12,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Translate;
 
 import java.io.File;
@@ -213,12 +214,12 @@ public class BuildMenuViewController implements PropertiesObserver{
             ComponentBuilderMenu.setPrefHeight(MENU_COLLAPSED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_COLLAPSED_WIDTH);
 
-            menuButtonTrans.setY(SHIFT_MENU_UP);
+            //menuButtonTrans.setY(SHIFT_MENU_UP);
 
             state = MenuState.MenuCollapsed;
 
         } else {
-            menuButtonTrans.setY(SHIFT_MENU_DOWN);
+            //menuButtonTrans.setY(SHIFT_MENU_DOWN);
 
             ComponentBuilderMenu.setPrefHeight(MENU_EXPANDED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_EXPANDED_WIDTH);
@@ -238,34 +239,43 @@ public class BuildMenuViewController implements PropertiesObserver{
     }
 
     private void setPropertiesWindow(){
-        // if numselected is less than 2, show the component properties
+        // if selected < 2 and association not selected, set compoenent properties window
         if (Properties.getNumSelected() < 2) {
-            setComponentPropertiesWindow();
+            if (!Properties.getAssociation()) {
+                setComponentPropertiesWindow();
+
+            } else {
+                // set association window
+            }
+        } else {
+            setSelectionPropertiesWindow();
         }
-        // else if association, show association
-        // else multiple selected, show selection properties
-        else {
 
+    }
+
+    private void setSelectionPropertiesWindow() {
+        for (Node node : SelectedFields.getChildren()) {
+            if (node != null) {
+                if (node.getId().equals("selectedField")){
+                    ((Label)node).setText(Integer.toString(Properties.getNumSelected()));
+                }
+            }
         }
 
-//        // If ID is not default, component is active
-//        if (!Properties.getID().equals(new UUID(0, 0))) {
-//            // Component properties, update window
-//            setComponentPropertiesWindow();
-//        }
-
+        // Show window
+        PropertiesWindow.setLeft(SelectedFieldNames);
+        PropertiesWindow.setCenter(SelectedFields);
     }
 
     private void setComponentPropertiesWindow() {
         // set the window fields before adding to view
         for (Node node : ComponentFields.getChildren()) {
             if (node != null){
-                // && Properties.getType() != null, Definitely update properties if still null
                 if (node.getId().equals("typeField")){
                     if (Properties.getType() == null) {
-                        ((TextField)node).setText("");
+                        ((Label)node).setText("");
                     } else {
-                        ((TextField)node).setText(Properties.getType().toString());
+                        ((Label)node).setText(Properties.getType().toString());
                     }
                 }
                 else if (node.getId().equals("nameField")) {
@@ -302,11 +312,10 @@ public class BuildMenuViewController implements PropertiesObserver{
         ComponentFieldNames = new VBox(10, type, name, state);
         ComponentFieldNames.getStyleClass().add("field-name-container");
 
-        TextField typeField = new TextField();
+        //TextField typeField = new TextField();
+        Label typeField = new Label();
         typeField.setId("typeField");
-        typeField.setEditable(false);
-        typeField.setFocusTraversable(false);
-        typeField.getStyleClass().add("field");
+        typeField.getStyleClass().addAll("field", "field_text");
 
         TextField nameField = new TextField();
         nameField.setId("nameField");
@@ -360,16 +369,15 @@ public class BuildMenuViewController implements PropertiesObserver{
 
 
     private void initSelectionProperties() {
-        Label numSelected = new Label("Selected");
-        numSelected.getStyleClass().add("field-label");
+        Label numSelected = new Label("Number Selected:");
+        numSelected.getStyleClass().add("selected_field_label");
 
-        TextField selectedField = new TextField();
-        selectedField.setEditable(false);
-        selectedField.setFocusTraversable(false);
-        selectedField.getStyleClass().add("field");
+        Label selectedField = new Label("");
+        selectedField.setId("selectedField");
+        selectedField.getStyleClass().addAll("selected_field_text");
 
         SelectedFieldNames = new VBox(numSelected);
-        SelectedFieldNames.getStyleClass().add("field-name-container");
+        //SelectedFieldNames.getStyleClass().add("field-name-container");
 
         SelectedFields = new VBox(selectedField);
 

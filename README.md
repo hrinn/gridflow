@@ -21,10 +21,10 @@ These instructions are for IntelliJ IDEA
 
 ## Credits
 ### Team
-* Connor McKee (@Connor1McKee)
-* Iñaki Madrigal (@inaki332)
-* Davis Reschenberg (@dreschen)
-* Hayden Rinn (@hrinn)
+* Connor McKee [(@Connor1McKee)](https://github.com/Connor1McKee)
+* Iñaki Madrigal [(@inaki332)](https://github.com/inaki332)
+* Davis Reschenberg [(@dreschen)](https://github.com/dreschen)
+* Hayden Rinn [(@hrinn)](https://github.com/hrinn)
 
 ![Team Members](src/resources/team.jpg)
 

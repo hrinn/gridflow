@@ -1,6 +1,6 @@
 ![GridFlow Logo](src/resources/logo.png)
 ---
-GridFlow is a power grid simulation focused on energy flow. This is a Cal Poly Capstone project in partnership with Vandenberg Air Force Base. 
+GridFlow is a power grid builder and simulator focused on energy flow. This is a Cal Poly Capstone project in partnership with Vandenberg Air Force Base. 
 
 ![Sample Grid Image](src/resources/gridsnip.PNG)
 
@@ -18,3 +18,17 @@ These instructions are for IntelliJ IDEA
 10. Add this as VM options for the runtime configuration:
    >--module-path YOUR-PATH-TO-JAVAFX-SDK\lib --add-modules javafx.controls,javafx.fxml
 11. Press Run.
+
+## Credits
+### Team
+* Connor McKee (@Connor1McKee)
+* Iñaki Madrigal (@inaki332)
+* Davis Reschenberg (@dreschen)
+* Hayden Rinn (@hrinn)
+
+![Team Members](src/resources/team.jpg)
+
+### Special Thanks
+* Lefty Pakulski, our project client.
+* Dr. John Oliver, our Capstone professor.
+* Bruce Benjamin, logo and icon designer.

@@ -23,6 +23,7 @@ public class BaseUIViewController {
     public Menu EditMenu;
     public MenuItem clearButton;
     public MenuItem saveButton;
+    public MenuItem manageAccountsButton;
 
     public void initialize() {
         // These set the keyboard shortcuts for menu items
@@ -50,6 +51,9 @@ public class BaseUIViewController {
             EditMenu.setDisable(true); // viewers can't do any edits
             clearButton.setDisable(true); // viewers can't clear the grid
             saveButton.setDisable(true); // users can't save the grid
+        }
+        if (access != Access.GOD) {
+            manageAccountsButton.setDisable(true);
         }
     }
 

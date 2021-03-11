@@ -30,6 +30,7 @@
                                 <MenuItem fx:id="clearButton" mnemonicParsing="false" text="Clear Grid" onAction="#clearGrid"/>
                                 <MenuItem fx:id="saveButton" mnemonicParsing="false" text="Save Grid" onAction="#saveGrid"/>
                                 <MenuItem mnemonicParsing="false" text="Load Grid" onAction="#loadGrid"/>
+                                <MenuItem fx:id="manageAccountsButton" mnemonicParsing="false" text="Manage Accounts"/>
                                 <MenuItem mnemonicParsing="false" text="Switch Account"/>
                                 <MenuItem mnemonicParsing="false" text="Exit" onAction="#exit"/>
                             </items>

@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Translate;
+import security.Access;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -52,9 +53,11 @@ public class BuildMenuViewController {
     }
 
     // TODO: Change this to the root node on Connor's branch
-    /* Permanently hides the build menu */
-    public void hideBuildMenu() {
-        ComponentBuilderMenu.setVisible(false);
+    /* Permanently hides the build menu based on permission level */
+    public void setPermissions(Access access) {
+        if (access == Access.VIEWER) {
+            ComponentBuilderMenu.setVisible(false);
+        }
     }
 
     @FXML

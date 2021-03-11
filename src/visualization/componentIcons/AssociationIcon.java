@@ -33,6 +33,10 @@ public class AssociationIcon {
         association = new Group();
     }
 
+    public void setLabelText(String content) {
+        label.setText(content);
+    }
+
     // must be run after the lines are created
     public void setID(UUID ID) {
         association.setId(ID.toString());

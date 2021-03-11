@@ -115,7 +115,8 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
 //        }
 
         this.propertiesData = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
-                                                    properties.getDefaultState(), properties.getRotation(), properties.getNumSelected());
+                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected(), properties.getAssociation(),
+                properties.getAssocLabel(), properties.getAssocSubLabel(), properties.getAssocAcronym());
     }
 
     public void notifyGhostController (boolean rotChanged, boolean stateChanged) {

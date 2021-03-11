@@ -25,7 +25,7 @@ public class SecurityController {
         }
 
         /* User logged in, boot rest of application */
-        eventManager.sendLoginEvent(new LoginEvent(result));
+        eventManager.sendApplicationOnlyEvent(new LoginEvent(result));
         return true;
     }
 

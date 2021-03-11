@@ -97,6 +97,11 @@ public class BaseUIViewController {
     }
 
     @FXML
+    private void switchAccounts() {
+        baseMenuFunctions.switchAccounts();
+    }
+
+    @FXML
     private void exit() {
         System.exit(0);
     }

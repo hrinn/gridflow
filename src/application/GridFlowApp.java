@@ -41,6 +41,9 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         this.gridFlowEventManager = new GridFlowEventManager();
         this.primaryStage = primaryStage;
 
+        /* Add the application as an event listener */
+        gridFlowEventManager.addListener(this);
+
         /* Open login screen */
         startLogin();
     }
@@ -58,8 +61,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
         /* Add login screen to scene root */
         root.getChildren().add(loginUIView);
-
-        /* Add the application as an event listener */
         gridFlowEventManager.addListener(this);
 
         primaryStage.setScene(scene);
@@ -82,6 +83,15 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
             Access permissionLevel = ((LoginEvent)gridFlowEvent).getAccess();
             try {
                 startApplication(permissionLevel);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        if (gridFlowEvent instanceof ReLoginEvent) {
+            /* User wants to login as a different user */
+            /* Open the login screen */
+            try {
+                startLogin();
             } catch (Exception e) {
                 e.printStackTrace();
             }

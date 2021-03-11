@@ -1,6 +1,7 @@
 package construction;
 
 import application.events.GridFlowEventManager;
+import application.events.ReLoginEvent;
 import base.BaseMenuFunctions;
 import construction.builder.GridBuilderController;
 import construction.canvas.GridCanvasFacade;
@@ -157,10 +158,10 @@ public class ConstructionController implements BaseMenuFunctions {
         selectionManagerController.selectAll();
     }
 
-//    @Override
-//    public void clearGrid() {
-//        grid.getComponents().forEach(comp -> comp.delete());
-//    }
+    @Override
+    public void switchAccounts() {
+        gridFlowEventManager.sendApplicationOnlyEvent(new ReLoginEvent());
+    }
 
     @Override
     public void zoomToFit() {

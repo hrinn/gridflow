@@ -15,13 +15,13 @@ public class GridFlowEventManager {
         listeners.add(listener);
     }
 
-    /* The login event is special because it only goes to the GridFlowApp class at program start.
-     * At this time, the only listener will be the GridFlowApp
-     * This function exists because login boots the app, which adds a bunch of listeners, and so the listeners
-     * list is bigger because the loop is completed in sendEvent.
+    /* This send event is special because it only goes to the GridFlowApp class.
+     * This avoids a concurrent modification error when the GridFlowApp class creates or removes listeners
+     * in response to the sent event.
+     * GridFlowApp was added first and should always be the first listener.
      */
-    public void sendLoginEvent(LoginEvent loginEvent) {
-        listeners.get(0).handleEvent(loginEvent);
+    public void sendApplicationOnlyEvent(GridFlowEvent event) {
+        listeners.get(0).handleEvent(event);
     }
 
     public void sendEvent(GridFlowEvent gridFlowEvent) {

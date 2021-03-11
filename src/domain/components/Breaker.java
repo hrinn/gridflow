@@ -18,15 +18,19 @@ public class Breaker extends Closeable {
 
     private Voltage voltage;
 
-    public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault) {
+    private String tandemid = null;
+
+    public Breaker(String name, Point position, Voltage voltage, boolean closedByDefault, String tandemID) {
         super(name, position, closedByDefault);
         this.voltage = voltage;
+        this.tandemid = tandemID;
         createComponentIcon();
     }
 
     public Breaker(BreakerSnapshot snapshot) {
         super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
         voltage = snapshot.voltage;
+        tandemid = snapshot.tandemid;
         createComponentIcon();
     }
 
@@ -35,6 +39,10 @@ public class Breaker extends Closeable {
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
                 node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean());
         voltage = Voltage.valueOf(node.get("voltage").asText());
+        tandemid = node.get("tandemid").asText(); //might have to check if null, not sure
+        if(tandemid.equals("")){
+            tandemid = null;
+        }
         createComponentIcon();
     }
 
@@ -87,7 +95,7 @@ public class Breaker extends Closeable {
     @Override
     public ComponentMemento makeSnapshot() {
         return new BreakerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), voltage, isClosed(), isClosedByDefault(),
-                getInWireID().toString(), getOutWireID().toString());
+                getInWireID().toString(), getOutWireID().toString(), getTandemID());
     }
 
 
@@ -102,6 +110,21 @@ public class Breaker extends Closeable {
         toggleLocked(); // Changes the locked state in the parent class (closeable)
         createComponentIcon(); // Updates the component icon to show the new state
     }
+
+    public String getTandemID() {
+        return tandemid;
+    }
+
+    public void setTandemID(String tandemID) {
+        this.tandemid = tandemID;
+    }
+
+    public boolean hasTandem() {
+        if(tandemid == null || tandemid.equals("")){
+            return false;
+        }
+        return true;
+    }
 }
 
 class BreakerSnapshot implements ComponentMemento {
@@ -114,8 +137,9 @@ class BreakerSnapshot implements ComponentMemento {
     boolean closedByDefault;
     String inNodeID;
     String outNodeID;
+    String tandemid;
 
-    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault, String inNodeID, String outNodeID) {
+    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault, String inNodeID, String outNodeID, String tandemid) {
         this.id = id;
         this.name = name;
         this.angle = angle;
@@ -125,6 +149,7 @@ class BreakerSnapshot implements ComponentMemento {
         this.closedByDefault = closedByDefault;
         this.inNodeID = inNodeID;
         this.outNodeID = outNodeID;
+        this.tandemid = tandemid;
     }
 
     public Breaker getComponent() {

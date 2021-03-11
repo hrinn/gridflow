@@ -1,5 +1,6 @@
 package construction;
 
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -99,7 +100,8 @@ public class BuildMenuViewController implements PropertiesObserver{
 
         // received data from somewhere else, update the properties variable and set the window
         this.Properties = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
-                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected());
+                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected(), properties.getAssociation(),
+                properties.getAssocLabel(), properties.getAssocSubLabel(), properties.getAssocAcronym());
 
         setPropertiesWindow();
     }
@@ -246,11 +248,33 @@ public class BuildMenuViewController implements PropertiesObserver{
 
             } else {
                 // set association window
+                setAssociationPropertiesWindow();
             }
         } else {
             setSelectionPropertiesWindow();
         }
 
+    }
+
+    private void setAssociationPropertiesWindow() {
+        // set the window fields before adding to view
+        for (Node node : AssociationFields.getChildren()) {
+            if (node != null){
+                if (node.getId().equals("labelField")){
+                    ((TextArea)node).setText(Properties.getAssocLabel());
+                }
+                else if (node.getId().equals("subLabelField")) {
+                    ((TextArea)node).setText(Properties.getAssocSubLabel());
+                }
+                else if (node.getId().equals("acronymField")) {
+                    ((TextArea)node).setText(Properties.getAssocAcronym());
+                }
+            }
+        }
+
+        // Show window
+        PropertiesWindow.setLeft(AssociationFieldNames);
+        PropertiesWindow.setCenter(AssociationFields);
     }
 
     private void setSelectionPropertiesWindow() {
@@ -279,7 +303,7 @@ public class BuildMenuViewController implements PropertiesObserver{
                     }
                 }
                 else if (node.getId().equals("nameField")) {
-                    ((TextField)node).setText(Properties.getName());
+                    ((TextArea)node).setText(Properties.getName());
                 }
                 else if (node.getId().equals("stateField")) {
                     ((RadioButton)node).setSelected(!Properties.getDefaultState());
@@ -296,20 +320,30 @@ public class BuildMenuViewController implements PropertiesObserver{
     private void generatePropertyElements() {
         initComponentProperties();
         initSelectionProperties();
+        initAssociationProperties();
     }
 
     private void initComponentProperties() {
+        Translate stateButtonLabelTrans = new Translate();
+        stateButtonLabelTrans.setY(2);
+        Translate namePosButtonLabelTrans = new Translate();
+        namePosButtonLabelTrans.setY(4);
 
         Label type = new Label("Type");
         type.getStyleClass().add("field-label");
 
         Label name = new Label("Name");
-        name.getStyleClass().add("field-label");
+        name.getStyleClass().addAll("field-label-top");
 
         Label state = new Label("State");
-        state.getStyleClass().add("field-label");
+        state.getTransforms().add(stateButtonLabelTrans);
+        state.getStyleClass().addAll("field-label-top");
 
-        ComponentFieldNames = new VBox(10, type, name, state);
+        Label namePos = new Label("NamePos");
+        namePos.getTransforms().add(namePosButtonLabelTrans);
+        namePos.getStyleClass().addAll("field-label-top");
+
+        ComponentFieldNames = new VBox(10, type, name, state, namePos);
         ComponentFieldNames.getStyleClass().add("field-name-container");
 
         //TextField typeField = new TextField();
@@ -317,9 +351,9 @@ public class BuildMenuViewController implements PropertiesObserver{
         typeField.setId("typeField");
         typeField.getStyleClass().addAll("field", "field_text");
 
-        TextField nameField = new TextField();
+        TextArea nameField = new TextArea();
         nameField.setId("nameField");
-        nameField.getStyleClass().add("field");
+        nameField.getStyleClass().addAll("field");
         nameField.focusedProperty().addListener((observableValue, aBoolean, textFieldActive) -> {
             if (textFieldActive){
                 constructionController.setUserTyping(true);
@@ -330,7 +364,7 @@ public class BuildMenuViewController implements PropertiesObserver{
 
         RadioButton stateField = new RadioButton();
         stateField.setId("stateField");
-        stateField.getStyleClass().add("field");
+        stateField.getStyleClass().addAll("field");
         stateField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
             if (isSelected) {
                 // change/update properties
@@ -342,11 +376,26 @@ public class BuildMenuViewController implements PropertiesObserver{
             defaultStateChanged = true;
         });
 
+        RadioButton namePosField = new RadioButton();
+        namePosField.setId("namePosField");
+        namePosField.getStyleClass().addAll("field");
+        namePosField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
+            if (isSelected) {
+                // change/update properties
+                //Properties.setDefaultState(false);
+                // Properties.setNamePos(?midleft???)
+            } else {
+                //Properties.setDefaultState(true);
+                // Properties.setNamePos(?midright???)
+            }
+            //namePosChanged??
+            //defaultStateChanged = true;
+        });
+
         Button applyButton = new Button("Apply");
         applyButton.setId("applyComponentProperties");
         applyButton.getStyleClass().addAll("field", "apply-button");
         applyButton.setOnAction(actionEvent -> {
-            // && !nameField.getText().isEmpty()
             if (nameField.getText() != null) {
                 // set component name in properties and update
                 Properties.setName(nameField.getText());
@@ -362,7 +411,7 @@ public class BuildMenuViewController implements PropertiesObserver{
 //            PropertiesManager.notifyObservers(this.Properties);
         });
 
-        ComponentFields = new VBox(10, typeField, nameField, stateField, applyButton);
+        ComponentFields = new VBox(10, typeField, nameField, stateField, namePosField, applyButton);
         ComponentFields.getStyleClass().add("field-container");
 
     }
@@ -380,6 +429,87 @@ public class BuildMenuViewController implements PropertiesObserver{
         //SelectedFieldNames.getStyleClass().add("field-name-container");
 
         SelectedFields = new VBox(selectedField);
+
+    }
+
+    private void initAssociationProperties() {
+        Translate subLabelTrans = new Translate();
+        subLabelTrans.setY(8);
+        Translate acronymLabelTrans = new Translate();
+        acronymLabelTrans.setY(16);
+
+        Label label = new Label("Label");
+        label.getStyleClass().addAll("field-label-top");
+
+        Label subLabel = new Label("SubLabel");
+        subLabel.getTransforms().add(subLabelTrans);
+        subLabel.getStyleClass().addAll("field-label-top");
+
+        Label acronym = new Label("Acronym");
+        acronym.getTransforms().add(acronymLabelTrans);
+        acronym.getStyleClass().addAll( "field-label-top");
+
+        AssociationFieldNames = new VBox(10, label, subLabel, acronym);
+        AssociationFieldNames.getStyleClass().add("field-name-container");
+
+        TextArea labelField = new TextArea();
+        labelField.setId("labelField");
+        labelField.getStyleClass().addAll("field-text-area");
+        labelField.focusedProperty().addListener((observableValue, aBoolean, textFieldActive) -> {
+            if (textFieldActive){
+                constructionController.setUserTyping(true);
+            } else {
+                constructionController.setUserTyping(false);
+            }
+        });
+
+        TextArea subLabelField = new TextArea();
+        subLabelField.setId("subLabelField");
+        subLabelField.getStyleClass().addAll( "field-text-area");
+        subLabelField.focusedProperty().addListener((observableValue, aBoolean, textFieldActive) -> {
+            if (textFieldActive){
+                constructionController.setUserTyping(true);
+            } else {
+                constructionController.setUserTyping(false);
+            }
+        });
+
+        TextArea acronymField = new TextArea();
+        acronymField.setId("acronymField");
+        acronymField.getStyleClass().addAll( "field-text-area");
+        acronymField.focusedProperty().addListener((observableValue, aBoolean, textFieldActive) -> {
+            if (textFieldActive){
+                constructionController.setUserTyping(true);
+            } else {
+                constructionController.setUserTyping(false);
+            }
+        });
+
+        Button applyButton = new Button("Apply");
+        applyButton.setId("applyAssociationProperties");
+        applyButton.getStyleClass().addAll("field", "apply-button");
+        applyButton.setOnAction(actionEvent -> {
+            // && !nameField.getText().isEmpty()
+            if (labelField.getText() != null) {
+                Properties.setAssocLabel(labelField.getText());
+                PropertiesManager.notifyObservers(this.Properties);
+            }
+
+            if (subLabelField.getText() != null) {
+                Properties.setAssocSubLabel(subLabelField.getText());
+                PropertiesManager.notifyObservers(this.Properties);
+            }
+
+            if (acronymField.getText() != null) {
+                Properties.setAssocAcronym(acronymField.getText());
+                PropertiesManager.notifyObservers(this.Properties);
+            }
+
+
+        });
+
+        AssociationFields = new VBox(10, labelField, subLabelField, acronymField, applyButton);
+        AssociationFields.getStyleClass().add("field-container");
 
     }
 

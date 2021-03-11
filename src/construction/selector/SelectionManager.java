@@ -4,6 +4,7 @@ import construction.PropertiesData;
 import construction.PropertiesManager;
 import construction.PropertiesObserver;
 import construction.canvas.GridCanvasFacade;
+import domain.Association;
 import domain.Grid;
 import domain.Selectable;
 import domain.components.Closeable;
@@ -44,26 +45,46 @@ public class SelectionManager {
 
         // set up action on selectIDs list changed
         observedSelectedIDs.addListener((ListChangeListener<String>) change -> {
-            // if the list is changed when IDs are selected, update the properties
             int numSelected = selectedIDs.size();
             PropertiesData properties = new PropertiesData();
 
 
             if (numSelected == 1) {
                 properties.setNumSelected(numSelected);
-                Component comp = grid.getComponent(selectedIDs.get(0));
+                //Component comp = grid.getComponent(selectedIDs.get(0));
+                Selectable sel = grid.getSelectableByID(selectedIDs.get(0));
+
+                if (sel != null) {
+                    properties.setID(UUID.fromString(selectedIDs.get(0)));
+
+                    if (sel instanceof Component) {
+                        properties.setType(((Component)sel).getComponentType());
+                        properties.setName(((Component)sel).getName());
+                        properties.setRotation(((Component)sel).getAngle());
+                        // if component can have its state changed, update default state, else leave alone
+                        if (sel instanceof Closeable) {
+                            properties.setDefaultState(((Closeable) sel).isClosedByDefault());
+                        }
+                    } else if (sel instanceof Association) {
+                        properties.setAssociation(true);
+                        properties.setAssocLabel(((Association)sel).getLabel());
+                        properties.setAssocSubLabel(((Association)sel).getSubLabel());
+                        properties.setAssocAcronym(((Association)sel).getAcronym());
+                    }
+                }
+
 
                 // If comp is null, probably an association
-                if (comp != null) {
-                    properties.setID(UUID.fromString(selectedIDs.get(0)));
-                    properties.setType(comp.getComponentType());
-                    properties.setName(comp.getName());
-                    properties.setRotation(comp.getAngle());
-                    // if component can have its state changed, update default state, else leave alone
-                    if (comp instanceof Closeable) {
-                        properties.setDefaultState(((Closeable) comp).isClosedByDefault());
-                    }
-                } // else if thing selected is an association
+//                if (comp != null) {
+//                    properties.setID(UUID.fromString(selectedIDs.get(0)));
+//                    properties.setType(comp.getComponentType());
+//                    properties.setName(comp.getName());
+//                    properties.setRotation(comp.getAngle());
+//                    // if component can have its state changed, update default state, else leave alone
+//                    if (comp instanceof Closeable) {
+//                        properties.setDefaultState(((Closeable) comp).isClosedByDefault());
+//                    }
+//                } // else if thing selected is an association
 
             } else {
                 properties.setDefaultComponentProperties(numSelected);

@@ -1,5 +1,14 @@
 /* Styles for the elements rendered in the properties window */
 
+.field-label-top {
+    -fx-font-size: 15px;
+    -fx-text-alignment: right;
+    -fx-alignment: center-right;
+    -fx-padding: 8px 8px 0 0;
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
+    -fx-pref-width: 125px;
+}
 
 .field-label {
     -fx-font-size: 15px;
@@ -7,9 +16,6 @@
     -fx-padding: 0 8px 0 0;
     -fx-pref-height: 30px;
     -fx-min-height: 30px;
-    /*-fx-wrap-text: true;*/
-    /*-fx-border-insets: 5px;*/
-    /*-fx-background-insets: 5px;*/
 }
 
 .field-name-container {
@@ -17,8 +23,14 @@
     -fx-pref-width: 75px;
 }
 
+.field-text-area {
+    -fx-pref-height: 10px;
+    -fx-max-height: 10px;
+}
+
 .field {
     -fx-pref-height: 30px;
+    -fx-max-height: 30px;
 }
 
 .field_text {

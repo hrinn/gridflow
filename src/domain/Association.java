@@ -3,6 +3,9 @@ package domain;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.PropertiesData;
+import construction.PropertiesManager;
+import construction.PropertiesObserver;
 import construction.history.AssociationMemento;
 import construction.history.ComponentMemento;
 import domain.components.Component;
@@ -72,9 +75,21 @@ public class Association implements Selectable {
         return id;
     }
 
+    public String getLabel() { return label; }
+
+    public String getSubLabel() { return subLabel; }
+
+    public String getAcronym() { return acronym; }
+
     public void setSelect(boolean select) {
         associationIcon.setSelect(select);
     }
+
+    public void setLabel (String label) { this.label = label; }
+
+    public void setSubLabel (String sublabel) { this.subLabel = sublabel; }
+
+    public void setAcronym (String acronym) { this.acronym = acronym; }
 
     public ObjectNode getObjectNode(ObjectMapper mapper) {
         ObjectNode association = mapper.createObjectNode();
@@ -99,6 +114,7 @@ public class Association implements Selectable {
         return new AssociationSnapshot(id.toString(), label, subLabel, acronym, new Point(rect.getX(), rect.getY()),
                 rect.getWidth(), rect.getHeight(), new Point(text.getTranslateX(), text.getTranslateY()));
     }
+
 }
 
 class AssociationSnapshot implements AssociationMemento {

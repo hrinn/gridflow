@@ -69,6 +69,7 @@ public class ComponentIcon {
         setComponentNamePosition(midRight);
     }
 
+
     public void setFittingRect(Dimensions dimensions, Point position) {
         setRectByDimensions(fittingRect, dimensions, position);
     }
@@ -88,6 +89,17 @@ public class ComponentIcon {
 
     public void setSelect(boolean select) {
         boundingRect.setStroke(select ? SELECT_COLOR : DEFAULT_BOUNDING_COLOR);
+    }
+
+    public void updateComponentNamePosition (boolean toggled) {
+        // if toggled -> set name position to left
+        // else -> set name position right
+//        if (toggled) {
+//            // get the bounding rect dimensions
+//            // make a new point "midleft" that translates x and y
+//            // set component name position
+//            Point midleft = new
+//        }
     }
 
     private void setComponentNamePosition(Point position) {

@@ -32,6 +32,18 @@ public class SelectionManager {
         selectionBox.getStrokeDashArray().add(10.0);
     }
 
+    void selectAll() {
+        deSelectAll();
+        grid.getComponents().forEach(comp -> {
+            comp.setSelect(true);
+            selectedIDs.add(comp.getId().toString());
+        });
+
+        grid.getAssociations().forEach(assoc -> {
+            assoc.setSelect(true);
+            selectedIDs.add(assoc.getID().toString());
+        });
+    }
 
     // deletes all items in the selected ids list
     // returns the number of items deleted

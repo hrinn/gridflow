@@ -75,17 +75,18 @@ public class SelectionManagerController {
         event.consume();
      };
 
-    private final EventHandler<KeyEvent> deleteHandler = event -> {
-        if (event.getCode() != KeyCode.DELETE) return;
-
+    public void delete() {
         GridMemento preDeleteState = grid.makeSnapshot();
-        int numdeleted = model.deleteSelectedItems();
-        if (numdeleted != 0) {
+        int numDeleted = model.deleteSelectedItems();
+        if (numDeleted != 0) {
             gridFlowEventManager.sendEvent(new SaveStateEvent(preDeleteState));
             gridFlowEventManager.sendEvent(new GridChangedEvent());
         }
-        event.consume();
-    };
+    }
+
+    public void selectAll() {
+        model.selectAll();
+    }
 
     public EventHandler<MouseEvent> getStartSelectionEventHandler() {
         return startSelectionEventHandler;
@@ -101,9 +102,5 @@ public class SelectionManagerController {
 
     public EventHandler<MouseEvent> getSelectSingleComponentHandler() {
         return selectSingleComponentHandler;
-    }
-
-    public EventHandler<KeyEvent> getDeleteHandler() {
-        return deleteHandler;
     }
 }

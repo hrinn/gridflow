@@ -2,9 +2,6 @@ package construction.history;
 
 import application.events.*;
 import domain.Grid;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 
 public class GridHistorianController implements GridFlowEventListener {
 
@@ -24,21 +21,13 @@ public class GridHistorianController implements GridFlowEventListener {
         }
     }
 
-    private final EventHandler<KeyEvent> undoRedoEventHandler = event -> {
-        if (!(event.getCode() == KeyCode.Z && event.isControlDown())) return;
-
-        if (event.isShiftDown()) {
-            model.redo();
-        } else {
-            model.undo();
-        }
-
+    public void undo() {
+        model.undo();
         eventManager.sendEvent(new GridChangedEvent());
+    }
 
-        event.consume();
-    };
-
-    public EventHandler<KeyEvent> getUndoRedoEventHandler() {
-        return undoRedoEventHandler;
+    public void redo() {
+        model.redo();
+        eventManager.sendEvent(new GridChangedEvent());
     }
 }

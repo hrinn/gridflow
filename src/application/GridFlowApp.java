@@ -1,7 +1,7 @@
 package application;
 
-import base.BaseUIViewController;
-import base.MenuFunctionController;
+import baseui.BaseUIViewController;
+import baseui.MenuFunctionController;
 import construction.BuildMenuViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,6 +14,8 @@ import javafx.stage.Stage;
 
 import application.events.*;
 
+import security.CredentialManager;
+import security.LoginUIViewController;
 import simulation.SimulationController;
 import visualization.VisualizationController;
 import construction.ConstructionController;
@@ -36,6 +38,12 @@ public class GridFlowApp extends Application {
 
         /* Create custom event manager for module communication */
         GridFlowEventManager gridFlowEventManager = new GridFlowEventManager();
+
+        FXMLLoader baseLoginViewLoader = new FXMLLoader(getClass().getResource("/security/LoginUIView.fxml"));
+        MenuFunctionController loginFunctionController = new MenuFunctionController(gridFlowEventManager);
+        Node loginUIView = baseLoginViewLoader.load();
+        LoginUIViewController loginUIViewController = baseLoginViewLoader.getController();
+        loginUIViewController.setController(loginFunctionController);
 
         /* Init modules and connect them all together */
         // Base UI Module
@@ -77,6 +85,11 @@ public class GridFlowApp extends Application {
         primaryStage.setMinHeight(700);
         primaryStage.setMinWidth(500);
         primaryStage.show();
+    }
+
+    private void initLogin() {
+        // inaki pass : gflowTest
+        // lefty pass : powerball
     }
 
     public static void main(String[] args) {

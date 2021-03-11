@@ -1,5 +1,6 @@
-package baseui;
+package security;
 
+import baseui.Access;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -46,7 +47,7 @@ public class CredentialManager {
                     }
                 }
                 else {
-                    //incorrect password error
+                    return Access.DENIED; //incorrect password error
                 }
             }
         }
@@ -66,9 +67,10 @@ public class CredentialManager {
         ArrayNode JSONAccounts = (ArrayNode) accountNode.get("accounts");
         for (JsonNode accountJSON : JSONAccounts) {
             String user = accountJSON.get("user").asText();
-            db.put(user, new ArrayList<>());
-            db.get(user).add(accountJSON.get("pass").asText());
-            db.get(user).add(accountJSON.get("permission").asText());
+            ArrayList<String> newInput = new ArrayList<String>();
+            newInput.add(accountJSON.get("pass").asText());
+            newInput.add(accountJSON.get("access").asText());
+            db.put(user, newInput);
         }
     }
 
@@ -80,9 +82,10 @@ public class CredentialManager {
             return; //throw error (user already exists)
         }
         else {
-            db.put(user, new ArrayList<>());
-            db.get(user).add(getMd5(password));
-            db.get(user).add(access.toString());
+            ArrayList<String> newInput = new ArrayList<>();
+            newInput.add(getMd5(password));
+            newInput.add(access.toString());
+            db.put(user, newInput);
         }
         updateAccounts();
     }

@@ -93,6 +93,11 @@ public class BaseUIViewController {
     }
 
     @FXML
+    private void exit() {
+        System.exit(0);
+    }
+
+    @FXML
     private void zoomToFit() {
         baseMenuFunctions.zoomToFit();
     }

@@ -81,7 +81,6 @@ public class GridCanvasFacade {
 //        System.out.println("Scene in grid coords: " + rsw + ", " + rsh);
         double rx = -x + scene.getWidth()/2;
         double ry = -y + scene.getHeight()/2;
-        System.out.println("Translation: " + rx + ", " + ry);
         canvas.setTranslateX(rx);
         canvas.setTranslateY(ry);
     }

@@ -39,9 +39,14 @@ public class Breaker extends Closeable {
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
                 node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean());
         voltage = Voltage.valueOf(node.get("voltage").asText());
-        tandemid = node.get("tandemid").asText(); //might have to check if null, not sure
-        if(tandemid.equals("")){
+        if(node.get("tandemid") == null) {
             tandemid = null;
+        }
+        else {
+            tandemid = node.get("tandemid").asText();
+            if(tandemid.equals("")){
+                tandemid = null;
+            }
         }
         createComponentIcon();
     }

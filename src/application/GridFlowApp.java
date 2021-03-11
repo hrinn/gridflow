@@ -24,8 +24,10 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     private static final String TITLE = "GridFlow";
     private static final String WINDOW_ICON_PATH = "/resources/icon.png";
-    private static final int WINDOW_WIDTH = 1300;
-    private static final int WINDOW_HEIGHT = 700;
+    private static final int WINDOW_WIDTH = 1280;
+    private static final int WINDOW_HEIGHT = 720;
+    private static final int MAX_WIDTH = 3840;
+    private static final int MAX_HEIGHT = 2160;
 
     private GridFlowEventManager gridFlowEventManager;
     private Stage primaryStage;
@@ -61,11 +63,14 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         /* Add the application as an event listener */
         gridFlowEventManager.addListener(this);
 
+        primaryStage.setMaxWidth(WINDOW_WIDTH);
+        primaryStage.setMaxHeight(WINDOW_HEIGHT);
+
         primaryStage.setScene(scene);
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));
-        primaryStage.setMinHeight(720);
-        primaryStage.setMinWidth(1280);
+        primaryStage.setMinHeight(WINDOW_HEIGHT);
+        primaryStage.setMinWidth(WINDOW_WIDTH);
         primaryStage.show();
 
     }
@@ -124,11 +129,9 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         UI.setPickOnBounds(false);
         root.getChildren().addAll(constructionController.getCanvasFacade().getCanvas(), UI);
 
-        /* Init GUI */
-        primaryStage.setTitle(TITLE);
-        primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));
-        primaryStage.setMinHeight(700);
-        primaryStage.setMinWidth(500);
+        /* Show the new UI elements */
+        primaryStage.setMaxWidth(MAX_WIDTH);
+        primaryStage.setMaxHeight(MAX_HEIGHT);
         primaryStage.show();
     }
 

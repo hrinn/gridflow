@@ -57,7 +57,7 @@ public class CredentialManager {
     public void loadAccounts() {
         ObjectNode accountNode;
         try {
-            JsonParser parser = mapper.getFactory().createParser(new File("./credentials.json"));
+            JsonParser parser = mapper.getFactory().createParser(new File("./src/security/credentials.json"));
             accountNode = mapper.readTree(parser);
             parser.close();
         } catch (IOException e) {

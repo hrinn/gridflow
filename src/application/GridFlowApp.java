@@ -1,7 +1,7 @@
 package application;
 
-import baseui.BaseUIViewController;
-import baseui.MenuFunctionController;
+import base.BaseUIViewController;
+import base.MenuFunctionController;
 import construction.BuildMenuViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -14,36 +14,81 @@ import javafx.stage.Stage;
 
 import application.events.*;
 
-import security.CredentialManager;
 import security.LoginUIViewController;
+import security.SecurityController;
 import simulation.SimulationController;
 import visualization.VisualizationController;
 import construction.ConstructionController;
-import construction.canvas.GridCanvas;
 
-public class GridFlowApp extends Application {
+public class GridFlowApp extends Application implements GridFlowEventListener {
 
     private static final String TITLE = "GridFlow";
     private static final String WINDOW_ICON_PATH = "/resources/icon.png";
     private static final int WINDOW_WIDTH = 1300;
     private static final int WINDOW_HEIGHT = 700;
 
+    private GridFlowEventManager gridFlowEventManager;
+    private Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+        /* Create custom event manager for module communication */
+        GridFlowEventManager gridFlowEventManager = new GridFlowEventManager();
 
+        /* Set event manager and primary stage in the Application private fields.
+           This is so that startApplication can access them when it runs. */
+        this.gridFlowEventManager = gridFlowEventManager;
+        this.primaryStage = primaryStage;
+
+        /* Open login screen */
+        startLogin();
+    }
+
+    public void startLogin() throws Exception {
+        Group root = new Group();
+        Scene scene = new Scene(root, 600, 400);
+
+        /* Initialize Security Module */
+        SecurityController securityController = new SecurityController();
+        FXMLLoader loginUIViewLoader = new FXMLLoader(getClass().getResource("/security/LoginUIView.fxml"));
+        Node loginUIView = loginUIViewLoader.load();
+        LoginUIViewController loginUIViewController = loginUIViewLoader.getController();
+        loginUIViewController.setController(securityController);
+
+        /* Add login screen to scene root */
+        root.getChildren().add(loginUIView);
+
+        /* Add the application as an event listener */
+        gridFlowEventManager.addListener(this);
+
+        primaryStage.setScene(scene);
+        primaryStage.setTitle(TITLE);
+        primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));
+        primaryStage.setMinHeight(600);
+        primaryStage.setMinWidth(400);
+        primaryStage.show();
+
+    }
+
+    @Override
+    public void handleEvent(GridFlowEvent gridFlowEvent) {
+        if (gridFlowEvent instanceof LoginEvent) {
+            /* User successfully logged in */
+            /* Run the application once login is successful */
+            try {
+                startApplication();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void startApplication() throws Exception {
         /* Create GUI elements */
         Group root = new Group();
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
 
-        /* Create custom event manager for module communication */
-        GridFlowEventManager gridFlowEventManager = new GridFlowEventManager();
-
-        FXMLLoader baseLoginViewLoader = new FXMLLoader(getClass().getResource("/security/LoginUIView.fxml"));
-        MenuFunctionController loginFunctionController = new MenuFunctionController(gridFlowEventManager);
-        Node loginUIView = baseLoginViewLoader.load();
-        LoginUIViewController loginUIViewController = baseLoginViewLoader.getController();
-        loginUIViewController.setController(loginFunctionController);
 
         /* Init modules and connect them all together */
         // Base UI Module
@@ -87,12 +132,9 @@ public class GridFlowApp extends Application {
         primaryStage.show();
     }
 
-    private void initLogin() {
-        // inaki pass : gflowTest
-        // lefty pass : powerball
-    }
-
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

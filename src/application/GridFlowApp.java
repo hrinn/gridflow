@@ -49,7 +49,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         Scene scene = new Scene(root, 600, 400);
 
         /* Initialize Security Module */
-        SecurityController securityController = new SecurityController();
+        SecurityController securityController = new SecurityController(gridFlowEventManager);
         FXMLLoader loginUIViewLoader = new FXMLLoader(getClass().getResource("/security/LoginUIView.fxml"));
         Node loginUIView = loginUIViewLoader.load();
         LoginUIViewController loginUIViewController = loginUIViewLoader.getController();

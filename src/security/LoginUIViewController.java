@@ -21,7 +21,6 @@ public class LoginUIViewController {
 
     @FXML
     private void tryLogin() {
-        System.err.println("Trying login... view controller");
         boolean res = controller.tryLogin(user.getText(), pass.getText());
         if (!res) {
             user.clear();

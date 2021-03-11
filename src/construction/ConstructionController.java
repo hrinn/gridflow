@@ -16,6 +16,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import security.Access;
 
 public class ConstructionController implements BaseMenuFunctions {
 
@@ -33,6 +34,9 @@ public class ConstructionController implements BaseMenuFunctions {
     // UI Data
     private BuildMenuData buildMenuData;
     private PropertiesData propertiesData;
+
+    // View Controller
+    private BuildMenuViewController buildMenuViewController;
 
     // Wire Placing and Association Placing
     // Used to share if a double click is in progress, and where the first click was if so
@@ -62,6 +66,10 @@ public class ConstructionController implements BaseMenuFunctions {
         installEventHandlers();
     }
 
+    public void setBuildMenuViewController(BuildMenuViewController buildMenuViewController) {
+        this.buildMenuViewController = buildMenuViewController;
+    }
+
     public GridCanvasFacade getCanvasFacade() {
         return canvasFacade;
     }
@@ -77,6 +85,12 @@ public class ConstructionController implements BaseMenuFunctions {
         ghostManagerController.buildMenuDataChanged();
         selectionManagerController.buildMenuDataChanged();
         gridBuilderController.buildDataChanged();
+    }
+
+    public void setPermissions(Access access) {
+        if (access == Access.VIEWER) {
+            buildMenuViewController.hideBuildMenu();
+        }
     }
 
     public void setPropertiesData(double rotation, boolean defaultState) {

@@ -21,7 +21,7 @@ public class CredentialManager {
 
     public CredentialManager() {
         mapper = new ObjectMapper();
-        db = new HashMap<String, ArrayList<String>>();
+        db = new HashMap<>();
     }
 
     public Access checkPerms(String user, String password) {

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import application.events.*;
 
+import security.Access;
 import security.LoginUIViewController;
 import security.SecurityController;
 import simulation.SimulationController;
@@ -34,12 +35,10 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        /* Create custom event manager for module communication */
-        GridFlowEventManager gridFlowEventManager = new GridFlowEventManager();
 
         /* Set event manager and primary stage in the Application private fields.
            This is so that startApplication can access them when it runs. */
-        this.gridFlowEventManager = gridFlowEventManager;
+        this.gridFlowEventManager = new GridFlowEventManager();
         this.primaryStage = primaryStage;
 
         /* Open login screen */
@@ -63,32 +62,37 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         /* Add the application as an event listener */
         gridFlowEventManager.addListener(this);
 
-        primaryStage.setMaxWidth(WINDOW_WIDTH);
-        primaryStage.setMaxHeight(WINDOW_HEIGHT);
-
         primaryStage.setScene(scene);
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));
         primaryStage.setMinHeight(WINDOW_HEIGHT);
         primaryStage.setMinWidth(WINDOW_WIDTH);
+        primaryStage.setMaxHeight(WINDOW_HEIGHT);
+        primaryStage.setMaxWidth(WINDOW_WIDTH);
         primaryStage.show();
+
+        /* Log me in as god so i don't have to do it every time */
+//        securityController.tryLogin("god", "1234");
 
     }
 
+    /* This waits for a successful login before displaying the main application */
     @Override
     public void handleEvent(GridFlowEvent gridFlowEvent) {
         if (gridFlowEvent instanceof LoginEvent) {
             /* User successfully logged in */
             /* Run the application once login is successful */
+            Access permissionLevel = ((LoginEvent)gridFlowEvent).getAccess();
             try {
-                startApplication();
+                startApplication(permissionLevel);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
 
-    public void startApplication() throws Exception {
+    /* This initializes and displays the main application */
+    public void startApplication(Access permissionLevel) throws Exception {
         /* Create GUI elements */
         Group root = new Group();
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -110,6 +114,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
         buildMenuViewController.setConstructionController(constructionController);
         baseUIViewController.setBaseMenuFunctions(constructionController);
+        constructionController.setBuildMenuViewController(buildMenuViewController);
 
         // Visualization Module
         VisualizationController visualizationController = new VisualizationController(menuFunctionController.getGrid(), constructionController.getCanvasFacade());
@@ -118,6 +123,9 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         // Simulation Module
         SimulationController simulationController = new SimulationController(menuFunctionController.getGrid(), gridFlowEventManager);
         gridFlowEventManager.addListener(simulationController);
+
+        // Change accessible functionality based on permission level
+        constructionController.setPermissions(permissionLevel);
 
         // Load the default grid JSON file
         menuFunctionController.loadDefaultGrid();
@@ -138,6 +146,4 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
     public static void main(String[] args) {
         launch(args);
     }
-
-
 }

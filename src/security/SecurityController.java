@@ -25,12 +25,8 @@ public class SecurityController {
         }
 
         /* User logged in, boot rest of application */
-        eventManager.sendLoginEvent(new LoginEvent());
+        eventManager.sendLoginEvent(new LoginEvent(result));
         return true;
-    }
-
-    public void testLogin() {
-        tryLogin("lefty", "powerball"); // test
     }
 
 }

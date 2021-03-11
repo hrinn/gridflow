@@ -3,12 +3,14 @@ package security;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 
 public class LoginUIViewController {
 
     public Button loginButton;
     public TextField user;
     public PasswordField pass;
+    public StackPane LoginStackPane;
 
     private SecurityController controller;
 

@@ -7,4 +7,5 @@ public interface BaseMenuFunctions {
     void selectAll();
     void zoomToFit();
     void switchAccounts();
+    void openAccountManager();
 }

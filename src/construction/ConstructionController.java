@@ -1,6 +1,7 @@
 package construction;
 
 import application.events.GridFlowEventManager;
+import application.events.OpenAccountsEvent;
 import application.events.ReLoginEvent;
 import base.BaseMenuFunctions;
 import construction.builder.GridBuilderController;
@@ -161,6 +162,11 @@ public class ConstructionController implements BaseMenuFunctions {
     @Override
     public void switchAccounts() {
         gridFlowEventManager.sendApplicationOnlyEvent(new ReLoginEvent());
+    }
+
+    @Override
+    public void openAccountManager() {
+        gridFlowEventManager.sendEvent(new OpenAccountsEvent());
     }
 
     @Override

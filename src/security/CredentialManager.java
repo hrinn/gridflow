@@ -71,12 +71,12 @@ public class CredentialManager {
         }
     }
 
-    public void addAccount(String user, String password, String confirmPassword, Access access) throws IOException {
+    public securityAccess addAccount(String user, String password, String confirmPassword, Access access) throws IOException {
         if (!(password.equals(confirmPassword))) {
-            return; //throw error (passwords don't match)
+            return securityAccess.PASSNOMATCHERR; //throw error (passwords don't match)
         }
         else if (db.containsKey(user)) {
-            return; //throw error (user already exists)
+            return securityAccess.USEREXISTSERR; //throw error (user already exists)
         }
         else {
             ArrayList<String> newInput = new ArrayList<>();
@@ -85,6 +85,7 @@ public class CredentialManager {
             db.put(user, newInput);
         }
         updateAccounts();
+        return securityAccess.GRANTED;
     }
 
     private void updateAccounts() throws IOException {

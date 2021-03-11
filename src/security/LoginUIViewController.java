@@ -2,7 +2,6 @@ package security;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 public class LoginUIViewController {
@@ -12,12 +11,12 @@ public class LoginUIViewController {
     public PasswordField pass;
     public StackPane LoginStackPane;
 
-    private SecurityController controller;
+    private LoginController controller;
 
     public void initialize() {
     }
 
-    public void setController(SecurityController controller) {
+    public void setController(LoginController controller) {
         this.controller = controller;
     }
 
@@ -29,6 +28,4 @@ public class LoginUIViewController {
             pass.clear();
         }
     }
-
-
 }

@@ -15,8 +15,9 @@ import javafx.stage.Stage;
 import application.events.*;
 
 import security.Access;
+import security.AccountController;
 import security.LoginUIViewController;
-import security.SecurityController;
+import security.LoginController;
 import simulation.SimulationController;
 import visualization.VisualizationController;
 import construction.ConstructionController;
@@ -53,15 +54,14 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         Scene scene = new Scene(root, 1280, 720);
 
         /* Initialize Security Module */
-        SecurityController securityController = new SecurityController(gridFlowEventManager);
+        LoginController loginController = new LoginController(gridFlowEventManager);
         FXMLLoader loginUIViewLoader = new FXMLLoader(getClass().getResource("/security/LoginUIView.fxml"));
         Node loginUIView = loginUIViewLoader.load();
         LoginUIViewController loginUIViewController = loginUIViewLoader.getController();
-        loginUIViewController.setController(securityController);
+        loginUIViewController.setController(loginController);
 
         /* Add login screen to scene root */
         root.getChildren().add(loginUIView);
-        gridFlowEventManager.addListener(this);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle(TITLE);
@@ -71,7 +71,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         primaryStage.setMaxHeight(WINDOW_HEIGHT);
         primaryStage.setMaxWidth(WINDOW_WIDTH);
         primaryStage.show();
-
     }
 
     /* This waits for a successful login before displaying the main application */
@@ -105,7 +104,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
         primaryStage.setScene(scene);
 
-
         /* Init modules and connect them all together */
         // Base UI Module
         FXMLLoader baseUIViewLoader = new FXMLLoader(getClass().getResource("/base/BaseUIView.fxml"));
@@ -113,6 +111,10 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         Node baseUIView = baseUIViewLoader.load();
         BaseUIViewController baseUIViewController = baseUIViewLoader.getController();
         baseUIViewController.setController(menuFunctionController);
+
+        // Account Controller
+        AccountController accountController = new AccountController(scene);
+        gridFlowEventManager.addListener(accountController);
 
         // Construction Module
         ConstructionController constructionController = new ConstructionController(menuFunctionController.getGrid(), gridFlowEventManager, primaryStage);

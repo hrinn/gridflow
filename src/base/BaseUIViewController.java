@@ -9,6 +9,8 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
 import security.Access;
 
+import java.awt.event.ActionEvent;
+
 public class BaseUIViewController {
 
     private MenuFunctionController controller;
@@ -55,6 +57,11 @@ public class BaseUIViewController {
         if (access != Access.GOD) {
             manageAccountsButton.setDisable(true);
         }
+    }
+
+    @FXML
+    private void manageAccounts() {
+
     }
 
     @FXML

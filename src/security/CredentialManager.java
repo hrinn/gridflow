@@ -61,6 +61,7 @@ public class CredentialManager {
     public void loadAccounts() {
         ObjectNode accountNode;
         try {
+            // Tries to parse the credentials JSON file
             JsonParser parser = mapper.getFactory().createParser(new File(CREDENTIALS_PATH));
             accountNode = mapper.readTree(parser);
             parser.close();
@@ -68,13 +69,39 @@ public class CredentialManager {
             System.err.println("Cannot read file");
             return;
         }
+
+        // Turns the JSON entries into the map memory
         ArrayNode JSONAccounts = (ArrayNode) accountNode.get("accounts");
+
+        // Counts the number of GOD accounts in the database
+        int numGodAccounts = 0;
+
         for (JsonNode accountJSON : JSONAccounts) {
             String user = accountJSON.get("user").asText();
             ArrayList<String> newInput = new ArrayList<>();
             newInput.add(accountJSON.get("pass").asText());
             newInput.add(accountJSON.get("access").asText());
             db.put(user, newInput);
+
+            if (newInput.get(1).equals("GOD")) {
+                numGodAccounts++;
+            }
+        }
+
+        // Failsafe. If no accounts exist with the permission level GOD, one is created to prevent lockout
+        // The username is 'lefty' and the password is 'powerball'
+        if (numGodAccounts == 0) {
+            System.err.println("Warning! No GOD level accounts were found. Creating one to prevent lockout...");
+            System.err.println("Username: 'lefty'    Password: 'powerball'");
+            System.err.println("You should delete this account in the Account Manager.");
+            try {
+                // delete the current lefty account if there is a non GOD one
+                deleteAccount("lefty");
+                // add the GOD lefty account
+                addAccount("lefty", "powerball", "powerball", Access.GOD);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 

@@ -1,6 +1,8 @@
 package construction;
 
 import application.events.GridFlowEventManager;
+import application.events.OpenAccountsEvent;
+import application.events.ReLoginEvent;
 import base.BaseMenuFunctions;
 import construction.builder.GridBuilderController;
 import construction.canvas.GridCanvasFacade;
@@ -16,6 +18,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import security.Access;
 
 public class ConstructionController implements BaseMenuFunctions {
 
@@ -156,10 +159,15 @@ public class ConstructionController implements BaseMenuFunctions {
         selectionManagerController.selectAll();
     }
 
-//    @Override
-//    public void clearGrid() {
-//        grid.getComponents().forEach(comp -> comp.delete());
-//    }
+    @Override
+    public void switchAccounts() {
+        gridFlowEventManager.sendApplicationOnlyEvent(new ReLoginEvent());
+    }
+
+    @Override
+    public void openAccountManager() {
+        gridFlowEventManager.sendEvent(new OpenAccountsEvent());
+    }
 
     @Override
     public void zoomToFit() {

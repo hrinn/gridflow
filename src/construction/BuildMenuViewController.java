@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.transform.Translate;
+import security.Access;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +25,7 @@ public class BuildMenuViewController {
     private static final int SHIFT_MENU_UP = -150;
     private static final int SHIFT_MENU_DOWN = 150;
 
-    private MenuState state = MenuState.MenuExpanded;
+    private MenuState state = MenuState.MenuCollapsed;
 
     private ConstructionController constructionController;
 
@@ -44,10 +45,19 @@ public class BuildMenuViewController {
     private void initialize() {
         // Bind the managed and visible properties for the component menus
         ComponentMenu.managedProperty().bind(ComponentMenu.visibleProperty());
+        ComponentMenu.setVisible(state != MenuState.MenuCollapsed);
     }
 
     public void setConstructionController(ConstructionController constructionController) {
         this.constructionController = constructionController;
+    }
+
+    // TODO: Change this to the root node on Connor's branch
+    /* Permanently hides the build menu based on permission level */
+    public void setPermissions(Access access) {
+        if (access == Access.VIEWER) {
+            ComponentBuilderMenu.setVisible(false);
+        }
     }
 
     @FXML
@@ -137,12 +147,9 @@ public class BuildMenuViewController {
             ComponentBuilderMenu.setPrefHeight(MENU_COLLAPSED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_COLLAPSED_WIDTH);
 
-            menuButtonTrans.setY(SHIFT_MENU_UP);
-
             state = MenuState.MenuCollapsed;
 
         } else {
-            menuButtonTrans.setY(SHIFT_MENU_DOWN);
 
             ComponentBuilderMenu.setPrefHeight(MENU_EXPANDED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_EXPANDED_WIDTH);

@@ -6,4 +6,6 @@ public interface BaseMenuFunctions {
     void delete();
     void selectAll();
     void zoomToFit();
+    void switchAccounts();
+    void openAccountManager();
 }

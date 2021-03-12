@@ -28,6 +28,7 @@ public class GridCanvas extends Pane {
         // the order the groups are added to the canvas is the layer order (behind to front)
         getChildren().addAll(backgroundGrid, energyOutlineGroup, componentGroup, associationGroup, boundingRectGroup, overlayGroup);
         addBackgroundGrid();
+        backgroundGrid.setOpacity(0);
 
         setPrefSize(unitWidth * Globals.UNIT, unitHeight * Globals.UNIT);
         setStyle("-fx-background-color: white; -fx-border-color: blue;");

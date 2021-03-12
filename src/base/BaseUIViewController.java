@@ -1,11 +1,15 @@
 package base;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
+import security.Access;
+
+import java.awt.event.ActionEvent;
 
 public class BaseUIViewController {
 
@@ -18,6 +22,10 @@ public class BaseUIViewController {
     public MenuItem undoButton;
     public MenuItem redoButton;
     public MenuItem deleteButton;
+    public Menu EditMenu;
+    public MenuItem clearButton;
+    public MenuItem saveButton;
+    public MenuItem manageAccountsButton;
 
     public void initialize() {
         // These set the keyboard shortcuts for menu items
@@ -38,6 +46,22 @@ public class BaseUIViewController {
     // Loads a controller that implements BaseMenuFunctions
     public void setBaseMenuFunctions(BaseMenuFunctions baseMenuFunctions) {
         this.baseMenuFunctions = baseMenuFunctions;
+    }
+
+    public void setPermissions(Access access) {
+        if (access == Access.VIEWER) {
+            EditMenu.setDisable(true); // viewers can't do any edits
+            clearButton.setDisable(true); // viewers can't clear the grid
+            saveButton.setDisable(true); // users can't save the grid
+        }
+        if (access != Access.GOD) {
+            manageAccountsButton.setDisable(true);
+        }
+    }
+
+    @FXML
+    private void manageAccounts() {
+        baseMenuFunctions.openAccountManager();
     }
 
     @FXML
@@ -77,6 +101,16 @@ public class BaseUIViewController {
     @FXML
     private void expandCanvas() {
 
+    }
+
+    @FXML
+    private void switchAccounts() {
+        baseMenuFunctions.switchAccounts();
+    }
+
+    @FXML
+    private void exit() {
+        System.exit(0);
     }
 
     @FXML

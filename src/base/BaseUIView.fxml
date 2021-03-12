@@ -27,11 +27,12 @@
                         <Menu fx:id="FileMenu" mnemonicParsing="false"
                               style="-fx-font-size: 14; -fx-text-alignment: center;" text="File">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Clear Grid" onAction="#clearGrid"/>
-                                <MenuItem mnemonicParsing="false" text="Save Grid" onAction="#saveGrid"/>
+                                <MenuItem fx:id="clearButton" mnemonicParsing="false" text="Clear Grid" onAction="#clearGrid"/>
+                                <MenuItem fx:id="saveButton" mnemonicParsing="false" text="Save Grid" onAction="#saveGrid"/>
                                 <MenuItem mnemonicParsing="false" text="Load Grid" onAction="#loadGrid"/>
-                                <MenuItem mnemonicParsing="false" text="Switch Account"/>
-                                <MenuItem mnemonicParsing="false" text="Exit"/>
+                                <MenuItem fx:id="manageAccountsButton" mnemonicParsing="false" text="Manage Accounts" onAction="#manageAccounts"/>
+                                <MenuItem mnemonicParsing="false" text="Switch Account" onAction="#switchAccounts"/>
+                                <MenuItem mnemonicParsing="false" text="Exit" onAction="#exit"/>
                             </items>
                         </Menu>
                         <Menu fx:id="EditMenu" mnemonicParsing="false"

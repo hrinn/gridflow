@@ -14,6 +14,7 @@ public class AccountController implements GridFlowEventListener {
     private CredentialManager credentialManager;
     private Scene scene;
     private Stage accountWindowDialog;
+    private CreateAccountViewController viewController;
 
     public AccountController(Scene scene) {
         this.credentialManager = new CredentialManager();
@@ -40,6 +41,7 @@ public class AccountController implements GridFlowEventListener {
         Parent createAccountView = createAccountViewLoader.load();
         CreateAccountViewController vc = createAccountViewLoader.getController();
         vc.setController(this);
+        this.viewController = vc;
 
         dialog.setScene(new Scene(createAccountView));
         dialog.setTitle("Account Manager");
@@ -50,11 +52,16 @@ public class AccountController implements GridFlowEventListener {
 
     public void openAccountWindow() {
         accountWindowDialog.show();
+        viewController.setUsernameList(credentialManager.getAllUsernames());
     }
 
     public SecurityAccess tryAdd(String user, String password, String confirmPassword, Access access) throws IOException {
         // receives the new acccount info, and adds it in the credential manager
-
-        return credentialManager.addAccount(user, password, confirmPassword, access);
+        SecurityAccess response = credentialManager.addAccount(user, password, confirmPassword, access);
+        if (response == SecurityAccess.GRANTED) {
+            // New user added, send a list to the view controller
+            viewController.setUsernameList(credentialManager.getAllUsernames());
+        }
+        return response;
     }
 }

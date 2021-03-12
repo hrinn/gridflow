@@ -46,7 +46,7 @@ public class CredentialManager {
                     }
                 }
                 else {
-                    return Access.DENIED; //incorrect password error
+                    return Access.DENIED; // incorrect password error
                 }
             }
         }
@@ -66,7 +66,7 @@ public class CredentialManager {
         ArrayNode JSONAccounts = (ArrayNode) accountNode.get("accounts");
         for (JsonNode accountJSON : JSONAccounts) {
             String user = accountJSON.get("user").asText();
-            ArrayList<String> newInput = new ArrayList<String>();
+            ArrayList<String> newInput = new ArrayList<>();
             newInput.add(accountJSON.get("pass").asText());
             newInput.add(accountJSON.get("access").asText());
             db.put(user, newInput);
@@ -88,6 +88,10 @@ public class CredentialManager {
         }
         updateAccounts();
         return SecurityAccess.GRANTED;
+    }
+
+    public Set<String> getAllUsernames() {
+        return db.keySet();
     }
 
     private void updateAccounts() throws IOException {

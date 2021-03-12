@@ -2,9 +2,14 @@ package security;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class CreateAccountViewController {
 
@@ -16,11 +21,21 @@ public class CreateAccountViewController {
     public RadioButton godButton;
     public RadioButton builderButton;
     public RadioButton viewerButton;
+    public VBox usernamesVBox;
 
     private AccountController controller;
 
     public void setController(AccountController controller) {
         this.controller = controller;
+    }
+
+    public void setUsernameList(Set<String> usernames) {
+        usernamesVBox.getChildren().clear();
+        for (String username : usernames) {
+            Label usernameLabel = new Label(username);
+            usernamesVBox.setPrefHeight(usernamesVBox.getPrefHeight() + usernameLabel.getPrefHeight());
+            usernamesVBox.getChildren().add(usernameLabel);
+        }
     }
 
     @FXML

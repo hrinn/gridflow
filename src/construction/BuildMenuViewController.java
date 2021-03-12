@@ -282,15 +282,15 @@ public class BuildMenuViewController implements PropertiesObserver{
                 } else if (node.getId().equals("tandemField")) {
                     // Update the state of the button based on tandem id's set for each breaker
 
-                    //Properties.getNumSelected() != 2 &&
-//                    if (Properties.getTandemComponents().size() != 2) {
-//                        // Remove the fields
-//                        SelectedFields.getChildren().remove(TandemField);
-//                        SelectedFieldNames.getChildren().remove(TandemLabel);
-//                    }
+                    //for now just remove both fields? it was set.... re add if okay?
+                    //SelectedFields.getChildren().remove(TandemField);
+                    //SelectedFieldNames.getChildren().remove(TandemLabel);
                 }
             }
         }
+
+        SelectedFields.getChildren().remove(TandemField);
+        SelectedFieldNames.getChildren().remove(TandemLabel);
 
         // if numselected == 2 and both selectables are the same breakers, set the two new fields for setting them tandem-able
         if (Properties.getNumSelected() == 2 && Properties.getTandemComponents().size() == 2) {
@@ -299,9 +299,6 @@ public class BuildMenuViewController implements PropertiesObserver{
             SelectedFieldNames.getChildren().add(TandemLabel);
             SelectedFields.getChildren().add(TandemField);
 
-        } else {
-            SelectedFields.getChildren().remove(TandemField);
-            SelectedFieldNames.getChildren().remove(TandemLabel);
         }
 
         // Show window
@@ -451,7 +448,7 @@ public class BuildMenuViewController implements PropertiesObserver{
         // TODO: Link this here to the tandem function written by Davis
         TandemField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
 //            if (isSelected) {
-//                // change/update properties
+//                // User wishes to link the components together
 //                Properties.setDefaultState(false);
 //            } else {
 //                Properties.setDefaultState(true);

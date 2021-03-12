@@ -107,8 +107,8 @@ public class GridBuilder implements PropertiesObserver {
     public Device createDevice(Point point, ComponentType componentType) {
         return switch (componentType) {
             case TRANSFORMER -> new Transformer(properties.getName(), point);
-            case BREAKER_12KV -> new Breaker(properties.getName(), point, Voltage.KV12, properties.getDefaultState());
-            case BREAKER_70KV -> new Breaker(properties.getName(), point, Voltage.KV70, properties.getDefaultState());
+            case BREAKER_12KV -> new Breaker(properties.getName(), point, Voltage.KV12, properties.getDefaultState(), null);
+            case BREAKER_70KV -> new Breaker(properties.getName(), point, Voltage.KV70, properties.getDefaultState(), null);
             case JUMPER -> new Jumper(properties.getName(), point, properties.getDefaultState());
             case CUTOUT -> new Cutout(properties.getName(), point, properties.getDefaultState());
             case SWITCH -> new Switch(properties.getName(), point, properties.getDefaultState());
@@ -406,6 +406,31 @@ public class GridBuilder implements PropertiesObserver {
         //PropertiesManager.notifyObservers(this.properties);
 
         if (component instanceof IToggleable) {
+            if(component instanceof Breaker){
+                Breaker breaker = (Breaker) component;
+
+                // if the breaker has a tandem and it is going to be closed, lock it's tandem component.
+                if(breaker.hasTandem() && !breaker.isClosed()) {
+                    Component tandemComponent = grid.getComponent(breaker.getTandemID());
+                    if(tandemComponent instanceof Breaker){
+                        Breaker tandemBreaker = (Breaker) tandemComponent;
+                        if(!tandemBreaker.isLocked()) {
+                            lockComponent(breaker.getTandemID());
+                        }
+                    }
+                }
+
+                // if the breaker has a tandem and it is going to be opened, unlock it's tandem component.
+                else if(breaker.hasTandem() && breaker.isClosed()) {
+                    Component tandemComponent = grid.getComponent(breaker.getTandemID());
+                    if(tandemComponent instanceof Breaker){
+                        Breaker tandemBreaker = (Breaker) tandemComponent;
+                        if(tandemBreaker.isLocked()) {
+                            lockComponent(breaker.getTandemID());
+                        }
+                    }
+                }
+            }
             ((IToggleable) component).toggleState();
         }
     }

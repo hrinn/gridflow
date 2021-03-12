@@ -1,15 +1,16 @@
 package security;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class CreateAccountViewController {
 
@@ -21,7 +22,8 @@ public class CreateAccountViewController {
     public RadioButton godButton;
     public RadioButton builderButton;
     public RadioButton viewerButton;
-    public VBox usernamesVBox;
+    public ListView<String> usernamesList;
+    public Button delButton;
 
     private AccountController controller;
 
@@ -29,18 +31,15 @@ public class CreateAccountViewController {
         this.controller = controller;
     }
 
-    public void setUsernameList(Set<String> usernames) {
-        usernamesVBox.getChildren().clear();
-        for (String username : usernames) {
-            Label usernameLabel = new Label(username);
-            usernamesVBox.setPrefHeight(usernamesVBox.getPrefHeight() + usernameLabel.getPrefHeight());
-            usernamesVBox.getChildren().add(usernameLabel);
-        }
+    public void setUserItemsList(List<String> userItems) {
+        ObservableList<String> items = FXCollections.observableList(userItems);
+
+        usernamesList.setItems(items);
     }
 
     @FXML
     private void tryAdd() throws IOException {
-        SecurityAccess result;
+        AccountResponse result;
         Access access;
 
         if (godButton.isSelected()) {
@@ -51,7 +50,7 @@ public class CreateAccountViewController {
             access = Access.VIEWER;
         } else {
             resetFields();
-            displayError("Choose perms!");
+            displayError("Choose perms.");
             return;
         }
 
@@ -61,12 +60,14 @@ public class CreateAccountViewController {
         resetFields();
 
 
-        if (result != SecurityAccess.GRANTED) {
+        if (result != AccountResponse.GRANTED) {
             String error;
-            if (result == SecurityAccess.PASSNOMATCHERR) {
+            if (result == AccountResponse.PASSNOMATCHERR) {
                 error = "Password mismatch.";
-            } else if (result == SecurityAccess.USEREXISTSERR) {
-                error = "User exists!";
+            } else if (result == AccountResponse.USEREXISTSERR) {
+                error = "User exists.";
+            } else if (result == AccountResponse.INVALIDNAME) {
+                error = "Invalid name.";
             } else {
                 error = "Error!";
             }
@@ -76,8 +77,28 @@ public class CreateAccountViewController {
 
     private void displayError(String error) {
         newUsername.setPromptText(error);
-        newPassword.setPromptText(error);
-        confirmPassword.setPromptText(error);
+    }
+
+    @FXML
+    private void deleteSelected() {
+        String userItem = usernamesList.getSelectionModel().getSelectedItem();
+        // Parse the username out of the user item string. It is formatted as "name - [permission]"
+        int i;
+        for (i = 0; i < userItem.length(); i++) {
+            if (userItem.charAt(i) == ' ') {
+                break;
+            }
+        }
+        // i is the position of the first space, grab the characters before there
+        String username = userItem.substring(0, i);
+
+        // Tell the controller to delete this username from the backend
+        boolean success = controller.deleteUser(username);
+
+        // Remove the username from the frontend list
+        if (success) {
+            usernamesList.getItems().remove(userItem);
+        }
     }
 
     private void resetFields() {

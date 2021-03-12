@@ -17,6 +17,8 @@ import java.security.NoSuchAlgorithmException;
 
 public class CredentialManager {
     private ObjectMapper mapper;
+    // This map stores the accounts in memory
+    // Its format is <Username, [Password, Permission Level]>
     private Map<String, ArrayList<String>> db;
 
     private final static String CREDENTIALS_PATH = "./src/security/credentials.json";
@@ -26,6 +28,8 @@ public class CredentialManager {
         db = new HashMap<>();
     }
 
+    // Checks if the input username and password strings match an existing account
+    // Returns the account's permission level if it exists, returns DENIED if it does not exist
     public Access checkPerms(String user, String password) {
         Set<String> keys = db.keySet();
         for (String account: keys) {
@@ -53,6 +57,7 @@ public class CredentialManager {
         return Access.DENIED;
     }
 
+    // Loads the accounts into memory from the JSON file
     public void loadAccounts() {
         ObjectNode accountNode;
         try {
@@ -73,12 +78,16 @@ public class CredentialManager {
         }
     }
 
-    public SecurityAccess addAccount(String user, String password, String confirmPassword, Access access) throws IOException {
+    // Adds an account to the accounts stored in memory and writes it to the JSON file
+    // Returns GRANTED if successful, other errors possible if unsuccessful
+    public AccountResponse addAccount(String user, String password, String confirmPassword, Access access) throws IOException {
         if (!(password.equals(confirmPassword))) {
-            return SecurityAccess.PASSNOMATCHERR; //throw error (passwords don't match)
+            return AccountResponse.PASSNOMATCHERR; //throw error (passwords don't match)
         }
         else if (db.containsKey(user)) {
-            return SecurityAccess.USEREXISTSERR; //throw error (user already exists)
+            return AccountResponse.USEREXISTSERR; //throw error (user already exists)
+        } else if (!user.matches("[A-Za-z0-9]+")) {
+            return AccountResponse.INVALIDNAME;
         }
         else {
             ArrayList<String> newInput = new ArrayList<>();
@@ -87,13 +96,38 @@ public class CredentialManager {
             db.put(user, newInput);
         }
         updateAccounts();
-        return SecurityAccess.GRANTED;
+        return AccountResponse.GRANTED;
     }
 
-    public Set<String> getAllUsernames() {
-        return db.keySet();
+    // Tries to delete the account with matching username from the database
+    // Returns true if successful, false if unsuccessful
+    public boolean deleteAccount(String username) {
+        if (db.remove(username) == null) {
+            // This account was not found
+            return false;
+        }
+
+        try {
+            updateAccounts();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
+    // Returns a list of "username - permission level" strings
+    public List<String> getUserItems() {
+        List<String> usernames = new ArrayList<>();
+        db.entrySet().forEach(entry -> {
+            String item = entry.getKey();
+            item = item + " - " + entry.getValue().get(1);
+            usernames.add(item);
+        });
+        return usernames;
+    }
+
+    // Writes the accounts stored in memory into the credentials.json file
     private void updateAccounts() throws IOException {
         ObjectNode accountNode = mapper.createObjectNode();
         ArrayNode accountsList = mapper.createArrayNode();

@@ -45,22 +45,26 @@ public class AccountController implements GridFlowEventListener {
 
         dialog.setScene(new Scene(createAccountView));
         dialog.setTitle("Account Manager");
-        dialog.initModality(Modality.WINDOW_MODAL);
+        dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(scene.getWindow());
         accountWindowDialog = dialog;
     }
 
     public void openAccountWindow() {
         accountWindowDialog.show();
-        viewController.setUsernameList(credentialManager.getAllUsernames());
+        viewController.setUserItemsList(credentialManager.getUserItems());
     }
 
-    public SecurityAccess tryAdd(String user, String password, String confirmPassword, Access access) throws IOException {
+    public boolean deleteUser(String username) {
+        return credentialManager.deleteAccount(username);
+    }
+
+    public AccountResponse tryAdd(String user, String password, String confirmPassword, Access access) throws IOException {
         // receives the new acccount info, and adds it in the credential manager
-        SecurityAccess response = credentialManager.addAccount(user, password, confirmPassword, access);
-        if (response == SecurityAccess.GRANTED) {
+        AccountResponse response = credentialManager.addAccount(user, password, confirmPassword, access);
+        if (response == AccountResponse.GRANTED) {
             // New user added, send a list to the view controller
-            viewController.setUsernameList(credentialManager.getAllUsernames());
+            viewController.setUserItemsList(credentialManager.getUserItems());
         }
         return response;
     }

@@ -81,9 +81,13 @@ public class GridBuilderController implements PropertiesObserver {
                     ((Closeable) sel).setClosedByDefault(PD.getDefaultState());
                 }
 
+                // update the name position, pay attention to the rotation variable to know if horiz/vert
+                ((Component) sel).getComponentIcon().updateComponentNamePosition(PD.getNamePos(), PD.getRotation());
+
             } else if (sel instanceof Association) {
                 if (PD.getID().equals(this.propertiesData.getID())) {
                     ((Association) sel).setLabel(PD.getAssocLabel());
+                    ((Association) sel).setAcronym(PD.getAssocAcronym());
                     ((Association) sel).getAssociationIcon().setLabelText(PD.getAssocLabel());
                     gridFlowEventManager.sendEvent(new GridChangedEvent());
                 }
@@ -93,8 +97,9 @@ public class GridBuilderController implements PropertiesObserver {
 
         //this.propertiesData = PD;
         this.propertiesData = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
-                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(), PD.getAssociation(),
-                PD.getAssocLabel(), PD.getAssocSubLabel(), PD.getAssocAcronym());
+                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
+                PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
+                PD.getAssocSubLabel(), PD.getAssocAcronym());
     }
 
     public void propertiesDataChanged() {

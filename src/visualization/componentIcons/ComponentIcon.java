@@ -25,6 +25,9 @@ import java.util.List;
 public class ComponentIcon {
 
     private final Rectangle boundingRect = new Rectangle();
+    private Point midRight;
+    private Point midLeft;
+    private Point currentNamePos;
     private final Rectangle fittingRect = new Rectangle();
     private final Group iconNode = new Group();
     private final Text componentName = new Text();
@@ -65,8 +68,10 @@ public class ComponentIcon {
         this.height = dimensions.getHeight();
         setRectByDimensions(boundingRect, dimensions, position);
 
-        Point midRight = position.translate(dimensions.getAdjustedWidth()/2, dimensions.getAdjustedHeight()/2);
+        this.midRight = position.translate(dimensions.getAdjustedWidth()/2, dimensions.getAdjustedHeight()/2);
+        this.midLeft = position.translate(-(dimensions.getAdjustedWidth()/2), dimensions.getAdjustedHeight()/2);
         setComponentNamePosition(midRight);
+        this.currentNamePos = midRight;
     }
 
 
@@ -91,15 +96,44 @@ public class ComponentIcon {
         boundingRect.setStroke(select ? SELECT_COLOR : DEFAULT_BOUNDING_COLOR);
     }
 
-    public void updateComponentNamePosition (boolean toggled) {
-        // if toggled -> set name position to left
-        // else -> set name position right
-//        if (toggled) {
-//            // get the bounding rect dimensions
-//            // make a new point "midleft" that translates x and y
-//            // set component name position
-//            Point midleft = new
-//        }
+    public Point getCurrentNamePos () { return this.currentNamePos; }
+
+    public Point getMidRight() { return this.midRight; }
+
+    public Point getMidLeft() { return this.midLeft; }
+
+    public void updateComponentNamePosition (boolean toggled, Double rotation) {
+        Double X = 0.0;
+
+        if (currentNamePos != null) {
+            if (toggled) {
+                // set name to "midLeft"
+                if (rotation == 90 || rotation == 270) {
+                    X = this.midLeft.getX()  - (1.25 * Globals.UNIT);
+                } else if (rotation == 180) {
+                    // Adjust for upside text
+                    X = this.midRight.getX();
+                } else {
+                    // Adjust for left justified text
+                    X = this.midLeft.getX() - (1.25 * Globals.UNIT);
+                }
+
+                setComponentNamePosition(new Point(X, this.midLeft.getY()));
+                this.currentNamePos = midLeft;
+
+            } else {
+                // set name to "midRight"
+                if (rotation == 180) {
+                    X = this.midLeft.getX() - (1.25 * Globals.UNIT);
+                } else {
+                    X = this.midRight.getX();
+                }
+
+                setComponentNamePosition(new Point(X, this.midRight.getY()));
+                this.currentNamePos = midRight;
+            }
+        }
+
     }
 
     private void setComponentNamePosition(Point position) {

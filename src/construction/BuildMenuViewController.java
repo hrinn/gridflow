@@ -1,5 +1,6 @@
 package construction;
 
+import domain.Selectable;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -27,10 +28,6 @@ enum MenuState {
     MenuCollapsed, MenuExpanded
 }
 
-enum PropertyState {
-    Component, Selection, Association
-}
-
 public class BuildMenuViewController implements PropertiesObserver{
 
     private static final String ARROW_RIGHT_PATH = "src/resources/ArrowRight.png";
@@ -46,17 +43,18 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     private ConstructionController constructionController;
     private PropertiesData Properties;
+    private boolean namePosChanged;
     private boolean defaultStateChanged;
 
     // variables for the different property windows
-    private PropertyState propertyWindow;
     private VBox ComponentFieldNames;
     private VBox ComponentFields;
     private VBox AssociationFieldNames;
     private VBox AssociationFields;
     private VBox SelectedFieldNames;
     private VBox SelectedFields;
-
+    private Label TandemLabel;
+    private RadioButton TandemField;
 
     @FXML
     private Button ComponentMenuButton;
@@ -76,6 +74,7 @@ public class BuildMenuViewController implements PropertiesObserver{
     @FXML
     private void initialize() {
         this.Properties = new PropertiesData();
+        this.namePosChanged = false;
         this.defaultStateChanged = false;
 
         // Bind the managed and visible properties for the component menu and properties window.
@@ -96,12 +95,12 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     @Override
     public void updateProperties(PropertiesData properties) {
-        // State and rotation may change if the key handlers were pressed, update component window
-
         // received data from somewhere else, update the properties variable and set the window
         this.Properties = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
-                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected(), properties.getAssociation(),
-                properties.getAssocLabel(), properties.getAssocSubLabel(), properties.getAssocAcronym());
+                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected(),
+                properties.getNamePos(), properties.getAssociation(), properties.getAssocLabel(),
+                properties.getAssocSubLabel(), properties.getAssocAcronym(),
+                properties.getTandemComponents());
 
         setPropertiesWindow();
     }
@@ -122,12 +121,9 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     @FXML
     private void pickInteractTool() {
-        // At this point, the tool is selected. Update the properties window to show default now
+        // At this point, the tool is selected. Hide the properties information
         constructionController.setBuildMenuData(ToolType.INTERACT, null);
-
-        //setPropertiesAndUpdate(this.Properties.getType());
-        // Instead of supply/changing the toggled properties, set the properties window with default properties
-        setDefaultPropertiesWindow();
+        hideProperties();
     }
 
     @FXML
@@ -209,19 +205,15 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     @FXML
     private void toggleMenu() {
-        Translate menuButtonTrans = new Translate();
 
         if (state == MenuState.MenuExpanded) {
             CollapseMenu();
             ComponentBuilderMenu.setPrefHeight(MENU_COLLAPSED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_COLLAPSED_WIDTH);
 
-            //menuButtonTrans.setY(SHIFT_MENU_UP);
-
             state = MenuState.MenuCollapsed;
 
         } else {
-            //menuButtonTrans.setY(SHIFT_MENU_DOWN);
 
             ComponentBuilderMenu.setPrefHeight(MENU_EXPANDED_HEIGHT);
             ComponentBuilderMenu.setPrefWidth(MENU_EXPANDED_WIDTH);
@@ -231,7 +223,11 @@ public class BuildMenuViewController implements PropertiesObserver{
         }
 
         SetMenuButtonImage(ArrowImage);
-        ComponentBuilderMenu.getTransforms().add(menuButtonTrans);
+    }
+
+    private void hideProperties() {
+        PropertiesWindow.setLeft(null);
+        PropertiesWindow.setCenter(null);
     }
 
     private void setDefaultPropertiesWindow(){
@@ -240,20 +236,20 @@ public class BuildMenuViewController implements PropertiesObserver{
         setComponentPropertiesWindow();
     }
 
-    private void setPropertiesWindow(){
-        // if selected < 2 and association not selected, set compoenent properties window
-        if (Properties.getNumSelected() < 2) {
+    private void setPropertiesWindow() {
+        if (Properties.getNumSelected() == 0) {
+            hideProperties();
+
+        } else if (Properties.getNumSelected() == 1) {
             if (!Properties.getAssociation()) {
                 setComponentPropertiesWindow();
 
             } else {
-                // set association window
                 setAssociationPropertiesWindow();
             }
         } else {
             setSelectionPropertiesWindow();
         }
-
     }
 
     private void setAssociationPropertiesWindow() {
@@ -282,8 +278,30 @@ public class BuildMenuViewController implements PropertiesObserver{
             if (node != null) {
                 if (node.getId().equals("selectedField")){
                     ((Label)node).setText(Integer.toString(Properties.getNumSelected()));
+
+                } else if (node.getId().equals("tandemField")) {
+                    // Update the state of the button based on tandem id's set for each breaker
+
+                    //Properties.getNumSelected() != 2 &&
+//                    if (Properties.getTandemComponents().size() != 2) {
+//                        // Remove the fields
+//                        SelectedFields.getChildren().remove(TandemField);
+//                        SelectedFieldNames.getChildren().remove(TandemLabel);
+//                    }
                 }
             }
+        }
+
+        // if numselected == 2 and both selectables are the same breakers, set the two new fields for setting them tandem-able
+        if (Properties.getNumSelected() == 2 && Properties.getTandemComponents().size() == 2) {
+            // Assuming all the necessary checking has been performed in Selection Manager,
+            // set the new nodes into the selection window
+            SelectedFieldNames.getChildren().add(TandemLabel);
+            SelectedFields.getChildren().add(TandemField);
+
+        } else {
+            SelectedFields.getChildren().remove(TandemField);
+            SelectedFieldNames.getChildren().remove(TandemLabel);
         }
 
         // Show window
@@ -308,6 +326,9 @@ public class BuildMenuViewController implements PropertiesObserver{
                 else if (node.getId().equals("stateField")) {
                     ((RadioButton)node).setSelected(!Properties.getDefaultState());
                 }
+                else if (node.getId().equals("namePosField")) {
+                    ((RadioButton)node).setSelected(Properties.getNamePos());
+                }
             }
         }
 
@@ -327,7 +348,7 @@ public class BuildMenuViewController implements PropertiesObserver{
         Translate stateButtonLabelTrans = new Translate();
         stateButtonLabelTrans.setY(2);
         Translate namePosButtonLabelTrans = new Translate();
-        namePosButtonLabelTrans.setY(4);
+        namePosButtonLabelTrans.setY(2);
 
         Label type = new Label("Type");
         type.getStyleClass().add("field-label");
@@ -346,7 +367,6 @@ public class BuildMenuViewController implements PropertiesObserver{
         ComponentFieldNames = new VBox(10, type, name, state, namePos);
         ComponentFieldNames.getStyleClass().add("field-name-container");
 
-        //TextField typeField = new TextField();
         Label typeField = new Label();
         typeField.setId("typeField");
         typeField.getStyleClass().addAll("field", "field_text");
@@ -382,14 +402,12 @@ public class BuildMenuViewController implements PropertiesObserver{
         namePosField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
             if (isSelected) {
                 // change/update properties
-                //Properties.setDefaultState(false);
-                // Properties.setNamePos(?midleft???)
+                Properties.setNamePos(true);
             } else {
-                //Properties.setDefaultState(true);
-                // Properties.setNamePos(?midright???)
+                Properties.setNamePos(false);
             }
-            //namePosChanged??
-            //defaultStateChanged = true;
+
+            namePosChanged = true;
         });
 
         Button applyButton = new Button("Apply");
@@ -408,7 +426,11 @@ public class BuildMenuViewController implements PropertiesObserver{
                 defaultStateChanged = false;
             }
 
-//            PropertiesManager.notifyObservers(this.Properties);
+            if (namePosChanged) {
+                PropertiesManager.notifyObservers(this.Properties);
+                namePosChanged = false;
+            }
+
         });
 
         ComponentFields = new VBox(10, typeField, nameField, stateField, namePosField, applyButton);
@@ -418,6 +440,26 @@ public class BuildMenuViewController implements PropertiesObserver{
 
 
     private void initSelectionProperties() {
+        // Declare the tandem fields for now
+        TandemLabel = new Label("Set Tandem");
+        TandemLabel.setId("tandemLabel");
+        TandemLabel.getStyleClass().add("field-label");
+
+        TandemField = new RadioButton();
+        TandemField.setId("tandemField");
+        TandemField.getStyleClass().addAll("field");
+        // TODO: Link this here to the tandem function written by Davis
+        TandemField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
+//            if (isSelected) {
+//                // change/update properties
+//                Properties.setDefaultState(false);
+//            } else {
+//                Properties.setDefaultState(true);
+//            }
+//
+//            defaultStateChanged = true;
+        });
+
         Label numSelected = new Label("Number Selected:");
         numSelected.getStyleClass().add("selected_field_label");
 
@@ -433,40 +475,23 @@ public class BuildMenuViewController implements PropertiesObserver{
     }
 
     private void initAssociationProperties() {
-        Translate subLabelTrans = new Translate();
-        subLabelTrans.setY(8);
         Translate acronymLabelTrans = new Translate();
-        acronymLabelTrans.setY(16);
+        acronymLabelTrans.setY(6);
 
         Label label = new Label("Label");
         label.getStyleClass().addAll("field-label-top");
-
-        Label subLabel = new Label("SubLabel");
-        subLabel.getTransforms().add(subLabelTrans);
-        subLabel.getStyleClass().addAll("field-label-top");
 
         Label acronym = new Label("Acronym");
         acronym.getTransforms().add(acronymLabelTrans);
         acronym.getStyleClass().addAll( "field-label-top");
 
-        AssociationFieldNames = new VBox(10, label, subLabel, acronym);
+        AssociationFieldNames = new VBox(10, label, acronym);
         AssociationFieldNames.getStyleClass().add("field-name-container");
 
         TextArea labelField = new TextArea();
         labelField.setId("labelField");
         labelField.getStyleClass().addAll("field-text-area");
         labelField.focusedProperty().addListener((observableValue, aBoolean, textFieldActive) -> {
-            if (textFieldActive){
-                constructionController.setUserTyping(true);
-            } else {
-                constructionController.setUserTyping(false);
-            }
-        });
-
-        TextArea subLabelField = new TextArea();
-        subLabelField.setId("subLabelField");
-        subLabelField.getStyleClass().addAll( "field-text-area");
-        subLabelField.focusedProperty().addListener((observableValue, aBoolean, textFieldActive) -> {
             if (textFieldActive){
                 constructionController.setUserTyping(true);
             } else {
@@ -492,23 +517,18 @@ public class BuildMenuViewController implements PropertiesObserver{
             // && !nameField.getText().isEmpty()
             if (labelField.getText() != null) {
                 Properties.setAssocLabel(labelField.getText());
-                PropertiesManager.notifyObservers(this.Properties);
-            }
-
-            if (subLabelField.getText() != null) {
-                Properties.setAssocSubLabel(subLabelField.getText());
-                PropertiesManager.notifyObservers(this.Properties);
+                //PropertiesManager.notifyObservers(this.Properties);
             }
 
             if (acronymField.getText() != null) {
                 Properties.setAssocAcronym(acronymField.getText());
-                PropertiesManager.notifyObservers(this.Properties);
+                //PropertiesManager.notifyObservers(this.Properties);
             }
 
-
+            PropertiesManager.notifyObservers(this.Properties);
         });
 
-        AssociationFields = new VBox(10, labelField, subLabelField, acronymField, applyButton);
+        AssociationFields = new VBox(10, labelField, acronymField, applyButton);
         AssociationFields.getStyleClass().add("field-container");
 
     }

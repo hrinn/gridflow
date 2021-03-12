@@ -1,7 +1,8 @@
 package construction;
 
-import java.util.Objects;
-import java.util.UUID;
+import domain.components.Component;
+
+import java.util.*;
 
 public class PropertiesData {
 
@@ -11,10 +12,12 @@ public class PropertiesData {
     private boolean defaultState;
     private double rotation;
     private int numSelected;
+    private boolean namePosLeft;
     private boolean isAssociation;
     private String assocLabel;
     private String assocSubLabel;
     private String assocAcronym;
+    private List<Component> tandemComponents;
 
     public PropertiesData() {
         this.type = null;
@@ -23,24 +26,46 @@ public class PropertiesData {
         this.defaultState = true;
         this.rotation = 0;
         this.numSelected = 0;
+        this.namePosLeft = false;
         this.isAssociation = false;
         this.assocLabel = "";
         this.assocSubLabel = "";
         this.assocAcronym = "";
+        tandemComponents = new ArrayList<Component>(2);
     }
 
     public PropertiesData(ComponentType type, UUID ID, String name, boolean defState, double rot,
-                          int numSelected, boolean isAssoc, String assocLabel, String assocSubLabel, String assocAc) {
+                          int numSelected, boolean namePosLeft, boolean isAssoc, String assocLabel,
+                          String assocSubLabel, String assocAc) {
         this.type = type;
         this.ID = ID;
         this.name = name;
         this.defaultState = defState;
         this.rotation = rot;
         this.numSelected = numSelected;
+        this.namePosLeft = namePosLeft;
         this.isAssociation = isAssoc;
         this.assocLabel = assocLabel;
         this.assocSubLabel = assocSubLabel;
         this.assocAcronym = assocAc;
+        tandemComponents = new ArrayList<Component>(2);
+    }
+
+    public PropertiesData(ComponentType type, UUID ID, String name, boolean defState, double rot,
+                          int numSelected, boolean namePosLeft, boolean isAssoc, String assocLabel,
+                          String assocSubLabel, String assocAc, List<Component> tandemComps) {
+        this.type = type;
+        this.ID = ID;
+        this.name = name;
+        this.defaultState = defState;
+        this.rotation = rot;
+        this.numSelected = numSelected;
+        this.namePosLeft = namePosLeft;
+        this.isAssociation = isAssoc;
+        this.assocLabel = assocLabel;
+        this.assocSubLabel = assocSubLabel;
+        this.assocAcronym = assocAc;
+        this.tandemComponents = tandemComps;
     }
 
     public PropertiesData(PropertiesData PD) {
@@ -101,6 +126,10 @@ public class PropertiesData {
 
     public int getNumSelected () { return this.numSelected; }
 
+    public void setNamePos (boolean namePosLeft) { this.namePosLeft = namePosLeft; }
+
+    public boolean getNamePos () { return this.namePosLeft; }
+
     public void setAssociation (boolean isAssoc) { this.isAssociation = isAssoc; }
 
     public boolean getAssociation () { return this.isAssociation; }
@@ -117,6 +146,12 @@ public class PropertiesData {
 
     public String getAssocAcronym () { return this.assocAcronym; }
 
+    public void addTandemComp (Component tandem) { this.tandemComponents.add(tandem); }
+
+    public List<Component> getTandemComponents () { return this.tandemComponents; }
+
+    public void setTandemList () { this.tandemComponents = new ArrayList<Component>(2); }
+
     public void setDefaultProperties(ComponentType type){
         setType(type);
         setID(new UUID(0, 0));
@@ -124,10 +159,12 @@ public class PropertiesData {
         setDefaultState(true);
         setRotation(0);
         setNumSelected(0);
+        setNamePos(false);
         setAssociation(false);
         setAssocLabel("");
         setAssocSubLabel("");
         setAssocAcronym("");
+        setTandemList();
     }
 
     public void setDefaultComponentProperties(int numSelected) {
@@ -137,10 +174,12 @@ public class PropertiesData {
         setDefaultState(true);
         setRotation(0);
         setNumSelected(numSelected);
+        setNamePos(false);
         setAssociation(false);
         setAssocLabel("");
         setAssocSubLabel("");
         setAssocAcronym("");
+        setTandemList();
     }
 
     public void copyContents(PropertiesData properties) {

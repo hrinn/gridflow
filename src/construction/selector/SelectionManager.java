@@ -7,6 +7,7 @@ import construction.canvas.GridCanvasFacade;
 import domain.Association;
 import domain.Grid;
 import domain.Selectable;
+import domain.components.Breaker;
 import domain.components.Closeable;
 import domain.components.Component;
 import domain.components.Wire;
@@ -20,6 +21,7 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -48,10 +50,8 @@ public class SelectionManager {
             int numSelected = selectedIDs.size();
             PropertiesData properties = new PropertiesData();
 
-
             if (numSelected == 1) {
                 properties.setNumSelected(numSelected);
-                //Component comp = grid.getComponent(selectedIDs.get(0));
                 Selectable sel = grid.getSelectableByID(selectedIDs.get(0));
 
                 if (sel != null) {
@@ -61,10 +61,17 @@ public class SelectionManager {
                         properties.setType(((Component)sel).getComponentType());
                         properties.setName(((Component)sel).getName());
                         properties.setRotation(((Component)sel).getAngle());
+
                         // if component can have its state changed, update default state, else leave alone
                         if (sel instanceof Closeable) {
                             properties.setDefaultState(((Closeable) sel).isClosedByDefault());
                         }
+
+                        // if comp name layout bounds match, update properties on reselection
+                        if (((Component)sel).getComponentIcon().getCurrentNamePos() == ((Component)sel).getComponentIcon().getMidLeft()) {
+                            properties.setNamePos(true);
+                        }
+
                     } else if (sel instanceof Association) {
                         properties.setAssociation(true);
                         properties.setAssocLabel(((Association)sel).getLabel());
@@ -73,18 +80,21 @@ public class SelectionManager {
                     }
                 }
 
-
-                // If comp is null, probably an association
-//                if (comp != null) {
-//                    properties.setID(UUID.fromString(selectedIDs.get(0)));
-//                    properties.setType(comp.getComponentType());
-//                    properties.setName(comp.getName());
-//                    properties.setRotation(comp.getAngle());
-//                    // if component can have its state changed, update default state, else leave alone
-//                    if (comp instanceof Closeable) {
-//                        properties.setDefaultState(((Closeable) comp).isClosedByDefault());
-//                    }
-//                } // else if thing selected is an association
+            } else if (numSelected == 2) {
+                // TODO: check to make sure either breaker has not already had its tandem set
+                // TODO: May need to add a field to the component properties for breakers specifically
+                // TODO: -> If breaker and tandem id set, show option for "unlink tandem", this will set both breaker's tandem IDs to null
+                // Used for tandemable components (2 breakers)
+                properties.setDefaultComponentProperties(numSelected);
+                //selectedIDs.forEach(t -> properties.addTandemUUID(UUID.fromString(t)));
+                Selectable selTandem1 = grid.getSelectableByID(selectedIDs.get(0));
+                Selectable selTandem2 = grid.getSelectableByID(selectedIDs.get(1));
+                if (selTandem1 instanceof Breaker && selTandem2 instanceof Breaker &&
+                        (((Breaker) selTandem1).getComponentType() == ((Breaker) selTandem2).getComponentType())) {
+                    // Selected are both the same breaker type
+                    properties.addTandemComp((Component) selTandem1);
+                    properties.addTandemComp((Component) selTandem2);
+                }
 
             } else {
                 properties.setDefaultComponentProperties(numSelected);

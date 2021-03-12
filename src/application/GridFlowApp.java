@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import application.events.*;
@@ -71,6 +72,8 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         primaryStage.setMaxHeight(WINDOW_HEIGHT);
         primaryStage.setMaxWidth(WINDOW_WIDTH);
         primaryStage.show();
+
+        loginController.tryLogin("root", "root");
     }
 
     /* This waits for a successful login before displaying the main application */
@@ -101,7 +104,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
     public void startApplication(Access permissionLevel) throws Exception {
         /* Create GUI elements */
         Group root = new Group();
-        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
+        Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, Color.DARKGRAY);
         primaryStage.setScene(scene);
 
         /* Init modules and connect them all together */

@@ -62,7 +62,7 @@
             <Font size="28.0" />
          </font>
       </TextField>
-      <Button fx:id="createAccountButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#tryAdd" onMousePressed="#tryAdd" prefHeight="45.0" prefWidth="175.0" text="Create Account" translateX="325.0" translateY="215.0">
+      <Button fx:id="createAccountButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMousePressed="#tryAdd" prefHeight="45.0" prefWidth="175.0" text="Create Account" translateX="325.0" translateY="215.0">
          <font>
             <Font size="20.0" />
          </font>

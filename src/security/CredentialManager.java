@@ -19,6 +19,8 @@ public class CredentialManager {
     private ObjectMapper mapper;
     private Map<String, ArrayList<String>> db;
 
+    private final static String CREDENTIALS_PATH = "./src/security/credentials.json";
+
     public CredentialManager() {
         mapper = new ObjectMapper();
         db = new HashMap<>();
@@ -54,7 +56,7 @@ public class CredentialManager {
     public void loadAccounts() {
         ObjectNode accountNode;
         try {
-            JsonParser parser = mapper.getFactory().createParser(new File("./src/security/credentials.json"));
+            JsonParser parser = mapper.getFactory().createParser(new File(CREDENTIALS_PATH));
             accountNode = mapper.readTree(parser);
             parser.close();
         } catch (IOException e) {
@@ -71,12 +73,12 @@ public class CredentialManager {
         }
     }
 
-    public securityAccess addAccount(String user, String password, String confirmPassword, Access access) throws IOException {
+    public SecurityAccess addAccount(String user, String password, String confirmPassword, Access access) throws IOException {
         if (!(password.equals(confirmPassword))) {
-            return securityAccess.PASSNOMATCHERR; //throw error (passwords don't match)
+            return SecurityAccess.PASSNOMATCHERR; //throw error (passwords don't match)
         }
         else if (db.containsKey(user)) {
-            return securityAccess.USEREXISTSERR; //throw error (user already exists)
+            return SecurityAccess.USEREXISTSERR; //throw error (user already exists)
         }
         else {
             ArrayList<String> newInput = new ArrayList<>();
@@ -85,7 +87,7 @@ public class CredentialManager {
             db.put(user, newInput);
         }
         updateAccounts();
-        return securityAccess.GRANTED;
+        return SecurityAccess.GRANTED;
     }
 
     private void updateAccounts() throws IOException {
@@ -100,7 +102,7 @@ public class CredentialManager {
         accountNode.put("accounts", accountsList);
 
         ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
-        writer.writeValue(new File("./credentials.json"), accountNode);
+        writer.writeValue(new File(CREDENTIALS_PATH), accountNode);
     }
 
     private ObjectNode getAccountNode(String user, String pass, String access) {

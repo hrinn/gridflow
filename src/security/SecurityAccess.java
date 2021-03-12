@@ -1,5 +1,5 @@
 package security;
 
-public enum securityAccess {
+public enum SecurityAccess {
     PASSNOMATCHERR, USEREXISTSERR, GRANTED
 }

@@ -2,7 +2,6 @@ package security;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 
 import java.io.IOException;
@@ -26,48 +25,52 @@ public class CreateAccountViewController {
 
     @FXML
     private void tryAdd() throws IOException {
-        securityAccess result;
+        SecurityAccess result;
+        Access access;
+
         if (godButton.isSelected()) {
-            result = controller.tryAdd(newUsername.getText(), newPassword.getText(), confirmPassword.getText(), Access.GOD);
-        }
-        else if (builderButton.isSelected()) {
-            result = controller.tryAdd(newUsername.getText(), newPassword.getText(), confirmPassword.getText(), Access.BUILDER);
-        }
-        else if (viewerButton.isSelected()) {
-            result = controller.tryAdd(newUsername.getText(), newPassword.getText(), confirmPassword.getText(), Access.VIEWER);
-        }
-        else
-        {
-            godButton.setSelected(false);
-            builderButton.setSelected(false);
-            viewerButton.setSelected(false);
-            newUsername.clear();
-            newPassword.clear();
-            confirmPassword.clear();
-            newUsername.setPromptText("Choose Perms!");
-            newPassword.setPromptText("Choose Perms!");
-            confirmPassword.setPromptText("Choose Perms!");
+            access = Access.GOD;
+        } else if (builderButton.isSelected()) {
+            access = Access.BUILDER;
+        } else if (viewerButton.isSelected()) {
+            access = Access.VIEWER;
+        } else {
+            resetFields();
+            displayError("Choose perms!");
             return;
         }
-        if (result != securityAccess.GRANTED) {
-            godButton.setSelected(false);
-            builderButton.setSelected(false);
-            viewerButton.setSelected(false);
-            newUsername.clear();
-            newPassword.clear();
-            confirmPassword.clear();
-            if (result == securityAccess.PASSNOMATCHERR)
-            {
-                newUsername.setPromptText("PASSWD Match!");
-                newPassword.setPromptText("PASSWD Match!");
-                confirmPassword.setPromptText("PASSWD Match!");
+
+        // Result is determined in the Credential Manager
+        result = controller.tryAdd(newUsername.getText(), newPassword.getText(), confirmPassword.getText(), access);
+
+        resetFields();
+
+
+        if (result != SecurityAccess.GRANTED) {
+            String error;
+            if (result == SecurityAccess.PASSNOMATCHERR) {
+                error = "Password mismatch.";
+            } else if (result == SecurityAccess.USEREXISTSERR) {
+                error = "User exists!";
+            } else {
+                error = "Error!";
             }
-            else if (result == securityAccess.USEREXISTSERR)
-            {
-                newUsername.setPromptText("User Exists!");
-                newPassword.setPromptText("User Exists!");
-                confirmPassword.setPromptText("User Exists!");
-            }
+            displayError(error);
         }
+    }
+
+    private void displayError(String error) {
+        newUsername.setPromptText(error);
+        newPassword.setPromptText(error);
+        confirmPassword.setPromptText(error);
+    }
+
+    private void resetFields() {
+        newUsername.clear();
+        newPassword.clear();
+        confirmPassword.clear();
+        godButton.setSelected(false);
+        builderButton.setSelected(false);
+        viewerButton.setSelected(false);
     }
 }

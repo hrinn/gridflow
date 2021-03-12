@@ -61,7 +61,7 @@ public class BaseUIViewController {
 
     @FXML
     private void manageAccounts() {
-
+        baseMenuFunctions.openAccountManager();
     }
 
     @FXML

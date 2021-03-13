@@ -72,6 +72,9 @@ public class SelectionManager {
                             properties.setNamePos(true);
                         }
 
+                        // if comp is a breaker, add the field for unlinking it's tandem
+
+
                     } else if (sel instanceof Association) {
                         properties.setAssociation(true);
                         properties.setAssocLabel(((Association)sel).getLabel());
@@ -92,8 +95,8 @@ public class SelectionManager {
                 if (selTandem1 instanceof Breaker && selTandem2 instanceof Breaker &&
                         (((Breaker) selTandem1).getComponentType() == ((Breaker) selTandem2).getComponentType())) {
                     // Selected are both the same breaker type
-                    properties.addTandemComp((Component) selTandem1);
-                    properties.addTandemComp((Component) selTandem2);
+                    properties.addTandemComp((Breaker) selTandem1);
+                    properties.addTandemComp((Breaker) selTandem2);
                 }
 
             } else {

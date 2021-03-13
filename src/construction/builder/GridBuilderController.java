@@ -7,6 +7,7 @@ import construction.history.GridMemento;
 import domain.Association;
 import domain.Grid;
 import domain.Selectable;
+import domain.components.Breaker;
 import domain.components.Closeable;
 import domain.components.Component;
 import domain.geometry.Point;
@@ -17,6 +18,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.util.List;
 import java.util.UUID;
 // this controller handles event logic for grid building
 // this is mostly user click while
@@ -54,6 +56,11 @@ public class GridBuilderController implements PropertiesObserver {
     public void buildDataChanged() {
         doubleClickPlacementContext.placing = false;
         updateAssociationHandles(buildData.toolType == ToolType.ASSOCIATION);
+    }
+
+    public void applyProperties (PropertiesData properties) {
+        model.toggleComponent(properties.getID().toString());
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
     }
 
     @Override
@@ -94,7 +101,6 @@ public class GridBuilderController implements PropertiesObserver {
             }
         }
 
-
         //this.propertiesData = PD;
         this.propertiesData = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
                 PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
@@ -102,9 +108,56 @@ public class GridBuilderController implements PropertiesObserver {
                 PD.getAssocSubLabel(), PD.getAssocAcronym());
     }
 
+    // TODO: get rid of this dead call (multiple places)
     public void propertiesDataChanged() {
 
     }
+
+    public void linkTandems(List<Breaker> tandems) {
+        // Unlink them first always
+        unlinkTandems(tandems);
+        // Check if tandems closed
+        if (tandems.get(0).isClosed()) { tandems.get(0).toggleState(); }
+        if (tandems.get(1).isClosed()) { tandems.get(1).toggleState(); }
+        // Link them
+        tandems.get(0).setTandemID(tandems.get(1).getId().toString());
+        tandems.get(1).setTandemID(tandems.get(0).getId().toString());
+
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
+    }
+
+
+    public void unlinkTandems (List<Breaker> tandems) {
+        if (tandems.get(0).hasTandem()) {
+            unlinkTandem(tandems.get(0));
+        }
+        if (tandems.get(1).hasTandem()) {
+            unlinkTandem(tandems.get(1));
+        }
+    }
+
+    public void unlinkTandemByID (UUID brID) {
+        Component comp = grid.getComponent(brID.toString());
+        if (comp instanceof Breaker) {
+            if (((Breaker) comp).hasTandem()){
+                unlinkTandem(((Breaker) comp));
+            }
+        }
+    }
+
+    public void unlinkTandem (Breaker br) {
+        Component comp = grid.getComponent(br.getTandemID());
+        if (comp instanceof Breaker) {
+            ((Breaker) comp).setTandemID("");
+        }
+        br.setTandemID("");
+    }
+
+    public boolean isBreaker(UUID ID) {
+        Component comp = grid.getComponent(ID.toString());
+        return comp instanceof Breaker;
+    }
+
 
     // this event handler is for placing wires with the wire tool
     // it is run once per click, so the event either begin a placement or finishes a placement

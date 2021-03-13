@@ -94,6 +94,7 @@ public class Breaker extends Closeable {
     public ObjectNode getObjectNode(ObjectMapper mapper) {
         ObjectNode breaker = super.getObjectNode(mapper);
         breaker.put("voltage", voltage.toString());
+        breaker.put("tandemid", tandemid);
         return breaker;
     }
 
@@ -120,8 +121,12 @@ public class Breaker extends Closeable {
         return tandemid;
     }
 
-    public void setTandemID(String tandemID) {
-        this.tandemid = tandemID;
+    public void setTandemID(String tandemid) {
+        if (tandemid.equals("")) {
+            this.tandemid = null;
+        } else {
+            this.tandemid = tandemid;
+        }
     }
 
     public boolean hasTandem() {

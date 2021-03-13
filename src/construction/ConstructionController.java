@@ -72,6 +72,8 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         PropertiesManager.attach(this);
     }
 
+    public GridBuilderController getGridBuilderController () { return this.gridBuilderController; }
+
     public void setUserTyping(boolean typing) { this.isTyping = typing; }
 
     public GridCanvasFacade getCanvasFacade() {

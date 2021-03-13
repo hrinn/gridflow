@@ -1,5 +1,6 @@
 package construction;
 
+import domain.components.Breaker;
 import domain.components.Component;
 
 import java.util.*;
@@ -17,7 +18,7 @@ public class PropertiesData {
     private String assocLabel;
     private String assocSubLabel;
     private String assocAcronym;
-    private List<Component> tandemComponents;
+    private List<Breaker> tandemComponents;
 
     public PropertiesData() {
         this.type = null;
@@ -31,7 +32,7 @@ public class PropertiesData {
         this.assocLabel = "";
         this.assocSubLabel = "";
         this.assocAcronym = "";
-        tandemComponents = new ArrayList<Component>(2);
+        tandemComponents = new ArrayList<Breaker>(2);
     }
 
     public PropertiesData(ComponentType type, UUID ID, String name, boolean defState, double rot,
@@ -48,12 +49,12 @@ public class PropertiesData {
         this.assocLabel = assocLabel;
         this.assocSubLabel = assocSubLabel;
         this.assocAcronym = assocAc;
-        tandemComponents = new ArrayList<Component>(2);
+        tandemComponents = new ArrayList<Breaker>(2);
     }
 
     public PropertiesData(ComponentType type, UUID ID, String name, boolean defState, double rot,
                           int numSelected, boolean namePosLeft, boolean isAssoc, String assocLabel,
-                          String assocSubLabel, String assocAc, List<Component> tandemComps) {
+                          String assocSubLabel, String assocAc, List<Breaker> tandemComps) {
         this.type = type;
         this.ID = ID;
         this.name = name;
@@ -146,11 +147,11 @@ public class PropertiesData {
 
     public String getAssocAcronym () { return this.assocAcronym; }
 
-    public void addTandemComp (Component tandem) { this.tandemComponents.add(tandem); }
+    public void addTandemComp (Breaker tandem) { this.tandemComponents.add(tandem); }
 
-    public List<Component> getTandemComponents () { return this.tandemComponents; }
+    public List<Breaker> getTandemComponents () { return this.tandemComponents; }
 
-    public void setTandemList () { this.tandemComponents = new ArrayList<Component>(2); }
+    public void setTandemList () { this.tandemComponents = new ArrayList<Breaker>(2); }
 
     public void setDefaultProperties(ComponentType type){
         setType(type);

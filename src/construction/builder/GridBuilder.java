@@ -398,13 +398,6 @@ public class GridBuilder implements PropertiesObserver {
         if(locked)
             return;
 
-        // TODO: remove toggle changing of component properties (may need this later?)
-        //toggleComponentProperties(component);
-
-        // always set the ID
-        //this.properties.setID(UUID.fromString(componentId));
-        //PropertiesManager.notifyObservers(this.properties);
-
         if (component instanceof IToggleable) {
             if(component instanceof Breaker){
                 Breaker breaker = (Breaker) component;

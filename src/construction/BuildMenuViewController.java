@@ -1,6 +1,10 @@
 package construction;
 
+import application.events.GridChangedEvent;
+import application.events.GridFlowEventManager;
+import construction.builder.GridBuilderController;
 import domain.Selectable;
+import domain.components.Closeable;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -45,6 +49,7 @@ public class BuildMenuViewController implements PropertiesObserver{
     private MenuState state = MenuState.MenuCollapsed;
 
     private ConstructionController constructionController;
+    private GridBuilderController gridBuilderController;
     private PropertiesData Properties;
     private boolean namePosChanged;
     private boolean defaultStateChanged;
@@ -56,8 +61,10 @@ public class BuildMenuViewController implements PropertiesObserver{
     private VBox AssociationFields;
     private VBox SelectedFieldNames;
     private VBox SelectedFields;
+    private Label clearTandemLabel;
+    private Button clearTandemField;
     private Label TandemLabel;
-    private RadioButton TandemField;
+    private Button TandemField;
 
     @FXML
     private Button ComponentMenuButton;
@@ -93,6 +100,7 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     public void setConstructionController(ConstructionController constructionController) {
         this.constructionController = constructionController;
+        this.gridBuilderController = constructionController.getGridBuilderController();
     }
 
     // TODO: Change this to the root node on Connor's branch
@@ -319,6 +327,7 @@ public class BuildMenuViewController implements PropertiesObserver{
     }
 
     private void setComponentPropertiesWindow() {
+        Node applyButton = null;
         // set the window fields before adding to view
         for (Node node : ComponentFields.getChildren()) {
             if (node != null){
@@ -337,9 +346,30 @@ public class BuildMenuViewController implements PropertiesObserver{
                 }
                 else if (node.getId().equals("namePosField")) {
                     ((RadioButton)node).setSelected(Properties.getNamePos());
+                } else if (node.getId().equals("applyComponentProperties")) {
+                    applyButton = node;
                 }
             }
         }
+
+        ComponentFieldNames.getChildren().remove(clearTandemLabel);
+        ComponentFields.getChildren().remove(clearTandemField);
+
+        // if the single comp is a breaker, add the field and button to unlink its tandem
+        // gridBuilderController.isBreaker(ID)???
+        if (gridBuilderController.isBreaker(Properties.getID())) {
+            if (applyButton != null) {
+                ComponentFields.getChildren().remove(applyButton);
+
+                // remove apply button, add fields/labels, add apply button back
+                ComponentFieldNames.getChildren().add(clearTandemLabel);
+                ComponentFields.getChildren().add(clearTandemField);
+
+                // always add the apply button back
+                ComponentFields.getChildren().add(applyButton);
+            }
+        }
+
 
         // Show window
         PropertiesWindow.setLeft(ComponentFieldNames);
@@ -358,6 +388,9 @@ public class BuildMenuViewController implements PropertiesObserver{
         stateButtonLabelTrans.setY(2);
         Translate namePosButtonLabelTrans = new Translate();
         namePosButtonLabelTrans.setY(2);
+        Translate clearTandemButtonLabelTrans = new Translate();
+        clearTandemButtonLabelTrans.setY(2);
+
 
         Label type = new Label("Type");
         type.getStyleClass().add("field-label");
@@ -365,13 +398,18 @@ public class BuildMenuViewController implements PropertiesObserver{
         Label name = new Label("Name");
         name.getStyleClass().addAll("field-label-top");
 
-        Label state = new Label("State");
+        Label state = new Label("Def State");
         state.getTransforms().add(stateButtonLabelTrans);
         state.getStyleClass().addAll("field-label-top");
 
         Label namePos = new Label("NamePos");
         namePos.getTransforms().add(namePosButtonLabelTrans);
         namePos.getStyleClass().addAll("field-label-top");
+
+        // Set this up to be added later if a breaker is selected
+        clearTandemLabel = new Label("ClearTand");
+        clearTandemLabel.getTransforms().add(clearTandemButtonLabelTrans);
+        clearTandemLabel.getStyleClass().addAll("field-label-top");
 
         ComponentFieldNames = new VBox(10, type, name, state, namePos);
         ComponentFieldNames.getStyleClass().add("field-name-container");
@@ -432,6 +470,7 @@ public class BuildMenuViewController implements PropertiesObserver{
             if (defaultStateChanged) {
                 PropertiesManager.notifyObservers(this.Properties);
                 constructionController.notifyGhostController(false, true);
+                gridBuilderController.applyProperties(this.Properties);
                 defaultStateChanged = false;
             }
 
@@ -440,6 +479,15 @@ public class BuildMenuViewController implements PropertiesObserver{
                 namePosChanged = false;
             }
 
+        });
+
+        // set up clear tandem button for later
+        clearTandemField = new Button("Clear");
+        clearTandemField.setId("clearTandemField");
+        clearTandemField.getStyleClass().addAll("field", "apply-button");
+        clearTandemField.setOnAction(actionEvent -> {
+            // get the component via properties, call unlink on that single breaker
+            gridBuilderController.unlinkTandemByID(Properties.getID());
         });
 
         ComponentFields = new VBox(10, typeField, nameField, stateField, namePosField, applyButton);
@@ -454,19 +502,11 @@ public class BuildMenuViewController implements PropertiesObserver{
         TandemLabel.setId("tandemLabel");
         TandemLabel.getStyleClass().add("field-label");
 
-        TandemField = new RadioButton();
+        TandemField = new Button();
         TandemField.setId("tandemField");
         TandemField.getStyleClass().addAll("field");
-        // TODO: Link this here to the tandem function written by Davis
-        TandemField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
-//            if (isSelected) {
-//                // User wishes to link the components together
-//                Properties.setDefaultState(false);
-//            } else {
-//                Properties.setDefaultState(true);
-//            }
-//
-//            defaultStateChanged = true;
+        TandemField.setOnAction(actionEvent -> {
+            gridBuilderController.linkTandems(Properties.getTandemComponents());
         });
 
         Label numSelected = new Label("Number Selected:");

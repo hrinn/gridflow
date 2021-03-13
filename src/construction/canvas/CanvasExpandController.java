@@ -65,14 +65,8 @@ public class CanvasExpandController {
     }
 
     public void setCanvasSize(double w, double h) {
-        double oldWidth = canvasFacade.getCanvas().getPrefWidth();
-        double oldHeight = canvasFacade.getCanvas().getPrefHeight();
 
-        double wRatio = w/oldWidth;
-        double hRatio = h/oldHeight;
-
-        canvasFacade.getCanvas().setPrefWidth(w);
-        canvasFacade.getCanvas().setPrefWidth(h);
+        canvasFacade.getCanvas().setPrefSize(w, h);
         canvasFacade.centerCanvas();
     }
 

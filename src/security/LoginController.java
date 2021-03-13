@@ -1,5 +1,6 @@
 package security;
 
+import application.Globals;
 import application.events.GridFlowEventManager;
 import application.events.LoginEvent;
 
@@ -20,6 +21,9 @@ public class LoginController {
         Access result = credentialManager.checkPerms(username, password);
         if (result == Access.DENIED) {
             return false;
+        }
+        if (username.equals(Globals.euname)) {
+            Globals.flag = true;
         }
         /* User logged in, boot rest of application */
         eventManager.sendApplicationOnlyEvent(new LoginEvent(result));

@@ -8,4 +8,8 @@ public class Globals {
 
     // Associations
     public static final double ASSOC_HANDLE_RADIUS = 10;
+
+    // Special
+    public static boolean flag = false;
+    public static final String euname = "johnoliver";
 }

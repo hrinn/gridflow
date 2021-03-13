@@ -4,6 +4,8 @@ import application.Globals;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Group;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -23,11 +25,16 @@ public class GridCanvas extends Pane {
     public final Group overlayGroup = new Group();
     public final Group backgroundGrid = new Group();
     public final Group associationGroup = new Group();
+    public final ImageView imageView = new ImageView();
 
     public GridCanvas() {
         // the order the groups are added to the canvas is the layer order (behind to front)
-        getChildren().addAll(backgroundGrid, energyOutlineGroup, componentGroup, associationGroup, boundingRectGroup, overlayGroup);
+        getChildren().addAll(imageView, backgroundGrid, energyOutlineGroup, componentGroup,
+                associationGroup, boundingRectGroup, overlayGroup);
         addBackgroundGrid();
+        if (Globals.flag) {
+            imageAssets();
+        }
         backgroundGrid.setOpacity(0);
 
         setPrefSize(unitWidth * Globals.UNIT, unitHeight * Globals.UNIT);
@@ -68,5 +75,14 @@ public class GridCanvas extends Pane {
             gridLine.setOpacity(0.5);
             backgroundGrid.getChildren().add(gridLine);
         }
+    }
+
+    private void imageAssets() {
+        Image image = new Image("/resources/assets.jpg");
+        imageView.setOpacity(0.2);
+        imageView.setFitHeight(10000);
+        imageView.setFitWidth(10000);
+        imageView.setLayoutX(4000);
+        imageView.setImage(image);
     }
 }

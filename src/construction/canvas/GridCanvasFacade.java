@@ -53,11 +53,6 @@ public class GridCanvasFacade {
 
     private void createCanvas() {
         canvas = new GridCanvas();
-        canvas.setScale(0.7);
-        //canvas.setTranslateX(100);
-        //canvas.setTranslateY(100);
-        // draw center point
-//        canvas.getChildren().add(new Circle(canvas.getPrefWidth()/2, canvas.getPrefHeight()/2, 5));
         centerCanvas();
 
         // canvas events
@@ -76,13 +71,9 @@ public class GridCanvasFacade {
 
     // Takes an (x, y) in Grid Coordinates and sets the center of the camera there
     public void setCameraPos(double x, double y) {
-        x = x * canvas.getScale();
-        y = y * canvas.getScale();
-//        System.out.println("Camera pos: " + x + ", " + y);
-//        System.out.println("Scale: " + canvas.getScale());
-//        System.out.println("Scene dims: " + scene.getWidth() + ", " + scene.getHeight());
+        // Scaling makes translations... difficult. This is a hacky fix.
+        canvas.setScale(1.0);
 
-//        System.out.println("Scene in grid coords: " + rsw + ", " + rsh);
         double rx = -x + scene.getWidth()/2;
         double ry = -y + scene.getHeight()/2;
         canvas.setTranslateX(rx);

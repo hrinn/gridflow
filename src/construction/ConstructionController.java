@@ -186,7 +186,7 @@ public class ConstructionController implements BaseMenuFunctions {
             n++;
         }
         // Set middle position as pan
-       // canvasFacade.setCameraPos(tx/n, ty/n);
+        canvasFacade.setCameraPos(tx/n, ty/n);
     }
 
     // gets event handlers from the sub controllers and installs them into the canvasFacade

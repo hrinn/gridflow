@@ -48,7 +48,7 @@
                         <Menu fx:id="ViewMenu" mnemonicParsing="false"
                               style="-fx-text-alignment: center; -fx-font-size: 14;" text="View">
                             <items>
-                                <MenuItem fx:id="ZoomToFit" mnemonicParsing="false" text="Zoom to Fit" onAction="#zoomToFit"/>
+                                <MenuItem fx:id="ZoomToFit" mnemonicParsing="false" text="Center on Grid" onAction="#zoomToFit"/>
                                 <MenuItem fx:id="AboutItem" mnemonicParsing="false" text="About"/>
                             </items>
                         </Menu>

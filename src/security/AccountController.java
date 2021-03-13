@@ -24,6 +24,7 @@ public class AccountController implements GridFlowEventListener {
             initAccountWindow();
         } catch (Exception e) {
             e.printStackTrace();
+            System.exit(-1);
         }
         credentialManager.loadAccounts(); /* Load the accounts from the JSON file */
     }
@@ -35,7 +36,7 @@ public class AccountController implements GridFlowEventListener {
         }
     }
 
-    public void initAccountWindow() throws IOException {
+    private void initAccountWindow() throws IOException {
         Stage dialog = new Stage();
         FXMLLoader createAccountViewLoader = new FXMLLoader(getClass().getResource("CreateAccount.fxml"));
         Parent createAccountView = createAccountViewLoader.load();

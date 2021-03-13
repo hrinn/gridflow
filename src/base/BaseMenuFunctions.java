@@ -8,4 +8,5 @@ public interface BaseMenuFunctions {
     void zoomToFit();
     void switchAccounts();
     void openAccountManager();
+    void expandCanvas();
 }

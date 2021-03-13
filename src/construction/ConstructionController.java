@@ -5,20 +5,18 @@ import application.events.OpenAccountsEvent;
 import application.events.ReLoginEvent;
 import base.BaseMenuFunctions;
 import construction.builder.GridBuilderController;
+import construction.canvas.CanvasExpandController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.history.GridHistorianController;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import domain.components.Component;
-import domain.geometry.Point;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import security.Access;
 
 public class ConstructionController implements BaseMenuFunctions {
 
@@ -32,6 +30,7 @@ public class ConstructionController implements BaseMenuFunctions {
     private GhostManagerController ghostManagerController;
     private SelectionManagerController selectionManagerController;
     private GridHistorianController gridHistorianController;
+    private CanvasExpandController canvasExpandController;
 
     // UI Data
     private BuildMenuData buildMenuData;
@@ -56,6 +55,7 @@ public class ConstructionController implements BaseMenuFunctions {
         ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridHistorianController = new GridHistorianController(grid, gridFlowEventManager);
+        canvasExpandController = new CanvasExpandController(stage.getScene(), canvasFacade);
         gridFlowEventManager.addListener(gridHistorianController);
         gridFlowEventManager.addListener(ghostManagerController);
 
@@ -167,6 +167,11 @@ public class ConstructionController implements BaseMenuFunctions {
     @Override
     public void openAccountManager() {
         gridFlowEventManager.sendEvent(new OpenAccountsEvent());
+    }
+
+    @Override
+    public void expandCanvas() {
+        canvasExpandController.openAccountWindow();
     }
 
     @Override

@@ -58,7 +58,7 @@ public class GridCanvasFacade {
         //canvas.setTranslateY(100);
         // draw center point
 //        canvas.getChildren().add(new Circle(canvas.getPrefWidth()/2, canvas.getPrefHeight()/2, 5));
-        setCameraPos((canvas.getPrefWidth()/2) / canvas.getScale(), (canvas.getPrefHeight()/2) / canvas.getScale());
+        centerCanvas();
 
         // canvas events
         SceneGestures sceneGestures = new SceneGestures(canvas);
@@ -68,6 +68,10 @@ public class GridCanvasFacade {
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnPanEventHandler());
         canvas.addEventHandler(MouseEvent.MOUSE_RELEASED, sceneGestures.getEndPanEventHandler());
         canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+    }
+
+    public void centerCanvas() {
+        setCameraPos((canvas.getPrefWidth()/2) / canvas.getScale(), (canvas.getPrefHeight()/2) / canvas.getScale());
     }
 
     // Takes an (x, y) in Grid Coordinates and sets the center of the camera there

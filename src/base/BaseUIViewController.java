@@ -14,6 +14,9 @@ import java.awt.event.ActionEvent;
 public class BaseUIViewController {
 
     private MenuFunctionController controller;
+
+    // Most of the menu functions are handling by the Construction Controller
+    // This interface gives this View Controller access to the Construction Controller's related functions
     private BaseMenuFunctions baseMenuFunctions;
 
     // UI Items
@@ -59,6 +62,8 @@ public class BaseUIViewController {
         }
     }
 
+    // These are the functions run when menu items are clicked
+
     @FXML
     private void manageAccounts() {
         baseMenuFunctions.openAccountManager();
@@ -100,7 +105,7 @@ public class BaseUIViewController {
 
     @FXML
     private void expandCanvas() {
-
+        baseMenuFunctions.expandCanvas();
     }
 
     @FXML

@@ -9,7 +9,6 @@ import domain.geometry.Point;
 import visualization.componentIcons.BreakerIcon;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
-import visualization.componentIcons.SourceIcon;
 
 import java.util.List;
 import java.util.UUID;

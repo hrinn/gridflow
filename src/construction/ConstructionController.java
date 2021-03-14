@@ -1,7 +1,5 @@
 package construction;
 
-import application.events.GridChangedEvent;
-import application.events.GridEnergizedEvent;
 import application.events.GridFlowEventManager;
 import application.events.OpenAccountsEvent;
 import application.events.ReLoginEvent;
@@ -11,6 +9,9 @@ import construction.canvas.CanvasExpandController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.history.GridHistorianController;
+import construction.properties.PropertiesData;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import domain.components.Component;
@@ -84,10 +85,6 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         if (toolType != null) buildMenuData.toolType = toolType;
         if (componentType != null) buildMenuData.componentType = componentType;
 
-        // default state becomes closed when tool switches
-        //setPropertiesData(propertiesData.getRotation(), true);
-        //propertiesData.setRotation();
-
         // these run if the controllers need to react to build data changing
         ghostManagerController.buildMenuDataChanged();
         selectionManagerController.buildMenuDataChanged();
@@ -101,21 +98,11 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         propertiesData.setRotation(rotation);
         propertiesData.setDefaultState(defaultState);
 
-        // Use this call to gridbuilder to pass back the necessary data (dead call)
-        gridBuilderController.propertiesDataChanged();
         ghostManagerController.propertiesDataChanged(rotationChanged, defaultStateChanged);
     }
 
     @Override
     public void updateProperties(PropertiesData properties){
-        // if default state is changed, update the ghostmanager
-        // if the default state or rotation changes, update the ghost icon
-//        if (this.propertiesData.getDefaultState() != properties.getDefaultState()) {
-//            ghostManagerController.propertiesDataChanged(false, true);
-//        } else if (this.propertiesData.getRotation() != properties.getRotation()) {
-//            ghostManagerController.propertiesDataChanged(true, false);
-//        }
-
         this.propertiesData = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
                 properties.getDefaultState(), properties.getRotation(), properties.getNumSelected(),
                 properties.getNamePos(), properties.getAssociation(), properties.getAssocLabel(),

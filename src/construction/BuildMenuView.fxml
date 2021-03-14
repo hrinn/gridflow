@@ -19,7 +19,7 @@
     </fx:define>
     <HBox fx:id="ComponentMenu" prefHeight="200" prefWidth="144" style="-fx-background-color: WHITE; -fx-border-color: BLACK;">
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="$BUTTON_WIDTH">
-            <Button onMousePressed="#pickInteractTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
+            <Button fx:id="interactToolButton" onMousePressed="#pickInteractTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
                 <graphic>
                     <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
                         <image>

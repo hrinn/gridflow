@@ -124,6 +124,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
         Node buildMenuView = buildMenuViewLoader.load();
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
+        constructionController.setBuildMenuViewController(buildMenuViewController);
         buildMenuViewController.setConstructionController(constructionController);
         baseUIViewController.setBaseMenuFunctions(constructionController);
 

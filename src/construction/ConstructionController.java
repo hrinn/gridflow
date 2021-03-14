@@ -32,6 +32,9 @@ public class ConstructionController implements BaseMenuFunctions {
     private GridHistorianController gridHistorianController;
     private CanvasExpandController canvasExpandController;
 
+    // View Controllers
+    private BuildMenuViewController buildMenuViewController;
+
     // UI Data
     private BuildMenuData buildMenuData;
     private PropertiesData propertiesData;
@@ -116,6 +119,7 @@ public class ConstructionController implements BaseMenuFunctions {
         if (event.getCode() != KeyCode.ESCAPE) return;
         if (buildMenuData.toolType == ToolType.INTERACT) return;
         setBuildMenuData(ToolType.INTERACT, buildMenuData.componentType);
+
         event.consume();
     };
 
@@ -234,5 +238,9 @@ public class ConstructionController implements BaseMenuFunctions {
         canvasFacade.setResizeAssociationSEHandler(gridBuilderController.getResizeAssociationSEHandler());
         canvasFacade.setResizeAssociationNEHandler(gridBuilderController.getResizeAssociationNEHandler());
         canvasFacade.setResizeAssociationSWHandler(gridBuilderController.getResizeAssociationSWHandler());
+    }
+
+    public void setBuildMenuViewController(BuildMenuViewController buildMenuViewController) {
+        this.buildMenuViewController = buildMenuViewController;
     }
 }

@@ -25,6 +25,8 @@ public class BuildMenuViewController {
     private static final int SHIFT_MENU_UP = -150;
     private static final int SHIFT_MENU_DOWN = 150;
 
+    public Button interactToolButton;
+
     private MenuState state = MenuState.MenuCollapsed;
 
     private ConstructionController constructionController;
@@ -62,6 +64,10 @@ public class BuildMenuViewController {
 
     @FXML
     public void ConstructionViewController(){ }
+
+    public void highlightInteractTool() {
+        
+    }
 
     // Tool Selection
 

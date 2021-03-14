@@ -139,9 +139,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         buildMenuViewController.setPermissions(permissionLevel);
         baseUIViewController.setPermissions(permissionLevel);
 
-        // Load the default grid JSON file
-        menuFunctionController.loadDefaultGrid();
-
         /* Add UI elements to Scene */
         BorderPane UI = new BorderPane();
         UI.setLeft(buildMenuView);

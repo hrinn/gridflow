@@ -14,7 +14,6 @@ import java.util.concurrent.FutureTask;
 
 public class MenuFunctionController {
 
-    private static final String DEFAULT_GRID_PATH = "./defaultgrid.json";
     private static final String DEFAULT_PATH = ".";
     private static final String DEFAULT_FILENAME = "grid";
 
@@ -38,11 +37,6 @@ public class MenuFunctionController {
 
     public Grid getGrid() {
         return gridFileManager.getGrid();
-    }
-
-    public void loadDefaultGrid() {
-        gridFileManager.loadGrid(DEFAULT_GRID_PATH);
-        gridFlowEventManager.sendEvent(new GridChangedEvent());
     }
 
     public void saveGrid(VBox menu) {

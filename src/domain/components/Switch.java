@@ -1,11 +1,13 @@
 package domain.components;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import construction.ComponentType;
 import construction.history.ComponentMemento;
 import construction.history.MementoType;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIconCreator;
 import visualization.componentIcons.DeviceIcon;
+import visualization.componentIcons.SourceIcon;
 
 import java.util.List;
 import java.util.UUID;
@@ -44,6 +46,15 @@ public class Switch extends Closeable {
         DeviceIcon icon = (DeviceIcon) getComponentIcon();
         icon.setDeviceEnergyStates(isInWireEnergized(), isOutWireEnergized());
     }
+
+    @Override
+    public void updateComponentIconName() {
+        DeviceIcon icon = (DeviceIcon)getComponentIcon();
+        icon.setComponentName(getName());
+    }
+
+    @Override
+    public ComponentType getComponentType() { return ComponentType.SWITCH; }
 
     @Override
     public void toggleState() {

@@ -4,9 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import construction.history.ComponentMemento;
 import domain.geometry.*;
 import visualization.componentIcons.ComponentIconCreator;
+import visualization.componentIcons.DeviceIcon;
 import visualization.componentIcons.WireIcon;
 
 import java.util.ArrayList;
@@ -161,6 +163,15 @@ public class Wire extends Component {
         if (icon == null) return;
         icon.setWireIconEnergyState(energized);
     }
+
+    @Override
+    public void updateComponentIconName() {
+        WireIcon icon = (WireIcon)getComponentIcon();
+        icon.setComponentName(getName());
+    }
+
+    @Override
+    public ComponentType getComponentType() { return ComponentType.WIRE; }
 
     public void addBridgePoint(Point bridgePoint) {
         bridgePoints.add(bridgePoint);

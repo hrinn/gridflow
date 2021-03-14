@@ -1,7 +1,9 @@
 package construction.ghosts;
 
-import construction.PropertiesData;
+import construction.properties.PropertiesData;
 import construction.ComponentType;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
@@ -9,8 +11,7 @@ import visualization.componentIcons.ComponentIconCreator;
 
 import java.util.List;
 
-// The ghost manager creates the ghost icons that display when components are being placed
-public class GhostManager {
+public class GhostManager implements PropertiesObserver {
 
     private final static double GHOST_OPACITY = 0.5;
 
@@ -19,9 +20,18 @@ public class GhostManager {
     private PropertiesData properties;
     private boolean ghostEnabled;
 
-    public GhostManager(GridCanvasFacade canvasMaster, PropertiesData properties) {
+    public GhostManager(GridCanvasFacade canvasMaster) {
         this.canvasMaster = canvasMaster;
-        this.properties = properties;
+        this.properties = new PropertiesData();
+        PropertiesManager.attach(this);
+    }
+
+    @Override
+    public void updateProperties(PropertiesData PD) {
+        this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
+                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
+                PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
+                PD.getAssocSubLabel(), PD.getAssocAcronym());
     }
 
     public void setGhostIcon(ComponentType componentType) {
@@ -57,10 +67,10 @@ public class GhostManager {
             case BREAKER_70KV -> ComponentIconCreator.get70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState(), false);
             case CUTOUT -> ComponentIconCreator.getCutoutIcon(pos, properties.getDefaultState(), false);
             case JUMPER -> ComponentIconCreator.getJumperIcon(pos, properties.getDefaultState(), false);
-            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, properties.getName(), false, false);
+            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, properties.getName(), true, false);
             case SWITCH -> ComponentIconCreator.getSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState(), false);
             case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(pos);
-            case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, false, false);
+            case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, true, false);
             case WIRE -> ComponentIconCreator.getWireIcon(pos, pos, List.of());
         };
     }

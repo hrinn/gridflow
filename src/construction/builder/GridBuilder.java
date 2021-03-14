@@ -1,8 +1,10 @@
 package construction.builder;
 
 import construction.AssociationMoveContext;
-import construction.PropertiesData;
+import construction.properties.PropertiesData;
 import construction.ComponentType;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import domain.Association;
 import domain.Grid;
 import domain.components.*;
@@ -14,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GridBuilder {
+public class GridBuilder implements PropertiesObserver {
 
     private Grid grid;
     private PropertiesData properties;
@@ -22,6 +24,15 @@ public class GridBuilder {
     public GridBuilder(Grid grid, PropertiesData properties) {
         this.grid = grid;
         this.properties = properties;
+        PropertiesManager.attach(this);
+    }
+
+    @Override
+    public void updateProperties(PropertiesData PD){
+        this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
+                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
+                PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
+                PD.getAssocSubLabel(), PD.getAssocAcronym());
     }
 
     // This is what runs when a component is placed on the canvas standalone
@@ -83,14 +94,18 @@ public class GridBuilder {
         }
 
         grid.addComponent(device);
+
+        this.properties.setID(device.getId());
+        PropertiesManager.notifyObservers(this.properties);
+
         return true;
     }
 
     public Device createDevice(Point point, ComponentType componentType) {
         return switch (componentType) {
             case TRANSFORMER -> new Transformer(properties.getName(), point);
-            case BREAKER_12KV -> new Breaker(properties.getName(), point, Voltage.KV12, properties.getDefaultState());
-            case BREAKER_70KV -> new Breaker(properties.getName(), point, Voltage.KV70, properties.getDefaultState());
+            case BREAKER_12KV -> new Breaker(properties.getName(), point, Voltage.KV12, properties.getDefaultState(), null);
+            case BREAKER_70KV -> new Breaker(properties.getName(), point, Voltage.KV70, properties.getDefaultState(), null);
             case JUMPER -> new Jumper(properties.getName(), point, properties.getDefaultState());
             case CUTOUT -> new Cutout(properties.getName(), point, properties.getDefaultState());
             case SWITCH -> new Switch(properties.getName(), point, properties.getDefaultState());
@@ -125,6 +140,9 @@ public class GridBuilder {
 
 
                 grid.addComponents(powerSource);
+
+                this.properties.setID(powerSource.getId());
+                PropertiesManager.notifyObservers(this.properties);
             }
             case TURBINE -> {
                 Turbine turbine = new Turbine(properties.getName(), position, true);
@@ -167,8 +185,10 @@ public class GridBuilder {
                     return false;
                 }
 
-
                 grid.addComponents(turbine);
+
+                this.properties.setID(turbine.getId());
+                PropertiesManager.notifyObservers(this.properties);
             }
         }
         return true;
@@ -376,6 +396,31 @@ public class GridBuilder {
             return;
 
         if (component instanceof IToggleable) {
+            if(component instanceof Breaker){
+                Breaker breaker = (Breaker) component;
+
+                // if the breaker has a tandem and it is going to be closed, lock it's tandem component.
+                if(breaker.hasTandem() && !breaker.isClosed()) {
+                    Component tandemComponent = grid.getComponent(breaker.getTandemID());
+                    if(tandemComponent instanceof Breaker){
+                        Breaker tandemBreaker = (Breaker) tandemComponent;
+                        if(!tandemBreaker.isLocked()) {
+                            lockComponent(breaker.getTandemID());
+                        }
+                    }
+                }
+
+                // if the breaker has a tandem and it is going to be opened, unlock it's tandem component.
+                else if(breaker.hasTandem() && breaker.isClosed()) {
+                    Component tandemComponent = grid.getComponent(breaker.getTandemID());
+                    if(tandemComponent instanceof Breaker){
+                        Breaker tandemBreaker = (Breaker) tandemComponent;
+                        if(tandemBreaker.isLocked()) {
+                            lockComponent(breaker.getTandemID());
+                        }
+                    }
+                }
+            }
             ((IToggleable) component).toggleState();
         }
     }

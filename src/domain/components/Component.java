@@ -2,6 +2,7 @@ package domain.components;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import construction.history.ComponentMemento;
 import domain.Selectable;
 import domain.geometry.Point;
@@ -41,6 +42,8 @@ public abstract class Component implements Selectable {
         return name;
     }
 
+    public void setName(String name) { this.name = name; }
+
     public Point getPosition() {
         return position;
     }
@@ -55,7 +58,11 @@ public abstract class Component implements Selectable {
         getUpdatedComponentIcon().setAngle(angle, getPosition());
     }
 
+    public abstract ComponentType getComponentType();
+
     public abstract void updateComponentIcon();
+
+    public abstract void updateComponentIconName();
 
     public ComponentIcon getUpdatedComponentIcon() {
         updateComponentIcon();

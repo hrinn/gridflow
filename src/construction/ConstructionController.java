@@ -9,6 +9,9 @@ import construction.canvas.CanvasExpandController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.history.GridHistorianController;
+import construction.properties.PropertiesData;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import domain.components.Component;
@@ -18,7 +21,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-public class ConstructionController implements BaseMenuFunctions {
+public class ConstructionController implements BaseMenuFunctions, PropertiesObserver {
 
     private GridCanvasFacade canvasFacade = null;
     private GridFlowEventManager gridFlowEventManager;
@@ -37,7 +40,8 @@ public class ConstructionController implements BaseMenuFunctions {
 
     // UI Data
     private BuildMenuData buildMenuData;
-    private PropertiesData propertiesData;
+    public PropertiesData propertiesData;
+    public boolean isTyping;
 
     // Wire Placing and Association Placing
     // Used to share if a double click is in progress, and where the first click was if so
@@ -51,22 +55,27 @@ public class ConstructionController implements BaseMenuFunctions {
         this.propertiesData = new PropertiesData();
         this.stage = stage;
         this.grid = grid;
+        this.isTyping = false;
 
         // controllers
         gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData,
                 propertiesData, canvasFacade);
-        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
+        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridHistorianController = new GridHistorianController(grid, gridFlowEventManager);
         canvasExpandController = new CanvasExpandController(stage.getScene(), canvasFacade);
         gridFlowEventManager.addListener(gridHistorianController);
         gridFlowEventManager.addListener(ghostManagerController);
 
-        setPropertiesData(0, true);
         setBuildMenuData(ToolType.INTERACT, null);
 
         installEventHandlers();
+        PropertiesManager.attach(this);
     }
+
+    public GridBuilderController getGridBuilderController () { return this.gridBuilderController; }
+
+    public void setUserTyping(boolean typing) { this.isTyping = typing; }
 
     public GridCanvasFacade getCanvasFacade() {
         return canvasFacade;
@@ -75,9 +84,6 @@ public class ConstructionController implements BaseMenuFunctions {
     public void setBuildMenuData(ToolType toolType, ComponentType componentType) {
         if (toolType != null) buildMenuData.toolType = toolType;
         if (componentType != null) buildMenuData.componentType = componentType;
-
-        // default state becomes closed when tool switches
-        setPropertiesData(propertiesData.getRotation(), true);
 
         // these run if the controllers need to react to build data changing
         ghostManagerController.buildMenuDataChanged();
@@ -92,11 +98,23 @@ public class ConstructionController implements BaseMenuFunctions {
         propertiesData.setRotation(rotation);
         propertiesData.setDefaultState(defaultState);
 
-        gridBuilderController.propertiesDataChanged();
         ghostManagerController.propertiesDataChanged(rotationChanged, defaultStateChanged);
     }
 
+    @Override
+    public void updateProperties(PropertiesData properties){
+        this.propertiesData = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
+                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected(),
+                properties.getNamePos(), properties.getAssociation(), properties.getAssocLabel(),
+                properties.getAssocSubLabel(), properties.getAssocAcronym());
+    }
+
+    public void notifyGhostController (boolean rotChanged, boolean stateChanged) {
+        ghostManagerController.propertiesDataChanged(rotChanged, stateChanged);
+    }
+
     private final EventHandler<KeyEvent> handleRKeyRotation = event -> {
+        if (isTyping) return;
         if (event.getCode() != KeyCode.R) return;
         rotate(event.isControlDown());
         event.consume();
@@ -109,9 +127,21 @@ public class ConstructionController implements BaseMenuFunctions {
     };
 
     private final EventHandler<KeyEvent> handleToggleDefaultState = event -> {
+        if (isTyping) return;
         if (event.getCode() != KeyCode.E) return;
         if (buildMenuData.toolType != ToolType.PLACE) return;
-        setPropertiesData(propertiesData.getRotation(), !propertiesData.getDefaultState());
+
+        // Toggle state, update ghost manager
+        // If placing a new source component, they are on by default and can't be changed
+        if ( !((propertiesData.getType() == ComponentType.POWER_SOURCE
+                || propertiesData.getType() == ComponentType.TURBINE)
+                &&  buildMenuData.toolType == ToolType.PLACE)) {
+
+            propertiesData.setDefaultState(!propertiesData.getDefaultState());
+            PropertiesManager.notifyObservers(propertiesData);
+            ghostManagerController.propertiesDataChanged(false, true);
+        }
+
         event.consume();
     };
 
@@ -139,7 +169,10 @@ public class ConstructionController implements BaseMenuFunctions {
             rotation = (propertiesData.getRotation() == 270) ? 0 : propertiesData.getRotation() + 90;
         }
 
-        setPropertiesData(rotation, propertiesData.getDefaultState());
+        // Update properties and ghost object
+        propertiesData.setRotation(rotation);
+        PropertiesManager.notifyObservers(propertiesData);
+        ghostManagerController.propertiesDataChanged(true, false);
     }
 
     // Functions that implement button actions in the top menu

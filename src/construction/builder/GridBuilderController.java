@@ -4,8 +4,15 @@ import application.events.*;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
 import construction.history.GridMemento;
+import construction.properties.PropertiesData;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import domain.Association;
 import domain.Grid;
+import domain.Selectable;
+import domain.components.Breaker;
+import domain.components.Closeable;
+import domain.components.Component;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
@@ -14,9 +21,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.util.List;
+import java.util.UUID;
 // this controller handles event logic for grid building
 // this is mostly user click while
-public class GridBuilderController {
+
+public class GridBuilderController implements PropertiesObserver {
 
     private GridBuilder model;
     private GridFlowEventManager gridFlowEventManager;
@@ -40,7 +50,8 @@ public class GridBuilderController {
         this.gridFlowEventManager = gridFlowEventManager;
         this.doubleClickPlacementContext = doubleClickPlacementContext;
         this.buildData = buildMenuData;
-        this.propertiesData = propertiesData;
+        this.propertiesData = new PropertiesData();
+        PropertiesManager.attach(this);
         this.grid = grid;
         this.canvasFacade = canvasFacade;
     }
@@ -50,8 +61,101 @@ public class GridBuilderController {
         updateAssociationHandles(buildData.toolType == ToolType.ASSOCIATION);
     }
 
-    public void propertiesDataChanged() {
+    public void applyProperties (PropertiesData properties) {
+        model.toggleComponent(properties.getID().toString());
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
     }
+
+    @Override
+    public void updateProperties(PropertiesData PD) {
+        Selectable sel = grid.getSelectableByID(PD.getID().toString());
+        // if the component id is specified, component is selected via toggle
+        // access that component and change its name if they differ
+        if (sel != null){
+
+            if (sel instanceof Component) {
+                if (!PD.getID().equals(new UUID(0, 0))) {
+                    // Name changed
+                    if (!((Component) sel).getName().equals(PD.getName())) {
+                        ((Component) sel).setName(PD.getName());
+                        ((Component) sel).updateComponentIconName();
+                    }
+                } else if (PD.getID().equals(this.propertiesData.getID())){
+                    // IDs match, they are the same component, update component name and state here
+                    ((Component) sel).setName(PD.getName());
+                    ((Component) sel).updateComponentIconName();
+                }
+
+                // State changed, always check
+                if (sel instanceof Closeable) {
+                    ((Closeable) sel).setClosedByDefault(PD.getDefaultState());
+                }
+
+                // update the name position, pay attention to the rotation variable to know if horiz/vert
+                ((Component) sel).getComponentIcon().updateComponentNamePosition(PD.getNamePos(), PD.getRotation());
+
+            } else if (sel instanceof Association) {
+                if (PD.getID().equals(this.propertiesData.getID())) {
+                    ((Association) sel).setLabel(PD.getAssocLabel());
+                    ((Association) sel).setAcronym(PD.getAssocAcronym());
+                    ((Association) sel).getAssociationIcon().setLabelText(PD.getAssocLabel());
+                    gridFlowEventManager.sendEvent(new GridChangedEvent());
+                }
+            }
+        }
+
+        //this.propertiesData = PD;
+        this.propertiesData = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
+                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
+                PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
+                PD.getAssocSubLabel(), PD.getAssocAcronym());
+    }
+
+    public void linkTandems(List<Breaker> tandems) {
+        // Unlink them first always
+        unlinkTandems(tandems);
+        // Check if tandems closed
+        if (tandems.get(0).isClosed()) { tandems.get(0).toggleState(); }
+        if (tandems.get(1).isClosed()) { tandems.get(1).toggleState(); }
+        // Link them
+        tandems.get(0).setTandemID(tandems.get(1).getId().toString());
+        tandems.get(1).setTandemID(tandems.get(0).getId().toString());
+
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
+    }
+
+
+    public void unlinkTandems (List<Breaker> tandems) {
+        if (tandems.get(0).hasTandem()) {
+            unlinkTandem(tandems.get(0));
+        }
+        if (tandems.get(1).hasTandem()) {
+            unlinkTandem(tandems.get(1));
+        }
+    }
+
+    public void unlinkTandemByID (UUID brID) {
+        Component comp = grid.getComponent(brID.toString());
+        if (comp instanceof Breaker) {
+            if (((Breaker) comp).hasTandem()){
+                unlinkTandem(((Breaker) comp));
+            }
+        }
+    }
+
+    public void unlinkTandem (Breaker br) {
+        Component comp = grid.getComponent(br.getTandemID());
+        if (comp instanceof Breaker) {
+            ((Breaker) comp).setTandemID("");
+        }
+        br.setTandemID("");
+    }
+
+    public boolean isBreaker(UUID ID) {
+        Component comp = grid.getComponent(ID.toString());
+        return comp instanceof Breaker;
+    }
+
 
     // this event handler is for placing wires with the wire tool
     // it is run once per click, so the event either begin a placement or finishes a placement
@@ -143,6 +247,10 @@ public class GridBuilderController {
         } else {
             gridFlowEventManager.sendEvent(new PlacementFailedEvent());
         }
+
+        // Change the UUID back to default for placing of next component
+        this.propertiesData.setID(new UUID(0, 0));
+        PropertiesManager.notifyObservers(this.propertiesData);
 
         event.consume();
     };

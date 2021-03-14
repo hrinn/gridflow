@@ -20,19 +20,19 @@ public class DevUtils {
         Wire w9 = new Wire(canvasPos(-6,-8));
         Breaker dd3 = new Breaker("DD3",
                 canvasPos(6, -4),
-                Voltage.KV12, false);
+                Voltage.KV12, false, null);
         Breaker dd5 = new Breaker("DD5",
                 canvasPos(3, -4),
-                Voltage.KV12, false);
+                Voltage.KV12, false, null);
         Breaker dd7 = new Breaker("DD7",
                 canvasPos(0, -4),
-                Voltage.KV12, false);
+                Voltage.KV12, false, null);
         Breaker dd8 = new Breaker("DD8",
                 canvasPos(-3, -4),
-                Voltage.KV12, false);
+                Voltage.KV12, false, null);
         Breaker dd9 = new Breaker("DD9",
                 canvasPos(-6, -4),
-                Voltage.KV12, false);
+                Voltage.KV12, false, null);
         Wire bbus = new Wire(canvasPos(-6, -4), canvasPos(6, -4));
         dd3.connectInWire(bbus);
         dd5.connectInWire(bbus);
@@ -52,7 +52,7 @@ public class DevUtils {
         bbus.connect(dd3, dd5, dd7, dd8, dd9);
 
         // DD1main
-        Breaker dd1main = new Breaker("DD1 Main", canvasPos(0, 0), Voltage.KV12, true);
+        Breaker dd1main = new Breaker("DD1 Main", canvasPos(0, 0), Voltage.KV12, true, null);
         Wire dd1mw = new Wire(canvasPos(0,0));
         dd1main.connectOutWire(bbus);
         bbus.connect(dd1main);
@@ -87,7 +87,7 @@ public class DevUtils {
         dd105.connectInWire(dd105aw);
 
         // dd1
-        Breaker dd1 = new Breaker("DD-1", canvasPos(0, 9), Voltage.KV70, true);
+        Breaker dd1 = new Breaker("DD-1", canvasPos(0, 9), Voltage.KV70, true, null);
         dd1.connectOutWire(dd101w);
         dd101w.connect(dd1);
         Wire dd1w = new Wire(canvasPos(0, 9));

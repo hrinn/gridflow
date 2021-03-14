@@ -3,6 +3,7 @@ package domain.components;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.ComponentType;
 import construction.history.ComponentMemento;
 import construction.history.MementoType;
 import domain.geometry.Point;
@@ -73,6 +74,7 @@ public class Turbine extends Source {
         createComponentIcon();
     }
 
+
     private boolean isOutWire1Energized() {
         if (outWire1 == null) return false;
         return outWire1.isEnergized();
@@ -100,6 +102,15 @@ public class Turbine extends Source {
         icon.setWireEnergyState(isOutWire1Energized(), 0);
         icon.setWireEnergyState(isOutWire2Energized(), 1);
     }
+
+    public void updateComponentIconName() {
+        SourceIcon icon = (SourceIcon)getComponentIcon();
+        icon.setComponentName(getName());
+    }
+
+    @Override
+    public ComponentType getComponentType() { return ComponentType.TURBINE; }
+
 
     @Override
     public ComponentMemento makeSnapshot() {

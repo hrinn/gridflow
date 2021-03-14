@@ -12,6 +12,7 @@
 <?import java.lang.Double?>
 
 
+<?import javafx.scene.control.Tooltip?>
 <HBox fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="225.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="construction.BuildMenuViewController">
     <fx:define>
         <Double fx:id="BUTTON_WIDTH" fx:value="72.0"/>
@@ -25,7 +26,9 @@
                             <Image url="@../resources/InteractIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="Interact"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickWireTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;" translateY="4.0">
             <graphic>
                <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -33,7 +36,9 @@
                      <Image url="@../resources/WireIcon.png" />
                   </image>
                </ImageView>
-            </graphic></Button>
+            </graphic>
+                <tooltip><Tooltip text="Wire"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickPlacePowerSourceTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" translateY="8.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
             <graphic>
                <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -41,7 +46,9 @@
                      <Image url="@../resources/PowerSourceIcon.png" />
                   </image>
                </ImageView>
-            </graphic></Button>
+            </graphic>
+                <tooltip><Tooltip text="Power Source"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickPlaceSwitchTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" text="" translateY="12.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
                 <graphic>
                     <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -49,7 +56,9 @@
                             <Image url="@../resources/SwitchIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="Switch"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickPlaceBreaker12KVTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" text="" translateY="16.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
                 <graphic>
                     <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -57,7 +66,9 @@
                             <Image url="@../resources/Breaker12KVIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="12KV Breaker"/></tooltip>
+            </Button>
             <Button minHeight="-Infinity" minWidth="-Infinity" onMousePressed="#pickPlaceJumperTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" text="" translateY="20.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
                 <graphic>
                     <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -65,7 +76,9 @@
                             <Image url="@../resources/JumperIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="Jumper"/></tooltip>
+            </Button>
         </VBox>
         <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="$BUTTON_WIDTH">
             <Button onMousePressed="#pickSelectTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" text="" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
@@ -75,7 +88,9 @@
                             <Image url="@../resources/SelectIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="Select"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickAssociationTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" translateY="4.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
                 <graphic>
                     <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -83,7 +98,9 @@
                             <Image url="@../resources/AssociateIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="Association"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickPlaceTurbineTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" text="" translateY="8.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
             <graphic>
                 <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -91,7 +108,9 @@
                         <Image url="@../resources/TurbineIcon.png" />
                     </image>
                 </ImageView>
-            </graphic></Button>
+            </graphic>
+                <tooltip><Tooltip text="Turbine"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickPlaceBreaker70KVTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" text="" translateY="12.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
                 <graphic>
                     <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -99,7 +118,9 @@
                             <Image url="@../resources/Breaker70KVIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="70KV Breaker"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickPlaceTransformerTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" text="" translateY="16.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
                 <graphic>
                     <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -107,7 +128,9 @@
                             <Image url="@../resources/TransformerIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="Transformer"/></tooltip>
+            </Button>
             <Button onMousePressed="#pickPlaceCutoutTool" prefHeight="$BUTTON_WIDTH" prefWidth="$BUTTON_WIDTH" text="" translateY="20.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;">
                 <graphic>
                     <ImageView fitHeight="$BUTTON_WIDTH" fitWidth="$BUTTON_WIDTH" pickOnBounds="true" preserveRatio="true">
@@ -115,7 +138,9 @@
                             <Image url="@../resources/CutoutIcon.png" />
                         </image>
                     </ImageView>
-                </graphic></Button>
+                </graphic>
+                <tooltip><Tooltip text="Cutout"/></tooltip>
+            </Button>
         </VBox>
     </HBox>
     <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseEntered="#darkenMenuButtonOnHover" onMouseExited="#lightenMenuButtonOnHover" prefHeight="300.0" prefWidth="25.0" translateX="-1.0" translateY="150.0">

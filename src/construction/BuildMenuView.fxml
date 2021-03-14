@@ -135,7 +135,7 @@
             <Button fx:id="ComponentMenuButton" alignment="CENTER" contentDisplay="CENTER" layoutX="-137.0" layoutY="138.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#toggleMenu" prefHeight="25.0" prefWidth="300.0" rotate="90.0" style="-fx-background-color: LIGHTGRAY;">
                 <graphic>
                     <ImageView fx:id="ArrowImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" rotate="-90.0">
-                        <Image url="@../resources/ArrowLeft.png" />
+                        <Image url="@../resources/ArrowRight.png" />
                     </ImageView>
                 </graphic>
             </Button>

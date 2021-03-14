@@ -63,6 +63,9 @@ public class BuildMenuViewController implements PropertiesObserver {
     private HBox ComponentBuilderMenu;
 
     @FXML
+    private VBox VerticalMenuContainer;
+
+    @FXML
     private ImageView ArrowImage;
 
     @FXML
@@ -82,6 +85,7 @@ public class BuildMenuViewController implements PropertiesObserver {
         ComponentMenu.managedProperty().bind(ComponentMenu.visibleProperty());
         PropertiesWindow.managedProperty().bind(PropertiesWindow.visibleProperty());
         ComponentMenu.setVisible(state != MenuState.MenuCollapsed);
+        PropertiesWindow.setVisible(state != MenuState.MenuCollapsed);
         // Setup observer for properties data
         PropertiesManager.attach(this);
         // Pre-generate the different windows
@@ -97,9 +101,10 @@ public class BuildMenuViewController implements PropertiesObserver {
     /* Permanently hides the build menu based on permission level */
     public void setPermissions(Access access) {
         if (access == Access.VIEWER) {
-            ComponentBuilderMenu.setVisible(false);
+            VerticalMenuContainer.setVisible(false);
         }
     }
+
     @Override
     public void updateProperties(PropertiesData properties) {
         // received data from somewhere else, update the properties variable and set the window

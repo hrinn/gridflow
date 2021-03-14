@@ -1,11 +1,10 @@
 package construction.builder;
 
-import application.events.GridFlowEventManager;
 import construction.AssociationMoveContext;
-import construction.PropertiesData;
+import construction.properties.PropertiesData;
 import construction.ComponentType;
-import construction.PropertiesManager;
-import construction.PropertiesObserver;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import domain.Association;
 import domain.Grid;
 import domain.components.*;
@@ -15,7 +14,6 @@ import visualization.componentIcons.ComponentIcon;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class GridBuilder implements PropertiesObserver {
@@ -31,7 +29,6 @@ public class GridBuilder implements PropertiesObserver {
 
     @Override
     public void updateProperties(PropertiesData PD){
-        //this.properties = PD;
         this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
                 PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
                 PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
@@ -445,47 +442,6 @@ public class GridBuilder implements PropertiesObserver {
             ((ILockable) component).toggleLockedState();
         } else {
             System.err.println("Component Not Lockable");
-        }
-    }
-
-    // TODO: Remove this if needed
-    private void toggleComponentProperties(Component comp) {
-
-        // if id's don't match, toggled new comp, update properties
-        if (!comp.getId().equals(this.properties.getID())) {
-            this.properties.setType(comp.getComponentType());
-
-            this.properties.setName(comp.getName());
-            comp.updateComponentIconName();
-
-            this.properties.setRotation(comp.getAngle());
-            this.properties.setDefaultState(true);
-
-            // if component is closeable, grab its state, otherwise, it will always be default (true)
-            if (comp instanceof Closeable) {
-                this.properties.setDefaultState((((Closeable) comp).isClosedByDefault()));
-            } else {
-                this.properties.setDefaultState(true);
-            }
-        }
-//        else if (!comp.getName().equals(this.properties.getName())) {
-//            // new name
-//            comp.setName(this.properties.getName());
-//            comp.updateComponentIconName();
-//        }
-        // ID's match, toggled the same component. Update the name and state if changed
-        else {
-            // Name has been changed
-            if (!comp.getName().equals(this.properties.getName())) {
-                comp.setName(this.properties.getName());
-            }
-            // State has changed
-            if (comp instanceof Closeable) {
-                if (this.properties.getDefaultState() != (((Closeable) comp).isClosedByDefault())) {
-                    ((Closeable) comp).setClosedByDefault(this.properties.getDefaultState());
-                }
-            }
-
         }
     }
 

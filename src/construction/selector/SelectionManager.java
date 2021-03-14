@@ -1,8 +1,7 @@
 package construction.selector;
 
-import construction.PropertiesData;
-import construction.PropertiesManager;
-import construction.PropertiesObserver;
+import construction.properties.PropertiesData;
+import construction.properties.PropertiesManager;
 import construction.canvas.GridCanvasFacade;
 import domain.Association;
 import domain.Grid;
@@ -21,7 +20,6 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Properties;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -72,9 +70,6 @@ public class SelectionManager {
                             properties.setNamePos(true);
                         }
 
-                        // if comp is a breaker, add the field for unlinking it's tandem
-
-
                     } else if (sel instanceof Association) {
                         properties.setAssociation(true);
                         properties.setAssocLabel(((Association)sel).getLabel());
@@ -84,17 +79,13 @@ public class SelectionManager {
                 }
 
             } else if (numSelected == 2) {
-                // TODO: check to make sure either breaker has not already had its tandem set
-                // TODO: May need to add a field to the component properties for breakers specifically
-                // TODO: -> If breaker and tandem id set, show option for "unlink tandem", this will set both breaker's tandem IDs to null
                 // Used for tandemable components (2 breakers)
                 properties.setDefaultComponentProperties(numSelected);
-                //selectedIDs.forEach(t -> properties.addTandemUUID(UUID.fromString(t)));
                 Selectable selTandem1 = grid.getSelectableByID(selectedIDs.get(0));
                 Selectable selTandem2 = grid.getSelectableByID(selectedIDs.get(1));
                 if (selTandem1 instanceof Breaker && selTandem2 instanceof Breaker &&
                         (((Breaker) selTandem1).getComponentType() == ((Breaker) selTandem2).getComponentType())) {
-                    // Selected are both the same breaker type
+                    // Selected components are both breakers of the same type, add them to the tandem list and present options
                     properties.addTandemComp((Breaker) selTandem1);
                     properties.addTandemComp((Breaker) selTandem2);
                 }

@@ -1,14 +1,9 @@
-package construction;
-
-import application.events.GridChangedEvent;
-import application.events.GridEnergizedEvent;
-import application.events.GridFlowEventManager;
+package construction.properties;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PropertiesManager {
-    //private static GridFlowEventManager gridFlowEventManager = new GridFlowEventManager();
 
     private static List<PropertiesObserver> observers = new ArrayList<>();
 
@@ -26,10 +21,5 @@ public class PropertiesManager {
             po.updateProperties(PD);
         }
     }
-
-    // Asynchronous rendering of grid when current components are updated
-//    public static void sendGridEvent() {
-//        gridFlowEventManager.sendEvent(new GridEnergizedEvent());
-//    }
 
 }

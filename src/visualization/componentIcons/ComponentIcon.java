@@ -111,7 +111,7 @@ public class ComponentIcon {
                 if (rotation == 90 || rotation == 270) {
                     X = this.midLeft.getX()  - (1.25 * Globals.UNIT);
                 } else if (rotation == 180) {
-                    // Adjust for upside text
+                    // Adjust for upside down text
                     X = this.midRight.getX();
                 } else {
                     // Adjust for left justified text

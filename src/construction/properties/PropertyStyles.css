@@ -40,7 +40,6 @@
 
 .selected_field_text {
     -fx-font-size: 15px;
-    /*-fx-padding: 0 8px 0 0;*/
     -fx-text-alignment: left;
     -fx-alignment: center-left;
     -fx-pref-height: 30px;
@@ -51,11 +50,22 @@
     -fx-font-size: 15px;
     -fx-text-alignment: left;
     -fx-wrap-text: true;
-    -fx-padding: 0 0 0 2px;
+    -fx-padding: 0 2px 0 2px;
     -fx-pref-height: 30px;
     -fx-min-height: 30px;
     -fx-pref-width: 125px;
 }
+
+.tandem_label {
+    -fx-font-size: 15px;
+    -fx-text-alignment: left;
+    -fx-wrap-text: true;
+    -fx-padding: 0 6px 0 0;
+    -fx-pref-height: 30px;
+    -fx-min-height: 30px;
+    -fx-pref-width: 125px;
+}
+
 
 .apply-button {
     -fx-pref-width: 75px;

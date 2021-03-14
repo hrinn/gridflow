@@ -4,6 +4,9 @@ import application.events.*;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
 import construction.history.GridMemento;
+import construction.properties.PropertiesData;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import domain.Association;
 import domain.Grid;
 import domain.Selectable;
@@ -106,11 +109,6 @@ public class GridBuilderController implements PropertiesObserver {
                 PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
                 PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
                 PD.getAssocSubLabel(), PD.getAssocAcronym());
-    }
-
-    // TODO: get rid of this dead call (multiple places)
-    public void propertiesDataChanged() {
-
     }
 
     public void linkTandems(List<Breaker> tandems) {

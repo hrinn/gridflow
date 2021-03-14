@@ -1,16 +1,11 @@
 package construction;
 
-import application.events.GridChangedEvent;
-import application.events.GridFlowEventManager;
 import construction.builder.GridBuilderController;
-import domain.Selectable;
-import domain.components.Closeable;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import construction.properties.PropertiesData;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,21 +13,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.scene.transform.Translate;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.util.Properties;
-import java.util.UUID;
 
 enum MenuState {
     MenuCollapsed, MenuExpanded
 }
 
-public class BuildMenuViewController implements PropertiesObserver{
+public class BuildMenuViewController implements PropertiesObserver {
 
     private static final String ARROW_RIGHT_PATH = "src/resources/ArrowRight.png";
     private static final String ARROW_LEFT_PATH = "src/resources/ArrowLeft.png";
@@ -40,8 +32,6 @@ public class BuildMenuViewController implements PropertiesObserver{
     private static final int MENU_EXPANDED_WIDTH = 225;
     private static final int MENU_COLLAPSED_HEIGHT = 300;
     private static final int MENU_COLLAPSED_WIDTH = 25;
-    private static final int SHIFT_MENU_UP = -150;
-    private static final int SHIFT_MENU_DOWN = 150;
 
     private MenuState state = MenuState.MenuExpanded;
 
@@ -130,7 +120,6 @@ public class BuildMenuViewController implements PropertiesObserver{
 
     @FXML
     private void pickInteractTool() {
-        // At this point, the tool is selected. Hide the properties information
         constructionController.setBuildMenuData(ToolType.INTERACT, null);
         hideProperties();
     }
@@ -234,15 +223,39 @@ public class BuildMenuViewController implements PropertiesObserver{
         SetMenuButtonImage(ArrowImage);
     }
 
+    private void CollapseMenu(){
+        ComponentMenu.setVisible(false);
+        PropertiesWindow.setVisible(false);
+        constructionController.setBuildMenuData(ToolType.INTERACT, null);
+        constructionController.getCanvasFacade().showBackgroundGrid(false);
+    }
+
+    private void ExpandMenu(){
+        ComponentMenu.setVisible(true);
+        PropertiesWindow.setVisible(true);
+        constructionController.getCanvasFacade().showBackgroundGrid(true);
+    }
+
+    private void SetMenuButtonImage(ImageView arrow){
+        File img = state == MenuState.MenuCollapsed ? new File(ARROW_RIGHT_PATH) : new File(ARROW_LEFT_PATH);
+
+        InputStream isImage;
+
+        try {
+            isImage = new FileInputStream(img);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        arrow.setImage(new Image(isImage));
+    }
+
+    // Properties Window Functions
+
     private void hideProperties() {
         PropertiesWindow.setLeft(null);
         PropertiesWindow.setCenter(null);
-    }
-
-    private void setDefaultPropertiesWindow(){
-        Properties.setDefaultProperties(null);
-        PropertiesManager.notifyObservers(this.Properties);
-        setComponentPropertiesWindow();
     }
 
     private void setPropertiesWindow() {
@@ -288,12 +301,6 @@ public class BuildMenuViewController implements PropertiesObserver{
                 if (node.getId().equals("selectedField")){
                     ((Label)node).setText(Integer.toString(Properties.getNumSelected()));
 
-                } else if (node.getId().equals("tandemField")) {
-                    // Update the state of the button based on tandem id's set for each breaker
-
-                    //for now just remove both fields? it was set.... re add if okay?
-                    //SelectedFields.getChildren().remove(TandemField);
-                    //SelectedFieldNames.getChildren().remove(TandemLabel);
                 }
             }
         }
@@ -307,7 +314,6 @@ public class BuildMenuViewController implements PropertiesObserver{
             // set the new nodes into the selection window
             SelectedFieldNames.getChildren().add(TandemLabel);
             SelectedFields.getChildren().add(TandemField);
-
         }
 
         // Show window
@@ -345,7 +351,6 @@ public class BuildMenuViewController implements PropertiesObserver{
         ComponentFields.getChildren().remove(clearTandemField);
 
         // if the single comp is a breaker, add the field and button to unlink its tandem
-        // gridBuilderController.isBreaker(ID)???
         if (gridBuilderController.isBreaker(Properties.getID())) {
             if (applyButton != null) {
                 ComponentFields.getChildren().remove(applyButton);
@@ -358,7 +363,6 @@ public class BuildMenuViewController implements PropertiesObserver{
                 ComponentFields.getChildren().add(applyButton);
             }
         }
-
 
         // Show window
         PropertiesWindow.setLeft(ComponentFieldNames);
@@ -379,7 +383,6 @@ public class BuildMenuViewController implements PropertiesObserver{
         namePosButtonLabelTrans.setY(2);
         Translate clearTandemButtonLabelTrans = new Translate();
         clearTandemButtonLabelTrans.setY(2);
-
 
         Label type = new Label("Type");
         type.getStyleClass().add("field-label");
@@ -481,17 +484,16 @@ public class BuildMenuViewController implements PropertiesObserver{
 
         ComponentFields = new VBox(10, typeField, nameField, stateField, namePosField, applyButton);
         ComponentFields.getStyleClass().add("field-container");
-
     }
 
-
     private void initSelectionProperties() {
-        // Declare the tandem fields for now
+        // Declare the tandem fields for later
         TandemLabel = new Label("Set Tandem");
         TandemLabel.setId("tandemLabel");
-        TandemLabel.getStyleClass().add("field-label");
+        TandemLabel.getStyleClass().add("tandem_label");
+        TandemLabel.setAlignment(Pos.CENTER_RIGHT);
 
-        TandemField = new Button();
+        TandemField = new Button("Link");
         TandemField.setId("tandemField");
         TandemField.getStyleClass().addAll("field");
         TandemField.setOnAction(actionEvent -> {
@@ -506,10 +508,8 @@ public class BuildMenuViewController implements PropertiesObserver{
         selectedField.getStyleClass().addAll("selected_field_text");
 
         SelectedFieldNames = new VBox(numSelected);
-        //SelectedFieldNames.getStyleClass().add("field-name-container");
 
         SelectedFields = new VBox(selectedField);
-
     }
 
     private void initAssociationProperties() {
@@ -552,15 +552,12 @@ public class BuildMenuViewController implements PropertiesObserver{
         applyButton.setId("applyAssociationProperties");
         applyButton.getStyleClass().addAll("field", "apply-button");
         applyButton.setOnAction(actionEvent -> {
-            // && !nameField.getText().isEmpty()
             if (labelField.getText() != null) {
                 Properties.setAssocLabel(labelField.getText());
-                //PropertiesManager.notifyObservers(this.Properties);
             }
 
             if (acronymField.getText() != null) {
                 Properties.setAssocAcronym(acronymField.getText());
-                //PropertiesManager.notifyObservers(this.Properties);
             }
 
             PropertiesManager.notifyObservers(this.Properties);
@@ -568,37 +565,6 @@ public class BuildMenuViewController implements PropertiesObserver{
 
         AssociationFields = new VBox(10, labelField, acronymField, applyButton);
         AssociationFields.getStyleClass().add("field-container");
-
-    }
-
-
-
-    private void CollapseMenu(){
-        ComponentMenu.setVisible(false);
-        PropertiesWindow.setVisible(false);
-        constructionController.setBuildMenuData(ToolType.INTERACT, null);
-        constructionController.getCanvasFacade().showBackgroundGrid(false);
-    }
-
-    private void ExpandMenu(){
-        ComponentMenu.setVisible(true);
-        PropertiesWindow.setVisible(true);
-        constructionController.getCanvasFacade().showBackgroundGrid(true);
-    }
-
-    private void SetMenuButtonImage(ImageView arrow){
-        File img = state == MenuState.MenuCollapsed ? new File(ARROW_RIGHT_PATH) : new File(ARROW_LEFT_PATH);
-
-        InputStream isImage;
-
-        try {
-            isImage = new FileInputStream(img);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        arrow.setImage(new Image(isImage));
     }
 }
 

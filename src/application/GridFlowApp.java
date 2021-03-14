@@ -69,7 +69,7 @@ public class GridFlowApp extends Application {
 
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT);
 
-        scene.getStylesheets().add(getClass().getResource("../construction/PropertyStyles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("../construction/properties/PropertyStyles.css").toExternalForm());
 
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));

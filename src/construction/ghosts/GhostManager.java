@@ -1,9 +1,9 @@
 package construction.ghosts;
 
-import construction.PropertiesData;
+import construction.properties.PropertiesData;
 import construction.ComponentType;
-import construction.PropertiesManager;
-import construction.PropertiesObserver;
+import construction.properties.PropertiesManager;
+import construction.properties.PropertiesObserver;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;

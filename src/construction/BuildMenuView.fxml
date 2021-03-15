@@ -86,7 +86,7 @@
                             </image>
                         </ImageView>
                     </graphic></Button>
-                <Button prefHeight="96.0" prefWidth="96.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;" translateY="4.0">
+                <Button onMousePressed= "#pickAssociationTool" prefHeight="96.0" prefWidth="96.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;" translateY="4.0">
                     <graphic>
                         <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                             <image>

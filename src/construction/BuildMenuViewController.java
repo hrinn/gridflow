@@ -16,10 +16,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.transform.Translate;
 import security.Access;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
 
 enum MenuState {
     MenuCollapsed, MenuExpanded
@@ -27,8 +24,8 @@ enum MenuState {
 
 public class BuildMenuViewController implements PropertiesObserver {
 
-    private static final String ARROW_RIGHT_PATH = "src/resources/ArrowRight.png";
-    private static final String ARROW_LEFT_PATH = "src/resources/ArrowLeft.png";
+    private static final String ARROW_RIGHT_PATH = "resources/ArrowRight.png";
+    private static final String ARROW_LEFT_PATH = "resources/ArrowLeft.png";
     private static final int MENU_EXPANDED_HEIGHT = 600;
     private static final int MENU_EXPANDED_WIDTH = 225;
     private static final int MENU_COLLAPSED_HEIGHT = 300;
@@ -236,7 +233,7 @@ public class BuildMenuViewController implements PropertiesObserver {
             state = MenuState.MenuExpanded;
         }
 
-        SetMenuButtonImage(ArrowImage);
+        SetMenuButtonImage();
     }
 
     private void CollapseMenu(){
@@ -252,19 +249,9 @@ public class BuildMenuViewController implements PropertiesObserver {
         constructionController.getCanvasFacade().showBackgroundGrid(true);
     }
 
-    private void SetMenuButtonImage(ImageView arrow){
-        File img = state == MenuState.MenuCollapsed ? new File(ARROW_RIGHT_PATH) : new File(ARROW_LEFT_PATH);
-
-        InputStream isImage;
-
-        try {
-            isImage = new FileInputStream(img);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return;
-        }
-
-        arrow.setImage(new Image(isImage));
+    private void SetMenuButtonImage(){
+        String img = state == MenuState.MenuCollapsed ? ARROW_RIGHT_PATH : ARROW_LEFT_PATH;
+        ArrowImage.setImage(new Image(img));
     }
 
     // Properties Window Functions

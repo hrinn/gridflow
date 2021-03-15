@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import security.Access;
 
 public class ConstructionController implements BaseMenuFunctions, PropertiesObserver {
 
@@ -27,6 +28,9 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
     private GridFlowEventManager gridFlowEventManager;
     private Stage stage;
     private Grid grid;
+
+    // Security
+    private Access access;
 
     // Sub Controllers
     private GridBuilderController gridBuilderController;
@@ -81,6 +85,9 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         return canvasFacade;
     }
 
+    public void setPermissions (Access access) { this.access = access; }
+
+
     public void setBuildMenuData(ToolType toolType, ComponentType componentType) {
         if (toolType != null) buildMenuData.toolType = toolType;
         if (componentType != null) buildMenuData.componentType = componentType;
@@ -118,6 +125,7 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         if (event.getCode() != KeyCode.R) return;
         rotate(event.isControlDown());
         event.consume();
+        buildMenuViewController.setPropertiesWindow();
     };
 
     private final EventHandler<MouseEvent> handleMiddleMouseRotation = event -> {
@@ -141,6 +149,30 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
             PropertiesManager.notifyObservers(propertiesData);
             ghostManagerController.propertiesDataChanged(false, true);
         }
+
+        event.consume();
+
+        buildMenuViewController.setPropertiesWindow();
+    };
+
+    private final EventHandler<KeyEvent> handleSelectionTool = event -> {
+        if (isTyping) return;
+        if (event.getCode() != KeyCode.S) return;
+        if (access == Access.VIEWER) return;
+
+        setBuildMenuData(ToolType.SELECT, buildMenuData.componentType);
+        buildMenuViewController.highlightSelectTool();
+
+        event.consume();
+    };
+
+    private final EventHandler<KeyEvent> handleAssociationTool = event -> {
+        if (isTyping) return;
+        if (event.getCode() != KeyCode.A) return;
+        if (access == Access.VIEWER) return;
+
+        setBuildMenuData(ToolType.ASSOCIATION, buildMenuData.componentType);
+        buildMenuViewController.highlightAssociationTool();
 
         event.consume();
     };
@@ -236,6 +268,8 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleToggleDefaultState);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleEscapeTool);
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleSelectionTool);
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleAssociationTool);
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());

@@ -56,6 +56,12 @@ public class BuildMenuViewController implements PropertiesObserver {
     private Button InteractToolButton;
 
     @FXML
+    private Button SelectionToolButton;
+
+    @FXML
+    private Button AssociationToolButton;
+
+    @FXML
     private Button ComponentMenuButton;
 
     @FXML
@@ -124,6 +130,10 @@ public class BuildMenuViewController implements PropertiesObserver {
     }
 
     public void highlightInteractTool() { InteractToolButton.requestFocus(); }
+
+    public void highlightSelectTool() { SelectionToolButton.requestFocus(); }
+
+    public void highlightAssociationTool() { AssociationToolButton.requestFocus(); }
 
     // Tool Selection
 
@@ -257,7 +267,7 @@ public class BuildMenuViewController implements PropertiesObserver {
         PropertiesWindow.setCenter(null);
     }
 
-    private void setPropertiesWindow() {
+    public void setPropertiesWindow() {
         if (Properties.getNumSelected() == 0) {
             hideProperties();
 

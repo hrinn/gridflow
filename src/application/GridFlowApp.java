@@ -140,6 +140,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         // Change accessible functionality based on permission level
         buildMenuViewController.setPermissions(permissionLevel);
         baseUIViewController.setPermissions(permissionLevel);
+        constructionController.setPermissions(permissionLevel);
 
         /* Add UI elements to Scene */
         BorderPane UI = new BorderPane();

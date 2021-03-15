@@ -19,7 +19,7 @@ public class Association implements Selectable {
     // strings displayed inside the association
     private String label;
     private String subLabel = "";
-    private String acronym = "ASC";
+    private String acronym = "";
 
     // the javaFX node displayed on screen
     private AssociationIcon associationIcon;

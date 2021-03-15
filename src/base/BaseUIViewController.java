@@ -1,19 +1,31 @@
 package base;
 
+import javafx.application.HostServices;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import security.Access;
 
 import java.awt.event.ActionEvent;
+import java.io.IOException;
 
 public class BaseUIViewController {
 
     private MenuFunctionController controller;
+    private AboutPageController pageController;
+
+    private Scene mainScene;
+
+    private HostServices services;
 
     // Most of the menu functions are handling by the Construction Controller
     // This interface gives this View Controller access to the Construction Controller's related functions
@@ -45,6 +57,12 @@ public class BaseUIViewController {
     public void setController(MenuFunctionController controller) {
         this.controller = controller;
     }
+
+    public void setPageController(AboutPageController pageController) { this.pageController = pageController; }
+
+    public void setMainScene(Scene scene) { this.mainScene = scene; }
+
+    public void setServices(HostServices services) { this.services = services; }
 
     // Loads a controller that implements BaseMenuFunctions
     public void setBaseMenuFunctions(BaseMenuFunctions baseMenuFunctions) {
@@ -121,5 +139,20 @@ public class BaseUIViewController {
     @FXML
     private void zoomToFit() {
         baseMenuFunctions.zoomToFit();
+    }
+
+    @FXML
+    private void openAboutPage() throws IOException {
+        Stage dialog = new Stage();
+        FXMLLoader aboutPageLoader = new FXMLLoader(getClass().getResource("About.fxml"));
+        Parent AboutPage = aboutPageLoader.load();
+        setPageController(aboutPageLoader.getController());
+        this.pageController.setServices(this.services);
+
+        dialog.setScene(new Scene(AboutPage));
+        dialog.setTitle("About Gridflow");
+        dialog.initModality(Modality.APPLICATION_MODAL);
+        dialog.initOwner(this.mainScene.getWindow());
+        dialog.show();
     }
 }

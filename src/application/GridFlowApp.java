@@ -115,6 +115,8 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         Node baseUIView = baseUIViewLoader.load();
         BaseUIViewController baseUIViewController = baseUIViewLoader.getController();
         baseUIViewController.setController(menuFunctionController);
+        baseUIViewController.setMainScene(scene);
+        baseUIViewController.setServices(getHostServices());
 
         // Account Controller
         AccountController accountController = new AccountController(scene);

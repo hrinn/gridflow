@@ -1,6 +1,7 @@
 package visualization.componentIcons;
 
 import application.Globals;
+import construction.ComponentType;
 import javafx.animation.StrokeTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
@@ -102,38 +103,63 @@ public class ComponentIcon {
 
     public Point getMidLeft() { return this.midLeft; }
 
-    public void updateComponentNamePosition (boolean toggled, Double rotation) {
+    public void updateComponentNamePosition (ComponentType type, boolean toggled, Double rotation) {
         Double X = 0.0;
+        Double Y = 0.0;
 
         if (currentNamePos != null) {
-            if (toggled) {
-                // set name to "midLeft"
-                if (rotation == 90 || rotation == 270) {
-                    X = this.midLeft.getX()  - (1.25 * Globals.UNIT);
-                } else if (rotation == 180) {
-                    // Adjust for upside down text
-                    X = this.midRight.getX();
+            if (type == ComponentType.POWER_SOURCE) {
+                // always set the name to center
+                if (rotation == 180) {
+                    X = this.midLeft.getX() + (0.45*Globals.UNIT);
+                    Y = this.midLeft.getY() - (3.25*Globals.UNIT);
                 } else {
-                    // Adjust for left justified text
-                    X = this.midLeft.getX() - (1.25 * Globals.UNIT);
+                    X = this.midLeft.getX() + (0.3*Globals.UNIT);
+                    Y = this.midLeft.getY() - (3.45*Globals.UNIT);
                 }
+                setComponentNamePosition(new Point(X, Y));
 
-                setComponentNamePosition(new Point(X, this.midLeft.getY()));
-                this.currentNamePos = midLeft;
+            } else if (type == ComponentType.TURBINE) {
+                // always set the name to center
+                if (rotation == 180) {
+                    X = this.midLeft.getX() + (0.65*Globals.UNIT);
+                    Y = this.midLeft.getY() + (0.35*Globals.UNIT);
+                } else {
+                    X = this.midLeft.getX() + (0.65*Globals.UNIT);
+                    Y = this.midLeft.getY() + (0.25*Globals.UNIT);
+                }
+                setComponentNamePosition(new Point(X, Y));
 
             } else {
-                // set name to "midRight"
-                if (rotation == 180) {
-                    X = this.midLeft.getX() - (1.25 * Globals.UNIT);
-                } else {
-                    X = this.midRight.getX();
-                }
+                // normal components
+                if (toggled) {
+                    // set name to "midLeft"
+                    if (rotation == 90 || rotation == 270) {
+                        X = this.midLeft.getX()  - (1.25 * Globals.UNIT);
+                    } else if (rotation == 180) {
+                        // Adjust for upside down text
+                        X = this.midRight.getX();
+                    } else {
+                        // Adjust for left justified text
+                        X = this.midLeft.getX() - (1.25 * Globals.UNIT);
+                    }
 
-                setComponentNamePosition(new Point(X, this.midRight.getY()));
-                this.currentNamePos = midRight;
+                    setComponentNamePosition(new Point(X, Y));
+                    this.currentNamePos = midLeft;
+
+                } else {
+                    // set name to "midRight"
+                    if (rotation == 180) {
+                        X = this.midLeft.getX() - (1.25 * Globals.UNIT);
+                    } else {
+                        X = this.midRight.getX();
+                    }
+
+                    setComponentNamePosition(new Point(X, Y));
+                    this.currentNamePos = midRight;
+                }
             }
         }
-
     }
 
     private void setComponentNamePosition(Point position) {

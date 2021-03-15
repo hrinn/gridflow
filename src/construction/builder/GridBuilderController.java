@@ -92,7 +92,7 @@ public class GridBuilderController implements PropertiesObserver {
                 }
 
                 // update the name position, pay attention to the rotation variable to know if horiz/vert
-                ((Component) sel).getComponentIcon().updateComponentNamePosition(PD.getNamePos(), PD.getRotation());
+                ((Component) sel).getComponentIcon().updateComponentNamePosition(PD.getType(), PD.getNamePos(), PD.getRotation());
 
             } else if (sel instanceof Association) {
                 if (PD.getID().equals(this.propertiesData.getID())) {

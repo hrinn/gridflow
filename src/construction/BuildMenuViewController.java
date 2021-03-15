@@ -30,7 +30,7 @@ public class BuildMenuViewController implements PropertiesObserver {
     private static final int MENU_EXPANDED_WIDTH = 225;
     private static final int MENU_COLLAPSED_HEIGHT = 300;
     private static final int MENU_COLLAPSED_WIDTH = 25;
-    
+
 
     private MenuState state = MenuState.MenuCollapsed;
 
@@ -422,6 +422,7 @@ public class BuildMenuViewController implements PropertiesObserver {
 
         RadioButton stateField = new RadioButton();
         stateField.setId("stateField");
+        stateField.setTooltip(new Tooltip("Change Default State"));
         stateField.getStyleClass().addAll("field");
         stateField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
             if (isSelected) {
@@ -436,6 +437,7 @@ public class BuildMenuViewController implements PropertiesObserver {
 
         RadioButton namePosField = new RadioButton();
         namePosField.setId("namePosField");
+        namePosField.setTooltip(new Tooltip("Invert Label Pos"));
         namePosField.getStyleClass().addAll("field");
         namePosField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
             if (isSelected) {
@@ -450,6 +452,7 @@ public class BuildMenuViewController implements PropertiesObserver {
 
         Button applyButton = new Button("Apply");
         applyButton.setId("applyComponentProperties");
+        applyButton.setTooltip(new Tooltip("Apply Name/State/Pos"));
         applyButton.getStyleClass().addAll("field", "apply-button");
         applyButton.setOnAction(actionEvent -> {
             if (nameField.getText() != null) {
@@ -475,6 +478,7 @@ public class BuildMenuViewController implements PropertiesObserver {
         // set up clear tandem button for later
         clearTandemField = new Button("Clear");
         clearTandemField.setId("clearTandemField");
+        clearTandemField.setTooltip(new Tooltip("Remove Tandem Link"));
         clearTandemField.getStyleClass().addAll("field", "apply-button");
         clearTandemField.setOnAction(actionEvent -> {
             // get the component via properties, call unlink on that single breaker
@@ -494,6 +498,7 @@ public class BuildMenuViewController implements PropertiesObserver {
 
         TandemField = new Button("Link");
         TandemField.setId("tandemField");
+        TandemField.setTooltip(new Tooltip("Set Breakers Tandem"));
         TandemField.getStyleClass().addAll("field");
         TandemField.setOnAction(actionEvent -> {
             gridBuilderController.linkTandems(Properties.getTandemComponents());
@@ -549,6 +554,7 @@ public class BuildMenuViewController implements PropertiesObserver {
 
         Button applyButton = new Button("Apply");
         applyButton.setId("applyAssociationProperties");
+        applyButton.setTooltip(new Tooltip("Apply Label/Acronym"));
         applyButton.getStyleClass().addAll("field", "apply-button");
         applyButton.setOnAction(actionEvent -> {
             if (labelField.getText() != null) {

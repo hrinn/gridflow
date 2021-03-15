@@ -126,7 +126,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         Node buildMenuView = buildMenuViewLoader.load();
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
         constructionController.setBuildMenuViewController(buildMenuViewController);
-        buildMenuViewController.setConstructionController(constructionController);
+        buildMenuViewController.setConstructionAndBuildController(constructionController);
         baseUIViewController.setBaseMenuFunctions(constructionController);
 
         // Visualization Module

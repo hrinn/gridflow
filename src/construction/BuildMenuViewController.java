@@ -30,8 +30,7 @@ public class BuildMenuViewController implements PropertiesObserver {
     private static final int MENU_EXPANDED_WIDTH = 225;
     private static final int MENU_COLLAPSED_HEIGHT = 300;
     private static final int MENU_COLLAPSED_WIDTH = 25;
-
-    public Button interactToolButton;
+    
 
     private MenuState state = MenuState.MenuCollapsed;
 
@@ -52,6 +51,9 @@ public class BuildMenuViewController implements PropertiesObserver {
     private Button clearTandemField;
     private Label TandemLabel;
     private Button TandemField;
+
+    @FXML
+    private Button InteractToolButton;
 
     @FXML
     private Button ComponentMenuButton;
@@ -89,12 +91,11 @@ public class BuildMenuViewController implements PropertiesObserver {
         generatePropertyElements();
     }
 
-    public void setConstructionController(ConstructionController constructionController) {
+    public void setConstructionAndBuildController(ConstructionController constructionController) {
         this.constructionController = constructionController;
         this.gridBuilderController = constructionController.getGridBuilderController();
     }
 
-    // TODO: Change this to the root node on Connor's branch
     /* Permanently hides the build menu based on permission level */
     public void setPermissions(Access access) {
         if (access == Access.VIEWER) {
@@ -122,12 +123,7 @@ public class BuildMenuViewController implements PropertiesObserver {
         setComponentPropertiesWindow();
     }
 
-    @FXML
-    public void ConstructionViewController(){ }
-
-    public void highlightInteractTool() {
-        
-    }
+    public void highlightInteractTool() { InteractToolButton.requestFocus(); }
 
     // Tool Selection
 

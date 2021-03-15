@@ -28,7 +28,7 @@
     <HBox fx:id="ComponentBuilderMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="$ComponentMenuHeight" prefWidth="225.0">
         <HBox fx:id="ComponentMenu" prefHeight="200" prefWidth="200" style="-fx-background-color: WHITE; -fx-border-color: BLACK;">
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0">
-                <Button onMousePressed="#pickInteractTool" prefHeight="96.0" prefWidth="96.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;" text="">
+                <Button fx:id="InteractToolButton" onMousePressed="#pickInteractTool" prefHeight="96.0" prefWidth="96.0" style="-fx-padding: 0 0 0 0; -fx-insets: 0 0 0 0;" text="">
                     <graphic>
                         <ImageView fitHeight="96.0" fitWidth="96.0" pickOnBounds="true" preserveRatio="true">
                             <image>

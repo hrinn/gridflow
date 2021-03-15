@@ -149,6 +149,7 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         if (event.getCode() != KeyCode.ESCAPE) return;
         if (buildMenuData.toolType == ToolType.INTERACT) return;
         setBuildMenuData(ToolType.INTERACT, buildMenuData.componentType);
+        buildMenuViewController.highlightInteractTool();
 
         event.consume();
     };

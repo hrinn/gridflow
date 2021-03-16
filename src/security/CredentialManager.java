@@ -21,7 +21,7 @@ public class CredentialManager {
     // Its format is <Username, [Password, Permission Level]>
     private Map<String, ArrayList<String>> db;
 
-    private final static String CREDENTIALS_PATH = "src/security/credentials.json";
+    private final static String CREDENTIALS_PATH = "dependencies/credentials.json";
 
     public CredentialManager() {
         mapper = new ObjectMapper();

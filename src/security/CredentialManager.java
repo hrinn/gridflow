@@ -9,6 +9,9 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 import java.math.BigInteger;
@@ -66,7 +69,15 @@ public class CredentialManager {
             accountNode = mapper.readTree(parser);
             parser.close();
         } catch (IOException e) {
-            System.err.println("Cannot read file");
+            System.err.println("Cannot read file, creating new credentials file");
+            createCredentialFile();
+            // New JSON file created for reading, if failed, program will terminate
+            accountNode = tryNewJSON();
+        }
+
+        // if accountNode null, new file created, check/add god accounts now
+        if (accountNode == null) {
+            checkGodAccounts(0);
             return;
         }
 
@@ -88,9 +99,14 @@ public class CredentialManager {
             }
         }
 
+        // Failsafe check to ensure someone has god access
+        checkGodAccounts(numGodAccounts);
+    }
+
+    private void checkGodAccounts(int numGod) {
         // Failsafe. If no accounts exist with the permission level GOD, one is created to prevent lockout
         // The username is 'lefty' and the password is 'powerball'
-        if (numGodAccounts == 0) {
+        if (numGod == 0) {
             System.err.println("Warning! No GOD level accounts were found. Creating one to prevent lockout...");
             System.err.println("Username: 'lefty'    Password: 'powerball'");
             System.err.println("You should delete this account in the Account Manager.");
@@ -195,4 +211,31 @@ public class CredentialManager {
             throw new RuntimeException(e);
         }
     }
+
+    private ObjectNode tryNewJSON() {
+        ObjectNode accNode = null;
+        try {
+            // Tries to parse the credentials JSON file
+            JsonParser parser = mapper.getFactory().createParser(new File(CREDENTIALS_PATH));
+            accNode = mapper.readTree(parser);
+            parser.close();
+        } catch (IOException e) {
+            System.err.println("Cannot read new credentials file. Terminating.");
+            System.exit(-1);
+        }
+
+        return accNode;
+    }
+
+    public void createCredentialFile() {
+        try {
+            Path pathToCredentials = Paths.get("./dependencies/credentials.json");
+            Files.createDirectories(pathToCredentials.getParent());
+            Files.createFile(pathToCredentials);
+        } catch (IOException IO) {
+            System.err.println("Could not create necessary credentials for startup");
+            return;
+        }
+    }
+
 }

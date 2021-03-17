@@ -1,10 +1,12 @@
 ![GridFlow Logo](src/resources/logo.png)
 ---
-GridFlow is a power grid builder and simulator focused on energy flow. This is a Cal Poly Capstone project in partnership with Vandenberg Air Force Base. 
+GridFlow is a power grid builder and simulator focused on energy flow.
+This is a Cal Poly Capstone project in partnership with Vandenberg Air Force Base. 
+For a detailed behavior and usage description, please visit the [Wiki](https://github.com/hrinn/gridflow/wiki).
 
 ![Sample Grid Image](src/resources/gridsnip.PNG)
 
-## Install & Run
+## Getting the Source Code
 These instructions are for IntelliJ IDEA
 1. Clone the repository.
 2. Launch IntelliJ and choose open/import project. Pick the gridflow folder you just cloned.

@@ -27,7 +27,7 @@ public class Breaker extends Closeable {
     }
 
     public Breaker(BreakerSnapshot snapshot) {
-        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked);
         voltage = snapshot.voltage;
         tandemid = snapshot.tandemid;
         createComponentIcon();
@@ -36,7 +36,7 @@ public class Breaker extends Closeable {
     public Breaker(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
-                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean());
+                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(), node.get("locked").asBoolean());
         voltage = Voltage.valueOf(node.get("voltage").asText());
         if(node.get("tandemid") == null) {
             tandemid = null;
@@ -100,7 +100,7 @@ public class Breaker extends Closeable {
     @Override
     public ComponentMemento makeSnapshot() {
         return new BreakerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), voltage, isClosed(), isClosedByDefault(),
-                getInWireID().toString(), getOutWireID().toString(), getTandemID());
+                isLocked(), getInWireID().toString(), getOutWireID().toString(), getTandemID());
     }
 
 
@@ -144,11 +144,12 @@ class BreakerSnapshot implements ComponentMemento {
     Voltage voltage;
     boolean closed;
     boolean closedByDefault;
+    boolean locked;
     String inNodeID;
     String outNodeID;
     String tandemid;
 
-    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault, String inNodeID, String outNodeID, String tandemid) {
+    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault, boolean locked, String inNodeID, String outNodeID, String tandemid) {
         this.id = id;
         this.name = name;
         this.angle = angle;
@@ -156,6 +157,7 @@ class BreakerSnapshot implements ComponentMemento {
         this.voltage = voltage;
         this.closed = closed;
         this.closedByDefault = closedByDefault;
+        this.locked = locked;
         this.inNodeID = inNodeID;
         this.outNodeID = outNodeID;
         this.tandemid = tandemid;

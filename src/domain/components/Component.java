@@ -94,6 +94,8 @@ public abstract class Component implements Selectable {
         component.put("name", getName());
         component.put("pos", getPosition().toString());
         component.put("angle", getAngle());
+        // TODO: Add component name pos to the json file
+        //component.put("namepos", this.getComponentIcon().getCurrentNamePos().toString())
         return component;
     }
 

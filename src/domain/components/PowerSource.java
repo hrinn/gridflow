@@ -46,8 +46,13 @@ public class PowerSource extends Source {
 
     @Override
     public void toggleState() {
+        Point oldNamePos = this.getComponentIcon().getCurrentNamePos();
+        boolean oldActiveLeft = this.getComponentIcon().getActiveLeft();
         setOn(!isOn());
         createComponentIcon();
+        this.getComponentIcon().setComponentNamePosition(oldNamePos);
+        this.getComponentIcon().setCurrentNamePos(oldNamePos);
+        this.getComponentIcon().setActiveLeft(oldActiveLeft);
     }
 
     @Override

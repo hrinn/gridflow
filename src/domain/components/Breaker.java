@@ -64,6 +64,21 @@ public class Breaker extends Closeable {
         setComponentIcon(icon);
     }
 
+    private void createIconToggle(Point namePos) {
+        BreakerIcon icon;
+        if (voltage == Voltage.KV12) {
+            icon = ComponentIconCreator.get12KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault(), isLocked());
+        } else {
+            icon = ComponentIconCreator.get70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault(), isLocked());
+        }
+        icon.setComponentNamePosition(namePos);
+        icon.setComponentName(getName());
+        icon.setBreakerEnergyStates(isInWireEnergized(), isOutWireEnergized(), isClosed());
+        icon.setComponentIconID(getId().toString());
+        icon.setAngle(getAngle(), getPosition());
+        setComponentIcon(icon);
+    }
+
     @Override
     public ComponentType getComponentType() {
         if (voltage == Voltage.KV12) {
@@ -106,8 +121,13 @@ public class Breaker extends Closeable {
 
     @Override
     public void toggleState() {
+        Point oldNamePos = this.getComponentIcon().getCurrentNamePos();
+        boolean oldActiveLeft = this.getComponentIcon().getActiveLeft();
         toggleClosed();
         createComponentIcon();
+        this.getComponentIcon().setComponentNamePosition(oldNamePos);
+        this.getComponentIcon().setCurrentNamePos(oldNamePos);
+        this.getComponentIcon().setActiveLeft(oldActiveLeft);
     }
 
     @Override

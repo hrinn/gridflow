@@ -55,8 +55,13 @@ public class Cutout extends Closeable{
 
     @Override
     public void toggleState() {
+        Point oldNamePos = this.getComponentIcon().getCurrentNamePos();
+        boolean oldActiveLeft = this.getComponentIcon().getActiveLeft();
         toggleClosed();
         createComponentIcon();
+        this.getComponentIcon().setComponentNamePosition(oldNamePos);
+        this.getComponentIcon().setCurrentNamePos(oldNamePos);
+        this.getComponentIcon().setActiveLeft(oldActiveLeft);
     }
 
     @Override

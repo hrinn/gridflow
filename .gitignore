@@ -4,3 +4,4 @@ out/
 defaultgrid.json
 starwarsgrid.json
 META-INF/
+dependencies/credentials.json

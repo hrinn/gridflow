@@ -350,14 +350,14 @@ public class BuildMenuViewController implements PropertiesObserver {
                     ((TextArea)node).setText(Properties.getName());
                 }
                 else if (node.getId().equals("stateField")) {
-                    ((RadioButton)node).selectedProperty().removeListener(defStateListener);
-                    ((RadioButton)node).setSelected(!Properties.getDefaultState());
-                    ((RadioButton)node).selectedProperty().addListener(defStateListener);
+                    ((CheckBox)node).selectedProperty().removeListener(defStateListener);
+                    ((CheckBox)node).setSelected(!Properties.getDefaultState());
+                    ((CheckBox)node).selectedProperty().addListener(defStateListener);
                 }
                 else if (node.getId().equals("namePosField")) {
-                    ((RadioButton)node).selectedProperty().removeListener(namePosListener);
-                    ((RadioButton)node).setSelected(Properties.getNamePos());
-                    ((RadioButton)node).selectedProperty().addListener(namePosListener);
+                    ((CheckBox)node).selectedProperty().removeListener(namePosListener);
+                    ((CheckBox)node).setSelected(Properties.getNamePos());
+                    ((CheckBox)node).selectedProperty().addListener(namePosListener);
                 } else if (node.getId().equals("applyComponentProperties")) {
                     applyButton = node;
                 }
@@ -438,7 +438,7 @@ public class BuildMenuViewController implements PropertiesObserver {
             }
         });
 
-        RadioButton stateField = new RadioButton();
+        CheckBox stateField = new CheckBox();
         stateField.setId("stateField");
         stateField.setTooltip(new Tooltip("Change Default State"));
         stateField.getStyleClass().addAll("field");
@@ -458,7 +458,7 @@ public class BuildMenuViewController implements PropertiesObserver {
         stateField.selectedProperty().addListener(defStateListener);
 
 
-        RadioButton namePosField = new RadioButton();
+        CheckBox namePosField = new CheckBox();
         namePosField.setId("namePosField");
         namePosField.setTooltip(new Tooltip("Invert Label Pos"));
         namePosField.getStyleClass().addAll("field");

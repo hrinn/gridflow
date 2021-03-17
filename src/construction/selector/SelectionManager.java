@@ -66,7 +66,7 @@ public class SelectionManager {
                         }
 
                         // if comp name layout bounds match, update properties on reselection
-                        if (((Component)sel).getComponentIcon().getCurrentNamePos() == ((Component)sel).getComponentIcon().getMidLeft()) {
+                        if (((Component)sel).getComponentIcon().getActiveLeft()) {
                             properties.setNamePos(true);
                         }
 

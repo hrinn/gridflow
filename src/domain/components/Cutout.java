@@ -18,14 +18,14 @@ public class Cutout extends Closeable{
     }
 
     public Cutout(CutoutSnapshot snapshot) {
-        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked);
         createComponentIcon();
     }
 
     public Cutout(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
-                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean());
+                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(), node.get("locked").asBoolean());
         createComponentIcon();
     }
 
@@ -55,8 +55,13 @@ public class Cutout extends Closeable{
 
     @Override
     public void toggleState() {
+        Point oldNamePos = this.getComponentIcon().getCurrentNamePos();
+        boolean oldActiveLeft = this.getComponentIcon().getActiveLeft();
         toggleClosed();
         createComponentIcon();
+        this.getComponentIcon().setComponentNamePosition(oldNamePos);
+        this.getComponentIcon().setCurrentNamePos(oldNamePos);
+        this.getComponentIcon().setActiveLeft(oldActiveLeft);
     }
 
     @Override
@@ -68,7 +73,7 @@ public class Cutout extends Closeable{
     @Override
     public ComponentMemento makeSnapshot() {
         return new CutoutSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(),
-                getInWireID().toString(), getOutWireID().toString());
+                isLocked(), getInWireID().toString(), getOutWireID().toString());
     }
 }
 
@@ -79,16 +84,18 @@ class CutoutSnapshot implements ComponentMemento {
     Point pos;
     boolean closed;
     boolean closedByDefault;
+    boolean locked;
     String outNodeId;
     String inNodeId;
 
-    public CutoutSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, String inNodeId, String outNodeId) {
+    public CutoutSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, boolean locked, String inNodeId, String outNodeId) {
         this.id = id;
         this.name = name;
         this.angle = angle;
         this.pos = pos.copy();
         this.closed = closed;
         this.closedByDefault = closedByDefault;
+        this.locked = locked;
         this.inNodeId = inNodeId;
         this.outNodeId = outNodeId;
     }

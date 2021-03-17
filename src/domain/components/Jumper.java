@@ -19,14 +19,14 @@ public class Jumper extends Closeable {
     }
 
     public Jumper(JumperSnapshot snapshot) {
-        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed);
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked);
         createComponentIcon();
     }
 
     public Jumper(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
-                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean());
+                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(), node.get("locked").asBoolean());
         createComponentIcon();
     }
 
@@ -73,7 +73,7 @@ public class Jumper extends Closeable {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new JumperSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(), getInWireID().toString(), getOutWireID().toString());
+        return new JumperSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(), isLocked(), getInWireID().toString(), getOutWireID().toString());
     }
 }
 
@@ -84,16 +84,18 @@ class JumperSnapshot implements ComponentMemento {
     Point pos;
     boolean closed;
     boolean closedByDefault;
+    boolean locked;
     String inNodeId;
     String outNodeId;
 
-    public JumperSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, String inNodeId, String outNodeId) {
+    public JumperSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, boolean locked, String inNodeId, String outNodeId) {
         this.id = id;
         this.name = name;
         this.angle = angle;
         this.pos = pos.copy();
         this.closed = closed;
         this.closedByDefault = closedByDefault;
+        this.locked = locked;
         this.inNodeId = inNodeId;
         this.outNodeId = outNodeId;
     }

@@ -4,6 +4,8 @@ import construction.builder.GridBuilderController;
 import construction.properties.PropertiesData;
 import construction.properties.PropertiesManager;
 import construction.properties.PropertiesObserver;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -39,6 +41,8 @@ public class BuildMenuViewController implements PropertiesObserver {
     private PropertiesData Properties;
     private boolean namePosChanged;
     private boolean defaultStateChanged;
+    private ChangeListener<Boolean> defStateListener;
+    private ChangeListener<Boolean> namePosListener;
 
     // variables for the different property windows
     private VBox ComponentFieldNames;
@@ -346,10 +350,14 @@ public class BuildMenuViewController implements PropertiesObserver {
                     ((TextArea)node).setText(Properties.getName());
                 }
                 else if (node.getId().equals("stateField")) {
+                    ((RadioButton)node).selectedProperty().removeListener(defStateListener);
                     ((RadioButton)node).setSelected(!Properties.getDefaultState());
+                    ((RadioButton)node).selectedProperty().addListener(defStateListener);
                 }
                 else if (node.getId().equals("namePosField")) {
+                    ((RadioButton)node).selectedProperty().removeListener(namePosListener);
                     ((RadioButton)node).setSelected(Properties.getNamePos());
+                    ((RadioButton)node).selectedProperty().addListener(namePosListener);
                 } else if (node.getId().equals("applyComponentProperties")) {
                     applyButton = node;
                 }
@@ -434,31 +442,51 @@ public class BuildMenuViewController implements PropertiesObserver {
         stateField.setId("stateField");
         stateField.setTooltip(new Tooltip("Change Default State"));
         stateField.getStyleClass().addAll("field");
-        stateField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
-            if (isSelected) {
-                // change/update properties
-                Properties.setDefaultState(false);
-            } else {
-                Properties.setDefaultState(true);
-            }
+        defStateListener = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean isSelected) {
+                if (isSelected) {
+                    // change/update properties
+                    Properties.setDefaultState(false);
+                } else {
+                    Properties.setDefaultState(true);
+                }
 
-            defaultStateChanged = true;
-        });
+                defaultStateChanged = true;
+            }
+        };
+        stateField.selectedProperty().addListener(defStateListener);
+
 
         RadioButton namePosField = new RadioButton();
         namePosField.setId("namePosField");
         namePosField.setTooltip(new Tooltip("Invert Label Pos"));
         namePosField.getStyleClass().addAll("field");
-        namePosField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
-            if (isSelected) {
-                // change/update properties
-                Properties.setNamePos(true);
-            } else {
-                Properties.setNamePos(false);
-            }
+        namePosListener = new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observableValue, Boolean aBoolean, Boolean isSelected) {
+                if (isSelected) {
+                    // change/update properties
+                    Properties.setNamePos(true);
+                } else {
+                    Properties.setNamePos(false);
+                }
 
-            namePosChanged = true;
-        });
+                namePosChanged = true;
+            }
+        };
+        namePosField.selectedProperty().addListener(namePosListener);
+
+//        namePosField.selectedProperty().addListener((observableValue, aBoolean, isSelected) -> {
+//            if (isSelected) {
+//                // change/update properties
+//                Properties.setNamePos(true);
+//            } else {
+//                Properties.setNamePos(false);
+//            }
+//
+//            namePosChanged = true;
+//        });
 
         Button applyButton = new Button("Apply");
         applyButton.setId("applyComponentProperties");

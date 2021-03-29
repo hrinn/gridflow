@@ -1,32 +1,20 @@
 package simulation;
 
-import main.events.Event;
-import main.events.EventManager;
-import main.events.IEventListener;
-import model.Grid;
-import model.components.Component;
-import model.components.Source;
-import model.components.Wire;
+import domain.Grid;
+import domain.components.Component;
+import domain.components.Source;
+import domain.components.Wire;
 
 import java.util.*;
 
-public class EnergySimulator implements IEventListener {
+public class EnergySimulator {
 
     private final Grid grid;
-    private final EventManager eventManager;
     private final Map<UUID, Boolean> visitedMap;
 
-    public EnergySimulator(Grid grid, EventManager eventManager) {
+    public EnergySimulator(Grid grid) {
         this.grid = grid;
-        this.eventManager = eventManager;
-        eventManager.addListener(this);
         visitedMap = new HashMap<>();
-    }
-
-    public void handleEvent(Event event) {
-        if (event == Event.GridChanged) {
-            energyDFS();
-        }
     }
 
     private void deEnergizeGrid(){
@@ -41,7 +29,6 @@ public class EnergySimulator implements IEventListener {
         for (Source source : grid.getSources()) {
             explore(source);
         }
-        eventManager.sendEvent(Event.GridEnergized);
     }
 
     private void explore(Component component) {
@@ -57,5 +44,4 @@ public class EnergySimulator implements IEventListener {
             visitedMap.put(component.getId(), false);
         }
     }
-
 }

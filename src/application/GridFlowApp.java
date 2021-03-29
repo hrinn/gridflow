@@ -27,8 +27,10 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     private static final String TITLE = "GridFlow";
     private static final String WINDOW_ICON_PATH = "/resources/icon.png";
-    private static final int WINDOW_WIDTH = 1280;
-    private static final int WINDOW_HEIGHT = 720;
+    private static final int WINDOW_WIDTH = 1366;
+    private static final int WINDOW_HEIGHT = 768;
+    private static final int LOGIN_WIDTH = 1280;
+    private static final int LOGIN_HEIGHT = 720;
     private static final int MAX_WIDTH = 3840;
     private static final int MAX_HEIGHT = 2160;
 
@@ -67,10 +69,10 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         primaryStage.setScene(scene);
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));
-        primaryStage.setMinHeight(WINDOW_HEIGHT);
-        primaryStage.setMinWidth(WINDOW_WIDTH);
-        primaryStage.setMaxHeight(WINDOW_HEIGHT);
-        primaryStage.setMaxWidth(WINDOW_WIDTH);
+        primaryStage.setMinHeight(LOGIN_HEIGHT);
+        primaryStage.setMinWidth(LOGIN_WIDTH);
+        primaryStage.setMaxHeight(LOGIN_HEIGHT);
+        primaryStage.setMaxWidth(LOGIN_WIDTH);
         primaryStage.show();
 
 //        loginController.tryLogin("root", "root");

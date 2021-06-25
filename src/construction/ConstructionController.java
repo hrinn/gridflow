@@ -22,7 +22,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import security.Access;
 
-public class ConstructionController implements BaseMenuFunctions, PropertiesObserver {
+import java.util.HashMap;
+import java.util.Map;
+
+public class ConstructionController implements BaseMenuFunctions, BuildMenuFunctions, PropertiesObserver {
 
     private GridCanvasFacade canvasFacade = null;
     private GridFlowEventManager gridFlowEventManager;
@@ -72,6 +75,8 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         gridFlowEventManager.addListener(ghostManagerController);
 
         setBuildMenuData(ToolType.INTERACT, null);
+
+        initializeComponentShortcutMap();
 
         installEventHandlers();
         PropertiesManager.attach(this);
@@ -125,7 +130,7 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         if (event.getCode() != KeyCode.R) return;
         rotate(event.isControlDown());
         event.consume();
-        buildMenuViewController.setPropertiesWindow();
+//        buildMenuViewController.setPropertiesWindow();
     };
 
     private final EventHandler<MouseEvent> handleMiddleMouseRotation = event -> {
@@ -152,36 +157,34 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
 
         event.consume();
 
-        buildMenuViewController.setPropertiesWindow();
+//        buildMenuViewController.setPropertiesWindow();
     };
 
-    private final EventHandler<KeyEvent> handleSelectionTool = event -> {
+    private final Map<KeyCode, Runnable> componentShortcutMap = new HashMap<>();
+
+    private void initializeComponentShortcutMap() {
+        componentShortcutMap.put(KeyCode.ESCAPE, () -> buildMenuViewController.selectInteractTool());
+        componentShortcutMap.put(KeyCode.A, () -> buildMenuViewController.selectAssociationTool());
+        componentShortcutMap.put(KeyCode.W, () -> buildMenuViewController.selectWireTool());
+        componentShortcutMap.put(KeyCode.S, () -> buildMenuViewController.selectSelectTool());
+        componentShortcutMap.put(KeyCode.DIGIT1, () -> buildMenuViewController.selectPowerSourceTool());
+        componentShortcutMap.put(KeyCode.DIGIT2, () -> buildMenuViewController.selectTurbineTool());
+        componentShortcutMap.put(KeyCode.DIGIT3, () -> buildMenuViewController.selectSwitchTool());
+        componentShortcutMap.put(KeyCode.DIGIT4, () -> buildMenuViewController.selectBreaker12Tool());
+        componentShortcutMap.put(KeyCode.DIGIT5, () -> buildMenuViewController.selectBreaker70Tool());
+        componentShortcutMap.put(KeyCode.DIGIT6, () -> buildMenuViewController.selectTransformerTool());
+        componentShortcutMap.put(KeyCode.DIGIT7, () -> buildMenuViewController.selectJumperTool());
+        componentShortcutMap.put(KeyCode.DIGIT8, () -> buildMenuViewController.selectCutoutTool());
+    }
+
+    private final EventHandler<KeyEvent> handleComponentShortcut = event -> {
         if (isTyping) return;
-        if (event.getCode() != KeyCode.S) return;
         if (access == Access.VIEWER) return;
 
-        setBuildMenuData(ToolType.SELECT, buildMenuData.componentType);
-        buildMenuViewController.highlightSelectTool();
-
-        event.consume();
-    };
-
-    private final EventHandler<KeyEvent> handleAssociationTool = event -> {
-        if (isTyping) return;
-        if (event.getCode() != KeyCode.A) return;
-        if (access == Access.VIEWER) return;
-
-        setBuildMenuData(ToolType.ASSOCIATION, buildMenuData.componentType);
-        buildMenuViewController.highlightAssociationTool();
-
-        event.consume();
-    };
-
-    private final EventHandler<KeyEvent> handleEscapeTool = event -> {
-        if (event.getCode() != KeyCode.ESCAPE) return;
-        if (buildMenuData.toolType == ToolType.INTERACT) return;
-        setBuildMenuData(ToolType.INTERACT, buildMenuData.componentType);
-        buildMenuViewController.highlightInteractTool();
+        // Runs the function associated with the keycode
+        Runnable func = componentShortcutMap.getOrDefault(event.getCode(), null);
+        if (func == null) return;
+        func.run();
 
         event.consume();
     };
@@ -267,9 +270,7 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleToggleDefaultState);
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleEscapeTool);
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleSelectionTool);
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleAssociationTool);
+        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleComponentShortcut);
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());

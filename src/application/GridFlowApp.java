@@ -75,7 +75,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         primaryStage.setMaxWidth(LOGIN_WIDTH);
         primaryStage.show();
 
-//        loginController.tryLogin("root", "root");
+        loginController.tryLogin("lefty", "powerball");
     }
 
     /* This waits for a successful login before displaying the main application */
@@ -130,7 +130,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         Node buildMenuView = buildMenuViewLoader.load();
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
         constructionController.setBuildMenuViewController(buildMenuViewController);
-        buildMenuViewController.setConstructionAndBuildController(constructionController);
+        buildMenuViewController.setBuildMenuFunctions(constructionController);
         baseUIViewController.setBaseMenuFunctions(constructionController);
 
         // Visualization Module
@@ -142,7 +142,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         gridFlowEventManager.addListener(simulationController);
 
         // Change accessible functionality based on permission level
-        buildMenuViewController.setPermissions(permissionLevel);
+//        buildMenuViewController.setPermissions(permissionLevel);
         baseUIViewController.setPermissions(permissionLevel);
         constructionController.setPermissions(permissionLevel);
 

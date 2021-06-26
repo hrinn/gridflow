@@ -103,6 +103,11 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         gridBuilderController.buildDataChanged();
     }
 
+    @Override
+    public void setBackgroundGridVisible(boolean state) {
+        canvasFacade.showBackgroundGrid(state);
+    }
+
     public void setPropertiesData(double rotation, boolean defaultState) {
         boolean rotationChanged = rotation != propertiesData.getRotation();
         boolean defaultStateChanged = defaultState != propertiesData.getDefaultState();

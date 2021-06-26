@@ -20,22 +20,20 @@ import security.Access;
 
 import java.io.*;
 
-enum MenuState {
-    MenuCollapsed, MenuExpanded
-}
-
 public class BuildMenuViewController {
 
     private static final String ARROW_RIGHT_PATH = "resources/ArrowRight.png";
     private static final String ARROW_LEFT_PATH = "resources/ArrowLeft.png";
-    private static final int MENU_EXPANDED_HEIGHT = 600;
-    private static final int MENU_EXPANDED_WIDTH = 225;
-    private static final int MENU_COLLAPSED_HEIGHT = 300;
+    private static final int MENU_EXPANDED_WIDTH = 75;
     private static final int MENU_COLLAPSED_WIDTH = 25;
-
     private BuildMenuFunctions buildMenuFunctions;
 
-    // Buttons
+    private boolean menuOpen = false;
+
+    // JavaFX Elements
+    public HBox MenuContainer;
+    public VBox componentMenu;
+
     public Button InteractToolButton;
     public Button SelectToolButton;
     public Button AssociationToolButton;
@@ -49,8 +47,17 @@ public class BuildMenuViewController {
     public Button JumperButton;
     public Button CutoutButton;
 
+    public ImageView ShowMenuImage;
+    public Button ShowMenuButton;
+
     public void setBuildMenuFunctions(BuildMenuFunctions buildMenuFunctions) {
         this.buildMenuFunctions = buildMenuFunctions;
+    }
+
+    // Run when this controller is initialized
+    public void initialize() {
+        componentMenu.setVisible(false);
+        MenuContainer.getChildren().setAll(ShowMenuButton);
     }
 
     // These are the button press handlers
@@ -117,17 +124,19 @@ public class BuildMenuViewController {
 
     @FXML
     private void toggleMenu() {
+        componentMenu.setVisible(!menuOpen);
+        buildMenuFunctions.setBackgroundGridVisible(!menuOpen);
 
-    }
+        if (menuOpen) {
+            ShowMenuImage.setImage(new Image(ARROW_RIGHT_PATH));
+            MenuContainer.getChildren().setAll(ShowMenuButton);
 
-    @FXML
-    private void darkenMenuButtonOnHover() {
+        } else {
+            ShowMenuImage.setImage(new Image(ARROW_LEFT_PATH));
+            MenuContainer.getChildren().setAll(componentMenu, ShowMenuButton);
+        }
 
-    }
-
-    @FXML
-    private void lightenMenuButtonOnHover() {
-
+        menuOpen = !menuOpen;
     }
 }
 

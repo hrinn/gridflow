@@ -5,4 +5,6 @@ public interface BuildMenuFunctions {
 
     // Sets the current tool and component
     void setBuildMenuData(ToolType toolType, ComponentType componentType);
+
+    void setBackgroundGridVisible(boolean state);
 }

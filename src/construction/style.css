@@ -11,3 +11,11 @@
 .button:focused {
     -fx-background-color : GRAY;
 }
+
+.expand-button {
+    -fx-background-color : LIGHTGRAY;
+}
+
+.expand-button:hover {
+    -fx-background-color: GRAY;
+}

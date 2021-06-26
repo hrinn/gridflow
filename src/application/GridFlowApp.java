@@ -27,8 +27,8 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     private static final String TITLE = "GridFlow";
     private static final String WINDOW_ICON_PATH = "/resources/icon.png";
-    private static final int WINDOW_WIDTH = 1366;
-    private static final int WINDOW_HEIGHT = 768;
+    private static final int WINDOW_WIDTH = 1280;
+    private static final int WINDOW_HEIGHT = 720;
     private static final int LOGIN_WIDTH = 1280;
     private static final int LOGIN_HEIGHT = 720;
     private static final int MAX_WIDTH = 3840;

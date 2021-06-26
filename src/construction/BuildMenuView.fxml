@@ -17,130 +17,127 @@
         fx:controller="construction.BuildMenuViewController"
         xmlns="http://javafx.com/javafx/11.0.2"
         xmlns:fx="http://javafx.com/fxml/1"
-        maxHeight="-Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" >
+        maxHeight="-Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity">
     <fx:define>
         <Double fx:id="ButtonSize" fx:value="48.0"/>
     </fx:define>
-        <VBox alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: LIGHTGRAY">
-            <Button fx:id="InteractToolButton" onMousePressed="#selectInteractTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+        <HBox fx:id="MenuContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: TRANSPARENT" alignment="CENTER">
+            <Button fx:id="ShowMenuButton" onMousePressed="#toggleMenu" alignment="CENTER" contentDisplay="CENTER" prefHeight="150" prefWidth="25" maxWidth="25" minWidth="25" styleClass="expand-button" stylesheets="@style.css" focusTraversable="false">
                 <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/InteractIcon.png" />
-                        </image>
+                    <ImageView fx:id="ShowMenuImage" fitHeight="40" fitWidth="40">
+                        <Image url="@../resources/ArrowRight.png"/>
                     </ImageView>
                 </graphic>
-                <tooltip><Tooltip text="Interact"/></tooltip>
             </Button>
-            <Button fx:id="SelectToolButton" onMousePressed="#selectSelectTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/SelectIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Select"/></tooltip>
-            </Button>
-            <Button fx:id="AssociationToolButton" onMousePressed="#selectAssociationTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/AssociateIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Association"/></tooltip>
-            </Button>
-            <Button fx:id="WireButton" onMousePressed="#selectWireTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/WireIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Wire"/></tooltip>
-            </Button>
-            <Button fx:id="PowerSourceButton" onMousePressed="#selectPowerSourceTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/PowerSourceIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Power Source"/></tooltip>
-            </Button>
-            <Button fx:id="TurbineButton" onMousePressed="#selectTurbineTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/TurbineIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Turbine"/></tooltip>
-            </Button>
-            <Button fx:id="SwitchButton" onMousePressed="#selectSwitchTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/SwitchIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Switch"/></tooltip>
-            </Button>
-            <Button fx:id="Breaker12Button" onMousePressed="#selectBreaker12Tool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/Breaker12KVIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="12KV Breaker"/></tooltip>
-            </Button>
-            <Button fx:id="Breaker70Button" onMousePressed="#selectBreaker70Tool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/Breaker70KVIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="70KV Breaker"/></tooltip>
-            </Button>
-            <Button fx:id="TransformerButton" onMousePressed="#selectTransformerTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/TransformerIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Transformer"/></tooltip>
-            </Button>
-            <Button fx:id="JumperButton" onMousePressed="#selectJumperTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/JumperIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Jumper"/></tooltip>
-            </Button>
-            <Button fx:id="CutoutButton" onMousePressed="#selectCutoutTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
-                <graphic>
-                    <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true" preserveRatio="true">
-                        <image>
-                            <Image url="@../resources/CutoutIcon.png" />
-                        </image>
-                    </ImageView>
-                </graphic>
-                <tooltip><Tooltip text="Cutout"/></tooltip>
-            </Button>
-        </VBox>
+            <VBox fx:id="componentMenu" alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: LIGHTGRAY">
+                <Button fx:id="InteractToolButton" onMousePressed="#selectInteractTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/InteractIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Interact"/></tooltip>
+                </Button>
+                <Button fx:id="SelectToolButton" onMousePressed="#selectSelectTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/SelectIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Select"/></tooltip>
+                </Button>
+                <Button fx:id="AssociationToolButton" onMousePressed="#selectAssociationTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/AssociateIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Association"/></tooltip>
+                </Button>
+                <Button fx:id="WireButton" onMousePressed="#selectWireTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/WireIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Wire"/></tooltip>
+                </Button>
+                <Button fx:id="PowerSourceButton" onMousePressed="#selectPowerSourceTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/PowerSourceIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Power Source"/></tooltip>
+                </Button>
+                <Button fx:id="TurbineButton" onMousePressed="#selectTurbineTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/TurbineIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Turbine"/></tooltip>
+                </Button>
+                <Button fx:id="SwitchButton" onMousePressed="#selectSwitchTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/SwitchIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Switch"/></tooltip>
+                </Button>
+                <Button fx:id="Breaker12Button" onMousePressed="#selectBreaker12Tool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/Breaker12KVIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="12KV Breaker"/></tooltip>
+                </Button>
+                <Button fx:id="Breaker70Button" onMousePressed="#selectBreaker70Tool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/Breaker70KVIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="70KV Breaker"/></tooltip>
+                </Button>
+                <Button fx:id="TransformerButton" onMousePressed="#selectTransformerTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/TransformerIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Transformer"/></tooltip>
+                </Button>
+                <Button fx:id="JumperButton" onMousePressed="#selectJumperTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/JumperIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Jumper"/></tooltip>
+                </Button>
+                <Button fx:id="CutoutButton" onMousePressed="#selectCutoutTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize" stylesheets="@style.css">
+                    <graphic>
+                        <ImageView fitHeight="$ButtonSize" fitWidth="$ButtonSize" pickOnBounds="true"
+                                   preserveRatio="true">
+                            <Image url="@../resources/CutoutIcon.png"/>
+                        </ImageView>
+                    </graphic>
+                    <tooltip><Tooltip text="Cutout"/></tooltip>
+                </Button>
+            </VBox>
+        </HBox>
 </AnchorPane>

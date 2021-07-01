@@ -49,7 +49,8 @@
                               style="-fx-text-alignment: center; -fx-font-size: 14;" text="View">
                             <items>
                                 <MenuItem fx:id="ZoomToFit" mnemonicParsing="false" text="Center on Grid" onAction="#zoomToFit"/>
-                                <MenuItem fx:id="AboutItem" mnemonicParsing="false" text="About"  onAction="#openAboutPage"/>
+                                <!--MenuItem fx:id="AboutItem" mnemonicParsing="false" text="About"  onAction="#openAboutPage"/-->
+                                <MenuItem fx:id="Fullscreen" mnemonicParsing="false" text="Toggle Fullscreen" onAction="#toggleFullscreen"/>
                             </items>
                         </Menu>
                     </menus>

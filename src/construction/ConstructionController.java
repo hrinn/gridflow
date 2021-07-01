@@ -296,4 +296,9 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
     public void setBuildMenuViewController(BuildMenuViewController buildMenuViewController) {
         this.buildMenuViewController = buildMenuViewController;
     }
+
+    public void setPropertiesMenuViewController(PropertiesMenuViewController propertiesMenuViewController) {
+        this.propertiesMenuViewController = propertiesMenuViewController;
+        selectionManagerController.addSelectedIDListener(propertiesMenuViewController);
+    }
 }

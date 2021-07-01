@@ -8,6 +8,7 @@ import construction.ToolType;
 import construction.canvas.GridCanvasFacade;
 import construction.history.GridMemento;
 import domain.Grid;
+import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.KeyCode;
@@ -30,6 +31,10 @@ public class SelectionManagerController {
         this.buildMenuData = buildMenuData;
         this.gridFlowEventManager = gridFlowEventManager;
         this.grid = grid;
+    }
+
+    public void addSelectedIDListener(ListChangeListener<String> listener) {
+        model.addListener(listener);
     }
 
     public void buildMenuDataChanged() {

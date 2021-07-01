@@ -1,13 +1,8 @@
 package construction.selector;
 
-import construction.PropertiesData;
 import construction.canvas.GridCanvasFacade;
-import domain.Association;
 import domain.Grid;
 import domain.Selectable;
-import domain.components.Breaker;
-import domain.components.Closeable;
-import domain.components.Component;
 import domain.components.Wire;
 import domain.geometry.Point;
 import javafx.collections.FXCollections;
@@ -19,21 +14,18 @@ import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 public class SelectionManager {
 
-    private List<String> selectedIDs;
-    private ObservableList<String> observedSelectedIDs;
+    private ObservableList<String> selectedIDs;
     private Rectangle selectionBox;
     private GridCanvasFacade canvasFacade;
     private Grid grid;
     private Point mouseDownPoint;
 
     public SelectionManager(GridCanvasFacade canvasFacade, Grid grid) {
-        selectedIDs = new ArrayList<>();
-        observedSelectedIDs = FXCollections.observableList(selectedIDs);
+        selectedIDs = FXCollections.observableArrayList();
         selectionBox = new Rectangle();
         this.canvasFacade = canvasFacade;
         this.grid = grid;
@@ -41,61 +33,10 @@ public class SelectionManager {
         selectionBox.setFill(Color.TRANSPARENT);
         selectionBox.setStroke(Color.BLACK);
         selectionBox.getStrokeDashArray().add(10.0);
+    }
 
-        // set up action on selectIDs list changed
-//        observedSelectedIDs.addListener((ListChangeListener<String>) change -> {
-//            int numSelected = selectedIDs.size();
-//            PropertiesData properties = new PropertiesData();
-//
-//            if (numSelected == 1) {
-//                properties.setNumSelected(numSelected);
-//                Selectable sel = grid.getSelectableByID(selectedIDs.get(0));
-//
-//                if (sel != null) {
-//                    properties.setID(UUID.fromString(selectedIDs.get(0)));
-//
-//                    if (sel instanceof Component) {
-//                        properties.setType(((Component)sel).getComponentType());
-//                        properties.setName(((Component)sel).getName());
-//                        properties.setRotation(((Component)sel).getAngle());
-//
-//                        // if component can have its state changed, update default state, else leave alone
-//                        if (sel instanceof Closeable) {
-//                            properties.setDefaultState(((Closeable) sel).isClosedByDefault());
-//                        }
-//
-//                        // if comp name layout bounds match, update properties on reselection
-//                        if (((Component)sel).getComponentIcon().getActiveLeft()) {
-//                            properties.setNamePos(true);
-//                        }
-//
-//                    } else if (sel instanceof Association) {
-//                        properties.setAssociation(true);
-//                        properties.setAssocLabel(((Association)sel).getLabel());
-//                        properties.setAssocSubLabel(((Association)sel).getSubLabel());
-//                        properties.setAssocAcronym(((Association)sel).getAcronym());
-//                    }
-//                }
-//
-//            } else if (numSelected == 2) {
-//                // Used for tandemable components (2 breakers)
-//                properties.setDefaultComponentProperties(numSelected);
-//                Selectable selTandem1 = grid.getSelectableByID(selectedIDs.get(0));
-//                Selectable selTandem2 = grid.getSelectableByID(selectedIDs.get(1));
-//                if (selTandem1 instanceof Breaker && selTandem2 instanceof Breaker &&
-//                        (((Breaker) selTandem1).getComponentType() == ((Breaker) selTandem2).getComponentType())) {
-//                    // Selected components are both breakers of the same type, add them to the tandem list and present options
-//                    properties.addTandemComp((Breaker) selTandem1);
-//                    properties.addTandemComp((Breaker) selTandem2);
-//                }
-//
-//            } else {
-//                properties.setDefaultComponentProperties(numSelected);
-//            }
-//
-//            // update the properties observers
-//            PropertiesManager.notifyObservers(properties);
-//        });
+    public void addListener(ListChangeListener<String> listener) {
+        selectedIDs.addListener(listener);
     }
 
     void selectAll() {
@@ -116,12 +57,12 @@ public class SelectionManager {
     public int deleteSelectedItems() {
         // Wires cannot be deleted if they are connected to a device or source, so delete the selected devices first
         sortWiresToBack();
-        observedSelectedIDs.forEach(id -> {
+        selectedIDs.forEach(id -> {
             setSelect(id, false);
             grid.deleteSelectedItem(id);
         });
-        int nitems = observedSelectedIDs.size();
-        observedSelectedIDs.clear();
+        int nitems = selectedIDs.size();
+        selectedIDs.clear();
         return nitems;
     }
 
@@ -131,20 +72,20 @@ public class SelectionManager {
     }
 
     public void deSelectAll() {
-        observedSelectedIDs.forEach(ID -> setSelect(ID, false));
-        observedSelectedIDs.clear();
+        selectedIDs.forEach(ID -> setSelect(ID, false));
+        selectedIDs.clear();
     }
 
     public void continuousPointSelection(String ID) {
-        if (observedSelectedIDs.contains(ID)) return;
+        if (selectedIDs.contains(ID)) return;
         setSelect(ID, true);
-        observedSelectedIDs.add(ID);
+        selectedIDs.add(ID);
     }
 
     public void pointSelection(String ID) {
         deSelectAll();
         setSelect(ID, true);
-        observedSelectedIDs.add(ID);
+        selectedIDs.add(ID);
     }
 
     public void beginSelection(double x, double y) {
@@ -171,9 +112,9 @@ public class SelectionManager {
         intersectingIDs.addAll(getIntersectingAssociationIDs());
 
         intersectingIDs.forEach(id -> {
-            if (!observedSelectedIDs.contains(id)) {
+            if (!selectedIDs.contains(id)) {
                 setSelect(id, true);
-                observedSelectedIDs.add(id);
+                selectedIDs.add(id);
             }
         });
         clearSelection();
@@ -223,7 +164,7 @@ public class SelectionManager {
     }
 
     private void sortWiresToBack() {
-        observedSelectedIDs.sort((ID1, ID2) -> {
+        selectedIDs.sort((ID1, ID2) -> {
             if (grid.getComponent(ID1) instanceof Wire) {
                 if (grid.getComponent(ID2) instanceof Wire) {
                     // comp1 and comp2 are wires

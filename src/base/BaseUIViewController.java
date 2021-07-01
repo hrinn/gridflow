@@ -141,18 +141,23 @@ public class BaseUIViewController {
         baseMenuFunctions.zoomToFit();
     }
 
-    @FXML
-    private void openAboutPage() throws IOException {
-        Stage dialog = new Stage();
-        FXMLLoader aboutPageLoader = new FXMLLoader(getClass().getResource("About.fxml"));
-        Parent AboutPage = aboutPageLoader.load();
-        setPageController(aboutPageLoader.getController());
-        this.pageController.setServices(this.services);
+//    @FXML
+//    private void openAboutPage() throws IOException {
+//        Stage dialog = new Stage();
+//        FXMLLoader aboutPageLoader = new FXMLLoader(getClass().getResource("About.fxml"));
+//        Parent AboutPage = aboutPageLoader.load();
+//        setPageController(aboutPageLoader.getController());
+//        this.pageController.setServices(this.services);
+//
+//        dialog.setScene(new Scene(AboutPage));
+//        dialog.setTitle("About Gridflow");
+//        dialog.initModality(Modality.APPLICATION_MODAL);
+//        dialog.initOwner(this.mainScene.getWindow());
+//        dialog.show();
+//    }
 
-        dialog.setScene(new Scene(AboutPage));
-        dialog.setTitle("About Gridflow");
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(this.mainScene.getWindow());
-        dialog.show();
+    @FXML
+    private void toggleFullscreen() {
+        //baseMenuFunctions.toggleFullScreen();
     }
 }

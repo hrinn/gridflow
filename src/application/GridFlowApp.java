@@ -3,6 +3,7 @@ package application;
 import base.BaseUIViewController;
 import base.MenuFunctionController;
 import construction.BuildMenuViewController;
+import construction.PropertiesMenuViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -10,6 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -125,10 +127,17 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
         // Construction Module
         ConstructionController constructionController = new ConstructionController(menuFunctionController.getGrid(), gridFlowEventManager, primaryStage);
+
         FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
         Node buildMenuView = buildMenuViewLoader.load();
+        FXMLLoader propertiesMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/PropertiesMenuView.fxml"));
+        Node propertiesMenuView = propertiesMenuViewLoader.load();
+
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
         constructionController.setBuildMenuViewController(buildMenuViewController);
+        PropertiesMenuViewController propertiesMenuViewController = propertiesMenuViewLoader.getController();
+        constructionController.setPropertiesMenuViewController(propertiesMenuViewController);
+
         buildMenuViewController.setBuildMenuFunctions(constructionController);
         baseUIViewController.setBaseMenuFunctions(constructionController);
 
@@ -148,8 +157,15 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         /* Add UI elements to Scene */
         BorderPane UI = new BorderPane();
         UI.setLeft(buildMenuView);
+        UI.setRight(propertiesMenuView);
         UI.setTop(baseUIView);
         UI.setPickOnBounds(false);
+
+        // Lock borderpane to width of window
+        UI.minWidthProperty().bind(primaryStage.widthProperty());
+        UI.prefWidthProperty().bind(primaryStage.widthProperty());
+        UI.maxWidthProperty().bind(primaryStage.widthProperty());
+
         root.getChildren().addAll(constructionController.getCanvasFacade().getCanvas(), UI);
 
         /* Show the new UI elements */

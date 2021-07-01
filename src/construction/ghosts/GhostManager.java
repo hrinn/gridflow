@@ -13,9 +13,9 @@ public class GhostManager {
 
     private final static double GHOST_OPACITY = 0.5;
 
-    private GridCanvasFacade canvasMaster;
+    private final GridCanvasFacade canvasMaster;
     private ComponentIcon ghostIcon;
-    private PropertiesData properties;
+    private final PropertiesData properties;
     private boolean ghostEnabled;
 
     public GhostManager(GridCanvasFacade canvasMaster, PropertiesData properties) {

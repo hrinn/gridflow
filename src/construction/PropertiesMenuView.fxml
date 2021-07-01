@@ -12,12 +12,15 @@
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml"
     fx:controller="construction.PropertiesMenuViewController"
-    prefHeight="400.0" prefWidth="600.0"
-    fx:id="PropertiesWindow" maxWidth="-Infinity" minWidth="-Infinity" style="-fx-border-color: BLACK; -fx-background-color: WHITE;">
+    prefHeight="600.0" prefWidth="200.0"
+    fx:id="PropertiesWindow" maxHeight="-Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-border-color: BLACK; -fx-background-color: RED;">
     <top>
-    <Label fx:id="PropertiesTitle" alignment="CENTER" contentDisplay="CENTER" text="Properties" style="-fx-font-size: 15 vw;" BorderPane.alignment="CENTER">
+    <Label fx:id="Properties" alignment="CENTER" contentDisplay="CENTER" text="Properties" style="-fx-font-size: 15 vw;" BorderPane.alignment="CENTER">
         <padding>
             <Insets bottom="5.0" />
         </padding></Label>
-</top>
+    </top>
+    <VBox style="-fx-background-color: LIGHTGRAY;">
+
+    </VBox>
 </BorderPane>

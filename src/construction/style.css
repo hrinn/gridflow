@@ -19,3 +19,7 @@
 .expand-button:hover {
     -fx-background-color: GRAY;
 }
+
+.expand-button:pressed {
+    -fx-background-color: GRAY;
+}

@@ -1,7 +1,6 @@
 package construction.selector;
 
-import construction.properties.PropertiesData;
-import construction.properties.PropertiesManager;
+import construction.PropertiesData;
 import construction.canvas.GridCanvasFacade;
 import domain.Association;
 import domain.Grid;
@@ -44,59 +43,59 @@ public class SelectionManager {
         selectionBox.getStrokeDashArray().add(10.0);
 
         // set up action on selectIDs list changed
-        observedSelectedIDs.addListener((ListChangeListener<String>) change -> {
-            int numSelected = selectedIDs.size();
-            PropertiesData properties = new PropertiesData();
-
-            if (numSelected == 1) {
-                properties.setNumSelected(numSelected);
-                Selectable sel = grid.getSelectableByID(selectedIDs.get(0));
-
-                if (sel != null) {
-                    properties.setID(UUID.fromString(selectedIDs.get(0)));
-
-                    if (sel instanceof Component) {
-                        properties.setType(((Component)sel).getComponentType());
-                        properties.setName(((Component)sel).getName());
-                        properties.setRotation(((Component)sel).getAngle());
-
-                        // if component can have its state changed, update default state, else leave alone
-                        if (sel instanceof Closeable) {
-                            properties.setDefaultState(((Closeable) sel).isClosedByDefault());
-                        }
-
-                        // if comp name layout bounds match, update properties on reselection
-                        if (((Component)sel).getComponentIcon().getActiveLeft()) {
-                            properties.setNamePos(true);
-                        }
-
-                    } else if (sel instanceof Association) {
-                        properties.setAssociation(true);
-                        properties.setAssocLabel(((Association)sel).getLabel());
-                        properties.setAssocSubLabel(((Association)sel).getSubLabel());
-                        properties.setAssocAcronym(((Association)sel).getAcronym());
-                    }
-                }
-
-            } else if (numSelected == 2) {
-                // Used for tandemable components (2 breakers)
-                properties.setDefaultComponentProperties(numSelected);
-                Selectable selTandem1 = grid.getSelectableByID(selectedIDs.get(0));
-                Selectable selTandem2 = grid.getSelectableByID(selectedIDs.get(1));
-                if (selTandem1 instanceof Breaker && selTandem2 instanceof Breaker &&
-                        (((Breaker) selTandem1).getComponentType() == ((Breaker) selTandem2).getComponentType())) {
-                    // Selected components are both breakers of the same type, add them to the tandem list and present options
-                    properties.addTandemComp((Breaker) selTandem1);
-                    properties.addTandemComp((Breaker) selTandem2);
-                }
-
-            } else {
-                properties.setDefaultComponentProperties(numSelected);
-            }
-
-            // update the properties observers
-            PropertiesManager.notifyObservers(properties);
-        });
+//        observedSelectedIDs.addListener((ListChangeListener<String>) change -> {
+//            int numSelected = selectedIDs.size();
+//            PropertiesData properties = new PropertiesData();
+//
+//            if (numSelected == 1) {
+//                properties.setNumSelected(numSelected);
+//                Selectable sel = grid.getSelectableByID(selectedIDs.get(0));
+//
+//                if (sel != null) {
+//                    properties.setID(UUID.fromString(selectedIDs.get(0)));
+//
+//                    if (sel instanceof Component) {
+//                        properties.setType(((Component)sel).getComponentType());
+//                        properties.setName(((Component)sel).getName());
+//                        properties.setRotation(((Component)sel).getAngle());
+//
+//                        // if component can have its state changed, update default state, else leave alone
+//                        if (sel instanceof Closeable) {
+//                            properties.setDefaultState(((Closeable) sel).isClosedByDefault());
+//                        }
+//
+//                        // if comp name layout bounds match, update properties on reselection
+//                        if (((Component)sel).getComponentIcon().getActiveLeft()) {
+//                            properties.setNamePos(true);
+//                        }
+//
+//                    } else if (sel instanceof Association) {
+//                        properties.setAssociation(true);
+//                        properties.setAssocLabel(((Association)sel).getLabel());
+//                        properties.setAssocSubLabel(((Association)sel).getSubLabel());
+//                        properties.setAssocAcronym(((Association)sel).getAcronym());
+//                    }
+//                }
+//
+//            } else if (numSelected == 2) {
+//                // Used for tandemable components (2 breakers)
+//                properties.setDefaultComponentProperties(numSelected);
+//                Selectable selTandem1 = grid.getSelectableByID(selectedIDs.get(0));
+//                Selectable selTandem2 = grid.getSelectableByID(selectedIDs.get(1));
+//                if (selTandem1 instanceof Breaker && selTandem2 instanceof Breaker &&
+//                        (((Breaker) selTandem1).getComponentType() == ((Breaker) selTandem2).getComponentType())) {
+//                    // Selected components are both breakers of the same type, add them to the tandem list and present options
+//                    properties.addTandemComp((Breaker) selTandem1);
+//                    properties.addTandemComp((Breaker) selTandem2);
+//                }
+//
+//            } else {
+//                properties.setDefaultComponentProperties(numSelected);
+//            }
+//
+//            // update the properties observers
+//            PropertiesManager.notifyObservers(properties);
+//        });
     }
 
     void selectAll() {

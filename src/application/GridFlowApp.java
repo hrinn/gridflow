@@ -107,7 +107,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         /* Create GUI elements */
         Group root = new Group();
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, Color.DARKGRAY);
-        scene.getStylesheets().add(getClass().getResource("/construction/properties/PropertyStyles.css").toExternalForm());
         primaryStage.setScene(scene);
 
         /* Init modules and connect them all together */

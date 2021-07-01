@@ -4,9 +4,7 @@ import application.events.*;
 import construction.*;
 import construction.canvas.GridCanvasFacade;
 import construction.history.GridMemento;
-import construction.properties.PropertiesData;
-import construction.properties.PropertiesManager;
-import construction.properties.PropertiesObserver;
+import construction.PropertiesData;
 import domain.Association;
 import domain.Grid;
 import domain.Selectable;
@@ -26,7 +24,7 @@ import java.util.UUID;
 // this controller handles event logic for grid building
 // this is mostly user click while
 
-public class GridBuilderController implements PropertiesObserver {
+public class GridBuilderController {
 
     private GridBuilder model;
     private GridFlowEventManager gridFlowEventManager;
@@ -51,7 +49,6 @@ public class GridBuilderController implements PropertiesObserver {
         this.doubleClickPlacementContext = doubleClickPlacementContext;
         this.buildData = buildMenuData;
         this.propertiesData = new PropertiesData();
-        PropertiesManager.attach(this);
         this.grid = grid;
         this.canvasFacade = canvasFacade;
     }
@@ -59,56 +56,6 @@ public class GridBuilderController implements PropertiesObserver {
     public void buildDataChanged() {
         doubleClickPlacementContext.placing = false;
         updateAssociationHandles(buildData.toolType == ToolType.ASSOCIATION);
-    }
-
-    public void applyProperties (PropertiesData properties) {
-        model.toggleComponent(properties.getID().toString());
-        gridFlowEventManager.sendEvent(new GridChangedEvent());
-    }
-
-    @Override
-    public void updateProperties(PropertiesData PD) {
-        Selectable sel = grid.getSelectableByID(PD.getID().toString());
-        // if the component id is specified, component is selected via toggle
-        // access that component and change its name if they differ
-        if (sel != null){
-
-            if (sel instanceof Component) {
-                if (!PD.getID().equals(new UUID(0, 0))) {
-                    // Name changed
-                    if (!((Component) sel).getName().equals(PD.getName())) {
-                        ((Component) sel).setName(PD.getName());
-                        ((Component) sel).updateComponentIconName();
-                    }
-                } else if (PD.getID().equals(this.propertiesData.getID())){
-                    // IDs match, they are the same component, update component name and state here
-                    ((Component) sel).setName(PD.getName());
-                    ((Component) sel).updateComponentIconName();
-                }
-
-                // State changed, always check
-                if (sel instanceof Closeable) {
-                    ((Closeable) sel).setClosedByDefault(PD.getDefaultState());
-                }
-
-                // update the name position, pay attention to the rotation variable to know if horiz/vert
-                ((Component) sel).getComponentIcon().updateComponentNamePosition(PD.getType(), PD.getNamePos(), PD.getRotation());
-
-            } else if (sel instanceof Association) {
-                if (PD.getID().equals(this.propertiesData.getID())) {
-                    ((Association) sel).setLabel(PD.getAssocLabel());
-                    ((Association) sel).setAcronym(PD.getAssocAcronym());
-                    ((Association) sel).getAssociationIcon().setLabelText(PD.getAssocLabel());
-                    gridFlowEventManager.sendEvent(new GridChangedEvent());
-                }
-            }
-        }
-
-        //this.propertiesData = PD;
-        this.propertiesData = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
-                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
-                PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
-                PD.getAssocSubLabel(), PD.getAssocAcronym());
     }
 
     public void linkTandems(List<Breaker> tandems) {
@@ -247,10 +194,6 @@ public class GridBuilderController implements PropertiesObserver {
         } else {
             gridFlowEventManager.sendEvent(new PlacementFailedEvent());
         }
-
-        // Change the UUID back to default for placing of next component
-        this.propertiesData.setID(new UUID(0, 0));
-        PropertiesManager.notifyObservers(this.propertiesData);
 
         event.consume();
     };

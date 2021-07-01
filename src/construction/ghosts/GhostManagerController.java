@@ -16,8 +16,8 @@ public class GhostManagerController implements GridFlowEventListener {
     private BuildMenuData buildData;
 
     public GhostManagerController(GridCanvasFacade canvasFacade, DoubleClickPlacementContext doubleClickContext,
-                                  BuildMenuData buildMenuData) {
-        this.ghostModel = new GhostManager(canvasFacade);
+                                  BuildMenuData buildMenuData, PropertiesData properties) {
+        this.ghostModel = new GhostManager(canvasFacade, properties);
         this.associationModel = new AssociationGhostManager(canvasFacade);
         this.doubleClickContext = doubleClickContext;
         this.buildData = buildMenuData;

@@ -1,24 +1,10 @@
 package construction;
 
-import construction.builder.GridBuilderController;
-import construction.properties.PropertiesData;
-import construction.properties.PropertiesManager;
-import construction.properties.PropertiesObserver;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.transform.Translate;
-import security.Access;
-
-import java.io.*;
 
 public class BuildMenuViewController {
 
@@ -130,7 +116,7 @@ public class BuildMenuViewController {
         if (menuOpen) {
             ShowMenuImage.setImage(new Image(ARROW_RIGHT_PATH));
             MenuContainer.getChildren().setAll(ShowMenuButton);
-
+            // Center the button
         } else {
             ShowMenuImage.setImage(new Image(ARROW_LEFT_PATH));
             MenuContainer.getChildren().setAll(componentMenu, ShowMenuButton);

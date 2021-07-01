@@ -9,9 +9,6 @@ import construction.canvas.CanvasExpandController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.history.GridHistorianController;
-import construction.properties.PropertiesData;
-import construction.properties.PropertiesManager;
-import construction.properties.PropertiesObserver;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import domain.components.Component;
@@ -25,34 +22,34 @@ import security.Access;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConstructionController implements BaseMenuFunctions, BuildMenuFunctions, PropertiesObserver {
+public class ConstructionController implements BaseMenuFunctions, BuildMenuFunctions {
 
     private GridCanvasFacade canvasFacade = null;
-    private GridFlowEventManager gridFlowEventManager;
-    private Stage stage;
-    private Grid grid;
+    private final GridFlowEventManager gridFlowEventManager;
+    private final Stage stage;
+    private final Grid grid;
 
     // Security
     private Access access;
 
     // Sub Controllers
-    private GridBuilderController gridBuilderController;
+    private final GridBuilderController gridBuilderController;
     private GhostManagerController ghostManagerController;
-    private SelectionManagerController selectionManagerController;
-    private GridHistorianController gridHistorianController;
-    private CanvasExpandController canvasExpandController;
+    private final SelectionManagerController selectionManagerController;
+    private final GridHistorianController gridHistorianController;
+    private final CanvasExpandController canvasExpandController;
 
     // View Controllers
     private BuildMenuViewController buildMenuViewController;
+    private PropertiesMenuViewController propertiesMenuViewController;
 
     // UI Data
     private BuildMenuData buildMenuData;
     public PropertiesData propertiesData;
-    public boolean isTyping;
+    public boolean isTyping; // Probably not needed
 
-    // Wire Placing and Association Placing
-    // Used to share if a double click is in progress, and where the first click was if so
-    private DoubleClickPlacementContext doubleClickContext = new DoubleClickPlacementContext();
+    // Map of hotkeys to buttons
+    private final Map<KeyCode, Runnable> componentShortcutMap = new HashMap<>();
 
     public ConstructionController(Grid grid, GridFlowEventManager gridFlowEventManager, Stage stage) {
         // shared objects
@@ -65,9 +62,12 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         this.isTyping = false;
 
         // controllers
+        // Wire Placing and Association Placing
+        // Used to share if a double click is in progress, and where the first click was if so
+        DoubleClickPlacementContext doubleClickContext = new DoubleClickPlacementContext();
         gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData,
                 propertiesData, canvasFacade);
-        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData);
+        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridHistorianController = new GridHistorianController(grid, gridFlowEventManager);
         canvasExpandController = new CanvasExpandController(stage.getScene(), canvasFacade);
@@ -79,7 +79,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         initializeComponentShortcutMap();
 
         installEventHandlers();
-        PropertiesManager.attach(this);
     }
 
     public GridBuilderController getGridBuilderController () { return this.gridBuilderController; }
@@ -118,14 +117,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         ghostManagerController.propertiesDataChanged(rotationChanged, defaultStateChanged);
     }
 
-    @Override
-    public void updateProperties(PropertiesData properties){
-        this.propertiesData = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
-                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected(),
-                properties.getNamePos(), properties.getAssociation(), properties.getAssocLabel(),
-                properties.getAssocSubLabel(), properties.getAssocAcronym());
-    }
-
     public void notifyGhostController (boolean rotChanged, boolean stateChanged) {
         ghostManagerController.propertiesDataChanged(rotChanged, stateChanged);
     }
@@ -135,7 +126,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         if (event.getCode() != KeyCode.R) return;
         rotate(event.isControlDown());
         event.consume();
-//        buildMenuViewController.setPropertiesWindow();
     };
 
     private final EventHandler<MouseEvent> handleMiddleMouseRotation = event -> {
@@ -149,23 +139,13 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         if (event.getCode() != KeyCode.E) return;
         if (buildMenuData.toolType != ToolType.PLACE) return;
 
-        // Toggle state, update ghost manager
-        // If placing a new source component, they are on by default and can't be changed
-        if ( !((propertiesData.getType() == ComponentType.POWER_SOURCE
-                || propertiesData.getType() == ComponentType.TURBINE)
-                &&  buildMenuData.toolType == ToolType.PLACE)) {
-
-            propertiesData.setDefaultState(!propertiesData.getDefaultState());
-            PropertiesManager.notifyObservers(propertiesData);
-            ghostManagerController.propertiesDataChanged(false, true);
-        }
+        propertiesData.toggleDefaultState();
+        ghostManagerController.propertiesDataChanged(false, true);
 
         event.consume();
-
-//        buildMenuViewController.setPropertiesWindow();
     };
 
-    private final Map<KeyCode, Runnable> componentShortcutMap = new HashMap<>();
+
 
     private void initializeComponentShortcutMap() {
         componentShortcutMap.put(KeyCode.ESCAPE, () -> buildMenuViewController.selectInteractTool());
@@ -212,7 +192,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
 
         // Update properties and ghost object
         propertiesData.setRotation(rotation);
-        PropertiesManager.notifyObservers(propertiesData);
         ghostManagerController.propertiesDataChanged(true, false);
     }
 

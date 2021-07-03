@@ -1,8 +1,0 @@
-.properties-menu {
-    -fx-background-color: LIGHTGRAY;
-    -fx-background-image: url(/resources/icon.png);
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center bottom, center;
-    -fx-background-size: 200, 200;
-    -fx-background-radius: 10;
-}

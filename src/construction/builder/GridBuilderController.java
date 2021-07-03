@@ -2,14 +2,13 @@ package construction.builder;
 
 import application.events.*;
 import construction.*;
+import construction.buildMenu.BuildMenuData;
 import construction.canvas.GridCanvasFacade;
 import construction.history.GridMemento;
-import construction.PropertiesData;
+import construction.properties.PropertiesData;
 import domain.Association;
 import domain.Grid;
-import domain.Selectable;
 import domain.components.Breaker;
-import domain.components.Closeable;
 import domain.components.Component;
 import domain.geometry.Point;
 import javafx.event.EventHandler;

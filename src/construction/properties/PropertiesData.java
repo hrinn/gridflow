@@ -1,4 +1,4 @@
-package construction;
+package construction.properties;
 
 public class PropertiesData {
     private boolean defaultState = true;

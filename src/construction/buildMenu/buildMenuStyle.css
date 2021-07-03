@@ -1,5 +1,6 @@
 .button {
     -fx-background-color : TRANSPARENT;
+    -fx-background-radius: 10;
 }
 .button:hover{
     -fx-background-color : #008EB0;
@@ -14,6 +15,7 @@
 
 .expand-button {
     -fx-background-color : LIGHTGRAY;
+    -fx-background-radius : 5;
 }
 
 .expand-button:hover {

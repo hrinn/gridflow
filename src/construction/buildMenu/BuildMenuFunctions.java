@@ -1,4 +1,7 @@
-package construction;
+package construction.buildMenu;
+
+import construction.ComponentType;
+import construction.ToolType;
 
 // The BuildMenuViewController accesses data through this interface
 public interface BuildMenuFunctions {
@@ -7,4 +10,6 @@ public interface BuildMenuFunctions {
     void setBuildMenuData(ToolType toolType, ComponentType componentType);
 
     void setBackgroundGridVisible(boolean state);
+
+    void setPropertiesWindowVisible(boolean state);
 }

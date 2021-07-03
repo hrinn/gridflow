@@ -4,11 +4,16 @@ import application.events.GridFlowEventManager;
 import application.events.OpenAccountsEvent;
 import application.events.ReLoginEvent;
 import base.BaseMenuFunctions;
+import construction.buildMenu.BuildMenuData;
+import construction.buildMenu.BuildMenuFunctions;
+import construction.buildMenu.BuildMenuViewController;
 import construction.builder.GridBuilderController;
 import construction.canvas.CanvasExpandController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.history.GridHistorianController;
+import construction.properties.PropertiesData;
+import construction.properties.PropertiesMenuViewController;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import domain.components.Component;
@@ -105,6 +110,11 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
     @Override
     public void setBackgroundGridVisible(boolean state) {
         canvasFacade.showBackgroundGrid(state);
+    }
+
+    @Override
+    public void setPropertiesWindowVisible(boolean state) {
+        propertiesMenuViewController.setPropertiesWindowVisibility(state);
     }
 
     public void setPropertiesData(double rotation, boolean defaultState) {
@@ -229,6 +239,11 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
     @Override
     public void expandCanvas() {
         canvasExpandController.openAccountWindow();
+    }
+
+    @Override
+    public void toggleFullscreen() {
+        stage.setFullScreen(!stage.isFullScreen());
     }
 
     @Override

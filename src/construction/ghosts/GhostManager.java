@@ -1,6 +1,6 @@
 package construction.ghosts;
 
-import construction.PropertiesData;
+import construction.properties.PropertiesData;
 import construction.ComponentType;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;

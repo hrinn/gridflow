@@ -12,15 +12,15 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="base.BaseUIViewController"
-      fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="3840" prefWidth="3840"
+      fx:id="TopMenu" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
       style="-fx-border-color: LIGHTGRAY; -fx-background-color: LIGHTGRAY" translateX="-1.0" translateY="-2.0"
       BorderPane.alignment="TOP_LEFT">
     <children>
-        <AnchorPane fx:id="TopMenuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" prefWidth="3840">
+        <AnchorPane fx:id="TopMenuPane" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0">
             <children>
-                <MenuBar fx:id="TopMenuBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="500.0"
-                         prefHeight="30.0" prefWidth="500.0"
+                <MenuBar fx:id="TopMenuBar" maxHeight="Infinity" maxWidth="Infinity" minHeight="30.0" minWidth="-Infinity"
+                         prefHeight="30.0"
                          style="-fx-alignment: center-left; -fx-background-color: LIGHTGRAY"
                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <menus>

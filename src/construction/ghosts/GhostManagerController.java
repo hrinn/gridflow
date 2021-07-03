@@ -2,7 +2,9 @@ package construction.ghosts;
 
 import application.events.*;
 import construction.*;
+import construction.buildMenu.BuildMenuData;
 import construction.canvas.GridCanvasFacade;
+import construction.properties.PropertiesData;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;

@@ -2,16 +2,16 @@ package application;
 
 import base.BaseUIViewController;
 import base.MenuFunctionController;
-import construction.BuildMenuViewController;
-import construction.PropertiesMenuViewController;
+import construction.buildMenu.BuildMenuViewController;
+import construction.properties.PropertiesMenuViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -120,6 +120,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         baseUIViewController.setController(menuFunctionController);
         baseUIViewController.setMainScene(scene);
         baseUIViewController.setServices(getHostServices());
+        baseUIViewController.bindMenuBarWidthProperty(primaryStage);
 
         // Account Controller
         AccountController accountController = new AccountController(scene);
@@ -128,9 +129,9 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         // Construction Module
         ConstructionController constructionController = new ConstructionController(menuFunctionController.getGrid(), gridFlowEventManager, primaryStage);
 
-        FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
+        FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/buildMenu/BuildMenuView.fxml"));
         Node buildMenuView = buildMenuViewLoader.load();
-        FXMLLoader propertiesMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/PropertiesMenuView.fxml"));
+        FXMLLoader propertiesMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/properties/PropertiesMenuView.fxml"));
         Node propertiesMenuView = propertiesMenuViewLoader.load();
 
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
@@ -139,6 +140,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         constructionController.setPropertiesMenuViewController(propertiesMenuViewController);
 
         buildMenuViewController.setBuildMenuFunctions(constructionController);
+        buildMenuViewController.bindBuildMenuHeightProperty(primaryStage);
         baseUIViewController.setBaseMenuFunctions(constructionController);
 
         // Visualization Module
@@ -161,10 +163,10 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         UI.setTop(baseUIView);
         UI.setPickOnBounds(false);
 
-        // Lock borderpane to width of window
-        UI.minWidthProperty().bind(primaryStage.widthProperty());
-        UI.prefWidthProperty().bind(primaryStage.widthProperty());
-        UI.maxWidthProperty().bind(primaryStage.widthProperty());
+        // Set padding on borderpane elements
+        Insets insets = new Insets(10, 0, 0, 0);
+        BorderPane.setMargin(buildMenuView, insets);
+        BorderPane.setMargin(propertiesMenuView, insets);
 
         root.getChildren().addAll(constructionController.getCanvasFacade().getCanvas(), UI);
 

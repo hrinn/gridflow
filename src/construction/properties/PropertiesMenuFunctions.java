@@ -1,4 +1,6 @@
-package construction;
+package construction.properties;
+
+import construction.ComponentData;
 
 public interface PropertiesMenuFunctions {
 

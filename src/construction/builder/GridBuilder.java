@@ -2,8 +2,8 @@ package construction.builder;
 
 import construction.AssociationMoveContext;
 import construction.ComponentData;
-import construction.PropertiesMenuFunctions;
-import construction.PropertiesData;
+import construction.properties.PropertiesMenuFunctions;
+import construction.properties.PropertiesData;
 import construction.ComponentType;
 import domain.Association;
 import domain.Grid;

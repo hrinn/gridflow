@@ -1,13 +1,12 @@
 package construction.properties.objectData;
 
-import construction.ComponentType;
 import construction.properties.Visitor;
 
 public class CloseableData extends ComponentData {
     private boolean defaultState;
 
-    public CloseableData(ComponentType componentType, String name, boolean defaultState) {
-        super(componentType, name);
+    public CloseableData(String name, boolean defaultState) {
+        super(name);
         this.defaultState = defaultState;
     }
 
@@ -17,5 +16,10 @@ public class CloseableData extends ComponentData {
 
     public boolean isClosed() {
         return defaultState;
+    }
+
+    @Override
+    public ObjectData applySettings(String name, boolean nameRight, boolean isClosed, String label, String subLabel, String acronym) {
+        return new CloseableData(name, isClosed);
     }
 }

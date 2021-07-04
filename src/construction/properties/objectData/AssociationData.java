@@ -18,4 +18,21 @@ public class AssociationData extends ObjectData {
     public void accept(Visitor v) {
         v.setAssociationMenu(this);
     }
+
+    @Override
+    public ObjectData applySettings(String name, boolean nameRight, boolean isClosed, String label, String subLabel, String acronym) {
+        return new AssociationData(label, subLabel, acronym);
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getSubLabel() {
+        return subLabel;
+    }
+
+    public String getAcronym() {
+        return acronym;
+    }
 }

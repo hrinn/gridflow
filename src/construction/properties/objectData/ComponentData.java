@@ -1,16 +1,13 @@
 package construction.properties.objectData;
 
-import construction.ComponentType;
 import construction.properties.Visitor;
 
 // This class holds Component Data that the properties window displays and can set
 public class ComponentData extends ObjectData {
 
-    private ComponentType componentType;
     private String name;
 
-    public ComponentData(ComponentType componentType, String name) {
-        this.componentType = componentType;
+    public ComponentData(String name) {
         this.name = name;
     }
 
@@ -21,5 +18,10 @@ public class ComponentData extends ObjectData {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public ObjectData applySettings(String name, boolean nameRight, boolean isClosed, String label, String subLabel, String acronym) {
+        return new ComponentData(name);
     }
 }

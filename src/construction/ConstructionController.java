@@ -1,8 +1,6 @@
 package construction;
 
-import application.events.GridFlowEventManager;
-import application.events.OpenAccountsEvent;
-import application.events.ReLoginEvent;
+import application.events.*;
 import base.BaseMenuFunctions;
 import construction.buildMenu.BuildMenuData;
 import construction.buildMenu.BuildMenuFunctions;
@@ -17,6 +15,7 @@ import construction.properties.PropertiesMenuFunctions;
 import construction.properties.PropertiesMenuViewController;
 import construction.properties.objectData.ObjectData;
 import construction.selector.SelectionManagerController;
+import domain.Association;
 import domain.Grid;
 import domain.components.Component;
 import javafx.event.EventHandler;
@@ -137,6 +136,20 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         Component comp = grid.getComponent(objectID);
         if (comp == null) return null;
         return comp.getComponentType();
+    }
+
+    @Override
+    public void setObjectData(String objectID, ObjectData objectData) {
+        Component comp = grid.getComponent(objectID);
+        if (comp == null) {
+            Association assoc = grid.getAssociation(objectID);
+            if (assoc == null) return;
+            assoc.applyAssociationData(objectData);
+        }
+        comp.applyComponentData(objectData);
+        GridChangedEvent e = new GridChangedEvent();
+        e.toolCausingChange = buildMenuData.toolType;
+        gridFlowEventManager.sendEvent(e);
     }
 
     public void notifyGhostController (boolean rotChanged, boolean stateChanged) {

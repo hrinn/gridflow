@@ -116,6 +116,12 @@ public class Association implements Selectable {
         return new AssociationData(label, subLabel, acronym);
     }
 
+    public void applyAssociationData(ObjectData objectData) {
+        AssociationData data = (AssociationData) objectData;
+        this.label = data.getLabel();
+        this.subLabel = data.getSubLabel();
+        this.acronym = data.getAcronym();
+    }
 }
 
 class AssociationSnapshot implements AssociationMemento {

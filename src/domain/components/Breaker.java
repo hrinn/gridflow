@@ -92,7 +92,7 @@ public class Breaker extends Closeable {
 
     @Override
     public ObjectData getComponentObjectData() {
-        return new BreakerData(getComponentType(), getName(), isClosedByDefault(), getTandemID());
+        return new BreakerData(getName(), isClosedByDefault(), getTandemID());
     }
 
     @Override

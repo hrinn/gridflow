@@ -29,15 +29,15 @@
             <ToggleButton fx:id="toggleClosed" text="Closed" focusTraversable="false" prefWidth="55"/>
         </HBox>
         <HBox fx:id="labelControl">
-            <Label text="Label" prefWidth="50"/>
+            <Label fx:id="labelField" text="Label" prefWidth="50"/>
             <TextField focusTraversable="false"/>
         </HBox>
         <HBox fx:id="subLabelControl">
-            <Label text="Sub Label" prefWidth="75"/>
+            <Label fx:id="subLabelField" text="Sub Label" prefWidth="75"/>
             <TextField prefWidth="124" focusTraversable="false"/>
         </HBox>
         <HBox fx:id="acronymControl">
-            <Label text="Acronym" prefWidth="75"/>
+            <Label fx:id="acronymField" text="Acronym" prefWidth="75"/>
             <TextField prefWidth="124" focusTraversable="false"/>
         </HBox>
         <HBox fx:id="linkBreakersControl">
@@ -48,6 +48,6 @@
 
     </VBox>
     <HBox AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="0" prefWidth="250" alignment="CENTER">
-        <Button fx:id="applyButton" styleClass="apply-button" text="Apply" focusTraversable="false"/>
+        <Button fx:id="applyButton" onAction="#applyProperties" styleClass="apply-button" text="Apply" focusTraversable="false"/>
     </HBox>
 </AnchorPane>

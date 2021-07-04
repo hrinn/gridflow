@@ -3,6 +3,7 @@ package construction.properties;
 import construction.ComponentType;
 import construction.properties.objectData.*;
 import construction.selector.observable.Observer;
+import javafx.event.ActionEvent;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
@@ -17,6 +18,8 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
 
     private PropertiesMenuFunctions propertiesMenuFunctions;
 
+    private ObjectData currentObjectData = null;
+
     // JavaFX Elements
     public AnchorPane PropertiesWindow;
 
@@ -30,6 +33,9 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
 
     public TextField nameField;
     public Label numSelectedLabel;
+    public Label labelField;
+    public Label subLabelField;
+    public Label acronymField;
 
     public ToggleButton toggleLeft;
     public ToggleButton toggleRight;
@@ -82,7 +88,7 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
     private void setupMenu() {
         hideAllControls();
 
-        if (selectedIDs.size() > 1 && allSelectedItemsAreBreakers()) {
+        if (selectedIDs.size() == 2 && allSelectedItemsAreBreakers()) {
             setLinkBreakersMenu();
             return;
         }
@@ -114,6 +120,8 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
     }
 
     public void setComponentMenu(ComponentData data) {
+        currentObjectData = data;
+
         // Show correct controls
         nameControl.setVisible(true);
         namePosControl.setVisible(true);
@@ -123,6 +131,8 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
     }
 
     public void setCloseableMenu(CloseableData data) {
+        currentObjectData = data;
+
         // Show correct controls
         nameControl.setVisible(true);
         namePosControl.setVisible(true);
@@ -131,10 +141,11 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         // Fill in data
         nameField.setText(data.getName());
         defStateTG.selectToggle(data.isClosed() ? toggleClosed : toggleOpen);
-
     }
 
     public void setBreakerMenu(BreakerData data) {
+        currentObjectData = data;
+
         // Show correct controls
         nameControl.setVisible(true);
         namePosControl.setVisible(true);
@@ -147,6 +158,8 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
     }
 
     public void setAssociationMenu(AssociationData data) {
+        currentObjectData = data;
+
         // Show correct controls
         labelControl.setVisible(true);
         subLabelControl.setVisible(true);
@@ -161,6 +174,22 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         numSelectedLabel.setText("" + selectedIDs.size());
     }
 
+    public void applyProperties(ActionEvent actionEvent) {
+        // Gather settings
+        String name = nameField.getText();
+        boolean nameRight = namePosTG.getSelectedToggle() == toggleRight;
+        boolean isClosed = defStateTG.getSelectedToggle() == toggleClosed;
+        String label = labelField.getText();
+        String subLabel = subLabelField.getText();
+        String acronym = acronymField.getText();
+
+        // Modify the object data
+        ObjectData newData = currentObjectData.applySettings(name, nameRight, isClosed, label, subLabel, acronym);
+
+        // Send it to construction controller for application
+        propertiesMenuFunctions.setObjectData(selectedIDs.get(0), newData);
+    }
+
     public void setPropertiesWindowVisibility(boolean visible) {
         PropertiesWindow.setVisible(visible);
     }
@@ -168,6 +197,5 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
     public void setPropertiesMenuFunctions(PropertiesMenuFunctions pmf) {
         this.propertiesMenuFunctions = pmf;
     }
-
 
 }

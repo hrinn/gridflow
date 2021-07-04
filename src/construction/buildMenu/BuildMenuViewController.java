@@ -46,7 +46,7 @@ public class BuildMenuViewController {
     // Run when this controller is initialized
     public void initialize() {
         componentMenu.setVisible(false);
-        MenuContainer.getChildren().setAll(ShowMenuButton);
+        componentMenu.managedProperty().bind(componentMenu.visibleProperty());
     }
 
     public void bindBuildMenuHeightProperty(Stage primaryStage) {
@@ -108,11 +108,13 @@ public class BuildMenuViewController {
     public void selectCutoutTool() {
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.CUTOUT);
         CutoutButton.requestFocus();
+
     }
 
     public void selectJumperTool() {
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.JUMPER);
         JumperButton.requestFocus();
+
     }
 
     @FXML
@@ -123,13 +125,11 @@ public class BuildMenuViewController {
         if (menuOpen) {
             // Close the menu
             ShowMenuImage.setImage(new Image(ARROW_RIGHT_PATH));
-            MenuContainer.getChildren().setAll(ShowMenuButton);
             buildMenuFunctions.setPropertiesWindowVisible(false);
             selectInteractTool();
         } else {
             // Open the menu
             ShowMenuImage.setImage(new Image(ARROW_LEFT_PATH));
-            MenuContainer.getChildren().setAll(componentMenu, ShowMenuButton);
         }
 
         menuOpen = !menuOpen;

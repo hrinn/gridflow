@@ -4,6 +4,7 @@ import construction.builder.GridBuilder;
 import construction.history.AssociationMemento;
 import construction.history.ComponentMemento;
 import construction.history.GridMemento;
+import construction.properties.objectData.ObjectData;
 import domain.components.*;
 import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
@@ -65,6 +66,19 @@ public class Grid {
             components.remove(component);
         } catch (UnsupportedOperationException e) {
             System.err.println("Cannot delete Wire: " + component.getId());
+        }
+    }
+
+    // Functions like this show that I should have made a parent class for associations and components
+    // This is bad object oriented programming
+    public ObjectData getObjectData(String ObjectID) {
+        Component comp = getComponent(ObjectID);
+        if (comp == null) {
+            Association association = getAssociation(ObjectID);
+            if (association == null) return null; // ID is invalid
+            return association.getAssociationObjectData();
+        } else {
+            return comp.getComponentObjectData();
         }
     }
 

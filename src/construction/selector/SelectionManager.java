@@ -1,6 +1,8 @@
 package construction.selector;
 
 import construction.canvas.GridCanvasFacade;
+import construction.selector.observable.Observer;
+import construction.selector.observable.TriggeredObservableList;
 import domain.Grid;
 import domain.Selectable;
 import domain.components.Wire;
@@ -18,14 +20,14 @@ import java.util.stream.Collectors;
 
 public class SelectionManager {
 
-    private ObservableList<String> selectedIDs;
+    private final TriggeredObservableList<String> selectedIDs;
     private Rectangle selectionBox;
     private GridCanvasFacade canvasFacade;
     private Grid grid;
     private Point mouseDownPoint;
 
     public SelectionManager(GridCanvasFacade canvasFacade, Grid grid) {
-        selectedIDs = FXCollections.observableArrayList();
+        selectedIDs = new TriggeredObservableList<String>();
         selectionBox = new Rectangle();
         this.canvasFacade = canvasFacade;
         this.grid = grid;
@@ -35,8 +37,8 @@ public class SelectionManager {
         selectionBox.getStrokeDashArray().add(10.0);
     }
 
-    public void addListener(ListChangeListener<String> listener) {
-        selectedIDs.addListener(listener);
+    public void addObserver(Observer observer) {
+        selectedIDs.addObserver(observer);
     }
 
     void selectAll() {
@@ -50,6 +52,7 @@ public class SelectionManager {
             assoc.setSelect(true);
             selectedIDs.add(assoc.getID().toString());
         });
+        selectedIDs.notifyObservers();
     }
 
     // deletes all items in the selected ids list
@@ -63,6 +66,7 @@ public class SelectionManager {
         });
         int nitems = selectedIDs.size();
         selectedIDs.clear();
+        selectedIDs.notifyObservers();
         return nitems;
     }
 
@@ -74,18 +78,21 @@ public class SelectionManager {
     public void deSelectAll() {
         selectedIDs.forEach(ID -> setSelect(ID, false));
         selectedIDs.clear();
+        selectedIDs.notifyObservers();
     }
 
     public void continuousPointSelection(String ID) {
         if (selectedIDs.contains(ID)) return;
         setSelect(ID, true);
         selectedIDs.add(ID);
+        selectedIDs.notifyObservers();
     }
 
     public void pointSelection(String ID) {
         deSelectAll();
         setSelect(ID, true);
         selectedIDs.add(ID);
+        selectedIDs.notifyObservers();
     }
 
     public void beginSelection(double x, double y) {
@@ -117,6 +124,7 @@ public class SelectionManager {
                 selectedIDs.add(id);
             }
         });
+        selectedIDs.notifyObservers();
         clearSelection();
     }
 

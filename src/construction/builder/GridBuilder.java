@@ -1,8 +1,6 @@
 package construction.builder;
 
 import construction.AssociationMoveContext;
-import construction.ComponentData;
-import construction.properties.PropertiesMenuFunctions;
 import construction.properties.PropertiesData;
 import construction.ComponentType;
 import domain.Association;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GridBuilder implements PropertiesMenuFunctions {
+public class GridBuilder {
 
     private Grid grid;
     private PropertiesData properties;
@@ -24,11 +22,6 @@ public class GridBuilder implements PropertiesMenuFunctions {
     public GridBuilder(Grid grid, PropertiesData properties) {
         this.grid = grid;
         this.properties = properties;
-    }
-
-    @Override
-    public ComponentData getComponentData(String componentID) {
-        return null;
     }
 
     // This is what runs when a component is placed on the canvas standalone

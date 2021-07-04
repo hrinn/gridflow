@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import construction.ComponentType;
 import construction.history.ComponentMemento;
+import construction.properties.objectData.ComponentData;
+import construction.properties.objectData.ObjectData;
 import domain.Selectable;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
@@ -59,6 +61,10 @@ public abstract class Component implements Selectable {
     }
 
     public abstract ComponentType getComponentType();
+
+    public ObjectData getComponentObjectData() {
+        return new ComponentData(getComponentType(), name);
+    }
 
     public abstract void updateComponentIcon();
 

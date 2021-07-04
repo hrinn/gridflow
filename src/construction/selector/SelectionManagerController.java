@@ -7,6 +7,7 @@ import construction.buildMenu.BuildMenuData;
 import construction.ToolType;
 import construction.canvas.GridCanvasFacade;
 import construction.history.GridMemento;
+import construction.selector.observable.Observer;
 import domain.Grid;
 import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
@@ -29,8 +30,8 @@ public class SelectionManagerController {
         this.grid = grid;
     }
 
-    public void addSelectedIDListener(ListChangeListener<String> listener) {
-        model.addListener(listener);
+    public void addSelectedIDObserver(Observer<String> observer) {
+        model.addObserver(observer);
     }
 
     public void buildMenuDataChanged() {

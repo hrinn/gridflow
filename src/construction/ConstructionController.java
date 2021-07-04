@@ -13,7 +13,9 @@ import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.history.GridHistorianController;
 import construction.properties.PropertiesData;
+import construction.properties.PropertiesMenuFunctions;
 import construction.properties.PropertiesMenuViewController;
+import construction.properties.objectData.ObjectData;
 import construction.selector.SelectionManagerController;
 import domain.Grid;
 import domain.components.Component;
@@ -27,7 +29,7 @@ import security.Access;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ConstructionController implements BaseMenuFunctions, BuildMenuFunctions {
+public class ConstructionController implements BaseMenuFunctions, BuildMenuFunctions, PropertiesMenuFunctions {
 
     private GridCanvasFacade canvasFacade = null;
     private final GridFlowEventManager gridFlowEventManager;
@@ -51,7 +53,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
     // UI Data
     private BuildMenuData buildMenuData;
     public PropertiesData propertiesData;
-    public boolean isTyping; // Probably not needed
 
     // Map of hotkeys to buttons
     private final Map<KeyCode, Runnable> componentShortcutMap = new HashMap<>();
@@ -64,7 +65,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         this.propertiesData = new PropertiesData();
         this.stage = stage;
         this.grid = grid;
-        this.isTyping = false;
 
         // controllers
         // Wire Placing and Association Placing
@@ -87,8 +87,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
     }
 
     public GridBuilderController getGridBuilderController () { return this.gridBuilderController; }
-
-    public void setUserTyping(boolean typing) { this.isTyping = typing; }
 
     public GridCanvasFacade getCanvasFacade() {
         return canvasFacade;
@@ -127,12 +125,25 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         ghostManagerController.propertiesDataChanged(rotationChanged, defaultStateChanged);
     }
 
+    /* Properties Menu Functions */
+    // Gets object data from the grid and gives it to the properties menu for display
+    @Override
+    public ObjectData getObjectData(String objectID) {
+        return grid.getObjectData(objectID);
+    }
+
+    @Override
+    public ComponentType getComponentType(String objectID) {
+        Component comp = grid.getComponent(objectID);
+        if (comp == null) return null;
+        return comp.getComponentType();
+    }
+
     public void notifyGhostController (boolean rotChanged, boolean stateChanged) {
         ghostManagerController.propertiesDataChanged(rotChanged, stateChanged);
     }
 
     private final EventHandler<KeyEvent> handleRKeyRotation = event -> {
-        if (isTyping) return;
         if (event.getCode() != KeyCode.R) return;
         rotate(event.isControlDown());
         event.consume();
@@ -145,7 +156,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
     };
 
     private final EventHandler<KeyEvent> handleToggleDefaultState = event -> {
-        if (isTyping) return;
         if (event.getCode() != KeyCode.E) return;
         if (buildMenuData.toolType != ToolType.PLACE) return;
 
@@ -154,8 +164,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
 
         event.consume();
     };
-
-
 
     private void initializeComponentShortcutMap() {
         componentShortcutMap.put(KeyCode.ESCAPE, () -> buildMenuViewController.selectInteractTool());
@@ -173,7 +181,6 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
     }
 
     private final EventHandler<KeyEvent> handleComponentShortcut = event -> {
-        if (isTyping) return;
         if (access == Access.VIEWER) return;
 
         // Runs the function associated with the keycode
@@ -269,7 +276,7 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleToggleDefaultState);
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleComponentShortcut);
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, handleComponentShortcut);
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());
@@ -314,6 +321,7 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
 
     public void setPropertiesMenuViewController(PropertiesMenuViewController propertiesMenuViewController) {
         this.propertiesMenuViewController = propertiesMenuViewController;
-        selectionManagerController.addSelectedIDListener(propertiesMenuViewController);
+        selectionManagerController.addSelectedIDObserver(propertiesMenuViewController);
+        propertiesMenuViewController.setPropertiesMenuFunctions(this);
     }
 }

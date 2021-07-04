@@ -1,15 +1,15 @@
-.button {
+.component-button {
     -fx-background-color : TRANSPARENT;
     -fx-background-radius: 10;
 }
-.button:hover{
+.component-button:hover{
     -fx-background-color : #008EB0;
 }
-.button:pressed {
+.component-button:pressed {
     -fx-background-color : #008EB0;
 }
 
-.button:focused {
+.component-button:focused {
     -fx-background-color : GRAY;
 }
 

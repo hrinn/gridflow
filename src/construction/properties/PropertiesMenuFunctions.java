@@ -1,8 +1,9 @@
 package construction.properties;
 
-import construction.ComponentData;
+import construction.ComponentType;
+import construction.properties.objectData.ObjectData;
 
 public interface PropertiesMenuFunctions {
-
-    ComponentData getComponentData(String componentID);
+    ObjectData getObjectData(String objectID);
+    ComponentType getComponentType(String objectID);
 }

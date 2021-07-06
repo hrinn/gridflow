@@ -10,30 +10,60 @@
 }
 
 .component-button:focused {
-    -fx-background-color : GRAY;
+    -fx-background-color : #ACB4B0;
 }
 
 .expand-button {
-    -fx-background-color : LIGHTGRAY;
-    -fx-background-radius : 5;
+    -fx-background-color : #D8D3CE;
+    -fx-opacity: 0.96;
+    -fx-background-radius: 5
 }
 
 .expand-button:hover {
-    -fx-background-color: GRAY;
+    -fx-background-color: #ACB4B0;
 }
 
 .expand-button:pressed {
-    -fx-background-color: GRAY;
+    -fx-background-color: #ACB4B0;
+}
+
+.build-menu {
+    -fx-background-color: #D8D3CE;
+    -fx-background-radius: 10;
+    -fx-opacity: 0.96;
 }
 
 .properties-menu {
-    -fx-background-color: LIGHTGRAY;
-    -fx-background-image: url(/resources/icon.png);
-    -fx-background-repeat: no-repeat;
-    -fx-background-position: center bottom, center;
-    -fx-background-size: 200, 200;
+    -fx-background-color: #D8D3CE;
     -fx-background-radius: 10;
+    -fx-opacity: 0.96;
 }
 
-.apply-button {
+.solid {
+    -fx-background-color: #D8D3CE;
+}
+
+.toggle-button {
+    -fx-border-color: #ACB4B0;
+    -fx-border-width: 2;
+    -fx-background-color: TRANSPARENT;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #ACB4B0;
+    -fx-border-color: #ACB4B0;
+    -fx-border-width: 2;
+}
+
+.properties-button {
+    -fx-border-color: #ACB4B0;
+    -fx-border-width: 2;
+    -fx-background-color: TRANSPARENT;
+
+}
+
+.properties-button:hover {
+    -fx-background-color: #ACB4B0;
+    -fx-border-color: #ACB4B0;
+    -fx-border-width: 2;
 }

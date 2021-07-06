@@ -7,10 +7,10 @@
     xmlns="http://javafx.com/javafx"
     xmlns:fx="http://javafx.com/fxml"
     fx:controller="construction.properties.PropertiesMenuViewController"
-    prefHeight="400.0" prefWidth="250.0"
+    prefHeight="350.0" prefWidth="250.0"
     fx:id="PropertiesWindow" maxHeight="-Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
     styleClass="properties-menu">
-    <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Properties" style="-fx-font-size: 18 vw;"
+    <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Properties" style="-fx-font-size: 18 vw; -fx-font-weight: bold;"
            AnchorPane.topAnchor="6" AnchorPane.leftAnchor="10"/>
     <VBox alignment="CENTER" style="-fx-background-color: TRANSPARENT;" spacing="10"
         AnchorPane.topAnchor="45" AnchorPane.leftAnchor="15" >
@@ -43,11 +43,11 @@
         <HBox fx:id="linkBreakersControl">
             <Label text="Breakers Selected: " prefWidth="100"/>
             <Label fx:id="numSelectedLabel" prefWidth="50"/>
-            <Button text="Link" focusTraversable="false" prefWidth="49"/>
+            <Button text="Link" styleClass="properties-button" focusTraversable="false" prefWidth="49"/>
         </HBox>
 
     </VBox>
     <HBox AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="0" prefWidth="250" alignment="CENTER">
-        <Button fx:id="applyButton" onAction="#applyProperties" styleClass="apply-button" text="Apply" focusTraversable="false"/>
+        <Button fx:id="applyButton" onAction="#applyProperties" styleClass="properties-button" text="Apply" focusTraversable="false"/>
     </HBox>
 </AnchorPane>

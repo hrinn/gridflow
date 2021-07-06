@@ -21,7 +21,8 @@
             <children>
                 <MenuBar fx:id="TopMenuBar" maxHeight="Infinity" maxWidth="Infinity" minHeight="30.0" minWidth="-Infinity"
                          prefHeight="30.0"
-                         style="-fx-alignment: center-left; -fx-background-color: LIGHTGRAY"
+                         styleClass="solid"
+                         style="-fx-alignment: center-left;"
                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <menus>
                         <Menu fx:id="FileMenu" mnemonicParsing="false"

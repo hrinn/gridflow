@@ -145,8 +145,9 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
             Association assoc = grid.getAssociation(objectID);
             if (assoc == null) return;
             assoc.applyAssociationData(objectData);
+        } else {
+            comp.applyComponentData(objectData);
         }
-        comp.applyComponentData(objectData);
         GridChangedEvent e = new GridChangedEvent();
         e.toolCausingChange = buildMenuData.toolType;
         gridFlowEventManager.sendEvent(e);

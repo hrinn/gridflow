@@ -11,6 +11,10 @@ public class BreakerData extends CloseableData {
         this.tandemID = tandemID;
     }
 
+    public String getTandemID() {
+        return tandemID;
+    }
+
     @Override
     public void accept(Visitor v) {
         v.setBreakerMenu(this);

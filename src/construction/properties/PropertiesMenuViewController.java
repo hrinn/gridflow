@@ -30,12 +30,15 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
     public HBox subLabelControl;
     public HBox acronymControl;
     public HBox linkBreakersControl;
+    public HBox clearLinkedControl;
 
     public TextField nameField;
     public Label numSelectedLabel;
     public Label labelField;
     public Label subLabelField;
     public Label acronymField;
+    public Label numSelectedToClearLabel;
+    public Button clearLinkedButton;
 
     public ToggleButton toggleLeft;
     public ToggleButton toggleRight;
@@ -56,6 +59,7 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         subLabelControl.managedProperty().bind(subLabelControl.visibleProperty());
         acronymControl.managedProperty().bind(acronymControl.visibleProperty());
         linkBreakersControl.managedProperty().bind(linkBreakersControl.visibleProperty());
+        clearLinkedControl.managedProperty().bind(clearLinkedControl.visibleProperty());
 
         PropertiesWindow.setVisible(false);
         hideAllControls();
@@ -76,6 +80,7 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         subLabelControl.setVisible(false);
         acronymControl.setVisible(false);
         linkBreakersControl.setVisible(false);
+        clearLinkedControl.setVisible(false);
         applyButton.setVisible(false);
     }
 
@@ -150,11 +155,19 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         nameControl.setVisible(true);
         namePosControl.setVisible(true);
         defaultStateControl.setVisible(true);
-        // Unlink button if it is linked
+        clearLinkedControl.setVisible(true);
 
         // Fill in data
         nameField.setText(data.getName());
         defStateTG.selectToggle(data.isClosed() ? toggleClosed : toggleOpen);
+
+        if (data.getTandemID() == null) {
+            numSelectedToClearLabel.setText("0");
+            clearLinkedButton.setDisable(true);
+        } else {
+            numSelectedToClearLabel.setText("1");
+            clearLinkedButton.setDisable(false);
+        }
     }
 
     public void setAssociationMenu(AssociationData data) {

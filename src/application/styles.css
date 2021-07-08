@@ -9,13 +9,13 @@
     -fx-background-color : #008EB0;
 }
 
-.component-button:focused {
+.component-button:current {
     -fx-background-color : #ACB4B0;
 }
 
 .expand-button {
     -fx-background-color : #D8D3CE;
-    -fx-opacity: 0.96;
+    -fx-opacity: 0.95;
     -fx-background-radius: 5
 }
 
@@ -30,13 +30,13 @@
 .build-menu {
     -fx-background-color: #D8D3CE;
     -fx-background-radius: 10;
-    -fx-opacity: 0.96;
+    -fx-opacity: 0.95;
 }
 
 .properties-menu {
     -fx-background-color: #D8D3CE;
     -fx-background-radius: 10;
-    -fx-opacity: 0.96;
+    -fx-opacity: 0.95;
 }
 
 .solid {
@@ -44,26 +44,25 @@
 }
 
 .toggle-button {
-    -fx-border-color: #ACB4B0;
-    -fx-border-width: 2;
     -fx-background-color: TRANSPARENT;
 }
 
 .toggle-button:selected {
     -fx-background-color: #ACB4B0;
-    -fx-border-color: #ACB4B0;
-    -fx-border-width: 2;
+}
+
+.toggle-button:hover {
+    -fx-underline: true;
 }
 
 .properties-button {
-    -fx-border-color: #ACB4B0;
-    -fx-border-width: 2;
     -fx-background-color: TRANSPARENT;
-
 }
 
 .properties-button:hover {
     -fx-background-color: #ACB4B0;
-    -fx-border-color: #ACB4B0;
-    -fx-border-width: 2;
+}
+
+.text-field {
+    -fx-background-color: white;
 }

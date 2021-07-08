@@ -2,6 +2,7 @@ package construction.buildMenu;
 
 import construction.ComponentType;
 import construction.ToolType;
+import javafx.css.PseudoClass;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -36,6 +37,8 @@ public class BuildMenuViewController {
     public Button JumperButton;
     public Button CutoutButton;
 
+    private Button currentButton;
+
     public ImageView ShowMenuImage;
     public Button ShowMenuButton;
 
@@ -56,65 +59,89 @@ public class BuildMenuViewController {
     // These are the button press handlers
     // They can also be accessed outside of the class to handle key shortcuts
     public void selectInteractTool() {
+        if (currentButton != null) {
+            currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
+        }
         buildMenuFunctions.setBuildMenuData(ToolType.INTERACT, null);
-        InteractToolButton.requestFocus();
+        InteractToolButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = InteractToolButton;
     }
 
     public void selectSelectTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.SELECT, null);
-        SelectToolButton.requestFocus();
+        SelectToolButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = SelectToolButton;
     }
 
     public void selectAssociationTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.ASSOCIATION, null);
-        AssociationToolButton.requestFocus();
+        AssociationToolButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = AssociationToolButton;
     }
 
     public void selectWireTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.WIRE, ComponentType.WIRE);
-        WireButton.requestFocus();
+        WireButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = WireButton;
     }
 
     public void selectPowerSourceTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.POWER_SOURCE);
-        PowerSourceButton.requestFocus();
+        PowerSourceButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = PowerSourceButton;
     }
 
     public void selectTurbineTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.TURBINE);
-        TurbineButton.requestFocus();
+        TurbineButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = TurbineButton;
     }
 
     public void selectSwitchTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.SWITCH);
-        SwitchButton.requestFocus();
+        SwitchButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = SwitchButton;
     }
 
     public void selectBreaker12Tool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.BREAKER_12KV);
-        Breaker12Button.requestFocus();
+        Breaker12Button.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = Breaker12Button;
     }
 
     public void selectBreaker70Tool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.BREAKER_70KV);
-        Breaker70Button.requestFocus();
+        Breaker70Button.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = Breaker70Button;
     }
 
     public void selectTransformerTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.TRANSFORMER);
-        TransformerButton.requestFocus();
+        TransformerButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = TransformerButton;
     }
 
     public void selectCutoutTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.CUTOUT);
-        CutoutButton.requestFocus();
-
+        CutoutButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = CutoutButton;
     }
 
     public void selectJumperTool() {
+        currentButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), false);
         buildMenuFunctions.setBuildMenuData(ToolType.PLACE, ComponentType.JUMPER);
-        JumperButton.requestFocus();
-
+        JumperButton.pseudoClassStateChanged(PseudoClass.getPseudoClass("current"), true);
+        currentButton = JumperButton;
     }
 
     @FXML
@@ -126,11 +153,11 @@ public class BuildMenuViewController {
             // Close the menu
             ShowMenuImage.setImage(new Image(ARROW_RIGHT_PATH));
             buildMenuFunctions.setPropertiesWindowVisible(false);
-            selectInteractTool();
         } else {
             // Open the menu
             ShowMenuImage.setImage(new Image(ARROW_LEFT_PATH));
         }
+        selectInteractTool();
 
         menuOpen = !menuOpen;
     }

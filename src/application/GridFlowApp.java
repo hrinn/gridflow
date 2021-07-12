@@ -76,8 +76,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         primaryStage.setMaxHeight(LOGIN_HEIGHT);
         primaryStage.setMaxWidth(LOGIN_WIDTH);
         primaryStage.show();
-
-        loginController.tryLogin("lefty", "powerball");
     }
 
     /* This waits for a successful login before displaying the main application */

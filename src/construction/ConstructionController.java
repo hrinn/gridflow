@@ -1,19 +1,23 @@
 package construction;
 
-import application.events.GridFlowEventManager;
-import application.events.OpenAccountsEvent;
-import application.events.ReLoginEvent;
+import application.events.*;
 import base.BaseMenuFunctions;
+import construction.buildMenu.BuildMenuData;
+import construction.buildMenu.BuildMenuFunctions;
+import construction.buildMenu.BuildMenuViewController;
 import construction.builder.GridBuilderController;
 import construction.canvas.CanvasExpandController;
 import construction.canvas.GridCanvasFacade;
 import construction.ghosts.GhostManagerController;
 import construction.history.GridHistorianController;
 import construction.properties.PropertiesData;
-import construction.properties.PropertiesManager;
-import construction.properties.PropertiesObserver;
+import construction.properties.PropertiesMenuFunctions;
+import construction.properties.PropertiesMenuViewController;
+import construction.properties.objectData.ObjectData;
 import construction.selector.SelectionManagerController;
+import domain.Association;
 import domain.Grid;
+import domain.components.Breaker;
 import domain.components.Component;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -22,34 +26,38 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import security.Access;
 
-public class ConstructionController implements BaseMenuFunctions, PropertiesObserver {
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class ConstructionController implements BaseMenuFunctions, BuildMenuFunctions, PropertiesMenuFunctions {
 
     private GridCanvasFacade canvasFacade = null;
-    private GridFlowEventManager gridFlowEventManager;
-    private Stage stage;
-    private Grid grid;
+    private final GridFlowEventManager gridFlowEventManager;
+    private final Stage stage;
+    private final Grid grid;
 
     // Security
     private Access access;
 
     // Sub Controllers
-    private GridBuilderController gridBuilderController;
+    private final GridBuilderController gridBuilderController;
     private GhostManagerController ghostManagerController;
-    private SelectionManagerController selectionManagerController;
-    private GridHistorianController gridHistorianController;
-    private CanvasExpandController canvasExpandController;
+    private final SelectionManagerController selectionManagerController;
+    private final GridHistorianController gridHistorianController;
+    private final CanvasExpandController canvasExpandController;
 
     // View Controllers
     private BuildMenuViewController buildMenuViewController;
+    private PropertiesMenuViewController propertiesMenuViewController;
 
     // UI Data
     private BuildMenuData buildMenuData;
     public PropertiesData propertiesData;
-    public boolean isTyping;
 
-    // Wire Placing and Association Placing
-    // Used to share if a double click is in progress, and where the first click was if so
-    private DoubleClickPlacementContext doubleClickContext = new DoubleClickPlacementContext();
+    // Map of hotkeys to buttons
+    private final Map<KeyCode, Runnable> componentShortcutMap = new HashMap<>();
 
     public ConstructionController(Grid grid, GridFlowEventManager gridFlowEventManager, Stage stage) {
         // shared objects
@@ -59,12 +67,14 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         this.propertiesData = new PropertiesData();
         this.stage = stage;
         this.grid = grid;
-        this.isTyping = false;
 
         // controllers
+        // Wire Placing and Association Placing
+        // Used to share if a double click is in progress, and where the first click was if so
+        DoubleClickPlacementContext doubleClickContext = new DoubleClickPlacementContext();
         gridBuilderController = new GridBuilderController(grid, gridFlowEventManager, doubleClickContext, buildMenuData,
                 propertiesData, canvasFacade);
-        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData);
+        ghostManagerController = new GhostManagerController(canvasFacade, doubleClickContext, buildMenuData, propertiesData);
         selectionManagerController = new SelectionManagerController(canvasFacade, buildMenuData, grid, gridFlowEventManager);
         gridHistorianController = new GridHistorianController(grid, gridFlowEventManager);
         canvasExpandController = new CanvasExpandController(stage.getScene(), canvasFacade);
@@ -73,13 +83,12 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
 
         setBuildMenuData(ToolType.INTERACT, null);
 
+        initializeComponentShortcutMap();
+
         installEventHandlers();
-        PropertiesManager.attach(this);
     }
 
     public GridBuilderController getGridBuilderController () { return this.gridBuilderController; }
-
-    public void setUserTyping(boolean typing) { this.isTyping = typing; }
 
     public GridCanvasFacade getCanvasFacade() {
         return canvasFacade;
@@ -98,6 +107,16 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         gridBuilderController.buildDataChanged();
     }
 
+    @Override
+    public void setBackgroundGridVisible(boolean state) {
+        canvasFacade.showBackgroundGrid(state);
+    }
+
+    @Override
+    public void setPropertiesWindowVisible(boolean state) {
+        propertiesMenuViewController.setPropertiesWindowVisibility(state);
+    }
+
     public void setPropertiesData(double rotation, boolean defaultState) {
         boolean rotationChanged = rotation != propertiesData.getRotation();
         boolean defaultStateChanged = defaultState != propertiesData.getDefaultState();
@@ -108,12 +127,42 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         ghostManagerController.propertiesDataChanged(rotationChanged, defaultStateChanged);
     }
 
+    /* Properties Menu Functions */
+    // Gets object data from the grid and gives it to the properties menu for display
     @Override
-    public void updateProperties(PropertiesData properties){
-        this.propertiesData = new PropertiesData(properties.getType(), properties.getID(), properties.getName(),
-                properties.getDefaultState(), properties.getRotation(), properties.getNumSelected(),
-                properties.getNamePos(), properties.getAssociation(), properties.getAssocLabel(),
-                properties.getAssocSubLabel(), properties.getAssocAcronym());
+    public ObjectData getObjectData(String objectID) {
+        return grid.getObjectData(objectID);
+    }
+
+    @Override
+    public ComponentType getComponentType(String objectID) {
+        Component comp = grid.getComponent(objectID);
+        if (comp == null) return null;
+        return comp.getComponentType();
+    }
+
+    @Override
+    public void setObjectData(String objectID, ObjectData objectData) {
+        Component comp = grid.getComponent(objectID);
+        if (comp == null) {
+            Association assoc = grid.getAssociation(objectID);
+            if (assoc == null) return;
+            assoc.applyAssociationData(objectData);
+        } else {
+            comp.applyComponentData(objectData);
+        }
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
+    }
+
+    @Override
+    public void linkBreakers(List<String> breakerIDs) {
+        List<Breaker> tandems = breakerIDs.stream().map(id -> (Breaker)grid.getComponent(id)).collect(Collectors.toList());
+        gridBuilderController.linkTandems(tandems);
+    }
+
+    @Override
+    public void clearTandem(String breakerID) {
+        gridBuilderController.unlinkTandemByID(breakerID);
     }
 
     public void notifyGhostController (boolean rotChanged, boolean stateChanged) {
@@ -121,11 +170,9 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
     }
 
     private final EventHandler<KeyEvent> handleRKeyRotation = event -> {
-        if (isTyping) return;
         if (event.getCode() != KeyCode.R) return;
         rotate(event.isControlDown());
         event.consume();
-        buildMenuViewController.setPropertiesWindow();
     };
 
     private final EventHandler<MouseEvent> handleMiddleMouseRotation = event -> {
@@ -135,53 +182,37 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
     };
 
     private final EventHandler<KeyEvent> handleToggleDefaultState = event -> {
-        if (isTyping) return;
         if (event.getCode() != KeyCode.E) return;
         if (buildMenuData.toolType != ToolType.PLACE) return;
 
-        // Toggle state, update ghost manager
-        // If placing a new source component, they are on by default and can't be changed
-        if ( !((propertiesData.getType() == ComponentType.POWER_SOURCE
-                || propertiesData.getType() == ComponentType.TURBINE)
-                &&  buildMenuData.toolType == ToolType.PLACE)) {
-
-            propertiesData.setDefaultState(!propertiesData.getDefaultState());
-            PropertiesManager.notifyObservers(propertiesData);
-            ghostManagerController.propertiesDataChanged(false, true);
-        }
+        propertiesData.toggleDefaultState();
+        ghostManagerController.propertiesDataChanged(false, true);
 
         event.consume();
-
-        buildMenuViewController.setPropertiesWindow();
     };
 
-    private final EventHandler<KeyEvent> handleSelectionTool = event -> {
-        if (isTyping) return;
-        if (event.getCode() != KeyCode.S) return;
+    private void initializeComponentShortcutMap() {
+        componentShortcutMap.put(KeyCode.ESCAPE, () -> buildMenuViewController.selectInteractTool());
+        componentShortcutMap.put(KeyCode.A, () -> buildMenuViewController.selectAssociationTool());
+        componentShortcutMap.put(KeyCode.W, () -> buildMenuViewController.selectWireTool());
+        componentShortcutMap.put(KeyCode.S, () -> buildMenuViewController.selectSelectTool());
+        componentShortcutMap.put(KeyCode.DIGIT1, () -> buildMenuViewController.selectPowerSourceTool());
+        componentShortcutMap.put(KeyCode.DIGIT2, () -> buildMenuViewController.selectTurbineTool());
+        componentShortcutMap.put(KeyCode.DIGIT3, () -> buildMenuViewController.selectSwitchTool());
+        componentShortcutMap.put(KeyCode.DIGIT4, () -> buildMenuViewController.selectBreaker12Tool());
+        componentShortcutMap.put(KeyCode.DIGIT5, () -> buildMenuViewController.selectBreaker70Tool());
+        componentShortcutMap.put(KeyCode.DIGIT6, () -> buildMenuViewController.selectTransformerTool());
+        componentShortcutMap.put(KeyCode.DIGIT7, () -> buildMenuViewController.selectJumperTool());
+        componentShortcutMap.put(KeyCode.DIGIT8, () -> buildMenuViewController.selectCutoutTool());
+    }
+
+    private final EventHandler<KeyEvent> handleComponentShortcut = event -> {
         if (access == Access.VIEWER) return;
 
-        setBuildMenuData(ToolType.SELECT, buildMenuData.componentType);
-        buildMenuViewController.highlightSelectTool();
-
-        event.consume();
-    };
-
-    private final EventHandler<KeyEvent> handleAssociationTool = event -> {
-        if (isTyping) return;
-        if (event.getCode() != KeyCode.A) return;
-        if (access == Access.VIEWER) return;
-
-        setBuildMenuData(ToolType.ASSOCIATION, buildMenuData.componentType);
-        buildMenuViewController.highlightAssociationTool();
-
-        event.consume();
-    };
-
-    private final EventHandler<KeyEvent> handleEscapeTool = event -> {
-        if (event.getCode() != KeyCode.ESCAPE) return;
-        if (buildMenuData.toolType == ToolType.INTERACT) return;
-        setBuildMenuData(ToolType.INTERACT, buildMenuData.componentType);
-        buildMenuViewController.highlightInteractTool();
+        // Runs the function associated with the keycode
+        Runnable func = componentShortcutMap.getOrDefault(event.getCode(), null);
+        if (func == null) return;
+        func.run();
 
         event.consume();
     };
@@ -204,7 +235,6 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
 
         // Update properties and ghost object
         propertiesData.setRotation(rotation);
-        PropertiesManager.notifyObservers(propertiesData);
         ghostManagerController.propertiesDataChanged(true, false);
     }
 
@@ -245,6 +275,11 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
     }
 
     @Override
+    public void toggleFullscreen() {
+        stage.setFullScreen(!stage.isFullScreen());
+    }
+
+    @Override
     public void zoomToFit() {
         // Calculate middle position of grid
         double tx = 0;
@@ -267,9 +302,7 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleRKeyRotation);
         stage.addEventFilter(MouseEvent.MOUSE_PRESSED, handleMiddleMouseRotation);
         stage.addEventFilter(KeyEvent.KEY_PRESSED, handleToggleDefaultState);
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleEscapeTool);
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleSelectionTool);
-        stage.addEventFilter(KeyEvent.KEY_PRESSED, handleAssociationTool);
+        stage.addEventHandler(KeyEvent.KEY_PRESSED, handleComponentShortcut);
 
         // builder events
         canvasFacade.setToggleComponentEventHandler(gridBuilderController.getToggleComponentEventHandler());
@@ -310,5 +343,11 @@ public class ConstructionController implements BaseMenuFunctions, PropertiesObse
 
     public void setBuildMenuViewController(BuildMenuViewController buildMenuViewController) {
         this.buildMenuViewController = buildMenuViewController;
+    }
+
+    public void setPropertiesMenuViewController(PropertiesMenuViewController propertiesMenuViewController) {
+        this.propertiesMenuViewController = propertiesMenuViewController;
+        selectionManagerController.addSelectedIDObserver(propertiesMenuViewController);
+        propertiesMenuViewController.setPropertiesMenuFunctions(this);
     }
 }

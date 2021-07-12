@@ -31,7 +31,7 @@ public class Transformer extends Device {
         createComponentIcon();
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getTransformerIcon(getPosition());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());

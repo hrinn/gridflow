@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import construction.history.AssociationMemento;
+import construction.properties.objectData.AssociationData;
+import construction.properties.objectData.ObjectData;
 import domain.geometry.Point;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -80,7 +82,9 @@ public class Association implements Selectable {
         associationIcon.setSelect(select);
     }
 
-    public void setLabel (String label) { this.label = label; }
+    public void setLabel (String label) {
+        this.label = label;
+    }
 
     public void setSubLabel (String sublabel) { this.subLabel = sublabel; }
 
@@ -110,6 +114,17 @@ public class Association implements Selectable {
                 rect.getWidth(), rect.getHeight(), new Point(text.getTranslateX(), text.getTranslateY()));
     }
 
+    public ObjectData getAssociationObjectData() {
+        return new AssociationData(label, subLabel, acronym);
+    }
+
+    public void applyAssociationData(ObjectData objectData) {
+        AssociationData data = (AssociationData) objectData;
+        setLabel(data.getLabel());
+        associationIcon.setLabelText(data.getLabel());
+        setSubLabel(data.getSubLabel());
+        setAcronym(data.getAcronym());
+    }
 }
 
 class AssociationSnapshot implements AssociationMemento {

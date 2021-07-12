@@ -3,18 +3,16 @@ package construction.selector;
 import application.events.GridChangedEvent;
 import application.events.GridFlowEventManager;
 import application.events.SaveStateEvent;
-import construction.BuildMenuData;
+import construction.buildMenu.BuildMenuData;
 import construction.ToolType;
 import construction.canvas.GridCanvasFacade;
 import construction.history.GridMemento;
+import construction.selector.observable.Observer;
 import domain.Grid;
+import javafx.collections.ListChangeListener;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-
-import java.util.List;
 
 public class SelectionManagerController {
 
@@ -30,6 +28,10 @@ public class SelectionManagerController {
         this.buildMenuData = buildMenuData;
         this.gridFlowEventManager = gridFlowEventManager;
         this.grid = grid;
+    }
+
+    public void addSelectedIDObserver(Observer<String> observer) {
+        model.addObserver(observer);
     }
 
     public void buildMenuDataChanged() {

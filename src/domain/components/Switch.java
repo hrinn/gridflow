@@ -32,7 +32,7 @@ public class Switch extends Closeable {
         createComponentIcon();
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault(), isLocked());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());

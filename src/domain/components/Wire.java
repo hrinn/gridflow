@@ -144,7 +144,7 @@ public class Wire extends Component {
         return connections;
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         WireIcon icon;
         if (isPointWire() && connections.size() > 1)
         {

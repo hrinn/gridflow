@@ -80,7 +80,7 @@ public class PowerSource extends Source {
         return powerSource;
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn(), isLocked());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);

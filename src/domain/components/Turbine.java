@@ -90,7 +90,7 @@ public class Turbine extends Source {
         return outWire2.isEnergized();
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition(), isOn(), isLocked());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);

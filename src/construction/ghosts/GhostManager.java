@@ -2,8 +2,6 @@ package construction.ghosts;
 
 import construction.properties.PropertiesData;
 import construction.ComponentType;
-import construction.properties.PropertiesManager;
-import construction.properties.PropertiesObserver;
 import construction.canvas.GridCanvasFacade;
 import domain.geometry.Point;
 import visualization.componentIcons.ComponentIcon;
@@ -11,27 +9,18 @@ import visualization.componentIcons.ComponentIconCreator;
 
 import java.util.List;
 
-public class GhostManager implements PropertiesObserver {
+public class GhostManager {
 
     private final static double GHOST_OPACITY = 0.5;
 
-    private GridCanvasFacade canvasMaster;
+    private final GridCanvasFacade canvasMaster;
     private ComponentIcon ghostIcon;
-    private PropertiesData properties;
+    private final PropertiesData properties;
     private boolean ghostEnabled;
 
-    public GhostManager(GridCanvasFacade canvasMaster) {
+    public GhostManager(GridCanvasFacade canvasMaster, PropertiesData properties) {
         this.canvasMaster = canvasMaster;
-        this.properties = new PropertiesData();
-        PropertiesManager.attach(this);
-    }
-
-    @Override
-    public void updateProperties(PropertiesData PD) {
-        this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
-                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
-                PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
-                PD.getAssocSubLabel(), PD.getAssocAcronym());
+        this.properties = properties;
     }
 
     public void setGhostIcon(ComponentType componentType) {
@@ -67,7 +56,7 @@ public class GhostManager implements PropertiesObserver {
             case BREAKER_70KV -> ComponentIconCreator.get70KVBreakerIcon(pos, properties.getDefaultState(), properties.getDefaultState(), false);
             case CUTOUT -> ComponentIconCreator.getCutoutIcon(pos, properties.getDefaultState(), false);
             case JUMPER -> ComponentIconCreator.getJumperIcon(pos, properties.getDefaultState(), false);
-            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, properties.getName(), true, false);
+            case POWER_SOURCE -> ComponentIconCreator.getPowerSourceIcon(pos, "", true, false);
             case SWITCH -> ComponentIconCreator.getSwitchIcon(pos, properties.getDefaultState(), properties.getDefaultState(), false);
             case TRANSFORMER -> ComponentIconCreator.getTransformerIcon(pos);
             case TURBINE -> ComponentIconCreator.getTurbineIcon(pos, true, false);

@@ -17,6 +17,7 @@ import construction.properties.objectData.ObjectData;
 import construction.selector.SelectionManagerController;
 import domain.Association;
 import domain.Grid;
+import domain.components.Breaker;
 import domain.components.Component;
 import javafx.event.EventHandler;
 import javafx.scene.input.KeyCode;
@@ -26,7 +27,9 @@ import javafx.stage.Stage;
 import security.Access;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class ConstructionController implements BaseMenuFunctions, BuildMenuFunctions, PropertiesMenuFunctions {
 
@@ -148,9 +151,18 @@ public class ConstructionController implements BaseMenuFunctions, BuildMenuFunct
         } else {
             comp.applyComponentData(objectData);
         }
-        GridChangedEvent e = new GridChangedEvent();
-        e.toolCausingChange = buildMenuData.toolType;
-        gridFlowEventManager.sendEvent(e);
+        gridFlowEventManager.sendEvent(new GridChangedEvent());
+    }
+
+    @Override
+    public void linkBreakers(List<String> breakerIDs) {
+        List<Breaker> tandems = breakerIDs.stream().map(id -> (Breaker)grid.getComponent(id)).collect(Collectors.toList());
+        gridBuilderController.linkTandems(tandems);
+    }
+
+    @Override
+    public void clearTandem(String breakerID) {
+        gridBuilderController.unlinkTandemByID(breakerID);
     }
 
     public void notifyGhostController (boolean rotChanged, boolean stateChanged) {

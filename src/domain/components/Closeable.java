@@ -67,7 +67,13 @@ public abstract class Closeable extends Device implements IToggleable, ILockable
     @Override
     public void applyComponentData(ObjectData objectData) {
         CloseableData data = (CloseableData) objectData;
-        setName(data.getName());
-        this.closedByDefault = data.isClosed();
+        if (!getName().equals(data.getName())) {
+            setName(data.getName());
+            updateComponentIconName();
+        }
+        if (this.closedByDefault != data.isClosed()) {
+            this.closedByDefault = data.isClosed();
+            createComponentIcon();
+        }
     }
 }

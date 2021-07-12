@@ -34,9 +34,9 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
 
     public TextField nameField;
     public Label numSelectedLabel;
-    public Label labelField;
-    public Label subLabelField;
-    public Label acronymField;
+    public TextField labelField;
+    public TextField subLabelField;
+    public TextField acronymField;
     public Label numSelectedToClearLabel;
     public Button clearLinkedButton;
 
@@ -179,6 +179,16 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         acronymControl.setVisible(true);
     }
 
+    public void setSourceMenu(SourceData data) {
+        currentObjectData = data;
+
+        // Show correct controls
+        nameControl.setVisible(true);
+
+        // Fill in data
+        nameField.setText(data.getName());
+    }
+
     private void setLinkBreakersMenu() {
         // Show correct controls
         linkBreakersControl.setVisible(true);
@@ -187,7 +197,7 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         numSelectedLabel.setText("" + selectedIDs.size());
     }
 
-    public void applyProperties(ActionEvent actionEvent) {
+    public void applyProperties() {
         // Gather settings
         String name = nameField.getText();
         boolean nameRight = namePosTG.getSelectedToggle() == toggleRight;
@@ -201,6 +211,16 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
 
         // Send it to construction controller for application
         propertiesMenuFunctions.setObjectData(selectedIDs.get(0), newData);
+    }
+
+    public void linkBreakers() {
+        propertiesMenuFunctions.linkBreakers(List.of(selectedIDs.get(0), selectedIDs.get(1)));
+    }
+
+    public void clearTandem() {
+        propertiesMenuFunctions.clearTandem(selectedIDs.get(0));
+        clearLinkedButton.setDisable(true);
+        numSelectedToClearLabel.setText("0");
     }
 
     public void setPropertiesWindowVisibility(boolean visible) {

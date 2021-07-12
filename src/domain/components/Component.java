@@ -66,6 +66,8 @@ public abstract class Component implements Selectable {
         return new ComponentData(name);
     }
 
+    protected abstract void createComponentIcon();
+
     public abstract void updateComponentIcon();
 
     public abstract void updateComponentIconName();
@@ -111,6 +113,9 @@ public abstract class Component implements Selectable {
 
     public void applyComponentData(ObjectData objectData) {
         ComponentData data = (ComponentData) objectData;
-        this.name = data.getName();
+        if (!getName().equals(data.getName())) {
+            this.name = data.getName();
+            updateComponentIconName();
+        }
     }
 }

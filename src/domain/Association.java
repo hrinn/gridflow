@@ -82,7 +82,9 @@ public class Association implements Selectable {
         associationIcon.setSelect(select);
     }
 
-    public void setLabel (String label) { this.label = label; }
+    public void setLabel (String label) {
+        this.label = label;
+    }
 
     public void setSubLabel (String sublabel) { this.subLabel = sublabel; }
 
@@ -118,9 +120,10 @@ public class Association implements Selectable {
 
     public void applyAssociationData(ObjectData objectData) {
         AssociationData data = (AssociationData) objectData;
-        this.label = data.getLabel();
-        this.subLabel = data.getSubLabel();
-        this.acronym = data.getAcronym();
+        setLabel(data.getLabel());
+        associationIcon.setLabelText(data.getLabel());
+        setSubLabel(data.getSubLabel());
+        setAcronym(data.getAcronym());
     }
 }
 

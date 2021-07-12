@@ -32,29 +32,29 @@
             <Label text="Linked Breakers: " prefWidth="95"/>
             <Label fx:id="numSelectedToClearLabel" prefWidth="10"/>
             <HBox alignment="CENTER" prefWidth="94">
-                <Button fx:id="clearLinkedButton" text="Clear" styleClass="properties-button" focusTraversable="false" prefWidth="49"/>
+                <Button fx:id="clearLinkedButton" onAction="#clearTandem" text="Clear" styleClass="properties-button" focusTraversable="false" prefWidth="49"/>
             </HBox>
         </HBox>
         <HBox fx:id="labelControl" alignment="CENTER">
-            <Label fx:id="labelField" text="Label" prefWidth="50"/>
-            <TextField focusTraversable="false"/>
+            <Label text="Label" prefWidth="50"/>
+            <TextField fx:id="labelField" focusTraversable="false"/>
         </HBox>
         <HBox fx:id="subLabelControl" alignment="CENTER">
-            <Label fx:id="subLabelField" text="Sub Label" prefWidth="75"/>
-            <TextField prefWidth="124" focusTraversable="false"/>
+            <Label text="Sub Label" prefWidth="75"/>
+            <TextField fx:id="subLabelField" prefWidth="124" focusTraversable="false"/>
         </HBox>
         <HBox fx:id="acronymControl" alignment="CENTER">
-            <Label fx:id="acronymField" text="Acronym" prefWidth="75"/>
-            <TextField prefWidth="124" focusTraversable="false"/>
+            <Label text="Acronym" prefWidth="75"/>
+            <TextField fx:id="acronymField" prefWidth="124" focusTraversable="false"/>
         </HBox>
         <HBox fx:id="linkBreakersControl" alignment="CENTER">
             <Label text="Breakers Selected: " prefWidth="100"/>
             <Label fx:id="numSelectedLabel" prefWidth="50"/>
-            <Button text="Link" styleClass="properties-button" focusTraversable="false" prefWidth="49"/>
+            <Button text="Link" onAction="#linkBreakers" styleClass="properties-button" focusTraversable="false" prefWidth="49"/>
         </HBox>
 
     </VBox>
     <HBox AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="0" prefWidth="250" alignment="CENTER">
-        <Button fx:id="applyButton" onAction="#applyProperties" styleClass="properties-button" style="-fx-font-weight: bold;" text="Apply" focusTraversable="false"/>
+        <Button fx:id="applyButton" onAction="#applyProperties" styleClass="properties-button" text="Apply" focusTraversable="false"/>
     </HBox>
 </AnchorPane>

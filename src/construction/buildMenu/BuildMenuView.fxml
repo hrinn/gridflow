@@ -18,7 +18,7 @@
     <fx:define>
         <Double fx:id="ButtonSize" fx:value="45.0"/>
     </fx:define>
-        <HBox fx:id="MenuContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: TRANSPARENT" alignment="CENTER" spacing="3" prefHeight="636">
+        <HBox fx:id="MenuContainer" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" style="-fx-background-color: TRANSPARENT" alignment="CENTER" spacing="5" prefHeight="636">
             <VBox fx:id="componentMenu" alignment="TOP_CENTER" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0" styleClass="build-menu">
                 <Button fx:id="InteractToolButton" styleClass="component-button" onMousePressed="#selectInteractTool" prefHeight="$ButtonSize" prefWidth="$ButtonSize">
                     <graphic>

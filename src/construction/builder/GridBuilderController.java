@@ -82,8 +82,8 @@ public class GridBuilderController {
         }
     }
 
-    public void unlinkTandemByID (UUID brID) {
-        Component comp = grid.getComponent(brID.toString());
+    public void unlinkTandemByID (String brID) {
+        Component comp = grid.getComponent(brID);
         if (comp instanceof Breaker) {
             if (((Breaker) comp).hasTandem()){
                 unlinkTandem(((Breaker) comp));

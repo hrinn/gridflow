@@ -57,6 +57,7 @@
 
 .properties-button {
     -fx-background-color: TRANSPARENT;
+    -fx-font-weight: bold;
 }
 
 .properties-button:hover {

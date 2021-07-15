@@ -56,7 +56,8 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     public void startLogin() throws Exception {
         Group root = new Group();
-        Scene scene = new Scene(root, 1280, 720);
+        Scene scene = new Scene(root, 1000, 632);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         /* Initialize Security Module */
         LoginController loginController = new LoginController(gridFlowEventManager);
@@ -71,10 +72,10 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         primaryStage.setScene(scene);
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));
-        primaryStage.setMinHeight(LOGIN_HEIGHT);
-        primaryStage.setMinWidth(LOGIN_WIDTH);
-        primaryStage.setMaxHeight(LOGIN_HEIGHT);
-        primaryStage.setMaxWidth(LOGIN_WIDTH);
+//        primaryStage.setMinHeight(LOGIN_HEIGHT);
+//        primaryStage.setMinWidth(LOGIN_WIDTH);
+//        primaryStage.setMaxHeight(LOGIN_HEIGHT);
+//        primaryStage.setMaxWidth(LOGIN_WIDTH);
         primaryStage.show();
     }
 

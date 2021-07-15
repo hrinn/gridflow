@@ -67,3 +67,34 @@
 .text-field {
     -fx-background-color: white;
 }
+
+.loginScreen {
+    -fx-background-color: WHITE;
+    -fx-background-image: url(/resources/vafb.jpg);
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 0, 0;
+}
+
+.loginLabel {
+    -fx-font-size: 16;
+}
+
+.loginButton {
+    -fx-background-color: #008EB0;
+    -fx-font-size: 16;
+    -fx-text-fill: black;
+}
+
+.loginButton:hover {
+    -fx-text-fill: white;
+}
+
+.loginBox {
+    -fx-background-color: #ACB4B0;
+    -fx-background-radius: 3;
+    -fx-padding: 25;
+}
+
+.password-field {
+    -fx-background-color: white;
+}

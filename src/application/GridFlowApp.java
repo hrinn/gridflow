@@ -31,8 +31,8 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
     private static final String WINDOW_ICON_PATH = "/resources/icon.png";
     private static final int WINDOW_WIDTH = 1280;
     private static final int WINDOW_HEIGHT = 720;
-    private static final int LOGIN_WIDTH = 1280;
-    private static final int LOGIN_HEIGHT = 720;
+    private static final int LOGIN_WIDTH = 1000;
+    private static final int LOGIN_HEIGHT = 632;
     private static final int MAX_WIDTH = 3840;
     private static final int MAX_HEIGHT = 2160;
 
@@ -56,7 +56,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     public void startLogin() throws Exception {
         Group root = new Group();
-        Scene scene = new Scene(root, 1000, 632);
+        Scene scene = new Scene(root, LOGIN_WIDTH, LOGIN_HEIGHT);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         /* Initialize Security Module */
@@ -72,10 +72,10 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         primaryStage.setScene(scene);
         primaryStage.setTitle(TITLE);
         primaryStage.getIcons().add(new Image(WINDOW_ICON_PATH));
-//        primaryStage.setMinHeight(LOGIN_HEIGHT);
-//        primaryStage.setMinWidth(LOGIN_WIDTH);
-//        primaryStage.setMaxHeight(LOGIN_HEIGHT);
-//        primaryStage.setMaxWidth(LOGIN_WIDTH);
+        primaryStage.setMinHeight(LOGIN_HEIGHT);
+        primaryStage.setMinWidth(LOGIN_WIDTH);
+        primaryStage.setMaxHeight(LOGIN_HEIGHT);
+        primaryStage.setMaxWidth(LOGIN_WIDTH);
         primaryStage.show();
     }
 

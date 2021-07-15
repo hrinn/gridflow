@@ -39,7 +39,6 @@
                         <Menu fx:id="EditMenu" mnemonicParsing="false"
                               style="-fx-font-size: 14; -fx-text-alignment: center;" text="Edit">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Expand Canvas" onAction="#expandCanvas"/>
                                 <MenuItem mnemonicParsing="false" text="Select All" onAction="#selectAll"/>
                                 <MenuItem fx:id="deleteButton" text="Delete" onAction="#delete"/>
                                 <MenuItem fx:id="undoButton" text="Undo" onAction="#undo"/>

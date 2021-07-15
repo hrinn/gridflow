@@ -1,10 +1,12 @@
 package security;
 
+import application.GridFlowApp;
 import application.events.GridFlowEvent;
 import application.events.GridFlowEventListener;
 import application.events.OpenAccountsEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.*;
+import javafx.scene.image.Image;
 import javafx.stage.*;
 
 import java.io.IOException;
@@ -45,7 +47,9 @@ public class AccountController implements GridFlowEventListener {
         this.viewController = vc;
 
         dialog.setScene(new Scene(createAccountView));
+        dialog.getScene().getStylesheets().add(getClass().getResource("/application/styles.css").toExternalForm());
         dialog.setTitle("Account Manager");
+        dialog.getIcons().add(new Image(GridFlowApp.WINDOW_ICON_PATH));
         dialog.initModality(Modality.APPLICATION_MODAL);
         dialog.initOwner(scene.getWindow());
         accountWindowDialog = dialog;

@@ -25,6 +25,7 @@ public class LoginUIViewController {
         if (!res) {
             user.clear();
             pass.clear();
+            user.requestFocus();
         }
     }
 }

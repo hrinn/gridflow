@@ -1,3 +1,15 @@
+* {
+    -fx-accent: #008EB0;
+}
+
+.button {
+    -fx-background-color: #ACB4B0;
+}
+
+.button:hover {
+    -fx-background-color: #89908C;
+}
+
 .component-button {
     -fx-background-color : TRANSPARENT;
     -fx-background-radius: 10;
@@ -43,25 +55,16 @@
     -fx-background-color: #D8D3CE;
 }
 
-.toggle-button {
-    -fx-background-color: TRANSPARENT;
-}
-
 .toggle-button:selected {
     -fx-background-color: #ACB4B0;
 }
 
-.toggle-button:hover {
-    -fx-underline: true;
-}
-
-.properties-button {
+.toggle-button {
     -fx-background-color: TRANSPARENT;
-    -fx-font-weight: bold;
 }
 
-.properties-button:hover {
-    -fx-background-color: #ACB4B0;
+.toggle-button:hover {
+    -fx-background-color: #89908C;
 }
 
 .text-field {
@@ -86,6 +89,7 @@
 }
 
 .loginButton:hover {
+    -fx-background-color: #008EB0;
     -fx-text-fill: white;
 }
 
@@ -97,4 +101,16 @@
 
 .password-field {
     -fx-background-color: white;
+}
+
+.accountWindow {
+    -fx-background-color: #D8D3CE;
+}
+
+.combo-box {
+    -fx-background-color: #ACB4B0;
+}
+
+.combo-box:hover {
+    -fx-background-color: #89908C;
 }

@@ -7,12 +7,14 @@ import construction.properties.PropertiesMenuViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import application.events.*;
@@ -28,13 +30,11 @@ import construction.ConstructionController;
 public class GridFlowApp extends Application implements GridFlowEventListener {
 
     private static final String TITLE = "GridFlow";
-    private static final String WINDOW_ICON_PATH = "/resources/icon.png";
+    public static final String WINDOW_ICON_PATH = "/resources/icon.png";
     private static final int WINDOW_WIDTH = 1280;
     private static final int WINDOW_HEIGHT = 720;
     private static final int LOGIN_WIDTH = 1000;
     private static final int LOGIN_HEIGHT = 632;
-    private static final int MAX_WIDTH = 3840;
-    private static final int MAX_HEIGHT = 2160;
 
     private GridFlowEventManager gridFlowEventManager;
     private Stage primaryStage;
@@ -105,6 +105,9 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     /* This initializes and displays the main application */
     public void startApplication(Access permissionLevel) throws Exception {
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        System.out.println("Screen size: " + screenBounds.getWidth() + " x " + screenBounds.getHeight());
+
         /* Create GUI elements */
         Group root = new Group();
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, Color.DARKGRAY);
@@ -171,8 +174,9 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         root.getChildren().addAll(constructionController.getCanvasFacade().getCanvas(), UI);
 
         /* Show the new UI elements */
-        primaryStage.setMaxWidth(MAX_WIDTH);
-        primaryStage.setMaxHeight(MAX_HEIGHT);
+        primaryStage.setMinHeight(WINDOW_HEIGHT);
+        primaryStage.setMaxWidth(scene.getWidth());
+        primaryStage.setMaxHeight(screenBounds.getHeight());
         primaryStage.show();
     }
 

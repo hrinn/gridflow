@@ -31,7 +31,7 @@
         <HBox fx:id="clearLinkedControl" alignment="CENTER">
             <Label text="Linked Breakers: " prefWidth="95"/>
             <Label fx:id="numSelectedToClearLabel" prefWidth="10"/>
-            <HBox alignment="CENTER" prefWidth="94">
+            <HBox alignment="CENTER_RIGHT" prefWidth="94">
                 <Button fx:id="clearLinkedButton" onAction="#clearTandem" text="Clear" styleClass="properties-button" focusTraversable="false" prefWidth="49"/>
             </HBox>
         </HBox>

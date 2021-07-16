@@ -32,8 +32,8 @@ public class ComponentIcon {
     private Point midLeft;
     private final Rectangle fittingRect = new Rectangle();
     private final Group iconNode = new Group();
-    private Text componentName = null;
-    private AnchorPane componentNamePositioner = null;
+    private final Text componentName = new Text();
+    private final AnchorPane componentNamePositioner = new AnchorPane();
     private final Group componentNode = new Group(iconNode);
     private final Group energyOutlineNodes = new Group();
     private double height;
@@ -103,11 +103,7 @@ public class ComponentIcon {
 
     public void setComponentName(String name) {
         if (name == null || name.isEmpty()) return;
-        if (componentNamePositioner == null) {
-            // Create anchor pane to position name and text variable
-            componentNamePositioner = new AnchorPane();
-            componentName = new Text();
-
+        if (componentNamePositioner.getParent() == null) {
             // Add nodes to hierarchy
             componentNamePositioner.getChildren().add(componentName);
             componentNode.getChildren().add(componentNamePositioner);
@@ -130,15 +126,43 @@ public class ComponentIcon {
     public void setComponentNamePosition(boolean right) {
         AnchorPane.clearConstraints(componentName);
         AnchorPane.setTopAnchor(componentName, componentNamePositioner.getPrefHeight()/2 - componentName.prefHeight(-1)/2);
+        double angle = -componentName.getRotate();
 
         if (right) {
-            // Name on right
-            AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth());
-            componentName.setTextAlignment(TextAlignment.LEFT);
+            if (angle == 0) {
+                // Name on right
+                AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth());
+                componentName.setTextAlignment(TextAlignment.LEFT);
+
+            } else if (angle == 90) {
+                AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth()/2);
+                componentName.setTextAlignment(TextAlignment.CENTER);
+
+            } else if (angle == 180) {
+                // Name on left
+                AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth());
+                componentName.setTextAlignment(TextAlignment.RIGHT);
+
+            } else { // angle == 270
+                AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth()/2);
+                componentName.setTextAlignment(TextAlignment.CENTER);
+
+            }
         } else {
-            // Name on left
-            AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth());
-            componentName.setTextAlignment(TextAlignment.RIGHT);
+            if (angle == 0) {
+                // Name on left
+                AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth());
+                componentName.setTextAlignment(TextAlignment.RIGHT);
+            } else if (angle == 90) {
+
+            } else if (angle == 180) {
+                // Name on right
+                AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth());
+                componentName.setTextAlignment(TextAlignment.LEFT);
+
+            } else { // angle == 270
+
+            }
         }
     }
 
@@ -148,7 +172,7 @@ public class ComponentIcon {
         boundingRect.getTransforms().clear();
         fittingRect.getTransforms().clear();
         textElements.forEach(text -> text.setRotate(0));
-        if (componentName != null) componentName.setRotate(0);
+        componentName.setRotate(0);
     }
 
     public void setAngle(double angle, Point position) {
@@ -162,8 +186,7 @@ public class ComponentIcon {
         energyOutlineNodes.getTransforms().add(rotateTransform);
         fittingRect.getTransforms().add(rotateTransform);
         textElements.forEach(text -> text.setRotate(-angle));
-        if (componentName != null) componentName.setRotate(-angle);
-
+        componentName.setRotate(-angle);
     }
 
     public void setTranslate(double x, double y) {

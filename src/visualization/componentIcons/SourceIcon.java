@@ -45,11 +45,11 @@ public class SourceIcon extends ComponentIcon {
         text.setTextAlignment(TextAlignment.CENTER);
 
         if (type == ComponentType.POWER_SOURCE) {
-
             AnchorPane.setTopAnchor(text, positioner.getPrefHeight()/3 - text.prefHeight(-1)/3);
         } else {
             // Turbine
-            AnchorPane.setTopAnchor(text, positioner.getPrefHeight()/2 - text.prefHeight(-1)/2);
+            // TODO: adjust the top anchor shift to be more center
+            AnchorPane.setTopAnchor(text, positioner.getPrefHeight()/2 - text.prefHeight(-1)/4);
         }
     }
 

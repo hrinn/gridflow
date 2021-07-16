@@ -55,6 +55,6 @@
 
     </VBox>
     <HBox AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="0" prefWidth="250" alignment="CENTER">
-        <Button fx:id="applyButton" onAction="#applyProperties" styleClass="properties-button" text="Apply" focusTraversable="false"/>
+        <Button fx:id="applyButton" onAction="#applyProperties" styleClass="properties-button" text="Apply" defaultButton="true" focusTraversable="false"/>
     </HBox>
 </AnchorPane>

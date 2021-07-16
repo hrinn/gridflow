@@ -94,7 +94,7 @@
 }
 
 .loginBox {
-    -fx-background-color: #ACB4B0;
+    -fx-background-color: #aca8a4; /*#ACB4B0;*/
     -fx-background-radius: 3;
     -fx-padding: 25;
 }

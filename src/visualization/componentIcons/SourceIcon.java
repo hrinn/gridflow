@@ -49,7 +49,7 @@ public class SourceIcon extends ComponentIcon {
         } else {
             // Turbine
             // TODO: adjust the top anchor shift to be more center
-            AnchorPane.setTopAnchor(text, positioner.getPrefHeight()/2 - text.prefHeight(-1)/4);
+            AnchorPane.setTopAnchor(text, positioner.getPrefHeight()/2 - text.prefHeight(-1) * .4);
         }
     }
 

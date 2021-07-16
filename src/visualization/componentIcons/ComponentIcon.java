@@ -125,7 +125,7 @@ public class ComponentIcon {
 
     public void setComponentNamePosition(boolean right) {
         AnchorPane.clearConstraints(componentName);
-        AnchorPane.setTopAnchor(componentName, componentNamePositioner.getPrefHeight()/2 - componentName.prefHeight(-1)/2);
+        AnchorPane.setTopAnchor(componentName, componentNamePositioner.getPrefHeight()/2 - componentName.prefHeight(-1) * .4);
         double angle = -componentName.getRotate();
 
         if (right) {

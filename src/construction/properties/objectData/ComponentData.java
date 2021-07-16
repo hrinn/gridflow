@@ -46,7 +46,7 @@ public class ComponentData extends ObjectData {
         return name;
     }
 
-    private boolean getNamePos(boolean nameRightOrTop) {
+    protected boolean getNamePos(boolean nameRightOrTop) {
         if (isVertical()) {
             // nameRight
             if (angle == 0) {

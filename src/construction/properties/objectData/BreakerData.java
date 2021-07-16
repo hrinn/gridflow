@@ -21,7 +21,7 @@ public class BreakerData extends CloseableData {
     }
 
     @Override
-    public ObjectData applySettings(String name, boolean nameRight, boolean isClosed, String label, String subLabel, String acronym) {
-        return new BreakerData(name, nameRight, isClosed, tandemID, getAngle());
+    public ObjectData applySettings(String name, boolean nameRightOrTop, boolean isClosed, String label, String subLabel, String acronym) {
+        return new BreakerData(name, getNamePos(nameRightOrTop), isClosed, tandemID, getAngle());
     }
 }

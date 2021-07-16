@@ -19,7 +19,7 @@ public class CloseableData extends ComponentData {
     }
 
     @Override
-    public ObjectData applySettings(String name, boolean nameRight, boolean isClosed, String label, String subLabel, String acronym) {
-        return new CloseableData(name, nameRight, isClosed, getAngle());
+    public ObjectData applySettings(String name, boolean nameRightOrTop, boolean isClosed, String label, String subLabel, String acronym) {
+        return new CloseableData(name, getNamePos(nameRightOrTop), isClosed, getAngle());
     }
 }

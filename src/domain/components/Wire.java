@@ -167,7 +167,7 @@ public class Wire extends Component {
     @Override
     public void updateComponentIconName() {
         WireIcon icon = (WireIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), isNameRight());
     }
 
     @Override

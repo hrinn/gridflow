@@ -96,7 +96,7 @@ public class PowerSource extends Source {
     @Override
     public void updateComponentIconName() {
         SourceIcon icon = (SourceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), true);
     }
 
     @Override

@@ -6,8 +6,8 @@ public class BreakerData extends CloseableData {
 
     private String tandemID;
 
-    public BreakerData(String name, boolean defaultState, String tandemID) {
-        super(name, defaultState);
+    public BreakerData(String name, boolean nameRight, boolean defaultState, String tandemID, double angle) {
+        super(name, nameRight, defaultState, angle);
         this.tandemID = tandemID;
     }
 
@@ -22,6 +22,6 @@ public class BreakerData extends CloseableData {
 
     @Override
     public ObjectData applySettings(String name, boolean nameRight, boolean isClosed, String label, String subLabel, String acronym) {
-        return new BreakerData(name, isClosed, tandemID);
+        return new BreakerData(name, nameRight, isClosed, tandemID, getAngle());
     }
 }

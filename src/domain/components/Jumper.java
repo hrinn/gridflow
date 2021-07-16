@@ -34,7 +34,6 @@ public class Jumper extends Closeable {
         DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), isClosed(), isLocked());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
-        icon.setComponentName(getName());
         icon.setAngle(getAngle(), getPosition());
         setComponentIcon(icon);
     }
@@ -51,7 +50,7 @@ public class Jumper extends Closeable {
     @Override
     public void updateComponentIconName() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), isNameRight());
     }
 
     @Override

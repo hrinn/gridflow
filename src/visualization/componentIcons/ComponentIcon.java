@@ -101,7 +101,7 @@ public class ComponentIcon {
 
     public Point getMidLeft() { return this.midLeft; }
 
-    public void setComponentName(String name) {
+    public void setComponentName(String name, boolean right) {
         if (name == null || name.isEmpty()) return;
         if (componentNamePositioner.getParent() == null) {
             // Add nodes to hierarchy
@@ -113,13 +113,17 @@ public class ComponentIcon {
             componentNamePositioner.setLayoutY(boundingRect.getY());
             componentNamePositioner.setPrefWidth(boundingRect.getWidth());
             componentNamePositioner.setPrefHeight(boundingRect.getHeight());
+            componentNamePositioner.setMaxWidth(boundingRect.getWidth());
+            componentNamePositioner.setMaxHeight(boundingRect.getHeight());
+            componentNamePositioner.setMinWidth(boundingRect.getWidth());
+            componentNamePositioner.setMinHeight(boundingRect.getHeight());
 
             // Setup Text
             componentName.setWrappingWidth(Globals.UNIT * 2);
-            setComponentNamePosition(true);
             componentName.setFont(Font.font(null, 10));
         }
 
+        setComponentNamePosition(right);
         componentName.setText(name);
     }
 
@@ -154,6 +158,8 @@ public class ComponentIcon {
                 AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth());
                 componentName.setTextAlignment(TextAlignment.RIGHT);
             } else if (angle == 90) {
+                AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth()/2);
+                componentName.setTextAlignment(TextAlignment.CENTER);
 
             } else if (angle == 180) {
                 // Name on right
@@ -161,6 +167,8 @@ public class ComponentIcon {
                 componentName.setTextAlignment(TextAlignment.LEFT);
 
             } else { // angle == 270
+                AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth()/2);
+                componentName.setTextAlignment(TextAlignment.CENTER);
 
             }
         }

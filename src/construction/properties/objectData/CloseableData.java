@@ -5,8 +5,8 @@ import construction.properties.Visitor;
 public class CloseableData extends ComponentData {
     private boolean defaultState;
 
-    public CloseableData(String name, boolean defaultState) {
-        super(name);
+    public CloseableData(String name, boolean nameRight, boolean defaultState, double angle) {
+        super(name, nameRight, angle);
         this.defaultState = defaultState;
     }
 
@@ -20,6 +20,6 @@ public class CloseableData extends ComponentData {
 
     @Override
     public ObjectData applySettings(String name, boolean nameRight, boolean isClosed, String label, String subLabel, String acronym) {
-        return new CloseableData(name, isClosed);
+        return new CloseableData(name, nameRight, isClosed, getAngle());
     }
 }

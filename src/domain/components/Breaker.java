@@ -59,7 +59,6 @@ public class Breaker extends Closeable {
         } else {
             icon = ComponentIconCreator.get70KVBreakerIcon(getPosition(), isClosed(), isClosedByDefault(), isLocked());
         }
-        icon.setComponentName(getName());
         icon.setBreakerEnergyStates(isInWireEnergized(), isOutWireEnergized(), isClosed());
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
@@ -77,7 +76,7 @@ public class Breaker extends Closeable {
 
     @Override
     public ObjectData getComponentObjectData() {
-        return new BreakerData(getName(), isClosedByDefault(), getTandemID());
+        return new BreakerData(getName(), isNameRight(), isClosedByDefault(), getTandemID(), getAngle());
     }
 
     @Override
@@ -89,7 +88,7 @@ public class Breaker extends Closeable {
     @Override
     public void updateComponentIconName() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), isNameRight());
     }
 
     public Voltage getVoltage() {

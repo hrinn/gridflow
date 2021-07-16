@@ -3,7 +3,6 @@ package domain.components;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import construction.properties.objectData.CloseableData;
-import construction.properties.objectData.ComponentData;
 import construction.properties.objectData.ObjectData;
 import domain.geometry.Point;
 
@@ -61,14 +60,15 @@ public abstract class Closeable extends Device implements IToggleable, ILockable
 
     @Override
     public ObjectData getComponentObjectData() {
-        return new CloseableData(getName(), isClosedByDefault());
+        return new CloseableData(getName(), isNameRight(), isClosedByDefault(), getAngle());
     }
 
     @Override
     public void applyComponentData(ObjectData objectData) {
         CloseableData data = (CloseableData) objectData;
-        if (!getName().equals(data.getName())) {
+        if (!getName().equals(data.getName()) || isNameRight() != data.isNamePos()) {
             setName(data.getName());
+            setNameRight(data.isNamePos());
             updateComponentIconName();
         }
         if (this.closedByDefault != data.isClosed()) {

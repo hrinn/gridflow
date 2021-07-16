@@ -36,7 +36,6 @@ public class Switch extends Closeable {
         DeviceIcon icon = ComponentIconCreator.getSwitchIcon(getPosition(), isClosed(), isClosedByDefault(), isLocked());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
-        icon.setComponentName(getName());
         icon.setAngle(getAngle(), getPosition());
         setComponentIcon(icon);
     }
@@ -50,7 +49,7 @@ public class Switch extends Closeable {
     @Override
     public void updateComponentIconName() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), isNameRight());
     }
 
     @Override

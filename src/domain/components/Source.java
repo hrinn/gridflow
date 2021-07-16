@@ -57,7 +57,7 @@ public abstract class Source extends Component implements IToggleable, ILockable
 
     @Override
     public ObjectData getComponentObjectData() {
-        return new SourceData(getName());
+        return new SourceData(getName(), getAngle());
     }
 
     @Override

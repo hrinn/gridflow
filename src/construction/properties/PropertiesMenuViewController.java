@@ -66,7 +66,6 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
 
         toggleLeft.setToggleGroup(namePosTG);
         toggleRight.setToggleGroup(namePosTG);
-        namePosTG.selectToggle(toggleRight);
 
         toggleOpen.setToggleGroup(defStateTG);
         toggleClosed.setToggleGroup(defStateTG);
@@ -124,6 +123,16 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         return true;
     }
 
+    private void orientRightLeft(boolean isVertical) {
+        if (isVertical) {
+            toggleRight.setText("Right");
+            toggleLeft.setText("Left");
+        } else {
+            toggleRight.setText("Top");
+            toggleLeft.setText("Bottom");
+        }
+    }
+
     public void setComponentMenu(ComponentData data) {
         currentObjectData = data;
 
@@ -133,6 +142,8 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
 
         // Fill in data
         nameField.setText(data.getName());
+        orientRightLeft(data.isVertical());
+        namePosTG.selectToggle(data.isNameRight() ? toggleRight : toggleLeft);
     }
 
     public void setCloseableMenu(CloseableData data) {
@@ -146,6 +157,8 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         // Fill in data
         nameField.setText(data.getName());
         defStateTG.selectToggle(data.isClosed() ? toggleClosed : toggleOpen);
+        orientRightLeft(data.isVertical());
+        namePosTG.selectToggle(data.isNameRight() ? toggleRight : toggleLeft);
     }
 
     public void setBreakerMenu(BreakerData data) {
@@ -160,6 +173,8 @@ public class PropertiesMenuViewController implements Observer<String>, Visitor {
         // Fill in data
         nameField.setText(data.getName());
         defStateTG.selectToggle(data.isClosed() ? toggleClosed : toggleOpen);
+        orientRightLeft(data.isVertical());
+        namePosTG.selectToggle(data.isNameRight() ? toggleRight : toggleLeft);
 
         if (data.getTandemID() == null) {
             numSelectedToClearLabel.setText("0");

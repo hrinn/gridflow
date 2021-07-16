@@ -20,7 +20,7 @@ public abstract class Component implements Selectable {
     private Point position;
     private double angle;
     private ComponentIcon icon;
-
+    private boolean nameRight = true;
 
     public Component(String name, Point position) {
         this.id = UUID.randomUUID();
@@ -62,8 +62,16 @@ public abstract class Component implements Selectable {
 
     public abstract ComponentType getComponentType();
 
+    public boolean isNameRight() {
+        return nameRight;
+    }
+
+    public void setNameRight(boolean nameRight) {
+        this.nameRight = nameRight;
+    }
+
     public ObjectData getComponentObjectData() {
-        return new ComponentData(name);
+        return new ComponentData(name, nameRight, angle);
     }
 
     protected abstract void createComponentIcon();
@@ -113,8 +121,9 @@ public abstract class Component implements Selectable {
 
     public void applyComponentData(ObjectData objectData) {
         ComponentData data = (ComponentData) objectData;
-        if (!getName().equals(data.getName())) {
+        if (!getName().equals(data.getName()) || nameRight != data.isNamePos()) {
             this.name = data.getName();
+            this.nameRight = data.isNamePos();
             updateComponentIconName();
         }
     }

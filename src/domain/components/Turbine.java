@@ -91,7 +91,6 @@ public class Turbine extends Source {
         icon.setWireEnergyState(false, 0);
         icon.setWireEnergyState(false, 1);
         icon.setComponentIconID(getId().toString());
-        icon.setComponentName(getName());
         icon.setAngle(getAngle(), getPosition());
         setComponentIcon(icon);
     }
@@ -105,7 +104,7 @@ public class Turbine extends Source {
 
     public void updateComponentIconName() {
         SourceIcon icon = (SourceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), isNameRight());
     }
 
     @Override

@@ -154,6 +154,7 @@ public class Wire extends Component {
         }
         icon.setWireIconEnergyState(false);
         icon.setComponentIconID(getId().toString());
+        icon.setComponentName(getName(), isNameRight());
         setComponentIcon(icon);
     }
 

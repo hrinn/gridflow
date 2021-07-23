@@ -35,6 +35,7 @@ public class Jumper extends Closeable {
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
+        icon.setComponentName(getName(), isNameRight());
         setComponentIcon(icon);
     }
 

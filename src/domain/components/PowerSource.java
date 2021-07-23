@@ -81,6 +81,7 @@ public class PowerSource extends Source {
         icon.setWireEnergyState(false, 0);
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
+        icon.setComponentName(getName(), true);
         setComponentIcon(icon);
     }
 

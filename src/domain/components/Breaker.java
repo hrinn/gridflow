@@ -62,6 +62,7 @@ public class Breaker extends Closeable {
         icon.setBreakerEnergyStates(isInWireEnergized(), isOutWireEnergized(), isClosed());
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
+        icon.setComponentName(getName(), isNameRight());
         setComponentIcon(icon);
     }
 
@@ -106,7 +107,7 @@ public class Breaker extends Closeable {
     @Override
     public ComponentMemento makeSnapshot() {
         return new BreakerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), voltage, isClosed(), isClosedByDefault(),
-                isLocked(), getInWireID().toString(), getOutWireID().toString(), getTandemID());
+                isLocked(), getInWireID().toString(), getOutWireID().toString(), getTandemID(), isNameRight());
     }
 
 
@@ -154,8 +155,9 @@ class BreakerSnapshot implements ComponentMemento {
     String inNodeID;
     String outNodeID;
     String tandemid;
+    boolean namePos;
 
-    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault, boolean locked, String inNodeID, String outNodeID, String tandemid) {
+    public BreakerSnapshot(String id, String name, double angle, Point pos, Voltage voltage, boolean closed, boolean closedByDefault, boolean locked, String inNodeID, String outNodeID, String tandemid, boolean namePos) {
         this.id = id;
         this.name = name;
         this.angle = angle;
@@ -167,6 +169,7 @@ class BreakerSnapshot implements ComponentMemento {
         this.inNodeID = inNodeID;
         this.outNodeID = outNodeID;
         this.tandemid = tandemid;
+        this.namePos = namePos;
     }
 
     public Breaker getComponent() {

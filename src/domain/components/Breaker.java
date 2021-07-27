@@ -29,7 +29,7 @@ public class Breaker extends Closeable {
     }
 
     public Breaker(BreakerSnapshot snapshot) {
-        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked);
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked, snapshot.namePos);
         voltage = snapshot.voltage;
         tandemID = snapshot.tandemid;
         createComponentIcon();
@@ -38,7 +38,8 @@ public class Breaker extends Closeable {
     public Breaker(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
-                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(), node.get("locked").asBoolean());
+                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(),
+                node.get("locked").asBoolean(), node.get("namepos").asBoolean());
         voltage = Voltage.valueOf(node.get("voltage").asText());
         if(node.get("tandemid") == null) {
             tandemID = null;

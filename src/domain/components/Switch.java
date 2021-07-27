@@ -23,12 +23,13 @@ public class Switch extends Closeable {
     public Switch(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
-                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(), node.get("locked").asBoolean());
+                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(),
+                node.get("locked").asBoolean(), node.get("namepos").asBoolean());
         createComponentIcon();
     }
 
     public Switch(SwitchSnapshot snapshot) {
-        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked);
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked, snapshot.namepos);
         createComponentIcon();
     }
 
@@ -70,7 +71,7 @@ public class Switch extends Closeable {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new SwitchSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(), isLocked(), getInWireID().toString(), getOutWireID().toString());
+        return new SwitchSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(), isLocked(), getInWireID().toString(), getOutWireID().toString(), isNameRight());
     }
 }
 
@@ -84,8 +85,9 @@ class SwitchSnapshot implements ComponentMemento {
     boolean locked;
     String inNodeId;
     String outNodeId;
+    boolean namepos;
 
-    public SwitchSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, boolean locked, String inNodeId, String outNodeId) {
+    public SwitchSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, boolean locked, String inNodeId, String outNodeId, boolean namepos) {
         this.id = id;
         this.name = name;
         this.angle = angle;
@@ -95,6 +97,7 @@ class SwitchSnapshot implements ComponentMemento {
         this.locked = locked;
         this.inNodeId = inNodeId;
         this.outNodeId = outNodeId;
+        this.namepos = namepos;
     }
 
     @Override

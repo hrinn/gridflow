@@ -20,20 +20,22 @@ public abstract class Component implements Selectable {
     private Point position;
     private double angle;
     private ComponentIcon icon;
-    private boolean nameRight = true;
+    private boolean nameRight;
 
     public Component(String name, Point position) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.position = position;
         this.angle = 0;
+        this.nameRight = true;
     }
 
-    public Component (UUID id, String name, Point position, double angle) {
+    public Component (UUID id, String name, Point position, double angle, boolean nameRight) {
         this.id = id;
         this.name = name;
         this.position = position;
         this.angle = angle;
+        this.nameRight = nameRight;
     }
 
     public UUID getId() {
@@ -110,8 +112,7 @@ public abstract class Component implements Selectable {
         component.put("name", getName());
         component.put("pos", getPosition().toString());
         component.put("angle", getAngle());
-        // TODO: Add component name pos to the json file
-        //component.put("namepos", this.getComponentIcon().getCurrentNamePos().toString())
+        component.put("namepos", isNameRight());
         return component;
     }
 

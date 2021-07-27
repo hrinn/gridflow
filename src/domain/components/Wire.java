@@ -39,8 +39,8 @@ public class Wire extends Component {
         createComponentIcon();
     }
 
-    public Wire(String id, String name, Point start, Point end, double angle, List<Point> bridgePoints, boolean energized) {
-        super(UUID.fromString(id), name, Point.midpoint(start, end), angle);
+    public Wire(String id, String name, Point start, Point end, double angle, List<Point> bridgePoints, boolean energized, boolean nameRight) {
+        super(UUID.fromString(id), name, Point.midpoint(start, end), angle, nameRight);
         this.bridgePoints = bridgePoints;
         this.energized = energized;
         this.start = start;
@@ -50,7 +50,7 @@ public class Wire extends Component {
 
     public Wire(JsonNode node, Point start, Point end) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
-                Point.midpoint(start, end), node.get("angle").asDouble());
+                Point.midpoint(start, end), node.get("angle").asDouble(), node.get("namepos").asBoolean());
 
         this.start = start;
         this.end = end;
@@ -200,7 +200,7 @@ public class Wire extends Component {
     @Override
     public ComponentMemento makeSnapshot() {
         List<String> connectionIDs = connections.stream().map(connection -> connection.getId().toString()).collect(Collectors.toList());
-        return new WireSnapshot(getId().toString(), getName(), start, end, bridgePoints, energized, connectionIDs);
+        return new WireSnapshot(getId().toString(), getName(), start, end, bridgePoints, energized, connectionIDs, isNameRight());
     }
 }
 
@@ -212,8 +212,9 @@ class WireSnapshot implements ComponentMemento {
     private List<Point> bridgePoints;
     private boolean energized;
     private List<String> connectionIDs;
+    private boolean namepos;
 
-    public WireSnapshot(String id, String name, Point start, Point end, List<Point> bps, boolean energized, List<String> connectionIDs) {
+    public WireSnapshot(String id, String name, Point start, Point end, List<Point> bps, boolean energized, List<String> connectionIDs, boolean namepos) {
         this.id = id;
         this.name = name;
         this.start = start.copy();
@@ -222,11 +223,12 @@ class WireSnapshot implements ComponentMemento {
         bps.forEach(bp -> bridgePoints.add(bp.copy()));
         this.energized = energized;
         this.connectionIDs = connectionIDs;
+        this.namepos = namepos;
     }
 
     @Override
     public Component getComponent() {
-        return new Wire(id, name, start, end, 0, bridgePoints, energized);
+        return new Wire(id, name, start, end, 0, bridgePoints, energized, namepos);
     }
 
     @Override

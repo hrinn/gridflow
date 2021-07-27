@@ -20,7 +20,7 @@ public abstract class Source extends Component implements IToggleable, ILockable
     }
 
     public Source(UUID id, String name, Point position, double angle, boolean on) {
-        super(id, name, position, angle);
+        super(id, name, position, angle, true);
         this.on = on;
     }
 

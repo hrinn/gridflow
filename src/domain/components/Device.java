@@ -17,8 +17,8 @@ public abstract class Device extends Component {
         super(name, position);
     }
 
-    public Device(UUID id, String name, Point position, double angle) {
-        super(id, name, position, angle);
+    public Device(UUID id, String name, Point position, double angle, boolean nameRight) {
+        super(id, name, position, angle, nameRight);
     }
 
     @Override

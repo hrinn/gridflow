@@ -105,9 +105,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     /* This initializes and displays the main application */
     public void startApplication(Access permissionLevel) throws Exception {
-        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
-        System.out.println("Screen size: " + screenBounds.getWidth() + " x " + screenBounds.getHeight());
-
         /* Create GUI elements */
         Group root = new Group();
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, Color.DARKGRAY);
@@ -155,7 +152,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         gridFlowEventManager.addListener(simulationController);
 
         // Change accessible functionality based on permission level
-//        buildMenuViewController.setPermissions(permissionLevel);
+        buildMenuViewController.setPermissions(permissionLevel);
         baseUIViewController.setPermissions(permissionLevel);
         constructionController.setPermissions(permissionLevel);
 
@@ -172,6 +169,8 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         BorderPane.setMargin(propertiesMenuView, insets);
 
         root.getChildren().addAll(constructionController.getCanvasFacade().getCanvas(), UI);
+
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
 
         /* Show the new UI elements */
         primaryStage.setMinHeight(WINDOW_HEIGHT);

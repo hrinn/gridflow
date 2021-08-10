@@ -11,6 +11,7 @@
 
 <?import javafx.scene.layout.HBox?>
 <AnchorPane
+        fx:id="rootNode"
         fx:controller="construction.buildMenu.BuildMenuViewController"
         xmlns="http://javafx.com/javafx/11.0.2"
         xmlns:fx="http://javafx.com/fxml/1"

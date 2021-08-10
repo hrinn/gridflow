@@ -9,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import security.Access;
 
 public class BuildMenuViewController {
 
@@ -21,6 +22,7 @@ public class BuildMenuViewController {
     private boolean menuOpen = false;
 
     // JavaFX Elements
+    public AnchorPane rootNode;
     public HBox MenuContainer;
     public VBox componentMenu;
 
@@ -160,6 +162,13 @@ public class BuildMenuViewController {
         selectInteractTool();
 
         menuOpen = !menuOpen;
+    }
+
+    public void setPermissions(Access permissionLevel) {
+        if (permissionLevel == Access.VIEWER) {
+            rootNode.setVisible(false);
+            rootNode.setManaged(false);
+        }
     }
 }
 

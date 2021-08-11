@@ -140,7 +140,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         constructionController.setPropertiesMenuViewController(propertiesMenuViewController);
 
         buildMenuViewController.setBuildMenuFunctions(constructionController);
-        buildMenuViewController.bindBuildMenuHeightProperty(primaryStage);
         baseUIViewController.setBaseMenuFunctions(constructionController);
 
         // Visualization Module

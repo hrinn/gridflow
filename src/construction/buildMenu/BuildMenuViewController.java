@@ -54,10 +54,6 @@ public class BuildMenuViewController {
         componentMenu.managedProperty().bind(componentMenu.visibleProperty());
     }
 
-    public void bindBuildMenuHeightProperty(Stage primaryStage) {
-        componentMenu.maxHeightProperty().bind(primaryStage.heightProperty());
-    }
-
     // These are the button press handlers
     // They can also be accessed outside of the class to handle key shortcuts
     public void selectInteractTool() {

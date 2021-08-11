@@ -6,6 +6,13 @@ For a detailed behavior and usage description, please visit the [Wiki](https://g
 
 ![Sample Grid Image](src/resources/gridsnip.PNG)
 
+## Installation
+1. Navigate to the [latest release](https://github.com/hrinn/gridflow/releases/tag/v1.1).
+2. Download and extract GridFlowInstaller.zip.
+3. Run the installer.
+4. Run the application from the Desktop or Start menu shortcut.
+5. **If the application fails to run, re-run it as an administrator.** This is likely because it could not create the Credentials.json file in Program Data/GridFlow. You will only have to do this on first launch.
+
 ## Getting the Source Code
 These instructions are for IntelliJ IDEA
 1. Clone the repository.

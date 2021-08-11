@@ -11,16 +11,11 @@ import java.util.List;
 
 public class CreateAccountViewController {
 
-    public StackPane CreateAccountStackPane;
     public TextField newUsername;
     public TextField newPassword;
     public TextField confirmPassword;
-    public Button createAccountButton;
-    public RadioButton godButton;
-    public RadioButton builderButton;
-    public RadioButton viewerButton;
     public ListView<String> usernamesList;
-    public Button delButton;
+    public ComboBox accessSelector;
 
     private AccountController controller;
 
@@ -34,25 +29,16 @@ public class CreateAccountViewController {
         usernamesList.setItems(items);
     }
 
+    public void initialize() {
+        accessSelector.getItems().setAll("Viewer", "Builder", "God");
+    }
+
     @FXML
     private void tryAdd() throws IOException {
-        AccountResponse result;
-        Access access;
-
-        if (godButton.isSelected()) {
-            access = Access.GOD;
-        } else if (builderButton.isSelected()) {
-            access = Access.BUILDER;
-        } else if (viewerButton.isSelected()) {
-            access = Access.VIEWER;
-        } else {
-            resetFields();
-            displayError("Choose perms.");
-            return;
-        }
 
         // Result is determined in the Credential Manager
-        result = controller.tryAdd(newUsername.getText(), newPassword.getText(), confirmPassword.getText(), access);
+        AccountResponse result = controller.tryAdd(newUsername.getText(), newPassword.getText(), confirmPassword.getText(),
+                Access.valueOf(accessSelector.getValue().toString().toUpperCase()));
 
         resetFields();
 
@@ -102,8 +88,5 @@ public class CreateAccountViewController {
         newUsername.clear();
         newPassword.clear();
         confirmPassword.clear();
-        godButton.setSelected(false);
-        builderButton.setSelected(false);
-        viewerButton.setSelected(false);
     }
 }

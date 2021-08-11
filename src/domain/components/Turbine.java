@@ -70,13 +70,8 @@ public class Turbine extends Source {
 
     @Override
     public void toggleState() {
-        Point oldNamePos = this.getComponentIcon().getCurrentNamePos();
-        boolean oldActiveLeft = this.getComponentIcon().getActiveLeft();
         setOn(!isOn());
         createComponentIcon();
-        this.getComponentIcon().setComponentNamePosition(oldNamePos);
-        this.getComponentIcon().setCurrentNamePos(oldNamePos);
-        this.getComponentIcon().setActiveLeft(oldActiveLeft);
     }
 
 
@@ -90,14 +85,14 @@ public class Turbine extends Source {
         return outWire2.isEnergized();
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         SourceIcon icon = ComponentIconCreator.getTurbineIcon(getPosition(), isOn(), isLocked());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);
         icon.setWireEnergyState(false, 1);
         icon.setComponentIconID(getId().toString());
-        icon.setComponentName(getName());
         icon.setAngle(getAngle(), getPosition());
+        icon.setComponentName(getName(), true);
         setComponentIcon(icon);
     }
 
@@ -110,7 +105,7 @@ public class Turbine extends Source {
 
     public void updateComponentIconName() {
         SourceIcon icon = (SourceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), isNameRight());
     }
 
     @Override

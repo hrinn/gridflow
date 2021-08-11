@@ -233,8 +233,8 @@ public class CredentialManager {
             Files.createDirectories(pathToCredentials.getParent());
             Files.createFile(pathToCredentials);
         } catch (IOException IO) {
-            System.err.println("Could not create necessary credentials for startup");
-            return;
+            System.err.println(IO.toString());
+            System.exit(-1);
         }
     }
 

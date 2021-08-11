@@ -6,6 +6,7 @@ import javafx.animation.StrokeTransition;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
@@ -14,6 +15,7 @@ import javafx.scene.shape.StrokeType;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import domain.geometry.Point;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.NonInvertibleTransformException;
 import javafx.scene.transform.Rotate;
 import javafx.scene.transform.Transform;
@@ -28,12 +30,11 @@ public class ComponentIcon {
     private final Rectangle boundingRect = new Rectangle();
     private Point midRight;
     private Point midLeft;
-    private boolean activeLeft;
-    private Point currentNamePos;
     private final Rectangle fittingRect = new Rectangle();
     private final Group iconNode = new Group();
     private final Text componentName = new Text();
-    private final Group componentNode = new Group(iconNode, componentName);
+    private final AnchorPane componentNamePositioner = new AnchorPane();
+    private final Group componentNode = new Group(iconNode);
     private final Group energyOutlineNodes = new Group();
     private double height;
     private final StrokeTransition errorTransition = new StrokeTransition(Duration.millis(1000), getBoundingRect(), Color.RED, DEFAULT_BOUNDING_COLOR);
@@ -72,9 +73,6 @@ public class ComponentIcon {
 
         this.midRight = position.translate(dimensions.getAdjustedWidth()/2, dimensions.getAdjustedHeight()/2);
         this.midLeft = position.translate(-(dimensions.getAdjustedWidth()/2), dimensions.getAdjustedHeight()/2);
-        setComponentNamePosition(midRight);
-        this.currentNamePos = midRight;
-        this.activeLeft = false;
     }
 
 
@@ -99,104 +97,81 @@ public class ComponentIcon {
         boundingRect.setStroke(select ? SELECT_COLOR : DEFAULT_BOUNDING_COLOR);
     }
 
-    public Point getCurrentNamePos () { return this.currentNamePos; }
-
-    public void setCurrentNamePos (Point pos) { this.currentNamePos = pos; }
-
-    public boolean getActiveLeft () { return this.activeLeft; }
-
-    public void setActiveLeft (boolean isLeft) { this.activeLeft = isLeft; }
-
     public Point getMidRight() { return this.midRight; }
 
     public Point getMidLeft() { return this.midLeft; }
 
-    public void updateComponentNamePosition (ComponentType type, boolean toggled, Double rotation) {
-        Double X = 0.0;
-        Double Y = 0.0;
+    public void setComponentName(String name, boolean right) {
+        if (name == null || name.isEmpty()) return;
+        if (componentNamePositioner.getParent() == null) {
+            // Add nodes to hierarchy
+            componentNamePositioner.getChildren().add(componentName);
+            componentNode.getChildren().add(componentNamePositioner);
 
-        if (currentNamePos != null) {
-            if (type == ComponentType.POWER_SOURCE) {
-                // always set the name to center
-                if (rotation == 180) {
-                    X = this.midLeft.getX() + (0.45*Globals.UNIT);
-                    Y = this.midLeft.getY() - (3.25*Globals.UNIT);
-                } else {
-                    X = this.midLeft.getX() + (0.3*Globals.UNIT);
-                    Y = this.midLeft.getY() - (3.45*Globals.UNIT);
-                }
-                setComponentNamePosition(new Point(X, Y));
-                this.currentNamePos = new Point(X, Y);
+            // Setup AnchorPane
+            componentNamePositioner.setLayoutX(boundingRect.getX());
+            componentNamePositioner.setLayoutY(boundingRect.getY());
+            componentNamePositioner.setPrefWidth(boundingRect.getWidth());
+            componentNamePositioner.setPrefHeight(boundingRect.getHeight());
+            componentNamePositioner.setMaxWidth(boundingRect.getWidth());
+            componentNamePositioner.setMaxHeight(boundingRect.getHeight());
+            componentNamePositioner.setMinWidth(boundingRect.getWidth());
+            componentNamePositioner.setMinHeight(boundingRect.getHeight());
 
-            } else if (type == ComponentType.TURBINE) {
-                // always set the name to center
-                if (rotation == 180) {
-                    X = this.midLeft.getX() + (0.65*Globals.UNIT);
-                    Y = this.midLeft.getY() + (0.35*Globals.UNIT);
-                } else {
-                    X = this.midLeft.getX() + (0.65*Globals.UNIT);
-                    Y = this.midLeft.getY() + (0.25*Globals.UNIT);
-                }
-                setComponentNamePosition(new Point(X, Y));
-                this.currentNamePos = new Point(X, Y);
-            } else {
-                // normal components
-                if (toggled) {
-                    // set name to "midLeft"
-                    if (rotation == 90) {
-                        X = this.midRight.getX() - (0.25*Globals.UNIT);
-                        Y = this.midRight.getY() + (0.3*Globals.UNIT);
-                    } else if (rotation == 270) {
-                        X = this.midLeft.getX() - Globals.UNIT;
-                        Y = this.midLeft.getY() + (0.25*Globals.UNIT);
-                    } else if (rotation == 180) {
-                        // Adjust for upside down text
-                        X = this.midRight.getX();
-                        Y = this.midRight.getY() + (0.55 * Globals.UNIT);
-                    } else {
-                        // Adjust for left justified text
-                        X = this.midLeft.getX() - (1.25 * Globals.UNIT);
-                        Y = this.midLeft.getY();
-                    }
+            // Setup Text
+            componentName.setWrappingWidth(Globals.UNIT * 2);
+            componentName.setFont(Font.font(null, 10));
+        }
 
-                    setComponentNamePosition(new Point(X, Y));
-                    this.currentNamePos = new Point(X, Y);
-                    this.activeLeft = true;
+        setComponentNamePosition(right);
+        componentName.setText(name);
+    }
 
-                } else {
-                    // set name to "midRight"
-                    if (rotation == 90) {
-                        X = this.midLeft.getX() - Globals.UNIT;
-                        Y = this.midLeft.getY() + (0.25*Globals.UNIT);
-                    } else if (rotation == 270) {
-                        X = this.midRight.getX() - (0.25*Globals.UNIT);
-                        Y = this.midRight.getY() + (0.3*Globals.UNIT);
-                    }
-                    else if (rotation == 180) {
-                        X = this.midLeft.getX() - (1.25 * Globals.UNIT);
-                        Y = this.midLeft.getY() + (0.55 * Globals.UNIT);
-                    } else {
-                        X = this.midRight.getX();
-                        Y = this.midRight.getY();
-                    }
+    public void setComponentNamePosition(boolean right) {
+        AnchorPane.clearConstraints(componentName);
+        AnchorPane.setTopAnchor(componentName, componentNamePositioner.getPrefHeight()/2 - componentName.prefHeight(-1) * .4);
+        double angle = -componentName.getRotate();
 
-                    setComponentNamePosition(new Point(X, Y));
-                    this.currentNamePos = new Point(X, Y);
-                    this.activeLeft = false;
-                }
+        if (right) {
+            if (angle == 0) {
+                // Name on right
+                AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth());
+                componentName.setTextAlignment(TextAlignment.LEFT);
+
+            } else if (angle == 90) {
+                AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth()/2);
+                componentName.setTextAlignment(TextAlignment.CENTER);
+
+            } else if (angle == 180) {
+                // Name on left
+                AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth());
+                componentName.setTextAlignment(TextAlignment.RIGHT);
+
+            } else { // angle == 270
+                AnchorPane.setLeftAnchor(componentName, componentNamePositioner.getPrefWidth()/2);
+                componentName.setTextAlignment(TextAlignment.CENTER);
+
+            }
+        } else {
+            if (angle == 0) {
+                // Name on left
+                AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth());
+                componentName.setTextAlignment(TextAlignment.RIGHT);
+            } else if (angle == 90) {
+                AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth()/2);
+                componentName.setTextAlignment(TextAlignment.CENTER);
+
+            } else if (angle == 180) {
+                // Name on right
+                AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth());
+                componentName.setTextAlignment(TextAlignment.LEFT);
+
+            } else { // angle == 270
+                AnchorPane.setRightAnchor(componentName, componentNamePositioner.getPrefWidth()/2);
+                componentName.setTextAlignment(TextAlignment.CENTER);
+
             }
         }
-    }
-
-    public void setComponentNamePosition(Point position) {
-        double labelYShift = componentName.prefHeight(-1)/4;
-        componentName.setLayoutX(position.getX());
-        componentName.setLayoutY(position.getY() + labelYShift);
-    }
-
-    public void setComponentName(String name) {
-        componentName.setText(name);
-        componentName.setFont(Font.font(null, 10));
     }
 
     public void resetAngle() {
@@ -220,7 +195,6 @@ public class ComponentIcon {
         fittingRect.getTransforms().add(rotateTransform);
         textElements.forEach(text -> text.setRotate(-angle));
         componentName.setRotate(-angle);
-
     }
 
     public void setTranslate(double x, double y) {
@@ -258,6 +232,10 @@ public class ComponentIcon {
         }
     }
 
+    protected void addComponentNamePositionerToComponentNode(AnchorPane componentNamePositioner) {
+        componentNode.getChildren().add(componentNamePositioner);
+    }
+
     public void addNodesToIconNode(Node... nodes) {
         iconNode.getChildren().addAll(nodes);
     }
@@ -284,5 +262,13 @@ public class ComponentIcon {
 
     public double getHeight() {
         return height;
+    }
+
+    protected Text getComponentName() {
+        return componentName;
+    }
+
+    protected AnchorPane getComponentNamePositioner() {
+        return componentNamePositioner;
     }
 }

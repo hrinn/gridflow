@@ -2,7 +2,9 @@ package construction.ghosts;
 
 import application.events.*;
 import construction.*;
+import construction.buildMenu.BuildMenuData;
 import construction.canvas.GridCanvasFacade;
+import construction.properties.PropertiesData;
 import domain.geometry.Point;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
@@ -16,8 +18,8 @@ public class GhostManagerController implements GridFlowEventListener {
     private BuildMenuData buildData;
 
     public GhostManagerController(GridCanvasFacade canvasFacade, DoubleClickPlacementContext doubleClickContext,
-                                  BuildMenuData buildMenuData) {
-        this.ghostModel = new GhostManager(canvasFacade);
+                                  BuildMenuData buildMenuData, PropertiesData properties) {
+        this.ghostModel = new GhostManager(canvasFacade, properties);
         this.associationModel = new AssociationGhostManager(canvasFacade);
         this.doubleClickContext = doubleClickContext;
         this.buildData = buildMenuData;

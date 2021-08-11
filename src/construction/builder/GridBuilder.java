@@ -3,8 +3,6 @@ package construction.builder;
 import construction.AssociationMoveContext;
 import construction.properties.PropertiesData;
 import construction.ComponentType;
-import construction.properties.PropertiesManager;
-import construction.properties.PropertiesObserver;
 import domain.Association;
 import domain.Grid;
 import domain.components.*;
@@ -16,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class GridBuilder implements PropertiesObserver {
+public class GridBuilder {
 
     private Grid grid;
     private PropertiesData properties;
@@ -24,15 +22,6 @@ public class GridBuilder implements PropertiesObserver {
     public GridBuilder(Grid grid, PropertiesData properties) {
         this.grid = grid;
         this.properties = properties;
-        PropertiesManager.attach(this);
-    }
-
-    @Override
-    public void updateProperties(PropertiesData PD){
-        this.properties = new PropertiesData(PD.getType(), PD.getID(), PD.getName(),
-                PD.getDefaultState(), PD.getRotation(), PD.getNumSelected(),
-                PD.getNamePos(), PD.getAssociation(), PD.getAssocLabel(),
-                PD.getAssocSubLabel(), PD.getAssocAcronym());
     }
 
     // This is what runs when a component is placed on the canvas standalone
@@ -95,20 +84,17 @@ public class GridBuilder implements PropertiesObserver {
 
         grid.addComponent(device);
 
-        this.properties.setID(device.getId());
-        PropertiesManager.notifyObservers(this.properties);
-
         return true;
     }
 
     public Device createDevice(Point point, ComponentType componentType) {
         return switch (componentType) {
-            case TRANSFORMER -> new Transformer(properties.getName(), point);
-            case BREAKER_12KV -> new Breaker(properties.getName(), point, Voltage.KV12, properties.getDefaultState(), null);
-            case BREAKER_70KV -> new Breaker(properties.getName(), point, Voltage.KV70, properties.getDefaultState(), null);
-            case JUMPER -> new Jumper(properties.getName(), point, properties.getDefaultState());
-            case CUTOUT -> new Cutout(properties.getName(), point, properties.getDefaultState());
-            case SWITCH -> new Switch(properties.getName(), point, properties.getDefaultState());
+            case TRANSFORMER -> new Transformer("", point);
+            case BREAKER_12KV -> new Breaker("", point, Voltage.KV12, properties.getDefaultState(), null);
+            case BREAKER_70KV -> new Breaker("", point, Voltage.KV70, properties.getDefaultState(), null);
+            case JUMPER -> new Jumper("", point, properties.getDefaultState());
+            case CUTOUT -> new Cutout("", point, properties.getDefaultState());
+            case SWITCH -> new Switch("", point, properties.getDefaultState());
             default -> null;
         };
     }
@@ -117,7 +103,7 @@ public class GridBuilder implements PropertiesObserver {
 
         switch (componentType) {
             case POWER_SOURCE -> {
-                PowerSource powerSource = new PowerSource(properties.getName(), position, true);
+                PowerSource powerSource = new PowerSource("", position, true);
                 powerSource.setAngle(properties.getRotation());
                 if(!verifyPlacement(powerSource)) return false;
 
@@ -140,12 +126,9 @@ public class GridBuilder implements PropertiesObserver {
 
 
                 grid.addComponents(powerSource);
-
-                this.properties.setID(powerSource.getId());
-                PropertiesManager.notifyObservers(this.properties);
             }
             case TURBINE -> {
-                Turbine turbine = new Turbine(properties.getName(), position, true);
+                Turbine turbine = new Turbine("", position, true);
                 turbine.setAngle(properties.getRotation());
                 if(!verifyPlacement(turbine)) return false;
 
@@ -186,9 +169,6 @@ public class GridBuilder implements PropertiesObserver {
                 }
 
                 grid.addComponents(turbine);
-
-                this.properties.setID(turbine.getId());
-                PropertiesManager.notifyObservers(this.properties);
             }
         }
         return true;
@@ -459,5 +439,6 @@ public class GridBuilder implements PropertiesObserver {
             default -> false;
         };
     }
+
 
 }

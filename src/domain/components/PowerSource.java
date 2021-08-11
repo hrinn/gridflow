@@ -46,13 +46,8 @@ public class PowerSource extends Source {
 
     @Override
     public void toggleState() {
-        Point oldNamePos = this.getComponentIcon().getCurrentNamePos();
-        boolean oldActiveLeft = this.getComponentIcon().getActiveLeft();
         setOn(!isOn());
         createComponentIcon();
-        this.getComponentIcon().setComponentNamePosition(oldNamePos);
-        this.getComponentIcon().setCurrentNamePos(oldNamePos);
-        this.getComponentIcon().setActiveLeft(oldActiveLeft);
     }
 
     @Override
@@ -80,12 +75,13 @@ public class PowerSource extends Source {
         return powerSource;
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         SourceIcon icon = ComponentIconCreator.getPowerSourceIcon(getPosition(), getName(), isOn(), isLocked());
         icon.setSourceNodeEnergyState(isOn());
         icon.setWireEnergyState(false, 0);
         icon.setComponentIconID(getId().toString());
         icon.setAngle(getAngle(), getPosition());
+        icon.setComponentName(getName(), true);
         setComponentIcon(icon);
     }
 
@@ -101,7 +97,7 @@ public class PowerSource extends Source {
     @Override
     public void updateComponentIconName() {
         SourceIcon icon = (SourceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), true);
     }
 
     @Override

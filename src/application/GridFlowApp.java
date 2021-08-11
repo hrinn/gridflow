@@ -2,15 +2,19 @@ package application;
 
 import base.BaseUIViewController;
 import base.MenuFunctionController;
-import construction.BuildMenuViewController;
+import construction.buildMenu.BuildMenuViewController;
+import construction.properties.PropertiesMenuViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import application.events.*;
@@ -26,13 +30,11 @@ import construction.ConstructionController;
 public class GridFlowApp extends Application implements GridFlowEventListener {
 
     private static final String TITLE = "GridFlow";
-    private static final String WINDOW_ICON_PATH = "/resources/icon.png";
-    private static final int WINDOW_WIDTH = 1366;
-    private static final int WINDOW_HEIGHT = 768;
-    private static final int LOGIN_WIDTH = 1280;
-    private static final int LOGIN_HEIGHT = 720;
-    private static final int MAX_WIDTH = 3840;
-    private static final int MAX_HEIGHT = 2160;
+    public static final String WINDOW_ICON_PATH = "/resources/icon.png";
+    private static final int WINDOW_WIDTH = 1280;
+    private static final int WINDOW_HEIGHT = 720;
+    private static final int LOGIN_WIDTH = 1000;
+    private static final int LOGIN_HEIGHT = 632;
 
     private GridFlowEventManager gridFlowEventManager;
     private Stage primaryStage;
@@ -54,7 +56,8 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
     public void startLogin() throws Exception {
         Group root = new Group();
-        Scene scene = new Scene(root, 1280, 720);
+        Scene scene = new Scene(root, LOGIN_WIDTH, LOGIN_HEIGHT);
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
         /* Initialize Security Module */
         LoginController loginController = new LoginController(gridFlowEventManager);
@@ -74,8 +77,6 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         primaryStage.setMaxHeight(LOGIN_HEIGHT);
         primaryStage.setMaxWidth(LOGIN_WIDTH);
         primaryStage.show();
-
-//        loginController.tryLogin("root", "root");
     }
 
     /* This waits for a successful login before displaying the main application */
@@ -107,7 +108,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         /* Create GUI elements */
         Group root = new Group();
         Scene scene = new Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT, Color.DARKGRAY);
-        scene.getStylesheets().add(getClass().getResource("/construction/properties/PropertyStyles.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
         primaryStage.setScene(scene);
 
         /* Init modules and connect them all together */
@@ -119,6 +120,7 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         baseUIViewController.setController(menuFunctionController);
         baseUIViewController.setMainScene(scene);
         baseUIViewController.setServices(getHostServices());
+        baseUIViewController.bindMenuBarWidthProperty(primaryStage);
 
         // Account Controller
         AccountController accountController = new AccountController(scene);
@@ -126,11 +128,18 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
 
         // Construction Module
         ConstructionController constructionController = new ConstructionController(menuFunctionController.getGrid(), gridFlowEventManager, primaryStage);
-        FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/BuildMenuView.fxml"));
+
+        FXMLLoader buildMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/buildMenu/BuildMenuView.fxml"));
         Node buildMenuView = buildMenuViewLoader.load();
+        FXMLLoader propertiesMenuViewLoader = new FXMLLoader(getClass().getResource("/construction/properties/PropertiesMenuView.fxml"));
+        Node propertiesMenuView = propertiesMenuViewLoader.load();
+
         BuildMenuViewController buildMenuViewController = buildMenuViewLoader.getController();
         constructionController.setBuildMenuViewController(buildMenuViewController);
-        buildMenuViewController.setConstructionAndBuildController(constructionController);
+        PropertiesMenuViewController propertiesMenuViewController = propertiesMenuViewLoader.getController();
+        constructionController.setPropertiesMenuViewController(propertiesMenuViewController);
+
+        buildMenuViewController.setBuildMenuFunctions(constructionController);
         baseUIViewController.setBaseMenuFunctions(constructionController);
 
         // Visualization Module
@@ -149,13 +158,24 @@ public class GridFlowApp extends Application implements GridFlowEventListener {
         /* Add UI elements to Scene */
         BorderPane UI = new BorderPane();
         UI.setLeft(buildMenuView);
+        UI.setRight(propertiesMenuView);
         UI.setTop(baseUIView);
         UI.setPickOnBounds(false);
+
+        // Set padding on borderpane elements
+        Insets insets = new Insets(10, 0, 0, 0);
+        BorderPane.setMargin(buildMenuView, insets);
+        BorderPane.setMargin(propertiesMenuView, insets);
+
         root.getChildren().addAll(constructionController.getCanvasFacade().getCanvas(), UI);
 
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+
         /* Show the new UI elements */
-        primaryStage.setMaxWidth(MAX_WIDTH);
-        primaryStage.setMaxHeight(MAX_HEIGHT);
+        primaryStage.setMinHeight(WINDOW_HEIGHT);
+        primaryStage.setMinWidth(WINDOW_WIDTH);
+        primaryStage.setMaxWidth(screenBounds.getWidth());
+        primaryStage.setMaxHeight(screenBounds.getHeight());
         primaryStage.show();
     }
 

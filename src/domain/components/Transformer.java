@@ -22,27 +22,28 @@ public class Transformer extends Device {
 
     public Transformer(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
-                Point.fromString(node.get("pos").asText()), node.get("angle").asDouble());
+                Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
+                node.get("namepos").asBoolean());
         createComponentIcon();
     }
 
     public Transformer(TransformerSnapshot snapshot) {
-        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle);
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.namepos);
         createComponentIcon();
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getTransformerIcon(getPosition());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
-        icon.setComponentName(getName());
         icon.setAngle(getAngle(), getPosition());
+        icon.setComponentName(getName(), isNameRight());
         setComponentIcon(icon);
     }
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new TransformerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), getInWireID().toString(), getOutWireID().toString());
+        return new TransformerSnapshot(getId().toString(), getName(), getAngle(), getPosition(), getInWireID().toString(), getOutWireID().toString(), isNameRight());
     }
 
     @Override
@@ -54,7 +55,7 @@ public class Transformer extends Device {
     @Override
     public void updateComponentIconName() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), isNameRight());
     }
 
     @Override
@@ -68,14 +69,16 @@ class TransformerSnapshot implements ComponentMemento {
     Point pos;
     String inNodeId;
     String outNodeId;
+    boolean namepos;
 
-    public TransformerSnapshot(String id, String name, double angle, Point pos, String inNodeId, String outNodeId) {
+    public TransformerSnapshot(String id, String name, double angle, Point pos, String inNodeId, String outNodeId, boolean namepos) {
         this.id = id;
         this.name = name;
         this.angle = angle;
         this.pos = pos.copy();
         this.inNodeId = inNodeId;
         this.outNodeId = outNodeId;
+        this.namepos = namepos;
     }
 
     @Override

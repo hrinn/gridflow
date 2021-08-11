@@ -12,16 +12,17 @@
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="base.BaseUIViewController"
-      fx:id="TopMenu" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="3840" prefWidth="3840"
+      fx:id="TopMenu" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
       style="-fx-border-color: LIGHTGRAY; -fx-background-color: LIGHTGRAY" translateX="-1.0" translateY="-2.0"
       BorderPane.alignment="TOP_LEFT">
     <children>
-        <AnchorPane fx:id="TopMenuPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity"
-                    minWidth="500.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0" prefWidth="3840">
+        <AnchorPane fx:id="TopMenuPane" maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
+                    nodeOrientation="LEFT_TO_RIGHT" prefHeight="30.0">
             <children>
-                <MenuBar fx:id="TopMenuBar" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="30.0" minWidth="500.0"
-                         prefHeight="30.0" prefWidth="500.0"
-                         style="-fx-alignment: center-left; -fx-background-color: LIGHTGRAY"
+                <MenuBar fx:id="TopMenuBar" maxHeight="Infinity" maxWidth="Infinity" minHeight="30.0" minWidth="-Infinity"
+                         prefHeight="30.0"
+                         styleClass="solid"
+                         style="-fx-alignment: center-left;"
                          AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <menus>
                         <Menu fx:id="FileMenu" mnemonicParsing="false"
@@ -38,7 +39,6 @@
                         <Menu fx:id="EditMenu" mnemonicParsing="false"
                               style="-fx-font-size: 14; -fx-text-alignment: center;" text="Edit">
                             <items>
-                                <MenuItem mnemonicParsing="false" text="Expand Canvas" onAction="#expandCanvas"/>
                                 <MenuItem mnemonicParsing="false" text="Select All" onAction="#selectAll"/>
                                 <MenuItem fx:id="deleteButton" text="Delete" onAction="#delete"/>
                                 <MenuItem fx:id="undoButton" text="Undo" onAction="#undo"/>
@@ -49,7 +49,8 @@
                               style="-fx-text-alignment: center; -fx-font-size: 14;" text="View">
                             <items>
                                 <MenuItem fx:id="ZoomToFit" mnemonicParsing="false" text="Center on Grid" onAction="#zoomToFit"/>
-                                <MenuItem fx:id="AboutItem" mnemonicParsing="false" text="About"  onAction="#openAboutPage"/>
+                                <!--MenuItem fx:id="AboutItem" mnemonicParsing="false" text="About"  onAction="#openAboutPage"/-->
+                                <MenuItem fx:id="Fullscreen" mnemonicParsing="false" text="Toggle Fullscreen" onAction="#toggleFullscreen"/>
                             </items>
                         </Menu>
                     </menus>

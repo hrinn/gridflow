@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
@@ -20,6 +21,7 @@ import java.io.IOException;
 
 public class BaseUIViewController {
 
+    public MenuBar TopMenuBar;
     private MenuFunctionController controller;
     private AboutPageController pageController;
 
@@ -51,6 +53,11 @@ public class BaseUIViewController {
         undoButton.setAccelerator(ctrlZ);
         redoButton.setAccelerator(ctrlShiftZ);
         deleteButton.setAccelerator(del);
+    }
+
+    // Make width of menu bar scale to width of windo
+    public void bindMenuBarWidthProperty(Stage primaryStage) {
+        TopMenuBar.prefWidthProperty().bind(primaryStage.widthProperty());
     }
 
     // Loads the associated controlled
@@ -141,18 +148,23 @@ public class BaseUIViewController {
         baseMenuFunctions.zoomToFit();
     }
 
-    @FXML
-    private void openAboutPage() throws IOException {
-        Stage dialog = new Stage();
-        FXMLLoader aboutPageLoader = new FXMLLoader(getClass().getResource("About.fxml"));
-        Parent AboutPage = aboutPageLoader.load();
-        setPageController(aboutPageLoader.getController());
-        this.pageController.setServices(this.services);
+//    @FXML
+//    private void openAboutPage() throws IOException {
+//        Stage dialog = new Stage();
+//        FXMLLoader aboutPageLoader = new FXMLLoader(getClass().getResource("About.fxml"));
+//        Parent AboutPage = aboutPageLoader.load();
+//        setPageController(aboutPageLoader.getController());
+//        this.pageController.setServices(this.services);
+//
+//        dialog.setScene(new Scene(AboutPage));
+//        dialog.setTitle("About Gridflow");
+//        dialog.initModality(Modality.APPLICATION_MODAL);
+//        dialog.initOwner(this.mainScene.getWindow());
+//        dialog.show();
+//    }
 
-        dialog.setScene(new Scene(AboutPage));
-        dialog.setTitle("About Gridflow");
-        dialog.initModality(Modality.APPLICATION_MODAL);
-        dialog.initOwner(this.mainScene.getWindow());
-        dialog.show();
+    @FXML
+    private void toggleFullscreen() {
+        baseMenuFunctions.toggleFullscreen();
     }
 }

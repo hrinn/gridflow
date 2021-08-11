@@ -19,23 +19,24 @@ public class Jumper extends Closeable {
     }
 
     public Jumper(JumperSnapshot snapshot) {
-        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked);
+        super(UUID.fromString(snapshot.id), snapshot.name, snapshot.pos, snapshot.angle, snapshot.closedByDefault, snapshot.closed, snapshot.locked, snapshot.namepos);
         createComponentIcon();
     }
 
     public Jumper(JsonNode node) {
         super(UUID.fromString(node.get("id").asText()), node.get("name").asText(),
                 Point.fromString(node.get("pos").asText()), node.get("angle").asDouble(),
-                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(), node.get("locked").asBoolean());
+                node.get("closedByDefault").asBoolean(), node.get("closed").asBoolean(),
+                node.get("locked").asBoolean(), node.get("namepos").asBoolean());
         createComponentIcon();
     }
 
-    private void createComponentIcon() {
+    protected void createComponentIcon() {
         DeviceIcon icon = ComponentIconCreator.getJumperIcon(getPosition(), isClosed(), isLocked());
         icon.setDeviceEnergyStates(false, false);
         icon.setComponentIconID(getId().toString());
-        icon.setComponentName(getName());
         icon.setAngle(getAngle(), getPosition());
+        icon.setComponentName(getName(), isNameRight());
         setComponentIcon(icon);
     }
 
@@ -51,18 +52,13 @@ public class Jumper extends Closeable {
     @Override
     public void updateComponentIconName() {
         DeviceIcon icon = (DeviceIcon)getComponentIcon();
-        icon.setComponentName(getName());
+        icon.setComponentName(getName(), isNameRight());
     }
 
     @Override
     public void toggleState() {
-        Point oldNamePos = this.getComponentIcon().getCurrentNamePos();
-        boolean oldActiveLeft = this.getComponentIcon().getActiveLeft();
         toggleClosed();
         createComponentIcon();
-        this.getComponentIcon().setComponentNamePosition(oldNamePos);
-        this.getComponentIcon().setCurrentNamePos(oldNamePos);
-        this.getComponentIcon().setActiveLeft(oldActiveLeft);
     }
 
     @Override
@@ -73,7 +69,8 @@ public class Jumper extends Closeable {
 
     @Override
     public ComponentMemento makeSnapshot() {
-        return new JumperSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(), isLocked(), getInWireID().toString(), getOutWireID().toString());
+        return new JumperSnapshot(getId().toString(), getName(), getAngle(), getPosition(), isClosed(), isClosedByDefault(),
+                isLocked(), getInWireID().toString(), getOutWireID().toString(), isNameRight());
     }
 }
 
@@ -87,8 +84,9 @@ class JumperSnapshot implements ComponentMemento {
     boolean locked;
     String inNodeId;
     String outNodeId;
+    boolean namepos;
 
-    public JumperSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, boolean locked, String inNodeId, String outNodeId) {
+    public JumperSnapshot(String id, String name, double angle, Point pos, boolean closed, boolean closedByDefault, boolean locked, String inNodeId, String outNodeId, boolean namepos) {
         this.id = id;
         this.name = name;
         this.angle = angle;
@@ -98,6 +96,7 @@ class JumperSnapshot implements ComponentMemento {
         this.locked = locked;
         this.inNodeId = inNodeId;
         this.outNodeId = outNodeId;
+        this.namepos = namepos;
     }
 
     @Override

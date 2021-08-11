@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane
+    xmlns="http://javafx.com/javafx"
+    xmlns:fx="http://javafx.com/fxml"
+    fx:controller="construction.properties.PropertiesMenuViewController"
+    prefHeight="350.0" prefWidth="250.0"
+    fx:id="PropertiesWindow" maxHeight="-Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity"
+    styleClass="properties-menu">
+    <Label alignment="TOP_CENTER" contentDisplay="CENTER" text="Properties" style="-fx-font-size: 18 vw; -fx-font-weight: bold;"
+           AnchorPane.topAnchor="6" AnchorPane.leftAnchor="10"/>
+    <VBox alignment="CENTER" style="-fx-background-color: TRANSPARENT;" spacing="10"
+        AnchorPane.topAnchor="45" AnchorPane.leftAnchor="15" >
+        <HBox fx:id="nameControl" alignment="CENTER">
+            <Label text="Name" prefWidth="50"/>
+            <TextField fx:id="nameField" focusTraversable="false"/>
+        </HBox>
+        <HBox fx:id="namePosControl" alignment="CENTER">
+            <Label text="Name Position" prefWidth="88"/>
+            <ToggleButton fx:id="toggleLeft" text="Left" focusTraversable="false" prefWidth="56"/>
+            <ToggleButton fx:id="toggleRight" text="Right" focusTraversable="false" prefWidth="56"/>
+        </HBox>
+        <HBox fx:id="defaultStateControl" alignment="CENTER">
+            <Label text="Default State" prefWidth="88"/>
+            <ToggleButton fx:id="toggleOpen" text="Open" focusTraversable="false" prefWidth="56"/>
+            <ToggleButton fx:id="toggleClosed" text="Closed" focusTraversable="false" prefWidth="56"/>
+        </HBox>
+        <HBox fx:id="clearLinkedControl" alignment="CENTER">
+            <Label text="Linked Breakers: " prefWidth="90"/>
+            <Label fx:id="numSelectedToClearLabel" prefWidth="15"/>
+            <HBox alignment="CENTER_RIGHT" prefWidth="94">
+                <Button fx:id="clearLinkedButton" onAction="#clearTandem" text="Clear" styleClass="properties-button" focusTraversable="false" prefWidth="56"/>
+            </HBox>
+        </HBox>
+        <HBox fx:id="labelControl" alignment="CENTER">
+            <Label text="Label" prefWidth="50"/>
+            <TextField fx:id="labelField" focusTraversable="false"/>
+        </HBox>
+        <HBox fx:id="subLabelControl" alignment="CENTER">
+            <Label text="Sub Label" prefWidth="75"/>
+            <TextField fx:id="subLabelField" prefWidth="124" focusTraversable="false"/>
+        </HBox>
+        <HBox fx:id="acronymControl" alignment="CENTER">
+            <Label text="Acronym" prefWidth="75"/>
+            <TextField fx:id="acronymField" prefWidth="124" focusTraversable="false"/>
+        </HBox>
+        <HBox fx:id="linkBreakersControl" alignment="CENTER">
+            <Label text="Breakers Selected: " prefWidth="100"/>
+            <Label fx:id="numSelectedLabel" prefWidth="43"/>
+            <Button text="Link" onAction="#linkBreakers" styleClass="properties-button" focusTraversable="false" prefWidth="56"/>
+        </HBox>
+
+    </VBox>
+    <HBox AnchorPane.bottomAnchor="10" AnchorPane.leftAnchor="0" prefWidth="250" alignment="CENTER">
+        <Button fx:id="applyButton" onAction="#applyProperties" styleClass="properties-button" text="Apply" defaultButton="true" focusTraversable="false"/>
+    </HBox>
+</AnchorPane>

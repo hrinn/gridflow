@@ -1,0 +1,116 @@
+* {
+    -fx-accent: #008EB0;
+}
+
+.button {
+    -fx-background-color: #ACB4B0;
+}
+
+.button:hover {
+    -fx-background-color: #89908C;
+}
+
+.component-button {
+    -fx-background-color : TRANSPARENT;
+    -fx-background-radius: 10;
+}
+.component-button:hover{
+    -fx-background-color : #008EB0;
+}
+.component-button:pressed {
+    -fx-background-color : #008EB0;
+}
+
+.component-button:current {
+    -fx-background-color : #ACB4B0;
+}
+
+.expand-button {
+    -fx-background-color : #D8D3CE;
+    -fx-opacity: 0.95;
+    -fx-background-radius: 5
+}
+
+.expand-button:hover {
+    -fx-background-color: #ACB4B0;
+}
+
+.expand-button:pressed {
+    -fx-background-color: #ACB4B0;
+}
+
+.build-menu {
+    -fx-background-color: #D8D3CE;
+    -fx-background-radius: 10;
+    -fx-opacity: 0.95;
+}
+
+.properties-menu {
+    -fx-background-color: #D8D3CE;
+    -fx-background-radius: 10;
+    -fx-opacity: 0.95;
+}
+
+.solid {
+    -fx-background-color: #D8D3CE;
+}
+
+.toggle-button:selected {
+    -fx-background-color: #ACB4B0;
+}
+
+.toggle-button {
+    -fx-background-color: TRANSPARENT;
+}
+
+.toggle-button:hover {
+    -fx-background-color: #89908C;
+}
+
+.text-field {
+    -fx-background-color: white;
+}
+
+.loginScreen {
+    -fx-background-color: WHITE;
+    -fx-background-image: url(/resources/vafb.jpg);
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: 0, 0;
+}
+
+.loginLabel {
+    -fx-font-size: 16;
+}
+
+.loginButton {
+    -fx-background-color: #008EB0;
+    -fx-font-size: 16;
+    -fx-text-fill: black;
+}
+
+.loginButton:hover {
+    -fx-background-color: #008EB0;
+    -fx-text-fill: white;
+}
+
+.loginBox {
+    -fx-background-color: #aca8a4; /*#ACB4B0;*/
+    -fx-background-radius: 3;
+    -fx-padding: 25;
+}
+
+.password-field {
+    -fx-background-color: white;
+}
+
+.accountWindow {
+    -fx-background-color: #D8D3CE;
+}
+
+.combo-box {
+    -fx-background-color: #ACB4B0;
+}
+
+.combo-box:hover {
+    -fx-background-color: #89908C;
+}

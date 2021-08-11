@@ -2,6 +2,8 @@ package domain.components;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.properties.objectData.ObjectData;
+import construction.properties.objectData.SourceData;
 import domain.geometry.Point;
 
 import java.util.List;
@@ -18,7 +20,7 @@ public abstract class Source extends Component implements IToggleable, ILockable
     }
 
     public Source(UUID id, String name, Point position, double angle, boolean on) {
-        super(id, name, position, angle);
+        super(id, name, position, angle, true);
         this.on = on;
     }
 
@@ -51,5 +53,19 @@ public abstract class Source extends Component implements IToggleable, ILockable
         ObjectNode source = super.getObjectNode(mapper);
         source.put("on", on);
         return source;
+    }
+
+    @Override
+    public ObjectData getComponentObjectData() {
+        return new SourceData(getName(), getAngle());
+    }
+
+    @Override
+    public void applyComponentData(ObjectData objectData) {
+        SourceData data = (SourceData) objectData;
+        if (!getName().equals(data.getName())) {
+            setName(data.getName());
+            updateComponentIconName();
+        }
     }
 }

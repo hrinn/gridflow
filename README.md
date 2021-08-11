@@ -22,15 +22,17 @@ These instructions are for IntelliJ IDEA
 11. Press Run.
 
 ## Credits
-### Team
+### Programming Team
 * Connor McKee [(@Connor1McKee)](https://github.com/Connor1McKee)
 * Iñaki Madrigal [(@inaki332)](https://github.com/inaki332)
 * Davis Reschenberg [(@dreschen)](https://github.com/dreschen)
 * Hayden Rinn [(@hrinn)](https://github.com/hrinn)
 
-![Team Members](src/resources/team.jpg)
+![Programming Team Members](src/resources/team.jpg)
+
+### Graphic Designer
+* Bruce Benjamin  [(@bwbenjamin)](https://github.com/bwbenjamin)
 
 ### Special Thanks
 * Lefty Pakulski, our project client.
 * Dr. John Oliver, our Capstone professor.
-* Bruce Benjamin, logo and icon designer.

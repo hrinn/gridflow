@@ -3,13 +3,12 @@ package security;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 public class LoginUIViewController {
 
-    public Button loginButton;
     public TextField user;
     public PasswordField pass;
-    public StackPane LoginStackPane;
 
     private LoginController controller;
 
@@ -26,6 +25,7 @@ public class LoginUIViewController {
         if (!res) {
             user.clear();
             pass.clear();
+            user.requestFocus();
         }
     }
 }

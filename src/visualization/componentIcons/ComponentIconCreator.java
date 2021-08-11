@@ -1,6 +1,7 @@
 package visualization.componentIcons;
 
 import application.Globals;
+import construction.ComponentType;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
@@ -295,7 +296,8 @@ public class ComponentIconCreator {
     }
 
     public static SourceIcon getPowerSourceIcon(Point p, String name, boolean isOn, boolean isLocked) {
-        SourceIcon powerSourceIcon = new SourceIcon();
+        SourceIcon powerSourceIcon = new SourceIcon(ComponentType.POWER_SOURCE);
+        Point center = p.translate(0, -2 * Globals.UNIT);
 
         //base shape
         Line outLine = createLine(p.translate(0, 0), p.translate(0, -Globals.UNIT));
@@ -305,17 +307,14 @@ public class ComponentIconCreator {
             Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
                     p.translate(Globals.UNIT, -Globals.UNIT), Color.YELLOW, Color.BLACK);
             powerSourceIcon.addSourceNodeShapes(sourceBox);
-            Text lockText = createText(p.translate(0, -2*Globals.UNIT), LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
+            Text lockText = createText(center, LOCK_TEXT, Color.RED, LOCK_TEXT_SIZE);
             powerSourceIcon.addTextElement(lockText);
         } else {
             Rectangle sourceBox = createRectangle(p.translate(-Globals.UNIT, -3 * Globals.UNIT),
                     p.translate(Globals.UNIT, -Globals.UNIT), Color.RED, Color.BLACK);
             powerSourceIcon.addSourceNodeShapes(sourceBox);
 
-
-
             if (!isOn) sourceBox.setFill(Color.LIME);
-            Point center = p.translate(0, -2 * Globals.UNIT);
             Text text = createText(center, name, Color.BLACK, 12);
             powerSourceIcon.addTextElement(text);
         }
@@ -326,7 +325,7 @@ public class ComponentIconCreator {
     }
 
     public static SourceIcon getTurbineIcon(Point p, boolean isOn, boolean isLocked) {
-        SourceIcon turbineIcon = new SourceIcon();
+        SourceIcon turbineIcon = new SourceIcon(ComponentType.TURBINE);
 
         //base shape
         Line outLine1 = createLine(p, p.translate(0, Globals.UNIT));

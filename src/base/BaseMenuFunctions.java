@@ -9,4 +9,5 @@ public interface BaseMenuFunctions {
     void switchAccounts();
     void openAccountManager();
     void expandCanvas();
+    void toggleFullscreen();
 }

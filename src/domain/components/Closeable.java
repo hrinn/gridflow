@@ -2,6 +2,8 @@ package domain.components;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import construction.properties.objectData.CloseableData;
+import construction.properties.objectData.ObjectData;
 import domain.geometry.Point;
 
 import java.util.UUID;
@@ -18,8 +20,8 @@ public abstract class Closeable extends Device implements IToggleable, ILockable
         closed = closedByDefault;
     }
 
-    public Closeable(UUID id, String name, Point position, double angle, boolean closedByDefault, boolean closed, boolean locked) {
-        super(id, name, position, angle);
+    public Closeable(UUID id, String name, Point position, double angle, boolean closedByDefault, boolean closed, boolean locked, boolean nameRight) {
+        super(id, name, position, angle, nameRight);
         this.closedByDefault = closedByDefault;
         this.closed = closed;
         this.locked = locked;
@@ -54,5 +56,24 @@ public abstract class Closeable extends Device implements IToggleable, ILockable
         closeable.put("closedByDefault", closedByDefault);
         closeable.put("locked", locked);
         return closeable;
+    }
+
+    @Override
+    public ObjectData getComponentObjectData() {
+        return new CloseableData(getName(), isNameRight(), isClosedByDefault(), getAngle());
+    }
+
+    @Override
+    public void applyComponentData(ObjectData objectData) {
+        CloseableData data = (CloseableData) objectData;
+        if (!getName().equals(data.getName()) || isNameRight() != data.isNamePos()) {
+            setName(data.getName());
+            setNameRight(data.isNamePos());
+            updateComponentIconName();
+        }
+        if (this.closedByDefault != data.isClosed()) {
+            this.closedByDefault = data.isClosed();
+            createComponentIcon();
+        }
     }
 }
